@@ -91,7 +91,7 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-stream-kafka</artifactId>
-      <version>4.1.0-M2</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
+      <version>4.1.0-RC1</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <!-- Spring Data -->
@@ -336,7 +336,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>5.6.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -420,7 +420,7 @@
                 <include>org.springframework.boot:spring-boot-autoconfigure-processor:[3.2.0-RC1]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure-processor;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-autoconfigure:[3.2.0-RC1]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-configuration-processor:[3.2.0-RC1]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
-                <include>org.springframework.cloud:spring-cloud-starter-stream-kafka:[4.1.0-M2]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-starter-stream-kafka:[4.1.0-RC1]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
                 <include>org.springframework.data:spring-data-redis:[3.2.0-RC1]</include> <!-- {x-include-update;org.springframework.data:spring-data-redis;external_dependency} -->
                 <include>org.springframework.kafka:spring-kafka:[3.1.0-RC1]</include> <!-- {x-include-update;org.springframework.kafka:spring-kafka;external_dependency} -->
                 <include>org.springframework.security:spring-security-config:[6.2.0-RC2]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->

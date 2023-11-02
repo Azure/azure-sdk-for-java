@@ -37,7 +37,7 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-bus</artifactId>
-      <version>4.1.0-M2</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-bus;external_dependency} -->
+      <version>4.1.0-RC1</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-bus;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -51,7 +51,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>5.6.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     
@@ -103,7 +103,7 @@
               <includes>
                 <include>org.springframework.boot:spring-boot-starter-actuator:[3.2.0-RC1]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-web:[3.2.0-RC1]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
-                <include>org.springframework.cloud:spring-cloud-bus:[4.1.0-M2]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-bus;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-bus:[4.1.0-RC1]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-bus;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

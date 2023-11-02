@@ -110,7 +110,7 @@ org.postgresql:postgresql;42.6.0
 org.slf4j:slf4j-api;2.0.9
 org.slf4j:slf4j-nop;2.0.9
 org.slf4j:slf4j-simple;2.0.9
-redis.clients:jedis;4.3.2
+redis.clients:jedis;5.0.1
 io.lettuce:lettuce-core;6.2.6.RELEASE
 org.redisson:redisson;3.17.0
 net.bytebuddy:byte-buddy;1.14.9
@@ -169,15 +169,15 @@ org.springframework.retry:spring-retry;2.0.4
 org.springframework.boot:spring-boot-starter-parent;3.2.0-RC1
 
 ## Spring cloud dependency versions
-org.springframework.cloud:spring-cloud-dependencies;2023.0.0-M2
-org.springframework.cloud:spring-cloud-starter-bootstrap;4.1.0-M2
-org.springframework.cloud:spring-cloud-bus;4.1.0-M2
-org.springframework.cloud:spring-cloud-context;4.1.0-M2
+org.springframework.cloud:spring-cloud-dependencies;2023.0.0-RC1
+org.springframework.cloud:spring-cloud-starter-bootstrap;4.1.0-RC1
+org.springframework.cloud:spring-cloud-bus;4.1.0-RC1
+org.springframework.cloud:spring-cloud-context;4.1.0-RC1
 org.springframework.cloud:spring-cloud-sleuth-api;3.1.9
 org.springframework.cloud:spring-cloud-starter-sleuth;3.1.9
-org.springframework.cloud:spring-cloud-starter-stream-kafka;4.1.0-M2
+org.springframework.cloud:spring-cloud-starter-stream-kafka;4.1.0-RC1
 org.springframework.cloud:spring-cloud-stream-binder-test;3.2.9
-org.springframework.cloud:spring-cloud-stream;4.1.0-M2
+org.springframework.cloud:spring-cloud-stream;4.1.0-RC1
 
 ## Test dependency versions
 org.objenesis:objenesis;3.1
@@ -222,8 +222,8 @@ org.assertj:assertj-core;3.24.2
 org.bouncycastle:bcprov-jdk15to18;1.76
 org.bouncycastle:bcprov-jdk18on;1.76
 org.bouncycastle:bcpkix-lts8on;2.73.3
-org.eclipse.jetty:jetty-http;9.4.53.v20231009
-org.eclipse.jetty:jetty-server;9.4.53.v20231009
+org.eclipse.jetty:jetty-http;12.0.2
+org.eclipse.jetty:jetty-server;12.0.2
 org.eclipse.jetty:jetty-servlet;9.4.53.v20231009
 org.eclipse.jgit:org.eclipse.jgit;4.5.7.201904151645-r
 org.glassfish:javax.json;1.1.4
@@ -313,7 +313,7 @@ org.eclipse.m2e:lifecycle-mapping;1.0.0
 org.hdrhistogram:HdrHistogram;2.1.12
 org.jacoco:jacoco-maven-plugin;0.8.11
 org.jacoco:org.jacoco.agent;0.8.11
-org.mockito:mockito-core;4.11.0
+org.mockito:mockito-core;5.6.0
 org.mockito:mockito-inline;4.11.0
 org.moditect:moditect-maven-plugin;1.0.0.RC1
 org.ow2.asm:asm;9.6
@@ -425,5 +425,5 @@ org.apache.logging.log4j:log4j-slf4j2-impl;2.21.0
 org.apache.maven.archetype:maven-archetype-plugin;3.2.0
 org.bouncycastle:bcprov-jdk15on;1.70
 org.springframework.boot:spring-boot-starter-log4j2;3.2.0-RC1
-org.springframework.cloud:spring-cloud-stream-test-binder;4.1.0-M2
+org.springframework.cloud:spring-cloud-stream-test-binder;4.1.0-RC1
 org.springframework:spring-core-test;6.1.0-RC1
