@@ -207,7 +207,7 @@ You can find additional settings of the OpenTelemetry Logback appender [here](ht
 You can configure additional instrumentations with [OpenTelemetry instrumentations libraries](https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/docs/supported-libraries.md#libraries--frameworks).
     
 ### Build your Spring native application
-At this step, you can build your application as a native image and start the native image:
+At this step, you can build your application as a GraalVM native image and start it:
 
 ```
 mvn -Pnative spring-boot:build-image
