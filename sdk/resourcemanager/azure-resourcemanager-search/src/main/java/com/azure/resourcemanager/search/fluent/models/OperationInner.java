@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class OperationInner {
     /*
-     * The name of the operation. This name is of the form
-     * {provider}/{resource}/{operation}.
+     * The name of the operation. This name is of the form {provider}/{resource}/{operation}.
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
@@ -23,6 +22,10 @@ public final class OperationInner {
      */
     @JsonProperty(value = "display", access = JsonProperty.Access.WRITE_ONLY)
     private OperationDisplay display;
+
+    /** Creates an instance of OperationInner class. */
+    public OperationInner() {
+    }
 
     /**
      * Get the name property: The name of the operation. This name is of the form {provider}/{resource}/{operation}.

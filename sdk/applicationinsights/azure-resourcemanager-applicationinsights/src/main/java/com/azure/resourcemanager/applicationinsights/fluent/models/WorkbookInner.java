@@ -29,6 +29,10 @@ public final class WorkbookInner extends WorkbookResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of WorkbookInner class. */
+    public WorkbookInner() {
+    }
+
     /**
      * Get the innerProperties property: Metadata describing a workbook for an Azure resource.
      *

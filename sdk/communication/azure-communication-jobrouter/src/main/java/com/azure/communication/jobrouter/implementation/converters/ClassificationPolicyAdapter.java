@@ -21,7 +21,7 @@ public class ClassificationPolicyAdapter {
             .setName(options.getName())
             .setPrioritizationRule(options.getPrioritizationRule())
             .setFallbackQueueId(options.getFallbackQueueId())
-            .setQueueSelectors(options.getQueueSelectors())
-            .setWorkerSelectors(options.getWorkerSelectors());
+            .setQueueSelectorAttachments(options.getQueueSelectors())
+            .setWorkerSelectorAttachments(options.getWorkerSelectors());
     }
 }

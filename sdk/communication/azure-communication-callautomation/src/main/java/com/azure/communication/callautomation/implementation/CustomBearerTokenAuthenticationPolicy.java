@@ -23,6 +23,7 @@ import java.util.Objects;
 public class CustomBearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(CustomBearerTokenAuthenticationPolicy.class);
     private static final String BEARER = "Bearer";
+    private static final HttpHeaderName X_FORWARDED_HOST = HttpHeaderName.fromString("X-FORWARDED-HOST");
 
     private final String[] scopes;
     private final String acsEndpoint;
@@ -92,10 +93,11 @@ public class CustomBearerTokenAuthenticationPolicy implements HttpPipelinePolicy
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        addHeaders(context.getHttpRequest().getHeaders());
-        if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
+        if (!"https".equals(context.getHttpRequest().getUrl().getProtocol())) {
             return Mono.error(new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
         }
+        addHeaders(context.getHttpRequest().getHeaders());
+
         HttpPipelineNextPolicy nextPolicy = next.clone();
 
         return authorizeRequest(context)
@@ -125,11 +127,12 @@ public class CustomBearerTokenAuthenticationPolicy implements HttpPipelinePolicy
 
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        addHeaders(context.getHttpRequest().getHeaders());
-        if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
+        if (!"https".equals(context.getHttpRequest().getUrl().getProtocol())) {
             throw LOGGER.logExceptionAsError(
                 new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
         }
+        addHeaders(context.getHttpRequest().getHeaders());
+
         HttpPipelineNextSyncPolicy nextPolicy = next.clone();
 
         authorizeRequestSync(context);
@@ -193,7 +196,7 @@ public class CustomBearerTokenAuthenticationPolicy implements HttpPipelinePolicy
 
     private void addHeaders(HttpHeaders headers) {
         if (acsEndpoint != null) {
-            headers.set(HttpHeaderName.fromString("X-FORWARDED-HOST"), acsEndpoint);
+            headers.set(X_FORWARDED_HOST, acsEndpoint);
         }
     }
 }

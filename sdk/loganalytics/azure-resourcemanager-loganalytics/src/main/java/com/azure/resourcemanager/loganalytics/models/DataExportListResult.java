@@ -18,6 +18,10 @@ public final class DataExportListResult {
     @JsonProperty(value = "value")
     private List<DataExportInner> value;
 
+    /** Creates an instance of DataExportListResult class. */
+    public DataExportListResult() {
+    }
+
     /**
      * Get the value property: List of data export instances within a workspace..
      *

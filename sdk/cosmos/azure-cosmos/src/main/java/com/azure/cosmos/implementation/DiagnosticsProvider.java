@@ -18,6 +18,7 @@ import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
+import com.azure.cosmos.implementation.guava25.base.Splitter;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -45,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -70,7 +72,6 @@ public final class DiagnosticsProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DiagnosticsProvider.class);
     private static final ObjectMapper mapper = new ObjectMapper();
-
     public static final String COSMOS_CALL_DEPTH = "cosmosCallDepth";
     public static final String COSMOS_CALL_DEPTH_VAL = "nested";
     public static final int ERROR_CODE = 0;
@@ -464,9 +465,9 @@ public final class DiagnosticsProvider {
 
         if (context != null && this.isRealTracer()) {
             Map<String, Object> attributes = new HashMap<>();
-            attributes.put("Diagnostics", cosmosCtx.toJson());
+            String trigger = "SlowFeedResponse";
+            emitDiagnosticsEvents(tracer, cosmosCtx, trigger, context);
 
-            this.tracer.addEvent("SlowFeedResponseConsumer", attributes, OffsetDateTime.now(), context);
             return;
         }
 
@@ -1112,6 +1113,19 @@ public final class DiagnosticsProvider {
         }
     }
 
+    private static void emitDiagnosticsEvents(Tracer tracer, CosmosDiagnosticsContext cosmosCtx, String trigger, Context context) {
+        Map<String, Object> attributes = new HashMap<>();
+        String message = trigger + " - CTX: " + cosmosCtx.toJson();
+        List<String> messageFragments = Splitter.fixedLength(Configs.getMaxTraceMessageLength()).splitToList(message);
+
+        attributes.put("Trigger", trigger);
+        for (int i = 0; i < messageFragments.size(); i++) {
+            attributes.put("SequenceNumber", String.format(Locale.ROOT,"%05d", i + 1));
+
+            tracer.addEvent(messageFragments.get(i), attributes, OffsetDateTime.now(), context);
+        }
+    }
+
     private final static class OpenTelemetryCosmosTracer implements CosmosTracer {
         private final Tracer tracer;
         private final CosmosClientTelemetryConfig config;
@@ -1229,14 +1243,15 @@ public final class DiagnosticsProvider {
             }
 
             if (cosmosCtx.isFailure() || cosmosCtx.isThresholdViolated()) {
-                Map<String, Object> attributes = new HashMap<>();
-                attributes.put("Diagnostics", cosmosCtx.toJson());
+                String trigger;
 
                 if (cosmosCtx.isFailure()) {
-                    tracer.addEvent("failure", attributes, OffsetDateTime.now(), context);
+                    trigger = "Failure";
                 } else {
-                    tracer.addEvent("threshold_violation", attributes, OffsetDateTime.now(), context);
+                    trigger = "ThresholdViolation";
                 }
+
+                emitDiagnosticsEvents(tracer, cosmosCtx, trigger, context);
             }
 
             if (finalError != null) {

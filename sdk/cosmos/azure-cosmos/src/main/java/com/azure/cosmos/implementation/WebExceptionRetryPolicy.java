@@ -53,15 +53,17 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
 
 
         if (WebExceptionUtility.isNetworkFailure(e)) {
-            if (this.isReadRequest || WebExceptionUtility.isWebExceptionRetriable(e)) {
+            if (this.isReadRequest
+                || request.isAddressRefresh()
+                || WebExceptionUtility.isWebExceptionRetriable(e)) {
                 int delayInSeconds = this.timeoutPolicy.getTimeoutAndDelaysList().get(this.retryCount).getDelayForNextRequestInSeconds();
                 // Increase the retry count after calculating the delay
                 retryCount++;
                 logger
-                    .warn("WebExceptionRetryPolicy() Retrying on endpoint {}, operationType = {}, count = {}, " +
+                    .warn("WebExceptionRetryPolicy() Retrying on endpoint {}, operationType = {}, resourceType = {}, count = {}, " +
                             "isAddressRefresh = {}, shouldForcedAddressRefresh = {}, " +
                             "shouldForceCollectionRoutingMapRefresh = {}",
-                        this.locationEndpoint, this.request.getOperationType(), this.retryCount,
+                        this.locationEndpoint, this.request.getOperationType(), this.request.getResourceType(), this.retryCount,
                         this.request.isAddressRefresh(),
                         this.request.shouldForceAddressRefresh(),
                         this.request.forceCollectionRoutingMapRefresh);
@@ -74,10 +76,11 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
 
         logger
             .warn(
-                "WebExceptionRetryPolicy() No retrying on un-retryable exceptions on endpoint {}, operationType = {}, count = {}, " +
+                "WebExceptionRetryPolicy() No retrying on un-retryable exceptions on endpoint {}, operationType = {}, resourceType = {}, count = {}, " +
                     "isAddressRefresh = {}",
                 this.locationEndpoint,
                 this.request.getOperationType(),
+                this.request.getResourceType(),
                 this.retryCount,
                 this.request.isAddressRefresh());
 

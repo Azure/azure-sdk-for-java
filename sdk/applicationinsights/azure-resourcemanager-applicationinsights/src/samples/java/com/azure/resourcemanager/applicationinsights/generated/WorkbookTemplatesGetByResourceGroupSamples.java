@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkbookTemplates GetByResourceGroup. */
 public final class WorkbookTemplatesGetByResourceGroupSamples {
     /*
@@ -20,6 +18,6 @@ public final class WorkbookTemplatesGetByResourceGroupSamples {
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
         manager
             .workbookTemplates()
-            .getByResourceGroupWithResponse("my-resource-group", "my-resource-name", Context.NONE);
+            .getByResourceGroupWithResponse("my-resource-group", "my-resource-name", com.azure.core.util.Context.NONE);
     }
 }

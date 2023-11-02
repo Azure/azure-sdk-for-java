@@ -17,20 +17,21 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.developer.devcenter.implementation.EnvironmentsImpl;
 
 /** Initializes a new instance of the synchronous DevCenterClient type. */
 @ServiceClient(builder = EnvironmentsClientBuilder.class)
 public final class EnvironmentsClient {
-    @Generated private final EnvironmentsAsyncClient client;
+    @Generated private final EnvironmentsImpl serviceClient;
 
     /**
      * Initializes an instance of EnvironmentsClient class.
      *
-     * @param client the async client.
+     * @param serviceClient the service client implementation.
      */
     @Generated
-    EnvironmentsClient(EnvironmentsAsyncClient client) {
-        this.client = client;
+    EnvironmentsClient(EnvironmentsImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
@@ -83,7 +84,7 @@ public final class EnvironmentsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listEnvironments(String projectName, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listEnvironments(projectName, requestOptions));
+        return this.serviceClient.listEnvironments(projectName, requestOptions);
     }
 
     /**
@@ -139,7 +140,7 @@ public final class EnvironmentsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listEnvironmentsByUser(
             String projectName, String userId, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listEnvironmentsByUser(projectName, userId, requestOptions));
+        return this.serviceClient.listEnvironmentsByUser(projectName, userId, requestOptions);
     }
 
     /**
@@ -186,9 +187,8 @@ public final class EnvironmentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEnvironmentByUserWithResponse(
             String projectName, String userId, String environmentName, RequestOptions requestOptions) {
-        return this.client
-                .getEnvironmentByUserWithResponse(projectName, userId, environmentName, requestOptions)
-                .block();
+        return this.serviceClient.getEnvironmentByUserWithResponse(
+                projectName, userId, environmentName, requestOptions);
     }
 
     /**
@@ -262,9 +262,8 @@ public final class EnvironmentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginCreateOrUpdateEnvironment(
             String projectName, String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
-        return this.client
-                .beginCreateOrUpdateEnvironment(projectName, userId, environmentName, body, requestOptions)
-                .getSyncPoller();
+        return this.serviceClient.beginCreateOrUpdateEnvironment(
+                projectName, userId, environmentName, body, requestOptions);
     }
 
     /**
@@ -333,9 +332,8 @@ public final class EnvironmentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateEnvironmentWithResponse(
             String projectName, String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
-        return this.client
-                .updateEnvironmentWithResponse(projectName, userId, environmentName, body, requestOptions)
-                .block();
+        return this.serviceClient.updateEnvironmentWithResponse(
+                projectName, userId, environmentName, body, requestOptions);
     }
 
     /**
@@ -356,7 +354,7 @@ public final class EnvironmentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, Void> beginDeleteEnvironment(
             String projectName, String userId, String environmentName, RequestOptions requestOptions) {
-        return this.client.beginDeleteEnvironment(projectName, userId, environmentName, requestOptions).getSyncPoller();
+        return this.serviceClient.beginDeleteEnvironment(projectName, userId, environmentName, requestOptions);
     }
 
     /**
@@ -387,9 +385,8 @@ public final class EnvironmentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginDeployEnvironmentAction(
             String projectName, String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
-        return this.client
-                .beginDeployEnvironmentAction(projectName, userId, environmentName, body, requestOptions)
-                .getSyncPoller();
+        return this.serviceClient.beginDeployEnvironmentAction(
+                projectName, userId, environmentName, body, requestOptions);
     }
 
     /**
@@ -420,9 +417,8 @@ public final class EnvironmentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginCustomEnvironmentAction(
             String projectName, String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
-        return this.client
-                .beginCustomEnvironmentAction(projectName, userId, environmentName, body, requestOptions)
-                .getSyncPoller();
+        return this.serviceClient.beginCustomEnvironmentAction(
+                projectName, userId, environmentName, body, requestOptions);
     }
 
     /**
@@ -459,7 +455,7 @@ public final class EnvironmentsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listCatalogItems(String projectName, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listCatalogItems(projectName, requestOptions));
+        return this.serviceClient.listCatalogItems(projectName, requestOptions);
     }
 
     /**
@@ -488,7 +484,7 @@ public final class EnvironmentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCatalogItemWithResponse(
             String projectName, String catalogItemId, RequestOptions requestOptions) {
-        return this.client.getCatalogItemWithResponse(projectName, catalogItemId, requestOptions).block();
+        return this.serviceClient.getCatalogItemWithResponse(projectName, catalogItemId, requestOptions);
     }
 
     /**
@@ -563,7 +559,7 @@ public final class EnvironmentsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listCatalogItemVersions(
             String projectName, String catalogItemId, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listCatalogItemVersions(projectName, catalogItemId, requestOptions));
+        return this.serviceClient.listCatalogItemVersions(projectName, catalogItemId, requestOptions);
     }
 
     /**
@@ -629,9 +625,8 @@ public final class EnvironmentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCatalogItemVersionWithResponse(
             String projectName, String catalogItemId, String version, RequestOptions requestOptions) {
-        return this.client
-                .getCatalogItemVersionWithResponse(projectName, catalogItemId, version, requestOptions)
-                .block();
+        return this.serviceClient.getCatalogItemVersionWithResponse(
+                projectName, catalogItemId, version, requestOptions);
     }
 
     /**
@@ -668,6 +663,6 @@ public final class EnvironmentsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listEnvironmentTypes(String projectName, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listEnvironmentTypes(projectName, requestOptions));
+        return this.serviceClient.listEnvironmentTypes(projectName, requestOptions);
     }
 }

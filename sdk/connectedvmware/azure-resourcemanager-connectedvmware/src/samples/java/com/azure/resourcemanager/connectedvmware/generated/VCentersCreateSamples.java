@@ -10,7 +10,7 @@ import com.azure.resourcemanager.connectedvmware.models.VICredential;
 /** Samples for VCenters Create. */
 public final class VCentersCreateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/CreateVCenter.json
+     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/CreateVCenter.json
      */
     /**
      * Sample code: CreateVCenter.
@@ -30,7 +30,7 @@ public final class VCentersCreateSamples {
                     .withName(
                         "/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.ExtendedLocation/customLocations/contoso"))
             .withPort(1234)
-            .withCredentials(new VICredential().withUsername("tempuser").withPassword("<password>"))
+            .withCredentials(new VICredential().withUsername("tempuser").withPassword("fakeTokenPlaceholder"))
             .create();
     }
 }
