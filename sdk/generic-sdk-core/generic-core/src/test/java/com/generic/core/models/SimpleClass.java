@@ -17,6 +17,22 @@ public class SimpleClass implements JsonSerializable<SimpleClass> {
     public SimpleClass() {
     }
 
+    public SimpleClass(String field1, String field2) {
+        this.field1 = field1;
+        this.field2 = field2;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof SimpleClass) {
+            SimpleClass other = (SimpleClass) obj;
+
+            return this.field1.equals(other.field1) && this.field2.equals(other.field2);
+        } else {
+            return super.equals(obj);
+        }
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -37,7 +53,7 @@ public class SimpleClass implements JsonSerializable<SimpleClass> {
 
                     if ("field1".equals(fieldName)) {
                         simpleClass.field1 = reader.getString();
-                    } else if ("message".equals(fieldName)) {
+                    } else if ("field2".equals(fieldName)) {
                         simpleClass.field2 = reader.getString();
                     } else {
                         reader.skipChildren();
