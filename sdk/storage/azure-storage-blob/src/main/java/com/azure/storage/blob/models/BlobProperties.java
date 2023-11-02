@@ -769,6 +769,9 @@ public final class BlobProperties {
         return internalProperties.hasLegalHold();
     }
 
+    /**
+     * @return the x-ms-request id header value.
+     */
     public String getRequestId() {
         return internalProperties.getRequestId();
     }
