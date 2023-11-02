@@ -60,9 +60,9 @@ public final class CreateWorkerOptions {
     }
 
     /**
-     * Set the queueAssignments property: The queue(s) that this worker can receive work from.
+     * Set the queues property: The queue(s) that this worker can receive work from.
      *
-     * @param queues the queueAssignments value to set.
+     * @param queues the queues value to set.
      * @return this
      */
     public CreateWorkerOptions setQueues(List<String> queues) {
@@ -125,8 +125,8 @@ public final class CreateWorkerOptions {
     }
 
     /**
-     * Returns queue assignments.
-     * @return queueAssignments
+     * Returns queues.
+     * @return queues.
      */
     public List<String> getQueues() {
         return this.queues;
