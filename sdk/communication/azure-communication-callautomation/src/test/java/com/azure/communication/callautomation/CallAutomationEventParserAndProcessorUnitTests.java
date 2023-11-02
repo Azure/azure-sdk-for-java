@@ -316,7 +316,9 @@ public class CallAutomationEventParserAndProcessorUnitTests {
         CallAutomationEventProcessor callAutomationEventProcessor = new CallAutomationEventProcessor();
         callAutomationEventProcessor.processEvents(receivedEvent);
         RemoveParticipantSucceeded eventFromProcessor = callAutomationEventProcessor.waitForEventProcessor(
-            removeParticipantSucceeded.getCallConnectionId(), removeParticipantSucceeded.getOperationContext(), RemoveParticipantSucceeded.class);
+            removeParticipantSucceeded.getCallConnectionId(),
+            removeParticipantSucceeded.getOperationContext(),
+            RemoveParticipantSucceeded.class);
         assertEquals("serverCallId", eventFromProcessor.getServerCallId());
         assertEquals("callConnectionId", eventFromProcessor.getCallConnectionId());
         assertEquals("rawId", eventFromProcessor.getParticipant().getRawId());

@@ -96,11 +96,34 @@ public final class CallAutomationEventProcessor {
 
     /**
      * Wait for matching incoming event. This is blocking Call. Returns the event once it arrives in ProcessEvent method.
+     * @param connectionId Call connection id of the call.
+     * @param operationContext OperationContext of the method.
+     * @param eventType The event type that is being waited.
+     * @param timeout The timeout duration for the event to arrive.
+     * @return Returns the event once matching event arrives.
+     * @param <TEvent> Any CallAutomation events.
+     */
+    public <TEvent extends CallAutomationEventBase> TEvent waitForEventProcessor(String connectionId, String operationContext, Class<TEvent> eventType, Duration timeout) {
+        return waitForEventProcessorAsync(connectionId, operationContext, eventType, timeout).block();
+    }
+
+    /**
+     * Wait for matching incoming event. This is blocking Call. Returns the event once it arrives in ProcessEvent method.
      * @param predicate Predicate for waiting on event.
      * @return Returns the event once matching event arrives.
      */
     public CallAutomationEventBase waitForEventProcessor(Predicate<CallAutomationEventBase> predicate) {
         return waitForEventProcessorAsync(predicate).block();
+    }
+
+    /**
+     * Wait for matching incoming event. This is blocking Call. Returns the event once it arrives in ProcessEvent method.
+     * @param predicate Predicate for waiting on event.
+     * @param timeout The timeout duration for the event to arrive.
+     * @return Returns the event once matching event arrives.
+     */
+    public CallAutomationEventBase waitForEventProcessor(Predicate<CallAutomationEventBase> predicate, Duration timeout) {
+        return waitForEventProcessorAsync(predicate, timeout).block();
     }
 
     /**
@@ -113,9 +136,23 @@ public final class CallAutomationEventProcessor {
      */
     @SuppressWarnings("unchecked")
     public <TEvent extends CallAutomationEventBase> Mono<TEvent> waitForEventProcessorAsync(String connectionId, String operationContext, Class<TEvent> eventType) {
+        return waitForEventProcessorAsync(connectionId, operationContext, eventType, Duration.ofSeconds(DEFAULT_EVENT_AWAITER_EXPIRATION_SECONDS));
+    }
+
+    /**
+     * Wait for matching incoming event. Returns the event once it arrives in ProcessEvent method.
+     * @param connectionId Call connection id of the call.
+     * @param operationContext OperationContext of the method.
+     * @param eventType The event type that is being waited.
+     * @param timeout The timeout duration for the event to arrive.
+     * @return Returns the event once matching event arrives.
+     * @param <TEvent> Any CallAutomation events.
+     */
+    @SuppressWarnings("unchecked")
+    public <TEvent extends CallAutomationEventBase> Mono<TEvent> waitForEventProcessorAsync(String connectionId, String operationContext, Class<TEvent> eventType, Duration timeout) {
         Mono<CallAutomationEventBase> ret = waitForEventProcessorAsync(event -> (Objects.equals(event.getCallConnectionId(), connectionId) || Objects.isNull(connectionId))
             && (Objects.equals(event.getOperationContext(), operationContext) || Objects.isNull(operationContext))
-            && event.getClass() == eventType);
+            && event.getClass() == eventType, timeout);
 
         return ret.map(event -> event == null ? null : (TEvent) event);
     }
@@ -127,6 +164,17 @@ public final class CallAutomationEventProcessor {
      * @throws RuntimeException all checked exceptions if the logic fails.
      */
     public Mono<CallAutomationEventBase> waitForEventProcessorAsync(Predicate<CallAutomationEventBase> predicate) {
+        return waitForEventProcessorAsync(predicate, Duration.ofSeconds(DEFAULT_EVENT_AWAITER_EXPIRATION_SECONDS));
+    }
+
+    /**
+     * Wait for matching incoming event. Returns the event once it arrives in ProcessEvent method.
+     * @param predicate Predicate for waiting on event.
+     * @param timeout The timeout duration for the event to arrive.
+     * @return Returns the event once matching event arrives.
+     * @throws RuntimeException all checked exceptions if the logic fails.
+     */
+    public Mono<CallAutomationEventBase> waitForEventProcessorAsync(Predicate<CallAutomationEventBase> predicate, Duration timeout) {
         // Initialize awaiter
         EventAwaiterSingleTime eventAwaiterSingleTime = new EventAwaiterSingleTime(predicate);
 
@@ -138,7 +186,7 @@ public final class CallAutomationEventProcessor {
 
             if (eventWithBacklogId == null) {
                 // If event comes to backlog later before the awaiter expires, ret will get that event, otherwise a timeout exception will throw.
-                Mono<EventWithBacklogId> futureEventWithBacklogId = eventAwaiterSingleTime.getEventWithBacklogId().timeout(Duration.ofSeconds(DEFAULT_EVENT_AWAITER_EXPIRATION_SECONDS));
+                Mono<EventWithBacklogId> futureEventWithBacklogId = eventAwaiterSingleTime.getEventWithBacklogId().timeout(timeout);
                 futureEventWithBacklogId.subscribe(event -> {
                     eventBacklog.removeEvent(event.getBackLogEventId());
                     // Remove the awaiter since the event is found or the awaiter is expired.
