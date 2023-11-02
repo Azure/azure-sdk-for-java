@@ -3,7 +3,6 @@ package com.azure.storage.blob.specialized;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlobQueryArrowField;
 import com.azure.storage.blob.models.BlobQueryArrowFieldType;
@@ -17,7 +16,6 @@ import com.azure.storage.blob.models.BlobQuerySerialization;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.options.BlobQueryOptions;
-import com.azure.storage.common.implementation.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
@@ -30,11 +28,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -48,7 +43,6 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BlobBaseAsyncApiTests extends BlobTestBase {
@@ -377,7 +371,8 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
             .setInputSerialization(new BlobQueryJsonSerialization());
 
         liveTestScenarioWithRetry(() -> {
-            assertThrows(Throwable.class, () -> bc.queryWithResponse(options).block());
+            StepVerifier.create(bc.queryWithResponse(options).flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
+                .verifyError(Throwable.class);
         });
     }
 
@@ -397,11 +392,11 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
 
         liveTestScenarioWithRetry(() -> {
             MockProgressConsumer mockReceiver2 = new MockProgressConsumer();
-            BlobQueryOptions options2 = new BlobQueryOptions(expression)
-                .setProgressConsumer(mockReceiver2);
-            bc.queryWithResponse(options2).block();
+            BlobQueryOptions options2 = new BlobQueryOptions(expression).setProgressConsumer(mockReceiver2);
 
-            assertTrue(mockReceiver2.progressList.contains(sizeofBlobToRead));
+            StepVerifier.create(bc.queryWithResponse(options2).flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
+                .assertNext(r -> assertTrue(mockReceiver2.progressList.contains(sizeofBlobToRead)))
+                .verifyComplete();
         });
     }
 
@@ -422,8 +417,7 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
         liveTestScenarioWithRetry(() -> {
             MockProgressConsumer mockReceiver2 = new MockProgressConsumer();
             long temp = 0;
-            BlobQueryOptions options2 = new BlobQueryOptions(expression)
-                .setProgressConsumer(mockReceiver2);
+            BlobQueryOptions options2 = new BlobQueryOptions(expression).setProgressConsumer(mockReceiver2);
             bc.queryWithResponse(options2).block();
 
             // Make sure theyre all increasingly bigger
