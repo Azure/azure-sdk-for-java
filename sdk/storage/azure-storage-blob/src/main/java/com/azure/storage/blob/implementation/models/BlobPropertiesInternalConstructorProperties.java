@@ -234,20 +234,20 @@ public final class BlobPropertiesInternalConstructorProperties implements BlobPr
      * @param requestId The request id.
      */
     public BlobPropertiesInternalConstructorProperties(final OffsetDateTime creationTime,
-    final OffsetDateTime lastModified, final String eTag, final long blobSize, final String contentType,
-    final byte[] contentMd5, final String contentEncoding, final String contentDisposition,
-    final String contentLanguage, final String cacheControl, final Long blobSequenceNumber, final BlobType blobType,
-    final LeaseStatusType leaseStatus, final LeaseStateType leaseState, final LeaseDurationType leaseDuration,
-    final String copyId, final CopyStatusType copyStatus, final String copySource, final String copyProgress,
-    final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
-    final Boolean isIncrementalCopy, final String copyDestinationSnapshot, final AccessTier accessTier,
-    final Boolean isAccessTierInferred, final ArchiveStatus archiveStatus, final String encryptionKeySha256,
-    final String encryptionScope, final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
-    final Integer committedBlockCount, final Long tagCount, final String versionId, final Boolean isCurrentVersion,
-    final List<ObjectReplicationPolicy> objectReplicationSourcePolicies,
-    final String objectReplicationDestinationPolicyId, final RehydratePriority rehydratePriority,
-    final Boolean isSealed, final OffsetDateTime lastAccessedTime, final OffsetDateTime expiresOn,
-    final BlobImmutabilityPolicy immutabilityPolicy, final Boolean hasLegalHold, final String requestId) {
+        final OffsetDateTime lastModified, final String eTag, final long blobSize, final String contentType,
+        final byte[] contentMd5, final String contentEncoding, final String contentDisposition,
+        final String contentLanguage, final String cacheControl, final Long blobSequenceNumber, final BlobType blobType,
+        final LeaseStatusType leaseStatus, final LeaseStateType leaseState, final LeaseDurationType leaseDuration,
+        final String copyId, final CopyStatusType copyStatus, final String copySource, final String copyProgress,
+        final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
+        final Boolean isIncrementalCopy, final String copyDestinationSnapshot, final AccessTier accessTier,
+        final Boolean isAccessTierInferred, final ArchiveStatus archiveStatus, final String encryptionKeySha256,
+        final String encryptionScope, final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
+        final Integer committedBlockCount, final Long tagCount, final String versionId, final Boolean isCurrentVersion,
+        final List<ObjectReplicationPolicy> objectReplicationSourcePolicies,
+        final String objectReplicationDestinationPolicyId, final RehydratePriority rehydratePriority,
+        final Boolean isSealed, final OffsetDateTime lastAccessedTime, final OffsetDateTime expiresOn,
+        final BlobImmutabilityPolicy immutabilityPolicy, final Boolean hasLegalHold, final String requestId) {
         this.creationTime = creationTime;
         this.lastModified = lastModified;
         this.eTag = eTag;
