@@ -1,6 +1,6 @@
 # Azure Monitor OpenTelemetry Distro / Application Insights in Spring native Java application
 
-This Spring Boot starter provides telemetry data to Azure Monitor for Spring Boot applications and GraalVM native images.
+This Spring Boot starter provides telemetry data to Azure Monitor for Spring Boot applications running on GraalVM native image.
 
 For a Spring Boot application running on a JVM (not with a GraalVM native image), we recommend using the [Application Insights Java agent][application_insights_java_agent_spring_boot].
 
