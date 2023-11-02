@@ -109,7 +109,7 @@ dependencyManagement {
 
 ### Authentication
 
-#### Get the instrumentation key from the portal
+#### Get the connection string from the portal
 
 In order to export telemetry data to Azure Monitor, you will need the connection string to your [Application
  Insights resource][application_insights_resource]. Go to [Azure Portal][azure_portal], 
