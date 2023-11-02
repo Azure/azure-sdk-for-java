@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.feature.management;
+package com.azure.spring.cloud.feature.management.models;
 
 /**
  * The return object of getVariant that has the name of the variant and the instance value of the variant.

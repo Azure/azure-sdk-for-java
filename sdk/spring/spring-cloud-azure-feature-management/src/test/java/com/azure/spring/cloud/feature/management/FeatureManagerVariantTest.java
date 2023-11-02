@@ -30,6 +30,7 @@ import com.azure.spring.cloud.feature.management.implementation.models.Feature;
 import com.azure.spring.cloud.feature.management.implementation.models.VariantReference;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.FeatureManagementException;
+import com.azure.spring.cloud.feature.management.models.Variant;
 import com.azure.spring.cloud.feature.management.targeting.ContextualTargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingContextAccessor;
 
@@ -443,9 +444,9 @@ public class FeatureManagerVariantTest {
     private Map<String, VariantReference> createVariants() {
         Map<String, VariantReference> variants = new HashMap<>();
         variants.put("small",
-            new VariantReference().setName("small").setConfigurationValue(1).setStatusOverride("true"));
+            new VariantReference().setName("small").setConfigurationValue(1).setStatusOverride("Enabled"));
         variants.put("large",
-            new VariantReference().setName("large").setConfigurationValue(9).setStatusOverride("false"));
+            new VariantReference().setName("large").setConfigurationValue(9).setStatusOverride("Disabled"));
         return variants;
     }
 

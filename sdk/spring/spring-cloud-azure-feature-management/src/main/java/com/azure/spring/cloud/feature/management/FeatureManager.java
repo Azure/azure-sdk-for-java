@@ -32,6 +32,7 @@ import com.azure.spring.cloud.feature.management.implementation.models.VariantRe
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.FeatureManagementException;
 import com.azure.spring.cloud.feature.management.models.FilterNotFoundException;
+import com.azure.spring.cloud.feature.management.models.Variant;
 import com.azure.spring.cloud.feature.management.targeting.ContextualTargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOptions;
@@ -136,6 +137,7 @@ public class FeatureManager {
     }
 
     /**
+     * Returns the variant assigned to the current context.
      * 
      * @param feature Feature being checked.
      * @return Assigned Variant
@@ -145,6 +147,7 @@ public class FeatureManager {
     }
 
     /**
+     * Returns the variant assigned to the current context.
      * 
      * @param feature Feature being checked.
      * @param featureContext Local context
@@ -155,6 +158,7 @@ public class FeatureManager {
     }
 
     /**
+     * Returns the variant assigned to the current context.
      * 
      * @param feature Feature being checked.
      * @return Assigned Variant
@@ -164,6 +168,7 @@ public class FeatureManager {
     }
 
     /**
+     * Returns the variant assigned to the current context.
      * 
      * @param feature Feature being checked.
      * @param featureContext Local context
@@ -241,7 +246,12 @@ public class FeatureManager {
                 && StringUtils.hasText(variantReference.getStatusOverride())) {
                 // If any text is provided we assume it is a valid boolean and return true/false, invalid booleans
                 // return false
-                return Boolean.valueOf(variantReference.getStatusOverride());
+                if ("Enabled".equalsIgnoreCase(variantReference.getStatusOverride())) {
+                    return true;
+                } else if ("Disabled".equalsIgnoreCase(variantReference.getStatusOverride())) {
+                    return false;
+                }
+                return result;
             }
         }
         return result;

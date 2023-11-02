@@ -13,7 +13,6 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.util.StringUtils;
 
-import com.azure.spring.cloud.feature.management.Variant;
 import com.azure.spring.cloud.feature.management.VariantProperties;
 import com.azure.spring.cloud.feature.management.implementation.models.Allocation;
 import com.azure.spring.cloud.feature.management.implementation.models.GroupAllocation;
@@ -21,6 +20,7 @@ import com.azure.spring.cloud.feature.management.implementation.models.Percentil
 import com.azure.spring.cloud.feature.management.implementation.models.UserAllocation;
 import com.azure.spring.cloud.feature.management.implementation.models.VariantReference;
 import com.azure.spring.cloud.feature.management.models.FeatureManagementException;
+import com.azure.spring.cloud.feature.management.models.Variant;
 import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOptions;
 import com.azure.spring.cloud.feature.management.targeting.TargetingFilterContext;
 
