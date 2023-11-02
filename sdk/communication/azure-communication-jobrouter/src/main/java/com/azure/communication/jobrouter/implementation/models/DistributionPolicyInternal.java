@@ -7,8 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.Duration;
-
 /** Policy governing how jobs are distributed to workers. */
 @Fluent
 public final class DistributionPolicyInternal {
