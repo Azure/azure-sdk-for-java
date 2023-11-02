@@ -152,7 +152,7 @@ public class HttpRequest {
         try {
             this.url = new URL(url);
         } catch (MalformedURLException ex) {
-            throw LOGGER.logThrowableAsWarning(new IllegalArgumentException("'url' must be a valid URL.", ex));
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'url' must be a valid URL.", ex));
         }
         return this;
     }

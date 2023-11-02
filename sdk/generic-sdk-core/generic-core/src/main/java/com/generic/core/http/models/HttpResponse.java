@@ -7,7 +7,6 @@ import com.generic.core.models.BinaryData;
 import com.generic.core.models.Headers;
 
 import java.io.Closeable;
-import java.nio.charset.Charset;
 
 /**
  * The response of an {@link HttpRequest}.

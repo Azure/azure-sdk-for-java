@@ -19,7 +19,7 @@ interface ReflectionUtilsApi {
      * to alleviate this issue, if {@code targetClass} is null {@link Method#getDeclaringClass()} will be used to infer
      * the class.
      * <p>
-     * {@code scopeToCore} is only when used when MethodHandles are being used and Java 9+ modules are being used. This
+     * {@code scopeToGenericCore} is only when used when MethodHandles are being used and Java 9+ modules are being used. This
      * will determine whether to use a MethodHandles.Lookup scoped to {@code generic-core} or to use a public
      * MethodHandles.Lookup. Scoping a MethodHandles.Lookup to {@code generic-core} requires to module containing the
      * class to open or export to {@code generic-core} which generally only holds true for other SDKs, for example there
@@ -28,13 +28,13 @@ interface ReflectionUtilsApi {
      *
      * @param targetClass The class that contains the method.
      * @param method The method to invoke.
-     * @param scopeToCore If Java 9+ modules is being used this will scope MethodHandle-based reflection to using
+     * @param scopeToGenericCore If Java 9+ modules is being used this will scope MethodHandle-based reflection to using
      * {@code generic-core} as the scoped module, otherwise this is ignored.
      * @return An {@link ReflectiveInvoker} instance that will invoke the method.
      * @throws NullPointerException If {@code method} is null.
      * @throws Exception If the {@link ReflectiveInvoker} cannot be created.
      */
-    ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToCore) throws Exception;
+    ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToGenericCore) throws Exception;
 
     /**
      * Creates an {@link ReflectiveInvoker} instance that will invoke a {@link Constructor}.
@@ -44,7 +44,7 @@ interface ReflectionUtilsApi {
      * to alleviate this issue, if {@code targetClass} is null {@link Constructor#getDeclaringClass()} will be used to
      * infer the class.
      * <p>
-     * {@code scopeToCore} is only when used when MethodHandles are being used and Java 9+ modules are being used. This
+     * {@code scopeToGenericCore} is only when used when MethodHandles are being used and Java 9+ modules are being used. This
      * will determine whether to use a MethodHandles.Lookup scoped to {@code generic-core} or to use a public
      * MethodHandles.Lookup. Scoping a MethodHandles.Lookup to {@code generic-core} requires to module containing the
      * class to open or export to {@code generic-core} which generally only holds true for other SDKs, for example there
@@ -53,13 +53,13 @@ interface ReflectionUtilsApi {
      *
      * @param targetClass The class that contains the constructor.
      * @param constructor The constructor to invoke.
-     * @param scopeToCore If Java 9+ modules is being used this will scope MethodHandle-based reflection to using
+     * @param scopeToGenericCore If Java 9+ modules is being used this will scope MethodHandle-based reflection to using
      * {@code generic-core} as the scoped module, otherwise this is ignored.
      * @return An {@link ReflectiveInvoker} instance that will invoke the constructor.
      * @throws NullPointerException If {@code constructor} is null.
      * @throws Exception If the {@link ReflectiveInvoker} cannot be created.
      */
-    ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor, boolean scopeToCore)
+    ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor, boolean scopeToGenericCore)
         throws Exception;
 
     /**

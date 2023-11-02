@@ -10,12 +10,12 @@ import java.lang.reflect.Method;
  */
 final class ReflectionUtilsClassic implements ReflectionUtilsApi {
     @Override
-    public ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToCore) {
+    public ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToGenericCore) {
         return new MethodReflectiveInvoker(method);
     }
 
     @Override
-    public ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor, boolean scopeToCore) {
+    public ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor, boolean scopeToGenericCore) {
         return new ConstructorReflectiveInvoker(constructor);
     }
 
