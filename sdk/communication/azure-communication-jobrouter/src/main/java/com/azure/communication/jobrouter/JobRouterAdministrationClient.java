@@ -1123,7 +1123,6 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return policy governing how jobs are distributed to workers.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DistributionPolicy getDistributionPolicy(String distributionPolicyId) {
         // Generated convenience method for getDistributionPolicyWithResponse
@@ -1143,7 +1142,6 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of distribution policies as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DistributionPolicy> listDistributionPolicies() {
         // Generated convenience method for listDistributionPolicies
@@ -1304,7 +1302,6 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a queue that can contain jobs to be routed.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouterQueue getQueue(String queueId) {
         // Generated convenience method for getQueueWithResponse
@@ -1322,7 +1319,6 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of queues as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RouterQueue> listQueues() {
         // Generated convenience method for listQueues
