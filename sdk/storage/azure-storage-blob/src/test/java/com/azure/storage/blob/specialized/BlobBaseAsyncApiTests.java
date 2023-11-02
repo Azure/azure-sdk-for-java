@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.test.utils.TestUtils;
@@ -151,14 +154,16 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
 
         liveTestScenarioWithRetry(() -> {
             /* Output Stream. */
-            StepVerifier.create(bc.queryWithResponse(new BlobQueryOptions(expression).setInputSerialization(serIn).setOutputSerialization(serOut))
+            StepVerifier.create(bc.queryWithResponse(new BlobQueryOptions(expression).setInputSerialization(serIn)
+                .setOutputSerialization(serOut))
                 .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue())))
                 .assertNext(r -> {
                     if (headersPresentIn && !headersPresentOut) {
                         assertEquals(downloadedData.length - 16, r.length);
 
                         /* Account for 16 bytes of header. */
-                        TestUtils.assertArraysEqual(downloadedData, 16, r, 0, downloadedData.length - 16);
+                        TestUtils.assertArraysEqual(downloadedData, 16, r, 0,
+                            downloadedData.length - 16);
                     } else {
                         TestUtils.assertArraysEqual(downloadedData, r);
                     }
@@ -279,7 +284,8 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
         liveTestScenarioWithRetry(() -> {
             StepVerifier.create(bc.queryWithResponse(options)
                 .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue())))
-                .assertNext(r -> TestUtils.assertArraysEqual(expectedData, 0, r, 0, expectedData.length))
+                .assertNext(r -> TestUtils.assertArraysEqual(expectedData, 0, r, 0,
+                    expectedData.length))
                 .verifyComplete();
         });
     }
@@ -304,7 +310,8 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
         liveTestScenarioWithRetry(() -> {
             StepVerifier.create(bc.queryWithResponse(options)
                 .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue())))
-                .assertNext(r -> TestUtils.assertArraysEqual(expectedData, 0, r, 0, expectedData.length))
+                .assertNext(r -> TestUtils.assertArraysEqual(expectedData, 0, r, 0,
+                    expectedData.length))
                 .verifyComplete();
         });
     }
@@ -371,7 +378,8 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
             .setInputSerialization(new BlobQueryJsonSerialization());
 
         liveTestScenarioWithRetry(() -> {
-            StepVerifier.create(bc.queryWithResponse(options).flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
+            StepVerifier.create(bc.queryWithResponse(options).flatMap(
+                r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
                 .verifyError(Throwable.class);
         });
     }
@@ -394,7 +402,8 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
             MockProgressConsumer mockReceiver2 = new MockProgressConsumer();
             BlobQueryOptions options2 = new BlobQueryOptions(expression).setProgressConsumer(mockReceiver2);
 
-            StepVerifier.create(bc.queryWithResponse(options2).flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
+            StepVerifier.create(bc.queryWithResponse(options2).flatMap(
+                r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
                 .assertNext(r -> assertTrue(mockReceiver2.progressList.contains(sizeofBlobToRead)))
                 .verifyComplete();
         });

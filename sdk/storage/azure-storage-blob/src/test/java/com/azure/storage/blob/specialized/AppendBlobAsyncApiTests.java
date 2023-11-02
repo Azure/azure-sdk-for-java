@@ -103,8 +103,8 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         bc.createWithResponse(headers, null, null).block();
 
         StepVerifier.create(bc.getPropertiesWithResponse(null))
-            .assertNext(p -> validateBlobProperties(p, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5,
-                finalContentType))
+            .assertNext(p -> validateBlobProperties(p, cacheControl, contentDisposition, contentEncoding,
+                contentLanguage, contentMD5, finalContentType))
             .verifyComplete();
     }
 
@@ -112,7 +112,8 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         return Stream.of(
             Arguments.of(null, null, null, null, null, null),
             Arguments.of("control", "disposition", "encoding", "language",
-                Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(DATA.getDefaultText().getBytes())),
+                Base64.getEncoder().encode(MessageDigest.getInstance("MD5")
+                    .digest(DATA.getDefaultText().getBytes())),
                 "type")
         );
     }
@@ -266,8 +267,10 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         String blobName = ccAsync.getBlobAsyncClient(generateBlobName()).getBlobName();
         bc = ccAsync.getBlobAsyncClient(blobName).getAppendBlobAsyncClient();
 
-        assertAsyncResponseStatusCode(bc.createIfNotExistsWithResponse(new AppendBlobCreateOptions()), 201);
-        assertAsyncResponseStatusCode(bc.createIfNotExistsWithResponse(new AppendBlobCreateOptions()), 409);
+        assertAsyncResponseStatusCode(bc.createIfNotExistsWithResponse(new AppendBlobCreateOptions()),
+            201);
+        assertAsyncResponseStatusCode(bc.createIfNotExistsWithResponse(new AppendBlobCreateOptions()),
+            409);
     }
 
     @ParameterizedTest
@@ -479,7 +482,8 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
             .setMaxSize(maxSizeLTE)
             .setTagsConditions(tags);
 
-        StepVerifier.create(bc.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, bac))
+        StepVerifier.create(bc.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
+                bac))
             .verifyError(BlobStorageException.class);
     }
 
@@ -525,7 +529,8 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         byte[] randomData = getRandomByteArray(size); // testing upload of size greater than 4MB
         Flux<ByteBuffer> uploadStream = Flux.just(ByteBuffer.wrap(randomData));
 
-        assertAsyncResponseStatusCode(bc.appendBlockWithResponse(uploadStream, size, null, null), 201);
+        assertAsyncResponseStatusCode(bc.appendBlockWithResponse(uploadStream, size, null,
+            null), 201);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(bc.downloadStream()))
             .assertNext(r -> TestUtils.assertArraysEqual(randomData, r))
@@ -593,7 +598,8 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         destURL.create().block();
 
         StepVerifier.create(destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl(), null,
-            MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null))
+            MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null,
+                null))
             .verifyError(BlobStorageException.class);
     }
 
@@ -601,7 +607,8 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("appendBlockSupplier")
     public void appendBlockFromURLDestinationAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,
-                                                String noneMatch, String leaseID, Long appendPosE, Long maxSizeLTE, String tags) {
+                                                String noneMatch, String leaseID, Long appendPosE, Long maxSizeLTE,
+                                                String tags) {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
         bc.setTags(t).block();
@@ -620,16 +627,19 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
 
         AppendBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
         sourceURL.create().block();
-        sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, null).block();
+        sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
+            null).block();
 
-        assertAsyncResponseStatusCode(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null, null, bac, null), 201);
+        assertAsyncResponseStatusCode(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null,
+            null, bac, null), 201);
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("appendBlockFailSupplier")
     public void appendBlockFromURLDestinationACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
-                                                    String noneMatch, String leaseID, Long maxSizeLTE, Long appendPosE, String tags) {
+                                                    String noneMatch, String leaseID, Long maxSizeLTE, Long appendPosE,
+                                                    String tags) {
         ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
         noneMatch = setupBlobMatchCondition(bc, noneMatch);
         setupBlobLeaseCondition(bc, leaseID);
@@ -646,7 +656,8 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
 
         AppendBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
         sourceURL.create().block();
-        sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, null).block();
+        sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
+            null).block();
 
         StepVerifier.create(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null,
             null, bac, null))
@@ -662,7 +673,8 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
 
         AppendBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
         sourceURL.create().block();
-        sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, null).block();
+        sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
+            null).block();
 
         BlobRequestConditions smac = new BlobRequestConditions()
             .setIfModifiedSince(sourceIfModifiedSince)
@@ -670,7 +682,8 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
             .setIfMatch(setupBlobMatchCondition(sourceURL, sourceIfMatch))
             .setIfNoneMatch(sourceIfNoneMatch);
 
-        assertAsyncResponseStatusCode(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null, null, null, smac), 201);
+        assertAsyncResponseStatusCode(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null,
+            null, null, smac), 201);
     }
 
     private static Stream<Arguments> appendBlockFromURLSupplier() {
@@ -687,12 +700,14 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("appendBlockFromURLFailSupplier")
     public void appendBlockFromURLSourceACFail(OffsetDateTime sourceIfModifiedSince,
-                                               OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch) {
+                                               OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch,
+                                               String sourceIfNoneMatch) {
         ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
 
         AppendBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
         sourceURL.create().block();
-        sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, null).block();
+        sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
+            null).block();
 
         BlobRequestConditions smac = new BlobRequestConditions()
             .setIfModifiedSince(sourceIfModifiedSince)
@@ -757,7 +772,8 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
             .assertNext(p -> assertTrue(p.isSealed()))
             .verifyComplete();
 
-        StepVerifier.create(bc.downloadStreamWithResponse(null, null, null, false))
+        StepVerifier.create(bc.downloadStreamWithResponse(null, null, null,
+                false))
             .assertNext(r -> assertTrue(r.getDeserializedHeaders().isSealed()))
             .verifyComplete();
     }
