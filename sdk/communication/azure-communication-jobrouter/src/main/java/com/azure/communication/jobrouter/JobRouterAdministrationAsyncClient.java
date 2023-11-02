@@ -1095,7 +1095,6 @@ public final class JobRouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return policy governing how jobs are distributed to workers on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DistributionPolicy> getDistributionPolicy(String distributionPolicyId) {
         // Generated convenience method for getDistributionPolicyWithResponse
@@ -1115,7 +1114,6 @@ public final class JobRouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of distribution policies as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DistributionPolicy> listDistributionPolicies() {
         // Generated convenience method for listDistributionPolicies
@@ -1177,7 +1175,6 @@ public final class JobRouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container for the rules that govern how jobs are classified on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ClassificationPolicy> getClassificationPolicy(String classificationPolicyId) {
         // Generated convenience method for getClassificationPolicyWithResponse
@@ -1342,7 +1339,6 @@ public final class JobRouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a queue that can contain jobs to be routed on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterQueue> getQueue(String queueId) {
         // Generated convenience method for getQueueWithResponse
@@ -1362,7 +1358,6 @@ public final class JobRouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of queues as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RouterQueue> listQueues() {
         // Generated convenience method for listQueues

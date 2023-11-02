@@ -152,7 +152,6 @@ public final class ClassificationPolicy {
     /*
      * The queue selector attachments used to resolve a queue for a given job.
      */
-    @Generated
     @JsonProperty(value = "queueSelectorAttachments")
     private List<QueueSelectorAttachment> queueSelectorAttachments;
 

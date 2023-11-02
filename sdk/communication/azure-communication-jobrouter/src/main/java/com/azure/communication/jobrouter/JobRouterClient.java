@@ -1237,7 +1237,6 @@ public final class JobRouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a unit of work to be routed.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouterJob getJob(String jobId) {
         // Generated convenience method for getJobWithResponse
@@ -1302,7 +1301,6 @@ public final class JobRouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of jobs as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RouterJob> listJobs(
             RouterJobStatusSelector status,
@@ -1344,7 +1342,6 @@ public final class JobRouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of jobs as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RouterJob> listJobs() {
         // Generated convenience method for listJobs
@@ -1470,7 +1467,6 @@ public final class JobRouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an entity for jobs to be routed to.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouterWorker getWorker(String workerId) {
         // Generated convenience method for getWorkerWithResponse
@@ -1514,7 +1510,6 @@ public final class JobRouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of workers as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RouterWorker> listWorkers(
             RouterWorkerStateSelector state, String channelId, String queueId, Boolean hasCapacity) {
@@ -1547,7 +1542,6 @@ public final class JobRouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of workers as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RouterWorker> listWorkers() {
         // Generated convenience method for listWorkers

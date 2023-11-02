@@ -1184,7 +1184,6 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container for the rules that govern how jobs are classified.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClassificationPolicy getClassificationPolicy(String classificationPolicyId) {
         // Generated convenience method for getClassificationPolicyWithResponse
@@ -1204,7 +1203,6 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of classification policies as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClassificationPolicy> listClassificationPolicies() {
         // Generated convenience method for listClassificationPolicies
