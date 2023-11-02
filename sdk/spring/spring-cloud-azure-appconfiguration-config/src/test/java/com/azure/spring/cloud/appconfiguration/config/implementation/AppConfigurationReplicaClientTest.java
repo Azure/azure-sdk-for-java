@@ -27,10 +27,10 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.ConfigurationClient;
-import com.azure.data.appconfiguration.models.CompositionType;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.data.appconfiguration.models.SnapshotComposition;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 
@@ -183,8 +183,8 @@ public class AppConfigurationReplicaClientTest {
             new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
 
         List<ConfigurationSetting> configurations = new ArrayList<>();
-        ConfigurationSettingsSnapshot snapshot = new ConfigurationSettingsSnapshot(null);
-        snapshot.setCompositionType(CompositionType.KEY);
+        ConfigurationSnapshot snapshot = new ConfigurationSnapshot(null);
+        snapshot.setSnapshotComposition(SnapshotComposition.KEY);
 
         when(clientMock.getSnapshot(Mockito.any())).thenReturn(snapshot);
         when(clientMock.listConfigurationSettingsForSnapshot(Mockito.any())).thenReturn(settingsMock);
@@ -215,8 +215,8 @@ public class AppConfigurationReplicaClientTest {
         AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock,
             new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
 
-        ConfigurationSettingsSnapshot snapshot = new ConfigurationSettingsSnapshot(null);
-        snapshot.setCompositionType(CompositionType.KEY_LABEL);
+        ConfigurationSnapshot snapshot = new ConfigurationSnapshot(null);
+        snapshot.setSnapshotComposition(SnapshotComposition.KEY_LABEL);
 
         when(clientMock.getSnapshot(Mockito.any())).thenReturn(snapshot);
 
