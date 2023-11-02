@@ -11,6 +11,7 @@ import com.azure.communication.callautomation.models.events.CallTransferFailed;
 import com.azure.core.annotation.Immutable;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.Objects;
 
 /** The TransferCallResult model. */
@@ -60,15 +61,18 @@ public final class TransferCallResult extends ResultWithEventHandling<TransferCa
     }
 
     @Override
-    public Mono<TransferCallToParticipantEventResult> waitForEventProcessorAsync() {
+    public Mono<TransferCallToParticipantEventResult> waitForEventProcessorAsync(Duration timeout) {
         if (eventProcessor == null) {
             return Mono.empty();
         }
 
-        return eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
+        return (timeout == null ? eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
             && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == CallTransferAccepted.class || event.getClass() == CallTransferFailed.class)
-        ).flatMap(event -> Mono.just(getReturnedEvent(event)));
+            && (event.getClass() == CallTransferAccepted.class || event.getClass() == CallTransferFailed.class))
+            : eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
+            && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
+            && (event.getClass() == CallTransferAccepted.class || event.getClass() == CallTransferFailed.class), timeout)
+            ).flatMap(event -> Mono.just(getReturnedEvent(event)));
     }
 
     @Override

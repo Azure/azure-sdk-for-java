@@ -11,6 +11,7 @@ import com.azure.communication.callautomation.models.events.RemoveParticipantSuc
 import com.azure.core.annotation.Immutable;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.Objects;
 
 /** The RemoveParticipantResult model. */
@@ -59,14 +60,17 @@ public final class RemoveParticipantResult extends ResultWithEventHandling<Remov
     }
 
     @Override
-    public Mono<RemoveParticipantEventResult> waitForEventProcessorAsync() {
+    public Mono<RemoveParticipantEventResult> waitForEventProcessorAsync(Duration timeout) {
         if (eventProcessor == null) {
             return Mono.empty();
         }
 
-        return eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
+        return (timeout == null ? eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
             && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == RemoveParticipantSucceeded.class || event.getClass() == RemoveParticipantFailed.class)
+            && (event.getClass() == RemoveParticipantSucceeded.class || event.getClass() == RemoveParticipantFailed.class))
+            : eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
+            && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
+            && (event.getClass() == RemoveParticipantSucceeded.class || event.getClass() == RemoveParticipantFailed.class), timeout)
         ).flatMap(event -> Mono.just(getReturnedEvent(event)));
     }
 

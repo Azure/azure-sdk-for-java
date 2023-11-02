@@ -7,6 +7,8 @@ import com.azure.communication.callautomation.CallAutomationEventProcessor;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+
 /**
  * Injects the event handling into the result
  */
@@ -49,9 +51,29 @@ public abstract class ResultWithEventHandling<TEventResult> {
     /**
      * Waits for the event processor to process the event
      *
+     * @param timeout the timeout
      * @return the result of the event processing
      */
-    public abstract Mono<TEventResult> waitForEventProcessorAsync();
+    public TEventResult waitForEventProcessor(Duration timeout) {
+        return waitForEventProcessorAsync(timeout).block();
+    }
+
+    /**
+     * Waits for the event processor to process the event
+     *
+     * @return the result of the event processing
+     */
+    public Mono<TEventResult> waitForEventProcessorAsync() {
+        return waitForEventProcessorAsync(null);
+    }
+
+    /**
+     * Waits for the event processor to process the event
+     *
+     * @param timeout the timeout
+     * @return the result of the event processing
+     */
+    public abstract Mono<TEventResult> waitForEventProcessorAsync(Duration timeout);
 
     /**
      * Sets the returned event

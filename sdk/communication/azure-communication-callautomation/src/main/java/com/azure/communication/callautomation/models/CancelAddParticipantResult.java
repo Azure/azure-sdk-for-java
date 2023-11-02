@@ -12,6 +12,7 @@ import com.azure.communication.callautomation.models.events.CancelAddParticipant
 import com.azure.core.annotation.Immutable;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.Objects;
 
 /** The CancelAddParticipantResult model. */
@@ -79,15 +80,17 @@ public final class CancelAddParticipantResult extends ResultWithEventHandling<Ca
     }
 
     @Override
-    public Mono<CancelAddParticipantEventResult> waitForEventProcessorAsync() {
+    public Mono<CancelAddParticipantEventResult> waitForEventProcessorAsync(Duration timeout) {
         if (eventProcessor == null) {
             return Mono.empty();
         }
 
-        return eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
+        return (timeout == null ? eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
             && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == AddParticipantCancelled.class || event.getClass() == CancelAddParticipantFailed.class)
-        ).flatMap(event -> Mono.just(getReturnedEvent(event)));
+            && (event.getClass() == AddParticipantCancelled.class || event.getClass() == CancelAddParticipantFailed.class))
+            : eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
+            && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
+            && (event.getClass() == AddParticipantCancelled.class || event.getClass() == CancelAddParticipantFailed.class), timeout)).flatMap(event -> Mono.just(getReturnedEvent(event)));
     }
 
     @Override

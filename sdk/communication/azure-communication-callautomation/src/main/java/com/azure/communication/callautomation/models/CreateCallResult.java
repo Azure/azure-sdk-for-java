@@ -10,6 +10,7 @@ import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.core.annotation.Immutable;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.Objects;
 
 /**
@@ -41,16 +42,39 @@ public final class CreateCallResult extends CallResult {
     /**
      * Waits for the event processor to process the event
      *
+     * @param timeout the timeout
+     * @return the result of the event processing
+     */
+    public CreateCallEventResult waitForEventProcessor(Duration timeout) {
+        return waitForEventProcessorAsync(timeout).block();
+    }
+
+    /**
+     * Waits for the event processor to process the event
+     *
      * @return the result of the event processing
      */
     public Mono<CreateCallEventResult> waitForEventProcessorAsync() {
+        return waitForEventProcessorAsync(null);
+    }
+
+    /**
+     * Waits for the event processor to process the event
+     *
+     * @param timeout the timeout
+     * @return the result of the event processing
+     */
+    public Mono<CreateCallEventResult> waitForEventProcessorAsync(Duration timeout) {
         if (eventProcessor == null) {
             return Mono.empty();
         }
 
-        return eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
+        return (timeout == null ? eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
             && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == CallConnected.class)
+            && (event.getClass() == CallConnected.class))
+            : eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
+            && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
+            && (event.getClass() == CallConnected.class), timeout)
         ).flatMap(event -> Mono.just(getReturnedEvent(event)));
     }
 
