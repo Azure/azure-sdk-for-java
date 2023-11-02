@@ -1511,7 +1511,6 @@ public final class JobRouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return statistics for the queue on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterQueueStatistics> getQueueStatistics(String queueId) {
         // Generated convenience method for getQueueStatisticsWithResponse

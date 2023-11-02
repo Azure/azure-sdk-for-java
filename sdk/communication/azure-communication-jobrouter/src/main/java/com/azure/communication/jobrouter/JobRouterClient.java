@@ -1447,7 +1447,6 @@ public final class JobRouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return statistics for the queue.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouterQueueStatistics getQueueStatistics(String queueId) {
         // Generated convenience method for getQueueStatisticsWithResponse
