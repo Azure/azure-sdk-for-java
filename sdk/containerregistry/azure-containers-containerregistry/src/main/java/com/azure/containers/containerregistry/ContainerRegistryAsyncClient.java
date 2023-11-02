@@ -29,8 +29,17 @@ import static com.azure.core.util.FluxUtil.withContext;
  * It allows to list and delete repositories within the registry or obtain an instance of {@link ContainerRepositoryAsync}
  * or {@link RegistryArtifactAsync} that can be used to perform operations on the repository or artifact.</p>
  *
- * <p><strong>Instantiating an asynchronous Container Registry client</strong></p>
- * <br/>
+ * <h2>Getting Started</h2>
+ *
+ * <p>In order to interact with the Container Registry service you'll need to create an instance of
+ * ContainerRegistryAsyncClient.</p>
+ *
+ * <p>To create the client and communicate with the service, you'll need to use AAD authentication via
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable"> Azure Identity</a></p>.
+ *
+ * <p><strong>Sample: Construct Container Registry Async Client</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a Container Registry Async Client.</p>
  *
  * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryAsyncClient.instantiation -->
  * <pre>
@@ -41,8 +50,17 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.instantiation -->
  *
+ * <p><strong>Note:</strong> For synchronous sample, refer to
+ * {@link com.azure.containers.containerregistry.ContainerRegistryClient}.</p>
+ *
  * <p>View {@link ContainerRegistryClientBuilder} for additional ways to construct the client.</p>
  *
+ * <p>The Container Registry Async Client allows to list and delete repositories and obtain instances of repository and
+ * artifact client. See methods below to explore all capabilities this client provides.</p>
+
+ * <p>View {@link ContainerRegistryClientBuilder} for additional ways to construct the client.</p>
+ *
+ * @see com.azure.containers.containerregistry
  * @see ContainerRegistryClientBuilder
  */
 @ServiceClient(builder = ContainerRegistryClientBuilder.class, isAsync = true)

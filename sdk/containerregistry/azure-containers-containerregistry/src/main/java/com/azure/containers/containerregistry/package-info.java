@@ -5,6 +5,11 @@
  * is a managed service provided by Microsoft Azure that allows developers to build, store, and manage
  * container images and artifacts in a private registry for all types of container deployments.</p>
  *
+ * <p>Containerization is a technology that allows developers to package an application and its dependencies into a
+ * single, ightweight container that can run consistently across different environments. Containers have become
+ * increasingly popular for building, packaging, and deploying applications, and Azure Container Registry helps with
+ * the management of the container images used in these applications.</p>
+ *
  * <p>The Azure Container Registry library is a client library that provides Java developers with a simple and
  * easy-to-use interface for accessing and using the Azure Container Registry Service. This library allows developers to
  * easily manage their artifacts and repositories in the Azure Container Registry Service.</p>
@@ -12,22 +17,24 @@
  * <h2>Getting Started</h2>
  *
  * <p>In order to interact with the Container Registry service you'll need to create an instance of
- * {@link com.azure.containers.containerregistry.ContainerRegistryClient}, {@link com.azure.containers.containerregistry.ContainerRegistryContentClient}
- * or their asynchronous counterparts.</p>
+ * {@link com.azure.containers.containerregistry.ContainerRegistryClient},
+ * {@link com.azure.containers.containerregistry.ContainerRegistryContentClient} or their asynchronous counterparts.</p>
  *
  * <p>The {@link com.azure.containers.containerregistry.ContainerRegistryClient} allows to list and delete repositories
  * within the registry or obtain an instance of {@link com.azure.containers.containerregistry.ContainerRepository}
- * or {@link com.azure.containers.containerregistry.RegistryArtifact} that can be used to perform operations on the repository or artifact.</p>
+ * or {@link com.azure.containers.containerregistry.RegistryArtifact} that can be used to perform operations on the
+ * repository or artifact.</p>
  *
- * <p>The {@link com.azure.containers.containerregistry.ContainerRegistryContentClient} allows to upload, download, and delete artifacts in
- * Azure Container Registry repository.</p>
+ * <p>The {@link com.azure.containers.containerregistry.ContainerRegistryContentClient} allows to upload, download,
+ * and delete artifacts in Azure Container Registry repository.</p>
  *
- * To create one of these clients and communicate with the service, you'll need to use AAD authentication via
- * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable"> Azure Identity</a>.
+ * <p>To create one of these clients and communicate with the service, you'll need to use AAD authentication via
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable"> Azure Identity</a></p>.
  *
  * <p><strong>Sample: Construct Synchronous Container Registry Client</strong></p>
  *
- * <p>The following code sample demonstrates the creation of a {@link com.azure.containers.containerregistry.ContainerRegistryClient}.</p>
+ * <p>The following code sample demonstrates the creation of a
+ * {@link com.azure.containers.containerregistry.ContainerRegistryClient}.</p>
  *
  * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.instantiation -->
  * <pre>
@@ -38,14 +45,17 @@
  * </pre>
  * <!-- end com.azure.containers.containerregistry.ContainerRegistryClient.instantiation -->
  *
- * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.containers.containerregistry.ContainerRegistryAsyncClient}.</p>
+ * <p><strong>Note:</strong> For asynchronous sample, refer to
+ * {@link com.azure.containers.containerregistry.ContainerRegistryAsyncClient}.</p>
  *
- * <p>Container Registry Client allows to list and delete repositories and obtain instances of repository and artifact client.
- * See methods in client level class below to explore all capabilities that client provides.</p>
+ * <p>Container Registry Client allows to list and delete repositories and obtain instances of repository and
+ * artifact client. See methods in {@link com.azure.containers.containerregistry.ContainerRegistryClient} class to
+ * explore all capabilities that client provides.</p>
  *
  * <p><strong>Sample: Construct Synchronous Container Registry Content Client</strong></p>
  *
- * <p>The following code sample demonstrates the creation of a {@link com.azure.containers.containerregistry.ContainerRegistryContentClient}.</p>
+ * <p>The following code sample demonstrates the creation of a
+ * {@link com.azure.containers.containerregistry.ContainerRegistryContentClient}.</p>
  *
  * <!-- src_embed readme-sample-createContentClient -->
  * <pre>
@@ -58,18 +68,21 @@
  * </pre>
  * <!-- end readme-sample-createContentClient -->
  *
- * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.containers.containerregistry.ContainerRegistryContentAsyncClient}.</p>
+ * <p><strong>Note:</strong> For asynchronous sample, refer to
+ * {@link com.azure.containers.containerregistry.ContainerRegistryContentAsyncClient}.</p>
  *
  * <p>Container Registry Content Client allows to upload and download registry artifacts.
- * See methods in client level class below to explore all capabilities that client provides.</p>
+ * See methods in {@link com.azure.containers.containerregistry.ContainerRegistryContentClient} class to explore all
+ * capabilities that client provides.</p>
+ *
  * <br/>
  *
  * <hr/>
  *
  * <h2>List repositories within Container Registry</h2>
  *
- * <p>The {@link com.azure.containers.containerregistry.ContainerRegistryClient#listRepositoryNames() listRepositoryNames} method can be used to list repositories
- * within Azure Container Registry.</p>
+ * <p>The {@link com.azure.containers.containerregistry.ContainerRegistryClient#listRepositoryNames() listRepositoryNames}
+ * method can be used to list repositories within Azure Container Registry.</p>
  *
  * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.listRepositoryNames -->
  * <pre>
@@ -204,7 +217,9 @@
  *
  * @see com.azure.containers.containerregistry.ContainerRegistryClient
  * @see com.azure.containers.containerregistry.ContainerRegistryAsyncClient
+ * @see com.azure.containers.containerregistry.ContainerRegistryClientBuilder
  * @see com.azure.containers.containerregistry.ContainerRegistryContentClient
  * @see com.azure.containers.containerregistry.ContainerRegistryContentAsyncClient
+ * @see com.azure.containers.containerregistry.ContainerRegistryContentClientBuilder
  */
 package com.azure.containers.containerregistry;

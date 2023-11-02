@@ -62,10 +62,19 @@ import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * <p>This class provides a client that can upload, download, and delete artifacts in Azure Container Registry repository.
- * It uses docker v2 REST APIs supported by Azure Container Registry.
- * </p>
+ * It uses docker v2 REST APIs supported by Azure Container Registry.</p>
  *
- * <p><strong>Instantiating {@link ContainerRegistryContentAsyncClient}</strong></p>
+ * <h2>Getting Started</h2>
+ *
+ * <p>In order to interact with the Container Registry service you'll need to create an instance of
+ * Container Registry Content Async Client.</p>
+ *
+ * <p>To create the client and communicate with the service, you'll need to use AAD authentication via
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable"> Azure Identity</a></p>.
+ *
+ * <p><strong>Sample: Construct Container Registry Content Async Client</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a Container Registry Content Client.</p>
  *
  * <!-- src_embed readme-sample-createContentAsyncClient -->
  * <pre>
@@ -78,8 +87,15 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end readme-sample-createContentAsyncClient -->
  *
- * <p>View {@link ContainerRegistryContentClientBuilder this} for additional ways to construct the client.</p>
+ * <p><strong>Note:</strong> For synchronous sample, refer to
+ * {@link com.azure.containers.containerregistry.ContainerRegistryContentClient}.</p>
  *
+ * <p>View {@link ContainerRegistryContentClientBuilder} for additional ways to construct the client.</p>
+ *
+ * <p>Container Registry Content Async Client allows to upload and download registry artifacts. See methods below to
+ * explore all capabilities this client provides.</p>
+ *
+ * @see com.azure.containers.containerregistry
  * @see ContainerRegistryContentClientBuilder
  */
 @ServiceClient(builder = ContainerRegistryContentClientBuilder.class, isAsync = true)

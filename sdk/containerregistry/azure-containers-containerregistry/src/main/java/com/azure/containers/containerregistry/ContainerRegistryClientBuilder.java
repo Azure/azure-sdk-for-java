@@ -37,8 +37,11 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.cr
  * list and delete repositories and artifacts, obtain metadata and configure read/write permissions.</p>
  *
  * <p>The client needs the service endpoint of the Azure Container Registry and Azure access credentials to use for authentication.
+ *
  * <p><strong>Instantiating an asynchronous Container Registry client</strong></p>
+ *
  * <br/>
+ *
  * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryAsyncClient.instantiation -->
  * <pre>
  * ContainerRegistryAsyncClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
@@ -49,7 +52,9 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.cr
  * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.instantiation -->
  *
  * <p><strong>Instantiating a synchronous Container Registry client</strong></p>
+ *
  * <br/>
+ *
  * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.instantiation -->
  * <pre>
  * ContainerRegistryClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
@@ -70,7 +75,9 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.cr
  * For more information please see <a href="https://github.com/Azure/acr/blob/main/docs/AAD-OAuth.md"> Azure Container Registry Authentication </a>.</p>
  *
  * <p><strong>Instantiating an asynchronous Container Registry client using a custom pipeline</strong></p>
+ *
  * <br/>
+ *
  * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryAsyncClient.pipeline.instantiation -->
  * <pre>
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
@@ -86,7 +93,9 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.cr
  * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.pipeline.instantiation -->
  *
  * <p><strong>Instantiating a synchronous Container Registry client with custom pipeline</strong></p>
+ *
  * <br/>
+ *
  * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.pipeline.instantiation -->
  * <pre>
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
@@ -104,6 +113,7 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.cr
  * <p>Azure Container Registry could be configured for <a href="https://learn.microsoft.com/azure/container-registry/anonymous-pull-access">anonymous access</a></p>
  *
  * <p><strong>Instantiating an asynchronous Container Registry client for anonymous access</strong></p>
+ *
  * <br/>
  *
  * <!-- src_embed readme-sample-createAnonymousAsyncAccessClient -->
@@ -114,6 +124,7 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.cr
  * </pre>
  * <!-- end readme-sample-createAnonymousAsyncAccessClient -->
  *
+ * @see com.azure.containers.containerregistry
  * @see ContainerRegistryAsyncClient
  * @see ContainerRegistryClient
  */

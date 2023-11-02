@@ -63,7 +63,17 @@ import static com.azure.core.util.CoreUtils.bytesToHexString;
 /**
  * <p>This class provides a client that can upload, download, and delete artifacts in Azure Container Registry repository.</p>
  *
- * <p><strong>Instantiating {@link ContainerRegistryContentClient}</strong></p>
+ * <h2>Getting Started</h2>
+ *
+ * <p>In order to interact with the Container Registry service you'll need to create an instance of
+ * Container Registry Content Client.</p>
+ *
+ * <p>To create the client and communicate with the service, you'll need to use AAD authentication via
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable"> Azure Identity</a></p>.
+ *
+ * <p><strong>Sample: Construct Container Registry Content Client</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a Container Registry Content Client.</p>
  *
  * <!-- src_embed readme-sample-createContentClient -->
  * <pre>
@@ -76,8 +86,15 @@ import static com.azure.core.util.CoreUtils.bytesToHexString;
  * </pre>
  * <!-- end readme-sample-createContentClient -->
  *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to
+ * {@link com.azure.containers.containerregistry.ContainerRegistryContentAsyncClient}.</p>
+ *
  * <p>View {@link ContainerRegistryContentClientBuilder} for additional ways to construct the client.</p>
  *
+ * <p>Container Registry Content Client allows to upload and download registry artifacts. See methods below to
+ * explore all capabilities this client provides.</p>
+ *
+ * @see com.azure.containers.containerregistry
  * @see ContainerRegistryContentClientBuilder
  */
 @ServiceClient(builder = ContainerRegistryContentClientBuilder.class)
