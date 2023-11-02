@@ -28,7 +28,7 @@ public final class DistributionPolicy {
     private String name;
 
     /*
-     * The number of seconds after which any offers created under this policy will be
+     * The duration after which any offers created under this policy will be
      * expired.
      */
     private Duration offerExpiresAfter;
@@ -77,7 +77,7 @@ public final class DistributionPolicy {
     }
 
     /**
-     * Get the offerExpiresAfter property: The number of seconds after which any offers created under this policy
+     * Get the offerExpiresAfter property: The duration after which any offers created under this policy
      * will be expired.
      *
      * @return the offerExpiresAfter value.
@@ -87,7 +87,7 @@ public final class DistributionPolicy {
     }
 
     /**
-     * Set the offerExpiresAfter property: The number of seconds after which any offers created under this policy
+     * Set the offerExpiresAfter property: The duration after which any offers created under this policy
      * will be expired.
      *
      * @param offerExpiresAfter the offerExpiresAfter value to set.

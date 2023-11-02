@@ -74,9 +74,9 @@ public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAtt
     }
 
     /**
-     * Get the expiresAfterSeconds property: Describes how long the attached label selector is valid in seconds.
+     * Get the expiresAfter property: Describes how long the attached label selector is valid in seconds.
      *
-     * @return the expiresAfterSeconds value.
+     * @return the expiresAfter value.
      */
     @Generated
     public Duration getExpiresAfter() {
@@ -84,9 +84,9 @@ public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAtt
     }
 
     /**
-     * Set the expiresAfterSeconds property: Describes how long the attached label selector is valid in seconds.
+     * Set the expiresAfter property: Describes how long the attached label selector is valid in seconds.
      *
-     * @param expiresAfter the expiresAfterSeconds value to set.
+     * @param expiresAfter the expiresAfter value to set.
      * @return the PassThroughWorkerSelectorAttachment object itself.
      */
     @Generated

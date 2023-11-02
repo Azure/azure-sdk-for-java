@@ -121,9 +121,9 @@ public final class RouterWorkerSelector {
     }
 
     /**
-     * Get the expiresAfterSeconds property: Describes how long this label selector is valid in seconds.
+     * Get the expiresAfter property: Describes how long this label selector is valid.
      *
-     * @return the expiresAfterSeconds value.
+     * @return the expiresAfter value.
      */
     @Generated
     public Duration getExpiresAfter() {
@@ -131,9 +131,9 @@ public final class RouterWorkerSelector {
     }
 
     /**
-     * Set the expiresAfterSeconds property: Describes how long this label selector is valid in seconds.
+     * Set the expiresAfter property: Describes how long this label selector is valid.
      *
-     * @param expiresAfter the expiresAfterSeconds value to set.
+     * @param expiresAfter the expiresAfter value to set.
      * @return the RouterWorkerSelector object itself.
      */
     @Generated

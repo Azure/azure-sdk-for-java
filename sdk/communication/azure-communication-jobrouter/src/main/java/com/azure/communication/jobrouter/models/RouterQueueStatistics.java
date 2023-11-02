@@ -34,7 +34,7 @@ public final class RouterQueueStatistics {
      * by job priority
      */
     @JsonProperty(value = "estimatedWaitTimeMinutes")
-    private Map<String, Duration> estimatedWaitTimeMinutes;
+    private Map<Integer, Duration> estimatedWaitTimes;
 
     /*
      * The wait time of the job that has been enqueued in this queue for the longest.
@@ -83,8 +83,8 @@ public final class RouterQueueStatistics {
      *
      * @return the estimatedWaitTimeMinutes value.
      */
-    public Map<String, Duration> getEstimatedWaitTime() {
-        return this.estimatedWaitTimeMinutes;
+    public Map<Integer, Duration> getEstimatedWaitTime() {
+        return this.estimatedWaitTimes;
     }
 
     /**
