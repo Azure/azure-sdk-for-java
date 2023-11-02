@@ -63,11 +63,11 @@ public class RouterQueueLiveTests extends JobRouterTestBase {
         };
 
         // Action
-        queue = routerAdminClient.updateQueueWithResponse(queueId, BinaryData.fromObject(new RouterQueue().setLabels(updatedQueueLabels)), new RequestOptions())
+        queue = routerAdminClient.updateQueueWithResponse(queueId, new RouterQueue().setLabels(updatedQueueLabels), new RequestOptions())
             .getValue().toObject(RouterQueue.class);
 
         // Verify
-        assertEquals(updatedQueueLabels.get("Label_1"), queue.getLabels().get("Label_1"));
+        assertEquals(updatedQueueLabels.get("Label_1").getValueAsString(), queue.getLabels().get("Label_1").getValueAsString());
 
         // Cleanup
         routerAdminClient.deleteQueue(queueId);

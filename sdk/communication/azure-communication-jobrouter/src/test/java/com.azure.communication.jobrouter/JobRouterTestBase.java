@@ -40,7 +40,7 @@ import java.util.Map;
 import java.util.Objects;
 
 class JobRouterTestBase extends TestProxyTestBase {
-    protected static final String JAVA_LIVE_TESTS = "JAVA_LIVE_TESTS";
+    protected static final String JAVA_LIVE_TESTS = "JAVA_LIVE_TEST";
 
     protected String getConnectionString() {
         String connectionString = interceptorManager.isPlaybackMode()

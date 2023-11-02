@@ -66,6 +66,16 @@ public final class RouterQueueInternal {
     }
 
     /**
+     * Setter for id.
+     * @param id id.
+     * @return this.
+     */
+    public RouterQueueInternal setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
      * Get the name property: The name of this queue.
      *
      * @return the name value.
@@ -174,5 +184,15 @@ public final class RouterQueueInternal {
     @Generated
     public String getEtag() {
         return this.etag;
+    }
+
+    /**
+     * Setter for etag.
+     * @param etag etag.
+     * @return this.
+     */
+    public RouterQueueInternal setEtag(String etag) {
+        this.etag = etag;
+        return this;
     }
 }

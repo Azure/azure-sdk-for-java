@@ -8,6 +8,7 @@ import com.azure.communication.jobrouter.implementation.converters.Classificatio
 import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.ExceptionPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.QueueAdapter;
+import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.DistributionPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterQueueInternal;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
@@ -452,8 +453,8 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createClassificationPolicyWithResponse(
             CreateClassificationPolicyOptions createClassificationPolicyOptions, RequestOptions requestOptions) {
-        ClassificationPolicy classificationPolicy =
-                ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicy(
+        ClassificationPolicyInternal classificationPolicy =
+                ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicyInternal(
                         createClassificationPolicyOptions);
         return upsertClassificationPolicyWithResponse(
                 createClassificationPolicyOptions.getClassificationPolicyId(),
@@ -987,7 +988,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createQueueWithResponse(
             CreateQueueOptions createQueueOptions, RequestOptions requestOptions) {
-        RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueue(createQueueOptions);
+        RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueueInternal(createQueueOptions);
         return upsertQueueWithResponse(createQueueOptions.getQueueId(), BinaryData.fromObject(queue), requestOptions);
     }
 

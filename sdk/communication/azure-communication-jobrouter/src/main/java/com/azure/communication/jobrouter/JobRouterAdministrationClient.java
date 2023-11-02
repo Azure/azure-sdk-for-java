@@ -8,6 +8,7 @@ import com.azure.communication.jobrouter.implementation.converters.Classificatio
 import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.ExceptionPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.QueueAdapter;
+import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.DistributionPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterQueueInternal;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
@@ -456,8 +457,8 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createClassificationPolicyWithResponse(
             CreateClassificationPolicyOptions createClassificationPolicyOptions, RequestOptions requestOptions) {
-        ClassificationPolicy classificationPolicy =
-                ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicy(
+        ClassificationPolicyInternal classificationPolicy =
+                ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicyInternal(
                         createClassificationPolicyOptions);
         return this.serviceClient.upsertClassificationPolicyWithResponse(
                 createClassificationPolicyOptions.getClassificationPolicyId(),
@@ -973,7 +974,7 @@ public final class JobRouterAdministrationClient {
      * }</pre>
      *
      * @param id The Id of this queue.
-     * @param resource The resource instance.
+     * @param routerQueue The routerQueue instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -982,8 +983,9 @@ public final class JobRouterAdministrationClient {
      * @return a queue that can contain jobs to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateQueueWithResponse(String id, BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.upsertQueueWithResponse(id, resource, requestOptions);
+    public Response<BinaryData> updateQueueWithResponse(String id, RouterQueue routerQueue, RequestOptions requestOptions) {
+        RouterQueueInternal routerQueueInternal = QueueAdapter.convertRouterQueueToRouterQueueInternal(routerQueue);
+        return this.serviceClient.upsertQueueWithResponse(id, BinaryData.fromObject(routerQueueInternal), requestOptions);
     }
 
     /**
@@ -999,7 +1001,7 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createQueueWithResponse(
             CreateQueueOptions createQueueOptions, RequestOptions requestOptions) {
-        RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueue(createQueueOptions);
+        RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueueInternal(createQueueOptions);
         return this.serviceClient.upsertQueueWithResponse(
                 createQueueOptions.getQueueId(), BinaryData.fromObject(queue), requestOptions);
     }

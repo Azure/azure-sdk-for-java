@@ -47,7 +47,7 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
          */
         StaticQueueSelectorAttachment staticQueueSelector = new StaticQueueSelectorAttachment(
             new RouterQueueSelector("queueId", LabelOperator.EQUAL)
-                .setValue(queueId));
+                .setValue(new RouterValue(queueId)));
 
         List<QueueSelectorAttachment> queueSelectors = new ArrayList<QueueSelectorAttachment>() {
             {
