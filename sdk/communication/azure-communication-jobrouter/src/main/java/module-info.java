@@ -4,11 +4,13 @@
 
 module com.azure.communication.jobrouter {
     requires transitive com.azure.core;
+    requires com.azure.communication.common;
 
     exports com.azure.communication.jobrouter;
     exports com.azure.communication.jobrouter.models;
 
     opens com.azure.communication.jobrouter.models to
             com.azure.core,
-            com.fasterxml.jackson.databind;
+            com.fasterxml.jackson.databind,
+            com.azure.communication.jobrouter.implementation.converters;
 }

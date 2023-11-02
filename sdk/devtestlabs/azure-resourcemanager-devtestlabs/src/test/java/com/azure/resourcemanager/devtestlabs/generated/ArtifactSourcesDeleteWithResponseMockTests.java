@@ -58,6 +58,6 @@ public final class ArtifactSourcesDeleteWithResponseMockTests {
 
         manager
             .artifactSources()
-            .deleteWithResponse("odlfpyapucygvo", "vyuns", "xlghieegj", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("mbmslzoyov", "zdbpqv", "befgvmxn", com.azure.core.util.Context.NONE);
     }
 }

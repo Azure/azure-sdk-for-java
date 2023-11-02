@@ -30,6 +30,7 @@ public final class ErrorDefinitionException extends ManagementException {
         super(message, response, value);
     }
 
+    /** {@inheritDoc} */
     @Override
     public ErrorDefinition getValue() {
         return (ErrorDefinition) super.getValue();

@@ -14,20 +14,20 @@ public final class ExportResourceUsageParametersTests {
     public void testDeserialize() throws Exception {
         ExportResourceUsageParameters model =
             BinaryData
-                .fromString("{\"blobStorageAbsoluteSasUri\":\"qmhhaowj\",\"usageStartDate\":\"2021-02-04T20:38:24Z\"}")
+                .fromString("{\"blobStorageAbsoluteSasUri\":\"pyqy\",\"usageStartDate\":\"2021-06-06T02:59:57Z\"}")
                 .toObject(ExportResourceUsageParameters.class);
-        Assertions.assertEquals("qmhhaowj", model.blobStorageAbsoluteSasUri());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-04T20:38:24Z"), model.usageStartDate());
+        Assertions.assertEquals("pyqy", model.blobStorageAbsoluteSasUri());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-06T02:59:57Z"), model.usageStartDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExportResourceUsageParameters model =
             new ExportResourceUsageParameters()
-                .withBlobStorageAbsoluteSasUri("qmhhaowj")
-                .withUsageStartDate(OffsetDateTime.parse("2021-02-04T20:38:24Z"));
+                .withBlobStorageAbsoluteSasUri("pyqy")
+                .withUsageStartDate(OffsetDateTime.parse("2021-06-06T02:59:57Z"));
         model = BinaryData.fromObject(model).toObject(ExportResourceUsageParameters.class);
-        Assertions.assertEquals("qmhhaowj", model.blobStorageAbsoluteSasUri());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-04T20:38:24Z"), model.usageStartDate());
+        Assertions.assertEquals("pyqy", model.blobStorageAbsoluteSasUri());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-06T02:59:57Z"), model.usageStartDate());
     }
 }

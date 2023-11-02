@@ -13,18 +13,18 @@ public final class ArtifactParameterPropertiesTests {
     public void testDeserialize() throws Exception {
         ArtifactParameterProperties model =
             BinaryData
-                .fromString("{\"name\":\"xqi\",\"value\":\"qunyowxwlmdjr\"}")
+                .fromString("{\"name\":\"gvjayvblmh\",\"value\":\"zuhbxvvyhgsopb\"}")
                 .toObject(ArtifactParameterProperties.class);
-        Assertions.assertEquals("xqi", model.name());
-        Assertions.assertEquals("qunyowxwlmdjr", model.value());
+        Assertions.assertEquals("gvjayvblmh", model.name());
+        Assertions.assertEquals("zuhbxvvyhgsopb", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ArtifactParameterProperties model =
-            new ArtifactParameterProperties().withName("xqi").withValue("qunyowxwlmdjr");
+            new ArtifactParameterProperties().withName("gvjayvblmh").withValue("zuhbxvvyhgsopb");
         model = BinaryData.fromObject(model).toObject(ArtifactParameterProperties.class);
-        Assertions.assertEquals("xqi", model.name());
-        Assertions.assertEquals("qunyowxwlmdjr", model.value());
+        Assertions.assertEquals("gvjayvblmh", model.name());
+        Assertions.assertEquals("zuhbxvvyhgsopb", model.value());
     }
 }

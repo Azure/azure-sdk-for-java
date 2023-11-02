@@ -60,10 +60,10 @@ public final class VirtualMachinesDetachDataDiskMockTests {
         manager
             .virtualMachines()
             .detachDataDisk(
-                "resrgvtshuvft",
-                "ai",
-                "muqkevzgjypanhx",
-                new DetachDataDiskProperties().withExistingLabDiskId("dxxzetwwzjwotn"),
+                "eygzvtyevjhu",
+                "nobguqisqsqkpdmi",
+                "y",
+                new DetachDataDiskProperties().withExistingLabDiskId("nmlvi"),
                 com.azure.core.util.Context.NONE);
     }
 }

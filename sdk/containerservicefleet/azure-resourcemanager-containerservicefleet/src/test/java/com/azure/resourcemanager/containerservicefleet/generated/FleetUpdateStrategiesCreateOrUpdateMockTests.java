@@ -35,7 +35,7 @@ public final class FleetUpdateStrategiesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"strategy\":{\"stages\":[{\"name\":\"y\",\"groups\":[{\"name\":\"wlmdjrkv\"},{\"name\":\"g\"}],\"afterStageWaitInSeconds\":1410181750},{\"name\":\"vpdbodaciz\",\"groups\":[{\"name\":\"lhkrribdeibqipqk\"}],\"afterStageWaitInSeconds\":1234217414},{\"name\":\"xndzwm\",\"groups\":[{\"name\":\"fajpjorwk\"},{\"name\":\"nyhgbijtji\"}],\"afterStageWaitInSeconds\":2036493170},{\"name\":\"zs\",\"groups\":[{\"name\":\"ibsystawf\"},{\"name\":\"djpvkvpbjxbkz\"},{\"name\":\"zkdvncja\"},{\"name\":\"udurgkakmokz\"}],\"afterStageWaitInSeconds\":523614486}]}},\"eTag\":\"lffhmouwqlg\",\"id\":\"fzeeyebizik\",\"name\":\"yuhqlbjbsybbqwrv\",\"type\":\"ldgmfpgvmpip\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"strategy\":{\"stages\":[{\"name\":\"mrv\",\"groups\":[{\"name\":\"tvb\"},{\"name\":\"qgsfraoyzkoow\"},{\"name\":\"lmnguxaw\"}],\"afterStageWaitInSeconds\":1823569828},{\"name\":\"dsyuuximerqfob\",\"groups\":[{\"name\":\"nkbykutwpfhp\"},{\"name\":\"gmhrskdsnfdsdoak\"},{\"name\":\"tdlmkkzevd\"},{\"name\":\"hewpusdsttwv\"}],\"afterStageWaitInSeconds\":221713689}]}},\"eTag\":\"bejdcn\",\"id\":\"qmoa\",\"name\":\"ufgmjzrwrdg\",\"type\":\"twaenuuzko\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,44 +66,28 @@ public final class FleetUpdateStrategiesCreateOrUpdateMockTests {
         FleetUpdateStrategy response =
             manager
                 .fleetUpdateStrategies()
-                .define("bwemhairs")
-                .withExistingFleet("kaivwit", "scywuggwoluhc")
+                .define("jcntuj")
+                .withExistingFleet("tpuqujmq", "gkfbtndoaong")
                 .withStrategy(
                     new UpdateRunStrategy()
                         .withStages(
                             Arrays
                                 .asList(
                                     new UpdateStage()
-                                        .withName("wmsweypqwd")
+                                        .withName("df")
                                         .withGroups(
                                             Arrays
                                                 .asList(
-                                                    new UpdateGroup().withName("icccn"),
-                                                    new UpdateGroup().withName("qhuexm"),
-                                                    new UpdateGroup().withName("ttlstvlzywemhz")))
-                                        .withAfterStageWaitInSeconds(1311146203),
-                                    new UpdateStage()
-                                        .withName("sdtclusiypbs")
-                                        .withGroups(
-                                            Arrays
-                                                .asList(
-                                                    new UpdateGroup().withName("tg"), new UpdateGroup().withName("sl")))
-                                        .withAfterStageWaitInSeconds(1007983036),
-                                    new UpdateStage()
-                                        .withName("dcygqukyhejhz")
-                                        .withGroups(
-                                            Arrays
-                                                .asList(
-                                                    new UpdateGroup().withName("gfpelolppvksrpqv"),
-                                                    new UpdateGroup().withName("jzraehtwdwrf"),
-                                                    new UpdateGroup().withName("swibyr")))
-                                        .withAfterStageWaitInSeconds(66676019))))
-                .withIfMatch("cxnavv")
-                .withIfNoneMatch("xqi")
+                                                    new UpdateGroup().withName("ae"),
+                                                    new UpdateGroup().withName("kojvd"),
+                                                    new UpdateGroup().withName("pzfoqoui")))
+                                        .withAfterStageWaitInSeconds(1370358053))))
+                .withIfMatch("khazxkhnzbonlwn")
+                .withIfNoneMatch("oegokdwbwh")
                 .create();
 
-        Assertions.assertEquals("y", response.strategy().stages().get(0).name());
-        Assertions.assertEquals("wlmdjrkv", response.strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(1410181750, response.strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("mrv", response.strategy().stages().get(0).name());
+        Assertions.assertEquals("tvb", response.strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(1823569828, response.strategy().stages().get(0).afterStageWaitInSeconds());
     }
 }

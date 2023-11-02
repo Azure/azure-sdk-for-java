@@ -1,6 +1,6 @@
 # Release History
 
-## 2.9.0-beta.6 (Unreleased)
+## 2.9.0-beta.7 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,27 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.9.0-beta.6 (2023-11-01)
+
+### Bugs Fixed
+
+- Fixes the ReactorReceiver to probe the monitoring meter only once to see if tracking message sequence number is needed.
+- Fixes the MessageFlux to not use the doOnEach side effect operator for reacting to endpoint active and terminal states.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to `1.44.1`.
+
+## 2.8.11 (2023-10-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.0` to `1.44.1`.
 
 ## 2.8.10 (2023-10-06)
 

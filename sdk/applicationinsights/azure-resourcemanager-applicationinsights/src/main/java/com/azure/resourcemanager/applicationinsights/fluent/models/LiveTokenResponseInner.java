@@ -16,6 +16,10 @@ public final class LiveTokenResponseInner {
     @JsonProperty(value = "liveToken", access = JsonProperty.Access.WRITE_ONLY)
     private String liveToken;
 
+    /** Creates an instance of LiveTokenResponseInner class. */
+    public LiveTokenResponseInner() {
+    }
+
     /**
      * Get the liveToken property: JWT token for accessing live metrics stream data.
      *

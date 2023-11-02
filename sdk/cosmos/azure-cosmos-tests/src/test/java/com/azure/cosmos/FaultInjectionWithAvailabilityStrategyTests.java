@@ -4436,9 +4436,12 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     diagnosticsContexts.length);
                 for (CosmosDiagnosticsContext diagnosticsContext: diagnosticsContexts) {
                     logger.info(
-                        "DIAGNOSTICS CONTEXT: {} {}",
+                        "DIAGNOSTICS CONTEXT: {}/{} {} {}",
+                        diagnosticsContext != null ? diagnosticsContext.getStatusCode() : "n/a",
+                        diagnosticsContext != null ? diagnosticsContext.getSubStatusCode() : "n/a",
                         diagnosticsContext != null ? diagnosticsContext.toString() : "n/a",
                         diagnosticsContext != null ? diagnosticsContext.toJson() : "NULL");
+                    validateStatusCode.accept(diagnosticsContext.getStatusCode(), diagnosticsContext.getSubStatusCode());
                 }
 
                 assertThat(diagnosticsContexts.length).isEqualTo(expectedDiagnosticsContextCount);

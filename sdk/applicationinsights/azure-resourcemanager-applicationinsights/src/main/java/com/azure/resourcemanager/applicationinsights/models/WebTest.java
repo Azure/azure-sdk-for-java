@@ -48,7 +48,7 @@ public interface WebTest {
     Map<String, String> tags();
 
     /**
-     * Gets the kind property: The kind of web test that this web test watches. Choices are ping and multistep.
+     * Gets the kind property: The kind of WebTest that this web test watches. Choices are ping, multistep and standard.
      *
      * @return the kind value.
      */
@@ -70,7 +70,7 @@ public interface WebTest {
     String webTestName();
 
     /**
-     * Gets the description property: Purpose/user defined descriptive test for this WebTest.
+     * Gets the description property: User defined description for this WebTest.
      *
      * @return the description value.
      */
@@ -98,7 +98,7 @@ public interface WebTest {
     Integer timeout();
 
     /**
-     * Gets the webTestKind property: The kind of web test this is, valid choices are ping and multistep.
+     * Gets the webTestKind property: The kind of web test this is, valid choices are ping, multistep and standard.
      *
      * @return the webTestKind value.
      */
@@ -136,6 +136,20 @@ public interface WebTest {
     String provisioningState();
 
     /**
+     * Gets the request property: The collection of request properties.
+     *
+     * @return the request value.
+     */
+    WebTestPropertiesRequest request();
+
+    /**
+     * Gets the validationRules property: The collection of validation rule properties.
+     *
+     * @return the validationRules value.
+     */
+    WebTestPropertiesValidationRules validationRules();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -170,11 +184,13 @@ public interface WebTest {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The WebTest definition stages. */
     interface DefinitionStages {
         /** The first stage of the WebTest definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the WebTest definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -193,6 +209,7 @@ public interface WebTest {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the WebTest definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -203,6 +220,7 @@ public interface WebTest {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the WebTest definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -219,7 +237,9 @@ public interface WebTest {
                 DefinitionStages.WithWebTestKind,
                 DefinitionStages.WithRetryEnabled,
                 DefinitionStages.WithLocations,
-                DefinitionStages.WithConfiguration {
+                DefinitionStages.WithConfiguration,
+                DefinitionStages.WithRequest,
+                DefinitionStages.WithValidationRules {
             /**
              * Executes the create request.
              *
@@ -235,6 +255,7 @@ public interface WebTest {
              */
             WebTest create(Context context);
         }
+
         /** The stage of the WebTest definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -245,17 +266,19 @@ public interface WebTest {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the WebTest definition allowing to specify kind. */
         interface WithKind {
             /**
-             * Specifies the kind property: The kind of web test that this web test watches. Choices are ping and
-             * multistep..
+             * Specifies the kind property: The kind of WebTest that this web test watches. Choices are ping, multistep
+             * and standard..
              *
-             * @param kind The kind of web test that this web test watches. Choices are ping and multistep.
+             * @param kind The kind of WebTest that this web test watches. Choices are ping, multistep and standard.
              * @return the next definition stage.
              */
             WithCreate withKind(WebTestKind kind);
         }
+
         /** The stage of the WebTest definition allowing to specify syntheticMonitorId. */
         interface WithSyntheticMonitorId {
             /**
@@ -267,6 +290,7 @@ public interface WebTest {
              */
             WithCreate withSyntheticMonitorId(String syntheticMonitorId);
         }
+
         /** The stage of the WebTest definition allowing to specify webTestName. */
         interface WithWebTestName {
             /**
@@ -277,16 +301,18 @@ public interface WebTest {
              */
             WithCreate withWebTestName(String webTestName);
         }
+
         /** The stage of the WebTest definition allowing to specify description. */
         interface WithDescription {
             /**
-             * Specifies the description property: Purpose/user defined descriptive test for this WebTest..
+             * Specifies the description property: User defined description for this WebTest..
              *
-             * @param description Purpose/user defined descriptive test for this WebTest.
+             * @param description User defined description for this WebTest.
              * @return the next definition stage.
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the WebTest definition allowing to specify enabled. */
         interface WithEnabled {
             /**
@@ -297,6 +323,7 @@ public interface WebTest {
              */
             WithCreate withEnabled(Boolean enabled);
         }
+
         /** The stage of the WebTest definition allowing to specify frequency. */
         interface WithFrequency {
             /**
@@ -308,6 +335,7 @@ public interface WebTest {
              */
             WithCreate withFrequency(Integer frequency);
         }
+
         /** The stage of the WebTest definition allowing to specify timeout. */
         interface WithTimeout {
             /**
@@ -318,16 +346,19 @@ public interface WebTest {
              */
             WithCreate withTimeout(Integer timeout);
         }
+
         /** The stage of the WebTest definition allowing to specify webTestKind. */
         interface WithWebTestKind {
             /**
-             * Specifies the webTestKind property: The kind of web test this is, valid choices are ping and multistep..
+             * Specifies the webTestKind property: The kind of web test this is, valid choices are ping, multistep and
+             * standard..
              *
-             * @param webTestKind The kind of web test this is, valid choices are ping and multistep.
+             * @param webTestKind The kind of web test this is, valid choices are ping, multistep and standard.
              * @return the next definition stage.
              */
             WithCreate withWebTestKind(WebTestKind webTestKind);
         }
+
         /** The stage of the WebTest definition allowing to specify retryEnabled. */
         interface WithRetryEnabled {
             /**
@@ -338,6 +369,7 @@ public interface WebTest {
              */
             WithCreate withRetryEnabled(Boolean retryEnabled);
         }
+
         /** The stage of the WebTest definition allowing to specify locations. */
         interface WithLocations {
             /**
@@ -350,6 +382,7 @@ public interface WebTest {
              */
             WithCreate withLocations(List<WebTestGeolocation> locations);
         }
+
         /** The stage of the WebTest definition allowing to specify configuration. */
         interface WithConfiguration {
             /**
@@ -360,7 +393,30 @@ public interface WebTest {
              */
             WithCreate withConfiguration(WebTestPropertiesConfiguration configuration);
         }
+
+        /** The stage of the WebTest definition allowing to specify request. */
+        interface WithRequest {
+            /**
+             * Specifies the request property: The collection of request properties.
+             *
+             * @param request The collection of request properties.
+             * @return the next definition stage.
+             */
+            WithCreate withRequest(WebTestPropertiesRequest request);
+        }
+
+        /** The stage of the WebTest definition allowing to specify validationRules. */
+        interface WithValidationRules {
+            /**
+             * Specifies the validationRules property: The collection of validation rule properties.
+             *
+             * @param validationRules The collection of validation rule properties.
+             * @return the next definition stage.
+             */
+            WithCreate withValidationRules(WebTestPropertiesValidationRules validationRules);
+        }
     }
+
     /**
      * Begins update for the WebTest resource.
      *
@@ -385,6 +441,7 @@ public interface WebTest {
          */
         WebTest apply(Context context);
     }
+
     /** The WebTest update stages. */
     interface UpdateStages {
         /** The stage of the WebTest update allowing to specify tags. */
@@ -398,6 +455,7 @@ public interface WebTest {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

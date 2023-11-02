@@ -53,14 +53,6 @@ public final class LabelValue {
     }
 
     /**
-     * Returns value of type Object.
-     * @return value
-     */
-    public Object getValue() {
-        return this.value;
-    }
-
-    /**
      * Returns Integer value of object
      * @return (Integer) value.
      */
