@@ -29,10 +29,13 @@ import com.azure.search.documents.models.QueryCaptionResult;
 import com.azure.search.documents.models.QueryCaptionType;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
+import com.azure.search.documents.models.SemanticErrorMode;
 import com.azure.search.documents.models.SemanticSearchOptions;
+import com.azure.search.documents.models.SemanticSearchResults;
 import com.azure.search.documents.util.SearchPagedIterable;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
@@ -122,7 +125,9 @@ public class SemanticSearchExample {
             .setSemanticSearchOptions(new SemanticSearchOptions()
                 .setSemanticConfigurationName("my-semantic-config")
                 .setQueryAnswer(new QueryAnswer(QueryAnswerType.EXTRACTIVE))
-                .setQueryCaption(new QueryCaption(QueryCaptionType.EXTRACTIVE)));
+                .setQueryCaption(new QueryCaption(QueryCaptionType.EXTRACTIVE))
+                .setErrorMode(SemanticErrorMode.PARTIAL)
+                .setMaxWaitDuration(Duration.ofSeconds(5)));
 
         SearchPagedIterable results = searchClient.search(
             "Is there any hotel located on the main commercial artery of the city in the heart of New York?",
@@ -131,8 +136,16 @@ public class SemanticSearchExample {
         int count = 0;
         System.out.println("Semantic Hybrid Search Results:");
 
+        SemanticSearchResults semanticSearchResults = results.getSemanticResults();
+
+        System.out.println("Semantic Results Type: " + semanticSearchResults.getResultsType());
+
+        if (semanticSearchResults.getErrorReason() != null) {
+            System.out.println("Semantic Error Reason: " + semanticSearchResults.getErrorReason());
+        }
+
         System.out.println("Query Answers:");
-        for (QueryAnswerResult result : results.getSemanticResults().getQueryAnswers()) {
+        for (QueryAnswerResult result : semanticSearchResults.getQueryAnswers()) {
             System.out.println("Answer Highlights: " + result.getHighlights());
             System.out.println("Answer Text: " + result.getText());
         }
@@ -219,26 +232,26 @@ public class SemanticSearchExample {
 
         public static Hotel fromJson(JsonReader jsonReader) throws IOException {
             return jsonReader.readObject(reader -> {
-                Hotel vectorHotel = new Hotel();
+                Hotel hotel = new Hotel();
 
                 while (reader.nextToken() != JsonToken.END_OBJECT) {
                     String fieldName = reader.getFieldName();
                     reader.nextToken();
 
                     if ("HotelId".equals(fieldName)) {
-                        vectorHotel.hotelId = reader.getString();
+                        hotel.hotelId = reader.getString();
                     } else if ("HotelName".equals(fieldName)) {
-                        vectorHotel.hotelName = reader.getString();
+                        hotel.hotelName = reader.getString();
                     } else if ("Description".equals(fieldName)) {
-                        vectorHotel.description = reader.getString();
+                        hotel.description = reader.getString();
                     } else if ("Category".equals(fieldName)) {
-                        vectorHotel.category = reader.getString();
+                        hotel.category = reader.getString();
                     } else {
                         reader.skipChildren();
                     }
                 }
 
-                return vectorHotel;
+                return hotel;
             });
         }
     }
