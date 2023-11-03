@@ -3,8 +3,11 @@
 
 package com.azure.communication.jobrouter.implementation.converters;
 
+import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyInternal;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
+
+import java.util.stream.Collectors;
 
 /**
  * Converts request options for create and update Classification Policy to {@link ClassificationPolicy}.
@@ -16,12 +19,28 @@ public class ClassificationPolicyAdapter {
      * @param options Container with options to create a classification policy.
      * @return classification policy.
      */
-    public static ClassificationPolicy convertCreateOptionsToClassificationPolicy(CreateClassificationPolicyOptions options) {
-        return new ClassificationPolicy()
+    public static ClassificationPolicyInternal convertCreateOptionsToClassificationPolicyInternal(CreateClassificationPolicyOptions options) {
+        return new ClassificationPolicyInternal()
             .setName(options.getName())
             .setPrioritizationRule(options.getPrioritizationRule())
             .setFallbackQueueId(options.getFallbackQueueId())
-            .setQueueSelectorAttachments(options.getQueueSelectors())
-            .setWorkerSelectorAttachments(options.getWorkerSelectors());
+            .setQueueSelectorAttachments(options.getQueueSelectors().stream()
+                .map(LabelSelectorAdapter::convertQueueSelectorAttachmentToInternal).collect(Collectors.toList()))
+            .setWorkerSelectorAttachments(options.getWorkerSelectors().stream()
+                .map(LabelSelectorAdapter::convertWorkerSelectorAttachmentToInternal).collect(Collectors.toList()));
+    }
+
+
+    public static ClassificationPolicyInternal convertClassificationPolicyToClassificationPolicyInternal(ClassificationPolicy classificationPolicy) {
+        return new ClassificationPolicyInternal()
+            .setEtag(classificationPolicy.getEtag())
+            .setId(classificationPolicy.getId())
+            .setName(classificationPolicy.getName())
+            .setWorkerSelectorAttachments(classificationPolicy.getWorkerSelectorAttachments().stream()
+                .map(LabelSelectorAdapter::convertWorkerSelectorAttachmentToInternal).collect(Collectors.toList()))
+            .setQueueSelectorAttachments(classificationPolicy.getQueueSelectorAttachments().stream()
+                .map(LabelSelectorAdapter::convertQueueSelectorAttachmentToInternal).collect(Collectors.toList()))
+            .setFallbackQueueId(classificationPolicy.getFallbackQueueId())
+            .setPrioritizationRule(classificationPolicy.getPrioritizationRule());
     }
 }

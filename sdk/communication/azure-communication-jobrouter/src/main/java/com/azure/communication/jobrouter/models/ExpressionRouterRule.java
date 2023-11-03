@@ -24,8 +24,7 @@ public final class ExpressionRouterRule extends RouterRule {
     private ExpressionRouterRuleLanguage language;
 
     /*
-     * The string containing the expression to evaluate. Should contain return
-     * statement with calculated values.
+     * The string containing the expression to evaluate. Should contain return statement with calculated values.
      */
     @Generated
     @JsonProperty(value = "expression")

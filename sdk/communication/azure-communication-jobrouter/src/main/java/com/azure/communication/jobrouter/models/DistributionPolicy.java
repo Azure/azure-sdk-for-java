@@ -7,6 +7,8 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.Duration;
+
 /** Policy governing how jobs are distributed to workers. */
 @Fluent
 public final class DistributionPolicy {
@@ -26,12 +28,10 @@ public final class DistributionPolicy {
     private String name;
 
     /*
-     * The number of seconds after which any offers created under this policy will be
+     * The duration after which any offers created under this policy will be
      * expired.
      */
-    @Generated
-    @JsonProperty(value = "offerExpiresAfterSeconds")
-    private Double offerExpiresAfterSeconds;
+    private Duration offerExpiresAfter;
 
     /*
      * Abstract base class for defining a distribution mode
@@ -77,26 +77,24 @@ public final class DistributionPolicy {
     }
 
     /**
-     * Get the offerExpiresAfterSeconds property: The number of seconds after which any offers created under this policy
+     * Get the offerExpiresAfter property: The duration after which any offers created under this policy
      * will be expired.
      *
-     * @return the offerExpiresAfterSeconds value.
+     * @return the offerExpiresAfter value.
      */
-    @Generated
-    public Double getOfferExpiresAfterSeconds() {
-        return this.offerExpiresAfterSeconds;
+    public Duration getOfferExpiresAfter() {
+        return this.offerExpiresAfter;
     }
 
     /**
-     * Set the offerExpiresAfterSeconds property: The number of seconds after which any offers created under this policy
+     * Set the offerExpiresAfter property: The duration after which any offers created under this policy
      * will be expired.
      *
-     * @param offerExpiresAfterSeconds the offerExpiresAfterSeconds value to set.
+     * @param offerExpiresAfter the offerExpiresAfter value to set.
      * @return the DistributionPolicy object itself.
      */
-    @Generated
-    public DistributionPolicy setOfferExpiresAfterSeconds(Double offerExpiresAfterSeconds) {
-        this.offerExpiresAfterSeconds = offerExpiresAfterSeconds;
+    public DistributionPolicy setOfferExpiresAfter(Duration offerExpiresAfter) {
+        this.offerExpiresAfter = offerExpiresAfter;
         return this;
     }
 
