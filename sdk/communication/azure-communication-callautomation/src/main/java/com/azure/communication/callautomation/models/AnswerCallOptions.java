@@ -20,11 +20,10 @@ public final class AnswerCallOptions {
      */
     private final String callbackUrl;
 
-
     /*
-     * The endpoint URL of the Cognitive Services resource attached
+     * AI options for the call.
      */
-    private String cognitiveServicesEndpoint;
+    private CallIntelligenceOptions callIntelligenceOptions;
 
     /**
      * The operational context
@@ -61,35 +60,12 @@ public final class AnswerCallOptions {
     }
 
     /**
-     * Get the cognitiveServicesEndpoint property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
-     *
-     * @return the cognitiveServicesEndpoint value.
-     */
-    public String getCognitiveServicesEndpoint() {
-        return this.cognitiveServicesEndpoint;
-    }
-
-    /**
      * Get the operationContext.
      *
      * @return the operationContext
      */
     public String getOperationContext() {
         return operationContext;
-    }
-
-
-    /**
-     * Set the cognitiveServicesEndpoint property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
-     *
-     * @param cognitiveServicesEndpoint the cognitiveServicesEndpoint value to set.
-     * @return the AnswerCallOptions object itself.
-     */
-    public AnswerCallOptions setCognitiveServicesEndpoint(String cognitiveServicesEndpoint) {
-        this.cognitiveServicesEndpoint = cognitiveServicesEndpoint;
-        return this;
     }
 
      /**
@@ -100,6 +76,26 @@ public final class AnswerCallOptions {
      */
     public AnswerCallOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
+     *
+     * @return the callIntelligenceOptions value.
+     */
+    public CallIntelligenceOptions getCallIntelligenceOptions() {
+        return this.callIntelligenceOptions;
+    }
+
+    /**
+     * Set the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
+     *
+     * @param callIntelligenceOptions the cognitiveServicesEndpoint value to set.
+     * @return the AnswerCallOptions object itself.
+     */
+    public AnswerCallOptions setCallIntelligenceOptions(CallIntelligenceOptions callIntelligenceOptions) {
+        this.callIntelligenceOptions = callIntelligenceOptions;
         return this;
     }
 }

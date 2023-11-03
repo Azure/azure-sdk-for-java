@@ -4,11 +4,13 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Duration;
 
 /** Options to configure the Recognize operation **/
+@Fluent
 public abstract class CallMediaRecognizeOptions {
     /*
      * Determines the type of the recognition.

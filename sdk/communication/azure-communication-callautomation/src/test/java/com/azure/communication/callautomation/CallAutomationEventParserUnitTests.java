@@ -358,11 +358,8 @@ public class CallAutomationEventParserUnitTests {
             + "            \"message\":\"DTMF tone received successfully.\"\n"
             + "         },\n"
             + "         \"type\":\"ContinuousDtmfRecognitionToneReceived\",\n"
-            + "         \"toneInfo\":{\n"
-            + "            \"sequenceId\":1,\n"
-            + "            \"tone\":\"eight\",\n"
-            + "            \"participantId\":\"267e33a9-c28e-4ecf-a33e-b3abd9526e32\"\n"
-            + "         },\n"
+            + "         \"sequenceId\":1,\n"
+            + "         \"tone\":\"eight\",\n"
             + "         \"callConnectionId\":\"callConnectionId\",\n"
             + "         \"serverCallId\":\"serverCallId\",\n"
             + "         \"correlationId\":\"correlationId\",\n"
@@ -384,8 +381,8 @@ public class CallAutomationEventParserUnitTests {
         assertNotNull(continuousDtmfRecognitionToneReceived);
         assertEquals("serverCallId", continuousDtmfRecognitionToneReceived.getServerCallId());
         assertEquals("callConnectionId", continuousDtmfRecognitionToneReceived.getCallConnectionId());
-        assertEquals("eight", continuousDtmfRecognitionToneReceived.getToneInfo().getTone().toString());
-        assertEquals(1, continuousDtmfRecognitionToneReceived.getToneInfo().getSequenceId());
+        assertEquals("eight", continuousDtmfRecognitionToneReceived.getTone().toString());
+        assertEquals(1, continuousDtmfRecognitionToneReceived.getSequenceId());
         assertEquals("correlationId", continuousDtmfRecognitionToneReceived.getCorrelationId());
         assertEquals(200, continuousDtmfRecognitionToneReceived.getResultInformation().getCode());
         assertEquals(0, continuousDtmfRecognitionToneReceived.getResultInformation().getSubCode());

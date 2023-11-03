@@ -28,7 +28,7 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/model
 ``` yaml
 tag: package-2023-10-15
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/88dc4e8894673cc027f1923006f2815583df7cd4/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/1fe6a37e8e0dfb02a2184cf220d75ba9fe238108/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -85,6 +85,9 @@ directive:
 - rename-model:
     from: AnswerCallRequest
     to: AnswerCallRequestInternal
+- rename-model:
+    from: CallIntelligenceOptions
+    to: CallIntelligenceOptionsInternal
 - rename-model:
     from: RedirectCallRequest
     to: RedirectCallRequestInternal
@@ -202,7 +205,6 @@ directive:
 - remove-model: RecognizeFailed
 - remove-model: RecognizeCanceled
 - remove-model: ContinuousDtmfRecognitionToneReceived
-- remove-model: ToneInfo
 - remove-model: ContinuousDtmfRecognitionToneFailed
 - remove-model: ContinuousDtmfRecognitionStopped
 - remove-model: SendDtmfTonesCompleted
@@ -366,6 +368,15 @@ directive:
   where: $.definitions.DtmfOptions["x-ms-enum"]
   transform: >
     $.name = "DtmfOptionsInternal";
+```
+
+### Rename CallIntelligenceOptions to CallIntelligenceOptionsInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.CallIntelligenceOptions["x-ms-enum"]
+  transform: >
+    $.name = "CallIntelligenceOptionsInternal";
 ```
 
 ### Rename VoiceKind to VoiceKindInternal

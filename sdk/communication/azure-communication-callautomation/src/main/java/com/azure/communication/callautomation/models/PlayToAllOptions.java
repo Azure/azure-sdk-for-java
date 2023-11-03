@@ -13,6 +13,7 @@ import com.azure.core.annotation.Fluent;
 public final class PlayToAllOptions {
     /*
      * A List of {@link PlaySource} representing the sources to play.
+     * Currently only single play source per request is supported.
      */
     private final List<PlaySource> playSources;
 

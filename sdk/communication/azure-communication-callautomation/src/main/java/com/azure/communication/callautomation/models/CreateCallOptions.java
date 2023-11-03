@@ -21,9 +21,9 @@ public final class CreateCallOptions {
     private final String callbackUrl;
 
     /*
-     * The endpoint URL of the Cognitive Services resource attached
+     * AI options for the call.
      */
-    private String cognitiveServicesEndpoint;
+    private CallIntelligenceOptions callIntelligenceOptions;
 
     /**
      * A customer set value used to track the answering of a call.
@@ -78,24 +78,22 @@ public final class CreateCallOptions {
     }
 
     /**
-     * Get the cognitiveServicesEndpoint property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
+     * Get the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
      *
-     * @return the cognitiveServicesEndpoint value.
+     * @return the callIntelligenceOptions value.
      */
-    public String getCognitiveServicesEndpoint() {
-        return this.cognitiveServicesEndpoint;
+    public CallIntelligenceOptions getCallIntelligenceOptions() {
+        return this.callIntelligenceOptions;
     }
 
     /**
-     * Set the cognitiveServicesEndpoint property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
+     * Set the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
      *
-     * @param cognitiveServicesEndpoint the cognitiveServicesEndpoint value to set.
+     * @param callIntelligenceOptions the cognitiveServicesEndpoint value to set.
      * @return the CreateCallOptions object itself.
      */
-    public CreateCallOptions setCognitiveServicesEndpoint(String cognitiveServicesEndpoint) {
-        this.cognitiveServicesEndpoint = cognitiveServicesEndpoint;
+    public CreateCallOptions setCallIntelligenceOptions(CallIntelligenceOptions callIntelligenceOptions) {
+        this.callIntelligenceOptions = callIntelligenceOptions;
         return this;
     }
 }

@@ -40,9 +40,9 @@ public final class CreateGroupCallOptions {
     private PhoneNumberIdentifier sourceCallIdNumber;
 
     /*
-     * The endpoint URL of the Azure Cognitive Services resource attached
+     * AI options for the call
      */
-    private String cognitiveServicesEndpoint;
+    private CallIntelligenceOptions callIntelligenceOptions;
 
     /**
      * Constructor
@@ -132,25 +132,22 @@ public final class CreateGroupCallOptions {
     }
 
     /**
-     * Get the cognitiveServicesEndpoint property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
+     * Get the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
      *
-     * @return the cognitiveServicesEndpoint value.
+     * @return the callIntelligenceOptions value.
      */
-    public String getCognitiveServicesEndpoint() {
-        return this.cognitiveServicesEndpoint;
+    public CallIntelligenceOptions getCallIntelligenceOptions() {
+        return this.callIntelligenceOptions;
     }
 
     /**
-     * Set the cognitiveServicesEndpoint property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
+     * Set the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
      *
-     * @param cognitiveServicesEndpoint the cognitiveServicesEndpoint value to set.
+     * @param callIntelligenceOptions the cognitiveServicesEndpoint value to set.
      * @return the CreateGroupCallOptions object itself.
      */
-    public CreateGroupCallOptions setCognitiveServicesEndpoint(String cognitiveServicesEndpoint) {
-        this.cognitiveServicesEndpoint = cognitiveServicesEndpoint;
+    public CreateGroupCallOptions setCallIntelligenceOptions(CallIntelligenceOptions callIntelligenceOptions) {
+        this.callIntelligenceOptions = callIntelligenceOptions;
         return this;
     }
-
 }
