@@ -35,12 +35,12 @@ public class AdditionalPropertiesSerializerTests {
 
         String serialized = new String(new DefaultJsonSerializer().serializeToBytes(foo));
 
-        assertEquals("{\"$type\":\"foo\",\"properties\":{\"bar\":\"hello.world\",\"props\":{\"baz\":[\"hello\",\"hello.world\"],\"q\":{\"qux\":{\"hello\":\"world\",\"a.b\":\"c.d\",\"bar.b\":\"uuzz\",\"bar.a\":\"ttyy\"}}}},\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}", serialized);
+        assertEquals("{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}", serialized);
     }
 
     @Test
     public void canDeserializeAdditionalProperties() {
-        String wireValue = "{\"$type\":\"foo\",\"properties\":{\"bar\":\"hello.world\",\"props\":{\"baz\":[\"hello\",\"hello.world\"],\"q\":{\"qux\":{\"hello\":\"world\",\"a.b\":\"c.d\",\"bar.b\":\"uuzz\",\"bar.a\":\"ttyy\"}}}},\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}";
+        String wireValue = "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}";
         Foo deserialized = new DefaultJsonSerializer()
             .deserializeFromBytes(wireValue.getBytes(), TypeReference.createInstance(Foo.class));
 
@@ -52,7 +52,7 @@ public class AdditionalPropertiesSerializerTests {
 
     @Test
     public void canSerializeAdditionalPropertiesThroughInheritance() {
-        Foo foo = new FooChild();
+        FooChild foo = new FooChild();
 
         foo.bar("hello.world");
         foo.baz(new ArrayList<>());
@@ -70,14 +70,14 @@ public class AdditionalPropertiesSerializerTests {
 
         String serialized = new String(new DefaultJsonSerializer().serializeToBytes(foo));
 
-        assertEquals("{\"$type\":\"foochild\",\"properties\":{\"bar\":\"hello.world\",\"props\":{\"baz\":[\"hello\",\"hello.world\"],\"q\":{\"qux\":{\"hello\":\"world\",\"a.b\":\"c.d\",\"bar.b\":\"uuzz\",\"bar.a\":\"ttyy\"}}}},\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}", serialized);
+        assertEquals("{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}", serialized);
     }
 
     @Test
     public void canDeserializeAdditionalPropertiesThroughInheritance() {
-        String wireValue = "{\"$type\":\"foochild\",\"properties\":{\"bar\":\"hello.world\",\"props\":{\"baz\":[\"hello\",\"hello.world\"],\"q\":{\"qux\":{\"hello\":\"world\",\"a.b\":\"c.d\",\"bar.b\":\"uuzz\",\"bar.a\":\"ttyy\"}}}},\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}";
-        Foo deserialized = new DefaultJsonSerializer()
-            .deserializeFromBytes(wireValue.getBytes(), TypeReference.createInstance(Foo.class));
+        String wireValue = "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}";
+        FooChild deserialized = new DefaultJsonSerializer()
+            .deserializeFromBytes(wireValue.getBytes(), TypeReference.createInstance(FooChild.class));
 
         // Check additional properties are populated
         assertNotNull(deserialized.additionalProperties());
@@ -130,6 +130,6 @@ public class AdditionalPropertiesSerializerTests {
 
         String serialized = new String(new DefaultJsonSerializer().serializeToBytes(foo));
 
-        assertEquals("{\"$type\":\"foo\",\"properties\":{\"bar\":\"hello.world\",\"props\":{\"baz\":[\"hello\",\"hello.world\"],\"q\":{\"qux\":{\"hello\":\"world\",\"a.b\":\"c.d\",\"bar.b\":\"uuzz\",\"bar.a\":\"ttyy\"}}}},\"bar\":\"baz\",\"foo\":{\"properties\":{\"bar\":\"bye.world\"},\"name\":\"Sushi\"},\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}", serialized);
+        assertEquals("{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"foo\":{\"bar\":\"bye.world\",\"additionalProperties\":{\"name\":\"Sushi\"}},\"properties.bar\":\"barbar\"}}", serialized);
     }
 }

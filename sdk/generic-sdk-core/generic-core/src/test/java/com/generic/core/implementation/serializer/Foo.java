@@ -74,11 +74,27 @@ public class Foo implements JsonSerializable<Foo> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+
         jsonWriter.writeStringField("bar", bar);
-        jsonWriter.writeMapField("qux", qux, JsonWriter::writeString);
+
+        if (baz != null) {
+            jsonWriter.writeArrayField("baz", baz, JsonWriter::writeString);
+        }
+
+        if (qux != null) {
+            jsonWriter.writeMapField("qux", qux, JsonWriter::writeString);
+        }
+
         jsonWriter.writeStringField("moreProps", moreProps);
-        jsonWriter.writeIntField("empty", empty);
-        jsonWriter.writeMapField("additionalProperties", additionalProperties, JsonWriter::writeUntyped);
+
+        if (empty != null) {
+            jsonWriter.writeIntField("empty", empty);
+        }
+
+        if (additionalProperties != null) {
+            jsonWriter.writeMapField("additionalProperties", additionalProperties, JsonWriter::writeUntyped);
+        }
+
         jsonWriter.writeEndObject();
 
         return jsonWriter;
@@ -94,6 +110,8 @@ public class Foo implements JsonSerializable<Foo> {
 
                 if ("bar".equals(fieldName)) {
                     foo.bar(reader.getString());
+                } else if ("baz".equals(fieldName)) {
+                    foo.baz(reader.readArray(JsonReader::getString));
                 } else if ("qux".equals(fieldName)) {
                     foo.qux(reader.readMap(JsonReader::getString));
                 } else if ("moreProps".equals(fieldName)) {

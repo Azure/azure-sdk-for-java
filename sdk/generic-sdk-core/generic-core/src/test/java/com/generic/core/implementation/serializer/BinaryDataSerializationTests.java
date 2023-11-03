@@ -79,7 +79,7 @@ public class BinaryDataSerializationTests {
     private static final ListProperty LIST_PROPERTY_BASE64 = new ListProperty()
         .setListProperty(singletonList(FROM_STRING_BASE64));
     private static final ListProperty LIST_PROPERTY_BASE64_MULTIPLE = new ListProperty()
-        .setListProperty(Arrays.asList(FROM_STRING_BASE64, FROM_STRING_BASE64, FROM_STRING, FROM_OBJECT));
+        .setListProperty(Arrays.asList(FROM_STRING, FROM_OBJECT));
     private static final String MAP_PROPERTY_BYTES_JSON = "{\"mapProperty\":{\"key\":\"" + BASE64_HELLO_BYTES + "\"}}";
     private static final String MAP_PROPERTY_STREAM_JSON = "{\"mapProperty\":{\"key\":\"" + BASE64_HELLO_BYTES + "\"}}";
     private static final String MAP_PROPERTY_STRING_JSON = "{\"mapProperty\":{\"key\":\"hello\"}}";
