@@ -42,7 +42,8 @@ public class JsonSerializableEndToEndTests {
         JsonSerializableWrapper expected = new JsonSerializableWrapper()
             .setGeneralProperties(new GeneralProperties(42, true, "hello world", -0.0D));
         JsonSerializableWrapper actual =
-            SERIALIZER.deserializeFromBytes(json.getBytes(), TypeReference.createInstance(JsonSerializableWrapper.class));
+            SERIALIZER.deserializeFromBytes(json.getBytes(),
+                TypeReference.createInstance(JsonSerializableWrapper.class));
 
         assertEquals(expected, actual);
     }
@@ -92,7 +93,7 @@ public class JsonSerializableEndToEndTests {
                     String fieldName = reader.getFieldName();
                     reader.nextToken();
 
-                    if ("generalproperties".equals(fieldName)) {
+                    if ("jsonserializable".equals(fieldName)) {
                         generalProperties = GeneralProperties.fromJson(reader);
                     } else {
                         reader.skipChildren();
