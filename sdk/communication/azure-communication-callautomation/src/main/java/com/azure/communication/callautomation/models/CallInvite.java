@@ -14,14 +14,14 @@ import com.azure.core.annotation.Fluent;
 import java.util.HashMap;
 
 /**
- *  Call invitee details.
+ *  Call invite details.
  */
 @Fluent
 public final class CallInvite {
     private final CommunicationIdentifier targetParticipant;
     private PhoneNumberIdentifier sourceCallerIdNumber;
     private String sourceDisplayName;
-    private final CustomContext customContext;
+    private final CustomCallingContext customCallingContext;
 
     /**
      *  Create a CallInvite object with PhoneNumberIdentifierr
@@ -31,7 +31,7 @@ public final class CallInvite {
     public CallInvite(PhoneNumberIdentifier targetIdentity, PhoneNumberIdentifier callerIdNumber) {
         this.targetParticipant = targetIdentity;
         this.sourceCallerIdNumber = callerIdNumber;
-        this.customContext = new CustomContext(new HashMap<String, String>(), null);
+        this.customCallingContext = new CustomCallingContext(new HashMap<>(), null);
     }
 
     /**
@@ -41,7 +41,7 @@ public final class CallInvite {
     public CallInvite(CommunicationUserIdentifier targetIdentity) {
         this.targetParticipant = targetIdentity;
         this.sourceCallerIdNumber = null;
-        this.customContext = new CustomContext(null, new HashMap<String, String>());
+        this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
     }
 
     /**
@@ -51,7 +51,7 @@ public final class CallInvite {
     public CallInvite(MicrosoftTeamsUserIdentifier targetIdentity) {
         this.targetParticipant = targetIdentity;
         this.sourceCallerIdNumber = null;
-        this.customContext = new CustomContext(null, new HashMap<String, String>());
+        this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
     }
 
     /**
@@ -81,11 +81,11 @@ public final class CallInvite {
     }
 
     /**
-     *  get custom context
-     * @return custom context
+     *  get custom calling context
+     * @return custom calling context
      */
-    public CustomContext getCustomContext() {
-        return customContext;
+    public CustomCallingContext getCustomCallingContext() {
+        return customCallingContext;
     }
 
     /**

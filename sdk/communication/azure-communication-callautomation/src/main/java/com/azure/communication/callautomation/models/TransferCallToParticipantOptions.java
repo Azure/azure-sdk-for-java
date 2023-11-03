@@ -20,7 +20,7 @@ public final class TransferCallToParticipantOptions {
      * The identity of the target where call should be transferred to.
      */
     private final CommunicationIdentifier targetParticipant;
-    private final CustomContext customContext;
+    private final CustomCallingContext customCallingContext;
     private String operationCallbackUrl;
 
     /**
@@ -42,7 +42,7 @@ public final class TransferCallToParticipantOptions {
      */
     public TransferCallToParticipantOptions(CommunicationIdentifier targetParticipant) {
         this.targetParticipant = targetParticipant;
-        this.customContext = new CustomContext(new HashMap<>(), new HashMap<>());
+        this.customCallingContext = new CustomCallingContext(new HashMap<>(), new HashMap<>());
     }
 
     /**
@@ -52,7 +52,7 @@ public final class TransferCallToParticipantOptions {
      */
     public TransferCallToParticipantOptions(CommunicationUserIdentifier targetParticipant) {
         this.targetParticipant = targetParticipant;
-        this.customContext = new CustomContext(null, new HashMap<>());
+        this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
     }
 
     /**
@@ -62,7 +62,7 @@ public final class TransferCallToParticipantOptions {
      */
     public TransferCallToParticipantOptions(PhoneNumberIdentifier targetParticipant) {
         this.targetParticipant = targetParticipant;
-        this.customContext = new CustomContext(new HashMap<>(), null);
+        this.customCallingContext = new CustomCallingContext(new HashMap<>(), null);
     }
 
     /**
@@ -72,7 +72,7 @@ public final class TransferCallToParticipantOptions {
      */
     public TransferCallToParticipantOptions(MicrosoftTeamsUserIdentifier targetParticipant) {
         this.targetParticipant = targetParticipant;
-        this.customContext = new CustomContext(null, new HashMap<>());
+        this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
     }
 
     /**
@@ -127,8 +127,8 @@ public final class TransferCallToParticipantOptions {
      *  get custom context
      * @return custom context
      */
-    public CustomContext getCustomContext() {
-        return customContext;
+    public CustomCallingContext getCustomCallingContext() {
+        return customCallingContext;
     }
 
     /**

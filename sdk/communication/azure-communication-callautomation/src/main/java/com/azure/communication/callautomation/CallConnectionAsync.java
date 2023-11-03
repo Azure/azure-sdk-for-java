@@ -14,12 +14,7 @@ import com.azure.communication.callautomation.implementation.accesshelpers.Trans
 import com.azure.communication.callautomation.implementation.converters.CallParticipantConverter;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.PhoneNumberIdentifierConverter;
-import com.azure.communication.callautomation.implementation.models.AddParticipantRequestInternal;
-import com.azure.communication.callautomation.implementation.models.CancelAddParticipantRequest;
-import com.azure.communication.callautomation.implementation.models.CustomContext;
-import com.azure.communication.callautomation.implementation.models.MuteParticipantsRequestInternal;
-import com.azure.communication.callautomation.implementation.models.RemoveParticipantRequestInternal;
-import com.azure.communication.callautomation.implementation.models.TransferToParticipantRequestInternal;
+import com.azure.communication.callautomation.implementation.models.*;
 import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.communication.callautomation.models.CancelAddParticipantOptions;
@@ -270,10 +265,10 @@ public final class CallConnectionAsync {
                 .setOperationContext(transferCallToParticipantOptions.getOperationContext())
                 .setOperationCallbackUri(transferCallToParticipantOptions.getOperationCallbackUrl());
 
-            if (transferCallToParticipantOptions.getCustomContext().getSipHeaders() != null || transferCallToParticipantOptions.getCustomContext().getVoipHeaders() != null) {
-                request.setCustomContext(new CustomContext()
-                            .setSipHeaders(transferCallToParticipantOptions.getCustomContext().getSipHeaders())
-                            .setVoipHeaders(transferCallToParticipantOptions.getCustomContext().getVoipHeaders()));
+            if (transferCallToParticipantOptions.getCustomCallingContext().getSipHeaders() != null || transferCallToParticipantOptions.getCustomCallingContext().getVoipHeaders() != null) {
+                request.setCustomCallingContext(new CustomCallingContext()
+                            .setSipHeaders(transferCallToParticipantOptions.getCustomCallingContext().getSipHeaders())
+                            .setVoipHeaders(transferCallToParticipantOptions.getCustomCallingContext().getVoipHeaders()));
             }
 
             if (transferCallToParticipantOptions.getTransferee() != null) {
@@ -328,6 +323,14 @@ public final class CallConnectionAsync {
             // Need to do a null check since it is optional; it might be a null and breaks the get function as well as type casting.
             if (addParticipantOptions.getInvitationTimeout() != null) {
                 request.setInvitationTimeoutInSeconds((int) addParticipantOptions.getInvitationTimeout().getSeconds());
+            }
+
+            // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
+            if (addParticipantOptions.getTargetParticipant().getCustomCallingContext().getSipHeaders() != null || addParticipantOptions.getTargetParticipant().getCustomCallingContext().getVoipHeaders() != null) {
+                CustomCallingContext customCallingContext = new CustomCallingContext();
+                customCallingContext.setSipHeaders(addParticipantOptions.getTargetParticipant().getCustomCallingContext().getSipHeaders());
+                customCallingContext.setVoipHeaders(addParticipantOptions.getTargetParticipant().getCustomCallingContext().getVoipHeaders());
+                request.setCustomCallingContext(customCallingContext);
             }
 
             return callConnectionInternal.addParticipantWithResponseAsync(

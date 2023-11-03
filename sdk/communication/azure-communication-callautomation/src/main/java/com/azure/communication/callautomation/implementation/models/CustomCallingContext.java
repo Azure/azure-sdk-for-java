@@ -8,26 +8,26 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The custom context which will be sent to the target. */
+/** The custom calling context which will be sent to the target. */
 @Fluent
-public final class CustomContext {
+public final class CustomCallingContext {
     /*
-     * Custom context VoiP headers
+     * Custom calling context VoiP headers
      */
     @JsonProperty(value = "voipHeaders")
     private Map<String, String> voipHeaders;
 
     /*
-     * Custom context SIP headers
+     * Custom calling context SIP headers
      */
     @JsonProperty(value = "sipHeaders")
     private Map<String, String> sipHeaders;
 
-    /** Creates an instance of CustomContext class. */
-    public CustomContext() {}
+    /** Creates an instance of CustomCallingContext class. */
+    public CustomCallingContext() {}
 
     /**
-     * Get the voipHeaders property: Custom context VoiP headers.
+     * Get the voipHeaders property: Custom calling context VoiP headers.
      *
      * @return the voipHeaders value.
      */
@@ -36,18 +36,18 @@ public final class CustomContext {
     }
 
     /**
-     * Set the voipHeaders property: Custom context VoiP headers.
+     * Set the voipHeaders property: Custom calling context VoiP headers.
      *
      * @param voipHeaders the voipHeaders value to set.
-     * @return the CustomContext object itself.
+     * @return the CustomCallingContext object itself.
      */
-    public CustomContext setVoipHeaders(Map<String, String> voipHeaders) {
+    public CustomCallingContext setVoipHeaders(Map<String, String> voipHeaders) {
         this.voipHeaders = voipHeaders;
         return this;
     }
 
     /**
-     * Get the sipHeaders property: Custom context SIP headers.
+     * Get the sipHeaders property: Custom calling context SIP headers.
      *
      * @return the sipHeaders value.
      */
@@ -56,12 +56,12 @@ public final class CustomContext {
     }
 
     /**
-     * Set the sipHeaders property: Custom context SIP headers.
+     * Set the sipHeaders property: Custom calling context SIP headers.
      *
      * @param sipHeaders the sipHeaders value to set.
-     * @return the CustomContext object itself.
+     * @return the CustomCallingContext object itself.
      */
-    public CustomContext setSipHeaders(Map<String, String> sipHeaders) {
+    public CustomCallingContext setSipHeaders(Map<String, String> sipHeaders) {
         this.sipHeaders = sipHeaders;
         return this;
     }
