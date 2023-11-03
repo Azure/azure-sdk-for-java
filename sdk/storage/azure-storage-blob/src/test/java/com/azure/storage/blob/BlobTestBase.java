@@ -38,6 +38,7 @@ import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.options.BlobBreakLeaseOptions;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlobClientBase;
+import com.azure.storage.blob.specialized.BlobLeaseAsyncClient;
 import com.azure.storage.blob.specialized.BlobLeaseClient;
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
@@ -565,6 +566,17 @@ public class BlobTestBase extends TestProxyTestBase {
             .blobClient(blobClient)
             .leaseId(leaseId)
             .buildClient();
+    }
+
+    protected static BlobLeaseAsyncClient createLeaseAsyncClient(BlobAsyncClientBase blobAsyncClient) {
+        return createLeaseAsyncClient(blobAsyncClient, null);
+    }
+
+    protected static BlobLeaseAsyncClient createLeaseAsyncClient(BlobAsyncClientBase blobAsyncClient, String leaseId) {
+        return new BlobLeaseClientBuilder()
+            .blobAsyncClient(blobAsyncClient)
+            .leaseId(leaseId)
+            .buildAsyncClient();
     }
 
     protected static BlobLeaseClient createLeaseClient(BlobContainerClient containerClient) {
