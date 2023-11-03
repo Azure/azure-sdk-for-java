@@ -4355,8 +4355,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             regionSwitchHint,
             connectionMode,
             customMinRetryTimeInLocalRegionForWrites,
-            nonIdempotentWriteRetriesEnabled,
-            connectionMode);
+            nonIdempotentWriteRetriesEnabled);
         try {
 
             if (clearContainerBeforeExecution) {
@@ -4437,9 +4436,12 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     diagnosticsContexts.length);
                 for (CosmosDiagnosticsContext diagnosticsContext: diagnosticsContexts) {
                     logger.info(
-                        "DIAGNOSTICS CONTEXT: {} {}",
+                        "DIAGNOSTICS CONTEXT: {}/{} {} {}",
+                        diagnosticsContext != null ? diagnosticsContext.getStatusCode() : "n/a",
+                        diagnosticsContext != null ? diagnosticsContext.getSubStatusCode() : "n/a",
                         diagnosticsContext != null ? diagnosticsContext.toString() : "n/a",
                         diagnosticsContext != null ? diagnosticsContext.toJson() : "NULL");
+                    validateStatusCode.accept(diagnosticsContext.getStatusCode(), diagnosticsContext.getSubStatusCode());
                 }
 
                 assertThat(diagnosticsContexts.length).isEqualTo(expectedDiagnosticsContextCount);
@@ -4499,8 +4501,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         CosmosRegionSwitchHint regionSwitchHint,
         ConnectionMode connectionMode,
         Duration customMinRetryTimeInLocalRegionForWrites,
-        Boolean nonIdempotentWriteRetriesEnabled,
-        ConnectionMode connectionMode) {
+        Boolean nonIdempotentWriteRetriesEnabled) {
 
         CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
             .diagnosticsHandler(new CosmosDiagnosticsLogger());

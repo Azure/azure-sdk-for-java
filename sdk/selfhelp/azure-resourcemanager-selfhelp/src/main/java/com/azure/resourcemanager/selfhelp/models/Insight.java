@@ -7,7 +7,7 @@ package com.azure.resourcemanager.selfhelp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Detailed insights(s) obtained via the invocation of an insight diagnostic troubleshooter. */
+/** Detailed insights(s) obtained via the invocation of an insight diagnostic. */
 @Fluent
 public final class Insight {
     /*

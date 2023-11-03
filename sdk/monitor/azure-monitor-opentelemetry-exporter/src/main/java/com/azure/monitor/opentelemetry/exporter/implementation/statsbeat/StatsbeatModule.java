@@ -45,7 +45,8 @@ public class StatsbeatModule {
         featureStatsbeat = new FeatureStatsbeat(customDimensions, FeatureType.FEATURE);
         instrumentationStatsbeat = new FeatureStatsbeat(customDimensions, FeatureType.INSTRUMENTATION);
         azureMetadataService = new AzureMetadataService(attachStatsbeat, customDimensions, vmMetadataServiceCallback);
-        if (RpAttachType.getRpAttachType() == RpAttachType.MANUAL) {
+        // TODO (heya) will update this when we have a consensus from other languages on what other telemetry to be collected
+        if (RpAttachType.getRpAttachType() != RpAttachType.MANUAL) {
             networkStatsbeat = new NetworkStatsbeat(customDimensions);
             nonessentialStatsbeat = new NonessentialStatsbeat(customDimensions);
         } else {

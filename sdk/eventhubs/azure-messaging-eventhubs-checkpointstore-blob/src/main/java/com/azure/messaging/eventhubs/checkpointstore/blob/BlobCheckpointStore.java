@@ -45,14 +45,14 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  */
 public class BlobCheckpointStore implements CheckpointStore {
 
-    private static final String SEQUENCE_NUMBER = "sequencenumber";
-    private static final String OFFSET = "offset";
-    private static final String OWNER_ID = "ownerid";
+    static final String SEQUENCE_NUMBER = "sequencenumber";
+    static final String OFFSET = "offset";
+    static final String OWNER_ID = "ownerid";
     private static final String ETAG = "eTag";
 
-    private static final String BLOB_PATH_SEPARATOR = "/";
-    private static final String CHECKPOINT_PATH = "/checkpoint/";
-    private static final String OWNERSHIP_PATH = "/ownership/";
+    static final String BLOB_PATH_SEPARATOR = "/";
+    static final String CHECKPOINT_PATH = "/checkpoint/";
+    static final String OWNERSHIP_PATH = "/ownership/";
 
     // logging keys, consistent across all AMQP libraries and human-readable
     private static final String PARTITION_ID_LOG_KEY = "partitionId";

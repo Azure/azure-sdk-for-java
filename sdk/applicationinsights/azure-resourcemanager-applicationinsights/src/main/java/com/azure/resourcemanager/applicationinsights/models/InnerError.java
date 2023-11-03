@@ -23,6 +23,10 @@ public final class InnerError {
     @JsonProperty(value = "time")
     private OffsetDateTime time;
 
+    /** Creates an instance of InnerError class. */
+    public InnerError() {
+    }
+
     /**
      * Get the diagnosticcontext property: Provides correlation for request.
      *

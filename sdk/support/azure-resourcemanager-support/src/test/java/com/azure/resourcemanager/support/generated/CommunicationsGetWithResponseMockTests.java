@@ -31,7 +31,7 @@ public final class CommunicationsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"outbound\",\"sender\":\"pkii\",\"subject\":\"zyexzn\",\"body\":\"lixhnrztfol\",\"createdDate\":\"2021-01-02T16:04:01Z\"},\"id\":\"xknalaulppg\",\"name\":\"dtpnapnyiropuhp\",\"type\":\"gvpgy\"}";
+            "{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"outbound\",\"sender\":\"yysfgdot\",\"subject\":\"ubiipuipwoqonma\",\"body\":\"jeknizshq\",\"createdDate\":\"2021-10-26T01:34:18Z\"},\"id\":\"m\",\"name\":\"ev\",\"type\":\"gmblrri\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,10 +60,10 @@ public final class CommunicationsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CommunicationDetails response =
-            manager.communications().getWithResponse("aln", "ixisxyawjoy", com.azure.core.util.Context.NONE).getValue();
+            manager.communications().getWithResponse("ggdufiqndieu", "ao", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("pkii", response.sender());
-        Assertions.assertEquals("zyexzn", response.subject());
-        Assertions.assertEquals("lixhnrztfol", response.body());
+        Assertions.assertEquals("yysfgdot", response.sender());
+        Assertions.assertEquals("ubiipuipwoqonma", response.subject());
+        Assertions.assertEquals("jeknizshq", response.body());
     }
 }

@@ -30,6 +30,10 @@ public class WorkbookResource extends Resource {
     @JsonProperty(value = "etag")
     private String etag;
 
+    /** Creates an instance of WorkbookResource class. */
+    public WorkbookResource() {
+    }
+
     /**
      * Get the identity property: Identity used for BYOS.
      *

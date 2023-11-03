@@ -4,17 +4,17 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
-import com.azure.communication.jobrouter.models.CancelJobRequest;
-import com.azure.communication.jobrouter.models.ChannelConfiguration;
+import com.azure.communication.jobrouter.models.CancelJobOptions;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.QueueAndMatchMode;
+import com.azure.communication.jobrouter.models.RouterChannel;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobOffer;
 import com.azure.communication.jobrouter.models.RouterJobStatus;
 import com.azure.communication.jobrouter.models.RouterQueue;
-import com.azure.communication.jobrouter.models.RouterQueueAssignment;
+import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.models.ScheduleAndSuspendMode;
 import com.azure.communication.jobrouter.models.UnassignJobResult;
@@ -57,28 +57,28 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         /**
          * Setup worker
          */
-        Map<String, Object> labels = new HashMap<String, Object>() {
+        Map<String, RouterValue> labels = new HashMap<String, RouterValue>() {
             {
-                put("Label", "Value");
+                put("Label", new RouterValue("Value"));
             }
         };
 
-        Map<String, Object> tags = new HashMap<String, Object>() {
+        Map<String, RouterValue> tags = new HashMap<String, RouterValue>() {
             {
-                put("Tag", "Value");
+                put("Tag", new RouterValue("Value"));
             }
         };
 
-        ChannelConfiguration channelConfiguration = new ChannelConfiguration(1);
-        Map<String, ChannelConfiguration> channelConfigurations = new HashMap<String, ChannelConfiguration>() {
+        RouterChannel channel = new RouterChannel("router-channel", 1);
+        List<RouterChannel> channels = new ArrayList<RouterChannel>() {
             {
-                put("channel1", channelConfiguration);
+                add(channel);
             }
         };
 
-        Map<String, RouterQueueAssignment> queueAssignments = new HashMap<String, RouterQueueAssignment>() {
+        List<String> queues = new ArrayList<String>() {
             {
-                put(jobQueue.getId(), new RouterQueueAssignment());
+                add(jobQueue.getId());
             }
         };
 
@@ -87,8 +87,8 @@ public class RouterJobLiveTests extends JobRouterTestBase {
             .setLabels(labels)
             .setTags(tags)
             .setAvailableForOffers(true)
-            .setChannelConfigurations(channelConfigurations)
-            .setQueueAssignments(queueAssignments);
+            .setChannels(channels)
+            .setQueues(queues);
 
         jobRouterClient.createWorker(createWorkerOptions);
 
@@ -97,7 +97,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
 
         jobRouterClient.createJob(createJobOptions);
 
-        List<RouterJobOffer> jobOffers = new ArrayList<>();
+        List<RouterJobOffer> jobOffers = new ArrayList<RouterJobOffer>();
         long startTimeMillis = System.currentTimeMillis();
         while (true) {
             RouterWorker worker = jobRouterClient.getWorker(workerId);
@@ -122,7 +122,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         assertEquals(1, unassignJobResult.getUnassignmentCount());
 
         // Cleanup
-        jobRouterClient.cancelJob(jobId, new CancelJobRequest().setNote("Done.").setDispositionCode("test"));
+        jobRouterClient.cancelJob(jobId, new CancelJobOptions().setNote("Done.").setDispositionCode("test"));
         jobRouterClient.deleteJob(jobId);
         jobRouterClient.deleteWorker(workerId);
         routerAdminClient.deleteQueue(queueId);

@@ -28,6 +28,10 @@ public final class WorkspaceCapping {
     @JsonProperty(value = "dataIngestionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DataIngestionStatus dataIngestionStatus;
 
+    /** Creates an instance of WorkspaceCapping class. */
+    public WorkspaceCapping() {
+    }
+
     /**
      * Get the dailyQuotaGb property: The workspace daily quota for ingestion.
      *

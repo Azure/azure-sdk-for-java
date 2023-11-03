@@ -13,23 +13,23 @@ public final class CustomImagePropertiesFromPlanTests {
     public void testDeserialize() throws Exception {
         CustomImagePropertiesFromPlan model =
             BinaryData
-                .fromString("{\"id\":\"kxkgymareqna\",\"publisher\":\"qugjhkycube\",\"offer\":\"gssofwq\"}")
+                .fromString("{\"id\":\"cizsjqlhkrribdei\",\"publisher\":\"ipqkghvxndzwm\",\"offer\":\"efajpj\"}")
                 .toObject(CustomImagePropertiesFromPlan.class);
-        Assertions.assertEquals("kxkgymareqna", model.id());
-        Assertions.assertEquals("qugjhkycube", model.publisher());
-        Assertions.assertEquals("gssofwq", model.offer());
+        Assertions.assertEquals("cizsjqlhkrribdei", model.id());
+        Assertions.assertEquals("ipqkghvxndzwm", model.publisher());
+        Assertions.assertEquals("efajpj", model.offer());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CustomImagePropertiesFromPlan model =
             new CustomImagePropertiesFromPlan()
-                .withId("kxkgymareqna")
-                .withPublisher("qugjhkycube")
-                .withOffer("gssofwq");
+                .withId("cizsjqlhkrribdei")
+                .withPublisher("ipqkghvxndzwm")
+                .withOffer("efajpj");
         model = BinaryData.fromObject(model).toObject(CustomImagePropertiesFromPlan.class);
-        Assertions.assertEquals("kxkgymareqna", model.id());
-        Assertions.assertEquals("qugjhkycube", model.publisher());
-        Assertions.assertEquals("gssofwq", model.offer());
+        Assertions.assertEquals("cizsjqlhkrribdei", model.id());
+        Assertions.assertEquals("ipqkghvxndzwm", model.publisher());
+        Assertions.assertEquals("efajpj", model.offer());
     }
 }

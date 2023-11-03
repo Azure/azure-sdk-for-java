@@ -6,6 +6,7 @@ package com.azure.core.http;
 import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Represents HTTP header names for multiple versions of HTTP.
@@ -65,7 +66,7 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
 
     @Override
     public int hashCode() {
-        return caseInsensitive.hashCode();
+        return Objects.hashCode(caseInsensitive);
     }
 
     @Override
@@ -79,7 +80,7 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
         }
 
         HttpHeaderName other = (HttpHeaderName) obj;
-        return caseInsensitive.equals(other.caseInsensitive);
+        return Objects.equals(caseInsensitive, other.caseInsensitive);
     }
 
     /**

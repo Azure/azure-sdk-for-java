@@ -90,6 +90,26 @@
           "justification": "Spring interfaces are allowed to add methods."
         },
         {
+          "code": "java.method.addedToInterface",
+          "new": "method <S extends T, T> void com.azure.spring.data.cosmos.core.CosmosOperations::deleteEntities(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, java.lang.Iterable<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method <S extends T, T> java.lang.Iterable<S> com.azure.spring.data.cosmos.core.CosmosOperations::insertAll(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, java.lang.Iterable<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method <S extends T, T> reactor.core.publisher.Mono<java.lang.Void> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::deleteEntities(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, reactor.core.publisher.Flux<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method <S extends T, T> reactor.core.publisher.Flux<S> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insertAll(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, reactor.core.publisher.Flux<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
           "regex": true,
           "code": "java\\.annotation\\.(added|attributeValueChanged)",
           "old": ".*",
@@ -196,12 +216,6 @@
           "justification": "Skip customized getters on class when serialization and deserialization."
         },
         {
-          "regex": true,
-          "code": "java.annotation.added",
-          "new": "class com.azure.ai.textanalytics.models.HealthcareEntityRelationType",
-          "justification": "Skip JsonCreator annotation on the method fromString when serialization and deserialization."
-        },
-        {
           "code": "java.class.removed",
           "old": "enum com.azure.messaging.eventhubs.checkpointstore.blob.Messages",
           "justification": "Messages class was accidentally made public. Reverting the public change since this should be implementation detail."
@@ -261,14 +275,15 @@
         {
           "regex": true,
           "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.containers\\.containerregistry\\.models.*",
-          "justification": "Removing Jackson annotations from ACR in transition to stream-style."
+          "old": ".*? (com\\.azure\\.containers\\.containerregistry\\.models.*|com\\.azure\\.search\\.documents(\\.indexes)?\\.models.*|com\\.azure\\.security\\.keyvault\\.(administration|certificates)\\.models.*)",
+          "description": ".*com.fasterxml.jackson.*",
+          "justification": "Removing Jackson annotations from ACR, KeyVault, and Search in transition to stream-style."
         },
         {
           "regex": true,
           "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.search\\.documents(\\.indexes)?\\.models.*",
-          "justification": "Removing Jackson annotations from Search in transition to stream-style."
+          "old": ".*? com\\.azure\\.ai\\.textanalytics\\.models.*",
+          "justification": "Removing Jackson annotations from Text Analytics in transition to stream-style."
         },
         {
           "code": "java.field.removed",
@@ -288,12 +303,6 @@
           "old" : "class com.azure.spring.cloud.autoconfigure.aad.configuration.(AadResourceServerConfiguration.DefaultAadResourceServerWebSecurityConfigurerAdapter|AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter)",
           "new" : "class com.azure.spring.cloud.autoconfigure.aad.configuration.(AadResourceServerConfiguration.DefaultAadResourceServerWebSecurityConfigurerAdapter|AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter)",
           "justification": "Element newly annotated with 'org.springframework.boot.autoconfigure.security.ConditionalOnDefaultWebSecurity"
-        },
-        {
-          "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.security\\.keyvault\\.administration\\.models.*",
-          "justification": "Removing Jackson annotations from KeyVault Administration in transition to stream-style."
         },
         {
           "regex": true,
