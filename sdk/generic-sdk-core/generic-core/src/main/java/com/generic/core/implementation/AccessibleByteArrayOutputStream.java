@@ -13,7 +13,7 @@ import java.util.Arrays;
  * requiring a copying of the data. The only use of this class is for internal purposes where we know it is safe to
  * directly access the {@code byte[]} without copying.
  * <p>
- * This class isn't meant to be thread-safe as usage should be internal to azure-core and should be guarded
+ * This class isn't meant to be thread-safe as usage should be internal to generic-core and should be guarded
  * appropriately when used.
  */
 public class AccessibleByteArrayOutputStream extends ByteArrayOutputStream {
