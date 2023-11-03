@@ -18,26 +18,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public final class RuleEngineWorkerSelectorAttachmentInternal extends WorkerSelectorAttachmentInternal {
 
     /*
-     * A rule of one of the following types:
-     *
-     * StaticRule:  A rule
-     * providing static rules that always return the same result, regardless of
-     * input.
-     * DirectMapRule:  A rule that return the same labels as the input
-     * labels.
-     * ExpressionRule: A rule providing inline expression
-     * rules.
-     * FunctionRule: A rule providing a binding to an HTTP Triggered Azure
-     * Function.
-     * WebhookRule: A rule providing a binding to a webserver following
-     * OAuth2.0 authentication protocol.
+     * A RouterRule that resolves a collection of worker selectors to attach
      */
     @Generated
     @JsonProperty(value = "rule")
     private RouterRule rule;
 
     /**
-     * Creates an instance of RuleEngineWorkerSelectorAttachment class.
+     * Creates an instance of RuleEngineWorkerSelectorAttachmentInternal class.
      *
      * @param rule the rule value to set.
      */
@@ -48,12 +36,7 @@ public final class RuleEngineWorkerSelectorAttachmentInternal extends WorkerSele
     }
 
     /**
-     * Get the rule property: A rule of one of the following types:
-     *
-     * <p>StaticRule: A rule providing static rules that always return the same result, regardless of input.
-     * DirectMapRule: A rule that return the same labels as the input labels. ExpressionRule: A rule providing inline
-     * expression rules. FunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule: A
-     * rule providing a binding to a webserver following OAuth2.0 authentication protocol.
+     * Get the rule property: A RouterRule that resolves a collection of worker selectors to attach.
      *
      * @return the rule value.
      */

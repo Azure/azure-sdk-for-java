@@ -34,11 +34,12 @@ public final class PassThroughWorkerSelectorAttachmentInternal extends WorkerSel
     /*
      * Describes how long the attached label selector is valid in seconds.
      */
+    @Generated
     @JsonProperty(value = "expiresAfterSeconds")
-    private double expiresAfterSeconds;
+    private Double expiresAfterSeconds;
 
     /**
-     * Creates an instance of PassThroughWorkerSelectorAttachment class.
+     * Creates an instance of PassThroughWorkerSelectorAttachmentInternal class.
      *
      * @param key the key value to set.
      * @param labelOperator the labelOperator value to set.
@@ -46,8 +47,8 @@ public final class PassThroughWorkerSelectorAttachmentInternal extends WorkerSel
     @Generated
     @JsonCreator
     public PassThroughWorkerSelectorAttachmentInternal(
-        @JsonProperty(value = "key") String key,
-        @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
+            @JsonProperty(value = "key") String key,
+            @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
         this.key = key;
         this.labelOperator = labelOperator;
     }
@@ -78,7 +79,7 @@ public final class PassThroughWorkerSelectorAttachmentInternal extends WorkerSel
      * @return the expiresAfterSeconds value.
      */
     @Generated
-    public double getExpiresAfterSeconds() {
+    public Double getExpiresAfterSeconds() {
         return this.expiresAfterSeconds;
     }
 
@@ -86,10 +87,10 @@ public final class PassThroughWorkerSelectorAttachmentInternal extends WorkerSel
      * Set the expiresAfterSeconds property: Describes how long the attached label selector is valid in seconds.
      *
      * @param expiresAfterSeconds the expiresAfterSeconds value to set.
-     * @return the PassThroughWorkerSelectorAttachment object itself.
+     * @return the PassThroughWorkerSelectorAttachmentInternal object itself.
      */
     @Generated
-    public PassThroughWorkerSelectorAttachmentInternal setExpiresAfterSeconds(double expiresAfterSeconds) {
+    public PassThroughWorkerSelectorAttachmentInternal setExpiresAfterSeconds(Double expiresAfterSeconds) {
         this.expiresAfterSeconds = expiresAfterSeconds;
         return this;
     }

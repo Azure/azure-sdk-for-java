@@ -9,7 +9,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 
 /** Describes a condition that must be met against a set of labels for worker selection. */
@@ -24,8 +23,7 @@ public final class RouterWorkerSelectorInternal {
     private String key;
 
     /*
-     * Describes how the value of the label is compared to the value defined on the
-     * label selector
+     * Describes how the value of the label is compared to the value defined on the label selector
      */
     @Generated
     @JsonProperty(value = "labelOperator")
@@ -67,7 +65,7 @@ public final class RouterWorkerSelectorInternal {
     private OffsetDateTime expiresAt;
 
     /**
-     * Creates an instance of RouterWorkerSelector class.
+     * Creates an instance of RouterWorkerSelectorInternal class.
      *
      * @param key the key value to set.
      * @param labelOperator the labelOperator value to set.
@@ -116,7 +114,7 @@ public final class RouterWorkerSelectorInternal {
      * Set the value property: The value to compare against the actual label value with the given operator.
      *
      * @param value the value value to set.
-     * @return the RouterWorkerSelector object itself.
+     * @return the RouterWorkerSelectorInternal object itself.
      */
     @Generated
     public RouterWorkerSelectorInternal setValue(Object value) {
@@ -138,7 +136,7 @@ public final class RouterWorkerSelectorInternal {
      * Set the expiresAfterSeconds property: Describes how long this label selector is valid in seconds.
      *
      * @param expiresAfterSeconds the expiresAfterSeconds value to set.
-     * @return the RouterWorkerSelector object itself.
+     * @return the RouterWorkerSelectorInternal object itself.
      */
     @Generated
     public RouterWorkerSelectorInternal setExpiresAfterSeconds(Double expiresAfterSeconds) {
@@ -160,7 +158,7 @@ public final class RouterWorkerSelectorInternal {
      * Set the expedite property: Pushes the job to the front of the queue as long as this selector is active.
      *
      * @param expedite the expedite value to set.
-     * @return the RouterWorkerSelector object itself.
+     * @return the RouterWorkerSelectorInternal object itself.
      */
     @Generated
     public RouterWorkerSelectorInternal setExpedite(Boolean expedite) {
@@ -179,7 +177,7 @@ public final class RouterWorkerSelectorInternal {
     }
 
     /**
-     * Internal method to set status.
+     * Set status.
      * @param status status.
      * @return this.
      */
@@ -199,7 +197,7 @@ public final class RouterWorkerSelectorInternal {
     }
 
     /**
-     * Internal method to set expiresAt.
+     * Set expirestAt.
      * @param expiresAt expiresAt.
      * @return this.
      */

@@ -25,14 +25,14 @@ public final class WeightedAllocationWorkerSelectorAttachmentInternal extends Wo
     private List<WorkerWeightedAllocationInternal> allocations;
 
     /**
-     * Creates an instance of WeightedAllocationWorkerSelectorAttachment class.
+     * Creates an instance of WeightedAllocationWorkerSelectorAttachmentInternal class.
      *
      * @param allocations the allocations value to set.
      */
     @Generated
     @JsonCreator
     public WeightedAllocationWorkerSelectorAttachmentInternal(
-        @JsonProperty(value = "allocations") List<WorkerWeightedAllocationInternal> allocations) {
+            @JsonProperty(value = "allocations") List<WorkerWeightedAllocationInternal> allocations) {
         this.allocations = allocations;
     }
 

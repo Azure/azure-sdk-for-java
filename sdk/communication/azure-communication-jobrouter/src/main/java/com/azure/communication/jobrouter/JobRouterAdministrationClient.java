@@ -276,7 +276,7 @@ public final class JobRouterAdministrationClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of distribution policies as paginated response with {@link PagedIterable}.
+     * @return paged collection of DistributionPolicy items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -562,7 +562,7 @@ public final class JobRouterAdministrationClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of classification policies as paginated response with {@link PagedIterable}.
+     * @return paged collection of ClassificationPolicy items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -847,7 +847,7 @@ public final class JobRouterAdministrationClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of exception policies as paginated response with {@link PagedIterable}.
+     * @return paged collection of ExceptionPolicy items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -983,9 +983,11 @@ public final class JobRouterAdministrationClient {
      * @return a queue that can contain jobs to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateQueueWithResponse(String id, RouterQueue routerQueue, RequestOptions requestOptions) {
+    public Response<BinaryData> updateQueueWithResponse(
+            String id, RouterQueue routerQueue, RequestOptions requestOptions) {
         RouterQueueInternal routerQueueInternal = QueueAdapter.convertRouterQueueToRouterQueueInternal(routerQueue);
-        return this.serviceClient.upsertQueueWithResponse(id, BinaryData.fromObject(routerQueueInternal), requestOptions);
+        return this.serviceClient.upsertQueueWithResponse(
+                id, BinaryData.fromObject(routerQueueInternal), requestOptions);
     }
 
     /**
@@ -1086,7 +1088,7 @@ public final class JobRouterAdministrationClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of queues as paginated response with {@link PagedIterable}.
+     * @return paged collection of RouterQueue items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1259,7 +1261,7 @@ public final class JobRouterAdministrationClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of exception policies as paginated response with {@link PagedIterable}.
+     * @return paged collection of ExceptionPolicy items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)

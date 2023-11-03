@@ -11,24 +11,24 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** An attachment of queue selectors to resolve a queue to a job from a classification policy. */
 @JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = QueueSelectorAttachmentInternal.class)
-@JsonTypeName("QueueSelectorAttachment")
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "kind",
+        defaultImpl = QueueSelectorAttachmentInternal.class)
+@JsonTypeName("QueueSelectorAttachmentInternal")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "conditional", value = ConditionalQueueSelectorAttachmentInternal.class),
     @JsonSubTypes.Type(name = "pass-through", value = PassThroughQueueSelectorAttachmentInternal.class),
     @JsonSubTypes.Type(name = "rule-engine", value = RuleEngineQueueSelectorAttachmentInternal.class),
     @JsonSubTypes.Type(name = "static", value = StaticQueueSelectorAttachmentInternal.class),
     @JsonSubTypes.Type(
-        name = "weighted-allocation-queue-selector",
-        value = WeightedAllocationQueueSelectorAttachmentInternal.class)
+            name = "weighted-allocation-queue-selector",
+            value = WeightedAllocationQueueSelectorAttachmentInternal.class)
 })
 @Immutable
 public class QueueSelectorAttachmentInternal {
 
-    /** Creates an instance of QueueSelectorAttachment class. */
+    /** Creates an instance of QueueSelectorAttachmentInternal class. */
     @Generated
     public QueueSelectorAttachmentInternal() {}
 }

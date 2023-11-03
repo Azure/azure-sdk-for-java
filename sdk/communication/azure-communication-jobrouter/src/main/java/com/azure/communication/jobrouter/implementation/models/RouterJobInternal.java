@@ -10,7 +10,6 @@ import com.azure.communication.jobrouter.models.RouterJobStatus;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +17,13 @@ import java.util.Map;
 /** A unit of work to be routed. */
 @Fluent
 public final class RouterJobInternal {
+
+    /*
+     * The entity tag for this resource.
+     */
+    @Generated
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    private String etag;
 
     /*
      * The id of the job.
@@ -83,31 +89,29 @@ public final class RouterJobInternal {
     private String dispositionCode;
 
     /*
-     * A collection of manually specified label selectors, which a worker must satisfy
-     * in order to process this job.
+     * A collection of manually specified label selectors, which a worker must satisfy in order to process this job.
      */
     @Generated
     @JsonProperty(value = "requestedWorkerSelectors")
     private List<RouterWorkerSelectorInternal> requestedWorkerSelectors;
 
     /*
-     * A collection of label selectors attached by a classification policy, which a
-     * worker must satisfy in order to process this job.
+     * A collection of label selectors attached by a classification policy, which a worker must satisfy in order to
+     * process this job.
      */
+    @Generated
     @JsonProperty(value = "attachedWorkerSelectors", access = JsonProperty.Access.WRITE_ONLY)
     private List<RouterWorkerSelectorInternal> attachedWorkerSelectors;
 
     /*
-     * A set of key/value pairs that are identifying attributes used by the rules
-     * engines to make decisions.
+     * A set of key/value pairs that are identifying attributes used by the rules engines to make decisions.
      */
     @Generated
     @JsonProperty(value = "labels")
     private Map<String, Object> labels;
 
     /*
-     * A collection of the assignments of the job.
-     * Key is AssignmentId.
+     * A collection of the assignments of the job. Key is AssignmentId.
      */
     @Generated
     @JsonProperty(value = "assignments", access = JsonProperty.Access.WRITE_ONLY)
@@ -135,26 +139,25 @@ public final class RouterJobInternal {
     private OffsetDateTime scheduledAt;
 
     /*
-     * The matching mode to be applied to this job.
-     *
-     * Supported types:
-     *
-     *
-     * QueueAndMatchMode: Used when matching worker to a job is required to be
-     * done right after job is queued.
-     * ScheduleAndSuspendMode: Used for scheduling
-     * jobs to be queued at a future time. At specified time, matching of a worker to
-     * the job will not start automatically.
-     * SuspendMode: Used when matching workers
-     * to a job needs to be suspended.
+     * If provided, will determine how job matching will be carried out. Default mode: QueueAndMatchMode.
      */
     @Generated
     @JsonProperty(value = "matchingMode")
     private JobMatchingMode matchingMode;
 
-    /** Creates an instance of RouterJob class. */
+    /** Creates an instance of RouterJobInternal class. */
     @Generated
     public RouterJobInternal() {}
+
+    /**
+     * Get the etag property: The entity tag for this resource.
+     *
+     * @return the etag value.
+     */
+    @Generated
+    public String getEtag() {
+        return this.etag;
+    }
 
     /**
      * Get the id property: The id of the job.
@@ -180,7 +183,7 @@ public final class RouterJobInternal {
      * Set the channelReference property: Reference to an external parent context, eg. call ID.
      *
      * @param channelReference the channelReference value to set.
-     * @return the RouterJob object itself.
+     * @return the RouterJobInternal object itself.
      */
     @Generated
     public RouterJobInternal setChannelReference(String channelReference) {
@@ -222,7 +225,7 @@ public final class RouterJobInternal {
      * Set the channelId property: The channel identifier. eg. voice, chat, etc.
      *
      * @param channelId the channelId value to set.
-     * @return the RouterJob object itself.
+     * @return the RouterJobInternal object itself.
      */
     @Generated
     public RouterJobInternal setChannelId(String channelId) {
@@ -244,7 +247,7 @@ public final class RouterJobInternal {
      * Set the classificationPolicyId property: The Id of the Classification policy used for classifying a job.
      *
      * @param classificationPolicyId the classificationPolicyId value to set.
-     * @return the RouterJob object itself.
+     * @return the RouterJobInternal object itself.
      */
     @Generated
     public RouterJobInternal setClassificationPolicyId(String classificationPolicyId) {
@@ -266,7 +269,7 @@ public final class RouterJobInternal {
      * Set the queueId property: The Id of the Queue that this job is queued to.
      *
      * @param queueId the queueId value to set.
-     * @return the RouterJob object itself.
+     * @return the RouterJobInternal object itself.
      */
     @Generated
     public RouterJobInternal setQueueId(String queueId) {
@@ -288,7 +291,7 @@ public final class RouterJobInternal {
      * Set the priority property: The priority of this job.
      *
      * @param priority the priority value to set.
-     * @return the RouterJob object itself.
+     * @return the RouterJobInternal object itself.
      */
     @Generated
     public RouterJobInternal setPriority(Integer priority) {
@@ -310,7 +313,7 @@ public final class RouterJobInternal {
      * Set the dispositionCode property: Reason code for cancelled or closed jobs.
      *
      * @param dispositionCode the dispositionCode value to set.
-     * @return the RouterJob object itself.
+     * @return the RouterJobInternal object itself.
      */
     @Generated
     public RouterJobInternal setDispositionCode(String dispositionCode) {
@@ -334,7 +337,7 @@ public final class RouterJobInternal {
      * must satisfy in order to process this job.
      *
      * @param requestedWorkerSelectors the requestedWorkerSelectors value to set.
-     * @return the RouterJob object itself.
+     * @return the RouterJobInternal object itself.
      */
     @Generated
     public RouterJobInternal setRequestedWorkerSelectors(List<RouterWorkerSelectorInternal> requestedWorkerSelectors) {
@@ -348,6 +351,7 @@ public final class RouterJobInternal {
      *
      * @return the attachedWorkerSelectors value.
      */
+    @Generated
     public List<RouterWorkerSelectorInternal> getAttachedWorkerSelectors() {
         return this.attachedWorkerSelectors;
     }
@@ -368,7 +372,7 @@ public final class RouterJobInternal {
      * make decisions.
      *
      * @param labels the labels value to set.
-     * @return the RouterJob object itself.
+     * @return the RouterJobInternal object itself.
      */
     @Generated
     public RouterJobInternal setLabels(Map<String, Object> labels) {
@@ -400,7 +404,7 @@ public final class RouterJobInternal {
      * Set the tags property: A set of non-identifying attributes attached to this job.
      *
      * @param tags the tags value to set.
-     * @return the RouterJob object itself.
+     * @return the RouterJobInternal object itself.
      */
     @Generated
     public RouterJobInternal setTags(Map<String, Object> tags) {
@@ -419,6 +423,18 @@ public final class RouterJobInternal {
     }
 
     /**
+     * Set the notes property: Notes attached to a job, sorted by timestamp.
+     *
+     * @param notes the notes value to set.
+     * @return the RouterJobInternal object itself.
+     */
+    @Generated
+    public RouterJobInternal setNotes(List<RouterJobNote> notes) {
+        this.notes = notes;
+        return this;
+    }
+
+    /**
      * Get the scheduledAt property: If set, job will be scheduled to be enqueued at a given time.
      *
      * @return the scheduledAt value.
@@ -429,14 +445,8 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Get the matchingMode property: The matching mode to be applied to this job.
-     *
-     * <p>Supported types:
-     *
-     * <p>QueueAndMatchMode: Used when matching worker to a job is required to be done right after job is queued.
-     * ScheduleAndSuspendMode: Used for scheduling jobs to be queued at a future time. At specified time, matching of a
-     * worker to the job will not start automatically. SuspendMode: Used when matching workers to a job needs to be
-     * suspended.
+     * Get the matchingMode property: If provided, will determine how job matching will be carried out. Default mode:
+     * QueueAndMatchMode.
      *
      * @return the matchingMode value.
      */
@@ -446,50 +456,15 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Set the matchingMode property: The matching mode to be applied to this job.
-     *
-     * <p>Supported types:
-     *
-     * <p>QueueAndMatchMode: Used when matching worker to a job is required to be done right after job is queued.
-     * ScheduleAndSuspendMode: Used for scheduling jobs to be queued at a future time. At specified time, matching of a
-     * worker to the job will not start automatically. SuspendMode: Used when matching workers to a job needs to be
-     * suspended.
+     * Set the matchingMode property: If provided, will determine how job matching will be carried out. Default mode:
+     * QueueAndMatchMode.
      *
      * @param matchingMode the matchingMode value to set.
-     * @return the RouterJob object itself.
+     * @return the RouterJobInternal object itself.
      */
     @Generated
     public RouterJobInternal setMatchingMode(JobMatchingMode matchingMode) {
         this.matchingMode = matchingMode;
-        return this;
-    }
-
-    /*
-     * Concurrency Token.
-     */
-    @Generated
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
-    private String etag;
-
-    /**
-     * Get the etag property: Concurrency Token.
-     *
-     * @return the etag value.
-     */
-    @Generated
-    public String getEtag() {
-        return this.etag;
-    }
-
-    /**
-     * Set the notes property: Notes attached to a job, sorted by timestamp.
-     *
-     * @param notes the notes value to set.
-     * @return the RouterJob object itself.
-     */
-    @Generated
-    public RouterJobInternal setNotes(List<RouterJobNote> notes) {
-        this.notes = notes;
         return this;
     }
 }

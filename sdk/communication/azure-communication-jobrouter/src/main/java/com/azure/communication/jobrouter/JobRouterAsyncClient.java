@@ -573,10 +573,8 @@ public final class JobRouterAsyncClient {
      *     <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, filter jobs by queue.</td></tr>
      *     <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, filter jobs by channel.</td></tr>
      *     <tr><td>classificationPolicyId</td><td>String</td><td>No</td><td>If specified, filter jobs by classificationPolicy.</td></tr>
-     *     <tr><td>scheduledBefore</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled before or at given timestamp.
-     * Range: (-Inf, scheduledBefore].</td></tr>
-     *     <tr><td>scheduledAfter</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled at or after given value. Range:
-     * [scheduledAfter, +Inf).</td></tr>
+     *     <tr><td>scheduledBefore</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled before or at given timestamp. Range: (-Inf, scheduledBefore].</td></tr>
+     *     <tr><td>scheduledAfter</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled at or after given value. Range: [scheduledAfter, +Inf).</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -641,7 +639,7 @@ public final class JobRouterAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of jobs as paginated response with {@link PagedFlux}.
+     * @return paged collection of RouterJob items as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1170,10 +1168,7 @@ public final class JobRouterAsyncClient {
      *     <tr><td>state</td><td>String</td><td>No</td><td>If specified, select workers by worker state. Allowed values: "active", "draining", "inactive", "all".</td></tr>
      *     <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, select workers who have a channel configuration with this channel.</td></tr>
      *     <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, select workers who are assigned to this queue.</td></tr>
-     *     <tr><td>hasCapacity</td><td>Boolean</td><td>No</td><td>If set to true, select only workers who have capacity for the channel specified
-     * by `channelId` or for any channel if `channelId` not specified. If set to
-     * false, then will return all workers including workers without any capacity for
-     * jobs. Defaults to false.</td></tr>
+     *     <tr><td>hasCapacity</td><td>Boolean</td><td>No</td><td>If set to true, select only workers who have capacity for the channel specified by `channelId` or for any channel if `channelId` not specified. If set to false, then will return all workers including workers without any capacity for jobs. Defaults to false.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1229,7 +1224,7 @@ public final class JobRouterAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of workers as paginated response with {@link PagedFlux}.
+     * @return paged collection of RouterWorker items as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)

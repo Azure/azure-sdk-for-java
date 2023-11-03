@@ -17,27 +17,26 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public final class StaticWorkerSelectorAttachmentInternal extends WorkerSelectorAttachmentInternal {
 
     /*
-     * Describes a condition that must be met against a set of labels for worker
-     * selection
+     * The worker selector to attach.
      */
     @Generated
     @JsonProperty(value = "workerSelector")
     private RouterWorkerSelectorInternal workerSelector;
 
     /**
-     * Creates an instance of StaticWorkerSelectorAttachment class.
+     * Creates an instance of StaticWorkerSelectorAttachmentInternal class.
      *
      * @param workerSelector the workerSelector value to set.
      */
     @Generated
     @JsonCreator
-    public StaticWorkerSelectorAttachmentInternal(@JsonProperty(value = "workerSelector") RouterWorkerSelectorInternal workerSelector) {
+    public StaticWorkerSelectorAttachmentInternal(
+            @JsonProperty(value = "workerSelector") RouterWorkerSelectorInternal workerSelector) {
         this.workerSelector = workerSelector;
     }
 
     /**
-     * Get the workerSelector property: Describes a condition that must be met against a set of labels for worker
-     * selection.
+     * Get the workerSelector property: The worker selector to attach.
      *
      * @return the workerSelector value.
      */

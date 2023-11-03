@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class UnassignJobOptions {
 
     /*
-     * If SuspendMatching is true, then the job is not queued for re-matching with a
-     * worker.
+     * If SuspendMatching is true, then the job is not queued for re-matching with a worker.
      */
     @Generated
     @JsonProperty(value = "suspendMatching")

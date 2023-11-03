@@ -14,6 +14,13 @@ import java.util.List;
 public final class ClassificationPolicyInternal {
 
     /*
+     * The entity tag for this resource.
+     */
+    @Generated
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    private String etag;
+
+    /*
      * Unique identifier of this policy.
      */
     @Generated
@@ -35,27 +42,49 @@ public final class ClassificationPolicyInternal {
     private String fallbackQueueId;
 
     /*
-     * A rule of one of the following types:
-     *
-     * StaticRule:  A rule
-     * providing static rules that always return the same result, regardless of
-     * input.
-     * DirectMapRule:  A rule that return the same labels as the input
-     * labels.
-     * ExpressionRule: A rule providing inline expression
-     * rules.
-     * FunctionRule: A rule providing a binding to an HTTP Triggered Azure
-     * Function.
-     * WebhookRule: A rule providing a binding to a webserver following
-     * OAuth2.0 authentication protocol.
+     * The queue selector attachments used to resolve a queue for a given job.
+     */
+    @Generated
+    @JsonProperty(value = "queueSelectorAttachments")
+    private List<QueueSelectorAttachmentInternal> queueSelectorAttachments;
+
+    /*
+     * The rule to determine a priority score for a given job.
      */
     @Generated
     @JsonProperty(value = "prioritizationRule")
     private RouterRule prioritizationRule;
 
-    /** Creates an instance of ClassificationPolicy class. */
+    /*
+     * The worker selector attachments used to attach worker selectors to a given job.
+     */
+    @Generated
+    @JsonProperty(value = "workerSelectorAttachments")
+    private List<WorkerSelectorAttachmentInternal> workerSelectorAttachments;
+
+    /** Creates an instance of ClassificationPolicyInternal class. */
     @Generated
     public ClassificationPolicyInternal() {}
+
+    /**
+     * Get the etag property: The entity tag for this resource.
+     *
+     * @return the etag value.
+     */
+    @Generated
+    public String getEtag() {
+        return this.etag;
+    }
+
+    /**
+     * Set etag.
+     * @param etag etag.
+     * @return this.
+     */
+    public ClassificationPolicyInternal setEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
 
     /**
      * Get the id property: Unique identifier of this policy.
@@ -68,7 +97,7 @@ public final class ClassificationPolicyInternal {
     }
 
     /**
-     * Setter for id.
+     * Sets id.
      * @param id id.
      * @return this.
      */
@@ -91,7 +120,7 @@ public final class ClassificationPolicyInternal {
      * Set the name property: Friendly name of this policy.
      *
      * @param name the name value to set.
-     * @return the ClassificationPolicy object itself.
+     * @return the ClassificationPolicyInternal object itself.
      */
     @Generated
     public ClassificationPolicyInternal setName(String name) {
@@ -113,84 +142,11 @@ public final class ClassificationPolicyInternal {
      * Set the fallbackQueueId property: The fallback queue to select if the queue selector doesn't find a match.
      *
      * @param fallbackQueueId the fallbackQueueId value to set.
-     * @return the ClassificationPolicy object itself.
+     * @return the ClassificationPolicyInternal object itself.
      */
     @Generated
     public ClassificationPolicyInternal setFallbackQueueId(String fallbackQueueId) {
         this.fallbackQueueId = fallbackQueueId;
-        return this;
-    }
-
-    /**
-     * Get the prioritizationRule property: A rule of one of the following types:
-     *
-     * <p>StaticRule: A rule providing static rules that always return the same result, regardless of input.
-     * DirectMapRule: A rule that return the same labels as the input labels. ExpressionRule: A rule providing inline
-     * expression rules. FunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule: A
-     * rule providing a binding to a webserver following OAuth2.0 authentication protocol.
-     *
-     * @return the prioritizationRule value.
-     */
-    @Generated
-    public RouterRule getPrioritizationRule() {
-        return this.prioritizationRule;
-    }
-
-    /**
-     * Set the prioritizationRule property: A rule of one of the following types:
-     *
-     * <p>StaticRule: A rule providing static rules that always return the same result, regardless of input.
-     * DirectMapRule: A rule that return the same labels as the input labels. ExpressionRule: A rule providing inline
-     * expression rules. FunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule: A
-     * rule providing a binding to a webserver following OAuth2.0 authentication protocol.
-     *
-     * @param prioritizationRule the prioritizationRule value to set.
-     * @return the ClassificationPolicy object itself.
-     */
-    @Generated
-    public ClassificationPolicyInternal setPrioritizationRule(RouterRule prioritizationRule) {
-        this.prioritizationRule = prioritizationRule;
-        return this;
-    }
-
-    /*
-     * Concurrency Token.
-     */
-    @Generated
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
-    private String etag;
-
-    /*
-     * The queue selector attachments used to resolve a queue for a given job.
-     */
-    @Generated
-    @JsonProperty(value = "queueSelectorAttachments")
-    private List<QueueSelectorAttachmentInternal> queueSelectorAttachments;
-
-    /*
-     * The worker selector attachments used to attach worker selectors to a given job.
-     */
-    @Generated
-    @JsonProperty(value = "workerSelectorAttachments")
-    private List<WorkerSelectorAttachmentInternal> workerSelectorAttachments;
-
-    /**
-     * Get the etag property: Concurrency Token.
-     *
-     * @return the etag value.
-     */
-    @Generated
-    public String getEtag() {
-        return this.etag;
-    }
-
-    /**
-     * Setter  for eTag.
-     * @param eTag eTag.
-     * @return this.
-     */
-    public ClassificationPolicyInternal setEtag(String eTag) {
-        this.etag = etag;
         return this;
     }
 
@@ -210,11 +166,34 @@ public final class ClassificationPolicyInternal {
      * job.
      *
      * @param queueSelectorAttachments the queueSelectorAttachments value to set.
-     * @return the ClassificationPolicy object itself.
+     * @return the ClassificationPolicyInternal object itself.
      */
     @Generated
-    public ClassificationPolicyInternal setQueueSelectorAttachments(List<QueueSelectorAttachmentInternal> queueSelectorAttachments) {
+    public ClassificationPolicyInternal setQueueSelectorAttachments(
+            List<QueueSelectorAttachmentInternal> queueSelectorAttachments) {
         this.queueSelectorAttachments = queueSelectorAttachments;
+        return this;
+    }
+
+    /**
+     * Get the prioritizationRule property: The rule to determine a priority score for a given job.
+     *
+     * @return the prioritizationRule value.
+     */
+    @Generated
+    public RouterRule getPrioritizationRule() {
+        return this.prioritizationRule;
+    }
+
+    /**
+     * Set the prioritizationRule property: The rule to determine a priority score for a given job.
+     *
+     * @param prioritizationRule the prioritizationRule value to set.
+     * @return the ClassificationPolicyInternal object itself.
+     */
+    @Generated
+    public ClassificationPolicyInternal setPrioritizationRule(RouterRule prioritizationRule) {
+        this.prioritizationRule = prioritizationRule;
         return this;
     }
 
@@ -234,12 +213,12 @@ public final class ClassificationPolicyInternal {
      * given job.
      *
      * @param workerSelectorAttachments the workerSelectorAttachments value to set.
-     * @return the ClassificationPolicy object itself.
+     * @return the ClassificationPolicyInternal object itself.
      */
     @Generated
-    public ClassificationPolicyInternal setWorkerSelectorAttachments(List<WorkerSelectorAttachmentInternal> workerSelectorAttachments) {
+    public ClassificationPolicyInternal setWorkerSelectorAttachments(
+            List<WorkerSelectorAttachmentInternal> workerSelectorAttachments) {
         this.workerSelectorAttachments = workerSelectorAttachments;
         return this;
     }
 }
-

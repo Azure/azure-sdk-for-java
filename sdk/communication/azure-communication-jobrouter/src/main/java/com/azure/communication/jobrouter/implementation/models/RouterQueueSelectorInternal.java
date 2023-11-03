@@ -21,8 +21,7 @@ public final class RouterQueueSelectorInternal {
     private String key;
 
     /*
-     * Describes how the value of the label is compared to the value defined on the
-     * label selector
+     * Describes how the value of the label is compared to the value defined on the label selector
      */
     @Generated
     @JsonProperty(value = "labelOperator")
@@ -36,7 +35,7 @@ public final class RouterQueueSelectorInternal {
     private Object value;
 
     /**
-     * Creates an instance of RouterQueueSelector class.
+     * Creates an instance of RouterQueueSelectorInternal class.
      *
      * @param key the key value to set.
      * @param labelOperator the labelOperator value to set.
@@ -44,8 +43,8 @@ public final class RouterQueueSelectorInternal {
     @Generated
     @JsonCreator
     public RouterQueueSelectorInternal(
-        @JsonProperty(value = "key") String key,
-        @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
+            @JsonProperty(value = "key") String key,
+            @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
         this.key = key;
         this.labelOperator = labelOperator;
     }
@@ -85,7 +84,7 @@ public final class RouterQueueSelectorInternal {
      * Set the value property: The value to compare against the actual label value with the given operator.
      *
      * @param value the value value to set.
-     * @return the RouterQueueSelector object itself.
+     * @return the RouterQueueSelectorInternal object itself.
      */
     @Generated
     public RouterQueueSelectorInternal setValue(Object value) {

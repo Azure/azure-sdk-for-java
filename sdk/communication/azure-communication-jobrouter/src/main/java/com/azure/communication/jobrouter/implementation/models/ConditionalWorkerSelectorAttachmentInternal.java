@@ -19,19 +19,7 @@ import java.util.List;
 public final class ConditionalWorkerSelectorAttachmentInternal extends WorkerSelectorAttachmentInternal {
 
     /*
-     * A rule of one of the following types:
-     *
-     * StaticRule:  A rule
-     * providing static rules that always return the same result, regardless of
-     * input.
-     * DirectMapRule:  A rule that return the same labels as the input
-     * labels.
-     * ExpressionRule: A rule providing inline expression
-     * rules.
-     * FunctionRule: A rule providing a binding to an HTTP Triggered Azure
-     * Function.
-     * WebhookRule: A rule providing a binding to a webserver following
-     * OAuth2.0 authentication protocol.
+     * The condition that must be true for the worker selectors to be attached
      */
     @Generated
     @JsonProperty(value = "condition")
@@ -45,7 +33,7 @@ public final class ConditionalWorkerSelectorAttachmentInternal extends WorkerSel
     private List<RouterWorkerSelectorInternal> workerSelectors;
 
     /**
-     * Creates an instance of ConditionalWorkerSelectorAttachment class.
+     * Creates an instance of ConditionalWorkerSelectorAttachmentInternal class.
      *
      * @param condition the condition value to set.
      * @param workerSelectors the workerSelectors value to set.
@@ -53,19 +41,14 @@ public final class ConditionalWorkerSelectorAttachmentInternal extends WorkerSel
     @Generated
     @JsonCreator
     public ConditionalWorkerSelectorAttachmentInternal(
-        @JsonProperty(value = "condition") RouterRule condition,
-        @JsonProperty(value = "workerSelectors") List<RouterWorkerSelectorInternal> workerSelectors) {
+            @JsonProperty(value = "condition") RouterRule condition,
+            @JsonProperty(value = "workerSelectors") List<RouterWorkerSelectorInternal> workerSelectors) {
         this.condition = condition;
         this.workerSelectors = workerSelectors;
     }
 
     /**
-     * Get the condition property: A rule of one of the following types:
-     *
-     * <p>StaticRule: A rule providing static rules that always return the same result, regardless of input.
-     * DirectMapRule: A rule that return the same labels as the input labels. ExpressionRule: A rule providing inline
-     * expression rules. FunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule: A
-     * rule providing a binding to a webserver following OAuth2.0 authentication protocol.
+     * Get the condition property: The condition that must be true for the worker selectors to be attached.
      *
      * @return the condition value.
      */

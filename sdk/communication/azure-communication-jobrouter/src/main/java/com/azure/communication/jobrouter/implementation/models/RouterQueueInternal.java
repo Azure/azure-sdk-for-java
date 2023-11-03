@@ -6,12 +6,18 @@ package com.azure.communication.jobrouter.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Map;
 
 /** A queue that can contain jobs to be routed. */
 @Fluent
 public final class RouterQueueInternal {
+
+    /*
+     * The entity tag for this resource.
+     */
+    @Generated
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    private String etag;
 
     /*
      * The Id of this queue
@@ -28,32 +34,44 @@ public final class RouterQueueInternal {
     private String name;
 
     /*
-     * The ID of the distribution policy that will determine how a job is distributed
-     * to workers.
+     * The ID of the distribution policy that will determine how a job is distributed to workers.
      */
     @Generated
     @JsonProperty(value = "distributionPolicyId")
     private String distributionPolicyId;
 
     /*
-     * A set of key/value pairs that are identifying attributes used by the rules
-     * engines to make decisions.
+     * A set of key/value pairs that are identifying attributes used by the rules engines to make decisions.
      */
     @Generated
     @JsonProperty(value = "labels")
     private Map<String, Object> labels;
 
     /*
-     * (Optional) The ID of the exception policy that determines various job
-     * escalation rules.
+     * The ID of the exception policy that determines various job escalation rules.
      */
     @Generated
     @JsonProperty(value = "exceptionPolicyId")
     private String exceptionPolicyId;
 
-    /** Creates an instance of RouterQueue class. */
+    /** Creates an instance of RouterQueueInternal class. */
     @Generated
     public RouterQueueInternal() {}
+
+    /**
+     * Get the etag property: The entity tag for this resource.
+     *
+     * @return the etag value.
+     */
+    @Generated
+    public String getEtag() {
+        return this.etag;
+    }
+
+    public RouterQueueInternal setEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
 
     /**
      * Get the id property: The Id of this queue.
@@ -66,7 +84,7 @@ public final class RouterQueueInternal {
     }
 
     /**
-     * Setter for id.
+     * Set id.
      * @param id id.
      * @return this.
      */
@@ -89,7 +107,7 @@ public final class RouterQueueInternal {
      * Set the name property: The name of this queue.
      *
      * @param name the name value to set.
-     * @return the RouterQueue object itself.
+     * @return the RouterQueueInternal object itself.
      */
     @Generated
     public RouterQueueInternal setName(String name) {
@@ -113,7 +131,7 @@ public final class RouterQueueInternal {
      * distributed to workers.
      *
      * @param distributionPolicyId the distributionPolicyId value to set.
-     * @return the RouterQueue object itself.
+     * @return the RouterQueueInternal object itself.
      */
     @Generated
     public RouterQueueInternal setDistributionPolicyId(String distributionPolicyId) {
@@ -137,7 +155,7 @@ public final class RouterQueueInternal {
      * make decisions.
      *
      * @param labels the labels value to set.
-     * @return the RouterQueue object itself.
+     * @return the RouterQueueInternal object itself.
      */
     @Generated
     public RouterQueueInternal setLabels(Map<String, Object> labels) {
@@ -146,8 +164,7 @@ public final class RouterQueueInternal {
     }
 
     /**
-     * Get the exceptionPolicyId property: (Optional) The ID of the exception policy that determines various job
-     * escalation rules.
+     * Get the exceptionPolicyId property: The ID of the exception policy that determines various job escalation rules.
      *
      * @return the exceptionPolicyId value.
      */
@@ -157,42 +174,14 @@ public final class RouterQueueInternal {
     }
 
     /**
-     * Set the exceptionPolicyId property: (Optional) The ID of the exception policy that determines various job
-     * escalation rules.
+     * Set the exceptionPolicyId property: The ID of the exception policy that determines various job escalation rules.
      *
      * @param exceptionPolicyId the exceptionPolicyId value to set.
-     * @return the RouterQueue object itself.
+     * @return the RouterQueueInternal object itself.
      */
     @Generated
     public RouterQueueInternal setExceptionPolicyId(String exceptionPolicyId) {
         this.exceptionPolicyId = exceptionPolicyId;
-        return this;
-    }
-
-    /*
-     * Concurrency Token.
-     */
-    @Generated
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
-    private String etag;
-
-    /**
-     * Get the etag property: Concurrency Token.
-     *
-     * @return the etag value.
-     */
-    @Generated
-    public String getEtag() {
-        return this.etag;
-    }
-
-    /**
-     * Setter for etag.
-     * @param etag etag.
-     * @return this.
-     */
-    public RouterQueueInternal setEtag(String etag) {
-        this.etag = etag;
         return this;
     }
 }

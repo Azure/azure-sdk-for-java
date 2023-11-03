@@ -32,7 +32,7 @@ public final class PassThroughQueueSelectorAttachmentInternal extends QueueSelec
     private LabelOperator labelOperator;
 
     /**
-     * Creates an instance of PassThroughQueueSelectorAttachment class.
+     * Creates an instance of PassThroughQueueSelectorAttachmentInternal class.
      *
      * @param key the key value to set.
      * @param labelOperator the labelOperator value to set.
@@ -40,8 +40,8 @@ public final class PassThroughQueueSelectorAttachmentInternal extends QueueSelec
     @Generated
     @JsonCreator
     public PassThroughQueueSelectorAttachmentInternal(
-        @JsonProperty(value = "key") String key,
-        @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
+            @JsonProperty(value = "key") String key,
+            @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
         this.key = key;
         this.labelOperator = labelOperator;
     }

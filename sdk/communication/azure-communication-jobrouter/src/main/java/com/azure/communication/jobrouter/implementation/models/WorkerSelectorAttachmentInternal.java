@@ -11,24 +11,24 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** An attachment which attaches worker selectors to a job. */
 @JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = WorkerSelectorAttachmentInternal.class)
-@JsonTypeName("WorkerSelectorAttachment")
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "kind",
+        defaultImpl = WorkerSelectorAttachmentInternal.class)
+@JsonTypeName("WorkerSelectorAttachmentInternal")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "conditional", value = ConditionalWorkerSelectorAttachmentInternal.class),
     @JsonSubTypes.Type(name = "pass-through", value = PassThroughWorkerSelectorAttachmentInternal.class),
     @JsonSubTypes.Type(name = "rule-engine", value = RuleEngineWorkerSelectorAttachmentInternal.class),
     @JsonSubTypes.Type(name = "static", value = StaticWorkerSelectorAttachmentInternal.class),
     @JsonSubTypes.Type(
-        name = "weighted-allocation-worker-selector",
-        value = WeightedAllocationWorkerSelectorAttachmentInternal.class)
+            name = "weighted-allocation-worker-selector",
+            value = WeightedAllocationWorkerSelectorAttachmentInternal.class)
 })
 @Immutable
 public class WorkerSelectorAttachmentInternal {
 
-    /** Creates an instance of WorkerSelectorAttachment class. */
+    /** Creates an instance of WorkerSelectorAttachmentInternal class. */
     @Generated
     public WorkerSelectorAttachmentInternal() {}
 }

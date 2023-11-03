@@ -13,7 +13,6 @@ module com.azure.communication.jobrouter {
             com.azure.core,
             com.fasterxml.jackson.databind,
             com.azure.communication.jobrouter.implementation.converters;
-
-    opens com.azure.communication.jobrouter.implementation.models to
-            com.fasterxml.jackson.databind;
+    exports com.azure.communication.jobrouter.implementation.models;
+    opens com.azure.communication.jobrouter.implementation.models to com.azure.communication.jobrouter.implementation.converters, com.azure.core, com.fasterxml.jackson.databind;
 }
