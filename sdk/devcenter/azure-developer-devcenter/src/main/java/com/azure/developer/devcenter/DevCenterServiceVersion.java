@@ -6,7 +6,7 @@ package com.azure.developer.devcenter;
 
 import com.azure.core.util.ServiceVersion;
 
-/** Service version of DevCenterClient. */
+/** Service version of DevCenterServiceClient. */
 public enum DevCenterServiceVersion implements ServiceVersion {
     /** Enum value 2023-04-01. */
     V2023_04_01("2023-04-01");

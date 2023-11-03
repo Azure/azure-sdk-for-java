@@ -17,13 +17,13 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.developer.devcenter.implementation.DeploymentEnvironmentsImpl;
+import com.azure.developer.devcenter.implementation.DeploymentEnvironmentsClientImpl;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous DevCenterClient type. */
+/** Initializes a new instance of the asynchronous DeploymentEnvironmentsClient type. */
 @ServiceClient(builder = DeploymentEnvironmentsClientBuilder.class, isAsync = true)
 public final class DeploymentEnvironmentsAsyncClient {
-    @Generated private final DeploymentEnvironmentsImpl serviceClient;
+    @Generated private final DeploymentEnvironmentsClientImpl serviceClient;
 
     /**
      * Initializes an instance of DeploymentEnvironmentsAsyncClient class.
@@ -31,7 +31,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    DeploymentEnvironmentsAsyncClient(DeploymentEnvironmentsImpl serviceClient) {
+    DeploymentEnvironmentsAsyncClient(DeploymentEnvironmentsClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -67,6 +67,10 @@ public final class DeploymentEnvironmentsAsyncClient {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -117,6 +121,10 @@ public final class DeploymentEnvironmentsAsyncClient {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -159,6 +167,10 @@ public final class DeploymentEnvironmentsAsyncClient {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -203,6 +215,10 @@ public final class DeploymentEnvironmentsAsyncClient {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -226,6 +242,10 @@ public final class DeploymentEnvironmentsAsyncClient {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -259,11 +279,11 @@ public final class DeploymentEnvironmentsAsyncClient {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)

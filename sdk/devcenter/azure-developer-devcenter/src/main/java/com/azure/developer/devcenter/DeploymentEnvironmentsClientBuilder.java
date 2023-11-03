@@ -12,6 +12,7 @@ import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -20,7 +21,6 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -33,8 +33,9 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.developer.devcenter.implementation.DevCenterClientImpl;
+import com.azure.developer.devcenter.implementation.DeploymentEnvironmentsClientImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +75,9 @@ public final class DeploymentEnvironmentsClientBuilder
     @Generated
     @Override
     public DeploymentEnvironmentsClientBuilder pipeline(HttpPipeline pipeline) {
+        if (this.pipeline != null && pipeline == null) {
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
+        }
         this.pipeline = pipeline;
         return this;
     }
@@ -213,18 +217,21 @@ public final class DeploymentEnvironmentsClientBuilder
     }
 
     /**
-     * Builds an instance of DevCenterClientImpl with the provided parameters.
+     * Builds an instance of DeploymentEnvironmentsClientImpl with the provided parameters.
      *
-     * @return an instance of DevCenterClientImpl.
+     * @return an instance of DeploymentEnvironmentsClientImpl.
      */
     @Generated
-    private DevCenterClientImpl buildInnerClient() {
+    private DeploymentEnvironmentsClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         DevCenterServiceVersion localServiceVersion =
                 (serviceVersion != null) ? serviceVersion : DevCenterServiceVersion.getLatest();
-        DevCenterClientImpl client =
-                new DevCenterClientImpl(
-                        localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);
+        DeploymentEnvironmentsClientImpl client =
+                new DeploymentEnvironmentsClientImpl(
+                        localPipeline,
+                        JacksonAdapter.createDefaultSerializerAdapter(),
+                        this.endpoint,
+                        localServiceVersion);
         return client;
     }
 
@@ -242,7 +249,9 @@ public final class DeploymentEnvironmentsClientBuilder
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        localClientOptions
+                .getHeaders()
+                .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
@@ -252,7 +261,6 @@ public final class DeploymentEnvironmentsClientBuilder
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
-        policies.add(new CookiePolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
@@ -277,7 +285,7 @@ public final class DeploymentEnvironmentsClientBuilder
      */
     @Generated
     public DeploymentEnvironmentsAsyncClient buildAsyncClient() {
-        return new DeploymentEnvironmentsAsyncClient(buildInnerClient().getDeploymentEnvironments());
+        return new DeploymentEnvironmentsAsyncClient(buildInnerClient());
     }
 
     /**
@@ -287,6 +295,8 @@ public final class DeploymentEnvironmentsClientBuilder
      */
     @Generated
     public DeploymentEnvironmentsClient buildClient() {
-        return new DeploymentEnvironmentsClient(buildInnerClient().getDeploymentEnvironments());
+        return new DeploymentEnvironmentsClient(buildInnerClient());
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DeploymentEnvironmentsClientBuilder.class);
 }

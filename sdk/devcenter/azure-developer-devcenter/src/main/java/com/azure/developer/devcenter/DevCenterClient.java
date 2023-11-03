@@ -16,12 +16,12 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.developer.devcenter.implementation.DevCentersImpl;
+import com.azure.developer.devcenter.implementation.DevCenterClientImpl;
 
 /** Initializes a new instance of the synchronous DevCenterClient type. */
 @ServiceClient(builder = DevCenterClientBuilder.class)
 public final class DevCenterClient {
-    @Generated private final DevCentersImpl serviceClient;
+    @Generated private final DevCenterClientImpl serviceClient;
 
     /**
      * Initializes an instance of DevCenterClient class.
@@ -29,7 +29,7 @@ public final class DevCenterClient {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    DevCenterClient(DevCentersImpl serviceClient) {
+    DevCenterClient(DevCenterClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 

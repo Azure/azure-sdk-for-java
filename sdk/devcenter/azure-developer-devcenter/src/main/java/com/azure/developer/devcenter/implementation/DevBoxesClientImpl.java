@@ -23,6 +23,10 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
@@ -35,9 +39,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.DefaultPollingStrategy;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.PollingStrategyOptions;
 import com.azure.core.util.polling.SyncDefaultPollingStrategy;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.developer.devcenter.DevCenterServiceVersion;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -45,31 +53,110 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DevBoxes. */
-public final class DevBoxesImpl {
+/** Initializes a new instance of the DevBoxesClient type. */
+public final class DevBoxesClientImpl {
     /** The proxy service used to perform REST calls. */
-    private final DevBoxesService service;
+    private final DevBoxesClientService service;
 
-    /** The service client containing this operation class. */
-    private final DevCenterClientImpl client;
+    /** The DevCenter-specific URI to operate on. */
+    private final String endpoint;
 
     /**
-     * Initializes an instance of DevBoxesImpl.
+     * Gets The DevCenter-specific URI to operate on.
      *
-     * @param client the instance of the service client containing this operation class.
+     * @return the endpoint value.
      */
-    DevBoxesImpl(DevCenterClientImpl client) {
-        this.service = RestProxy.create(DevBoxesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
+    public String getEndpoint() {
+        return this.endpoint;
+    }
+
+    /** Service version. */
+    private final DevCenterServiceVersion serviceVersion;
+
+    /**
+     * Gets Service version.
+     *
+     * @return the serviceVersion value.
+     */
+    public DevCenterServiceVersion getServiceVersion() {
+        return this.serviceVersion;
+    }
+
+    /** The HTTP pipeline to send requests through. */
+    private final HttpPipeline httpPipeline;
+
+    /**
+     * Gets The HTTP pipeline to send requests through.
+     *
+     * @return the httpPipeline value.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return this.httpPipeline;
+    }
+
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
     }
 
     /**
-     * The interface defining all the services for DevCenterDevBoxes to be used by the proxy service to perform REST
-     * calls.
+     * Initializes an instance of DevBoxesClient client.
+     *
+     * @param endpoint The DevCenter-specific URI to operate on.
+     * @param serviceVersion Service version.
+     */
+    public DevBoxesClientImpl(String endpoint, DevCenterServiceVersion serviceVersion) {
+        this(
+                new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+                JacksonAdapter.createDefaultSerializerAdapter(),
+                endpoint,
+                serviceVersion);
+    }
+
+    /**
+     * Initializes an instance of DevBoxesClient client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param endpoint The DevCenter-specific URI to operate on.
+     * @param serviceVersion Service version.
+     */
+    public DevBoxesClientImpl(HttpPipeline httpPipeline, String endpoint, DevCenterServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+    }
+
+    /**
+     * Initializes an instance of DevBoxesClient client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param endpoint The DevCenter-specific URI to operate on.
+     * @param serviceVersion Service version.
+     */
+    public DevBoxesClientImpl(
+            HttpPipeline httpPipeline,
+            SerializerAdapter serializerAdapter,
+            String endpoint,
+            DevCenterServiceVersion serviceVersion) {
+        this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
+        this.endpoint = endpoint;
+        this.serviceVersion = serviceVersion;
+        this.service = RestProxy.create(DevBoxesClientService.class, this.httpPipeline, this.getSerializerAdapter());
+    }
+
+    /**
+     * The interface defining all the services for DevBoxesClient to be used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DevCenterDevBoxes")
-    public interface DevBoxesService {
+    @ServiceInterface(name = "DevBoxesClient")
+    public interface DevBoxesClientService {
         @Get("/projects/{projectName}/pools")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -86,7 +173,7 @@ public final class DevBoxesImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -106,7 +193,7 @@ public final class DevBoxesImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -127,7 +214,7 @@ public final class DevBoxesImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("poolName") String poolName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -148,7 +235,7 @@ public final class DevBoxesImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("poolName") String poolName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -169,7 +256,7 @@ public final class DevBoxesImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("poolName") String poolName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -190,7 +277,7 @@ public final class DevBoxesImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("poolName") String poolName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -212,7 +299,7 @@ public final class DevBoxesImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("poolName") String poolName,
                 @PathParam("scheduleName") String scheduleName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -234,7 +321,7 @@ public final class DevBoxesImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("poolName") String poolName,
                 @PathParam("scheduleName") String scheduleName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -253,7 +340,7 @@ public final class DevBoxesImpl {
         Mono<Response<BinaryData>> listAllDevBoxes(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -272,7 +359,7 @@ public final class DevBoxesImpl {
         Response<BinaryData> listAllDevBoxesSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -292,7 +379,7 @@ public final class DevBoxesImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("userId") String userId,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -312,7 +399,7 @@ public final class DevBoxesImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("userId") String userId,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -333,7 +420,7 @@ public final class DevBoxesImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -354,7 +441,7 @@ public final class DevBoxesImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -376,7 +463,7 @@ public final class DevBoxesImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("devBoxName") String devBoxName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -398,7 +485,7 @@ public final class DevBoxesImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("devBoxName") String devBoxName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -420,8 +507,8 @@ public final class DevBoxesImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("devBoxName") String devBoxName,
+                @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData body,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -443,8 +530,8 @@ public final class DevBoxesImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("devBoxName") String devBoxName,
+                @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData body,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -466,7 +553,7 @@ public final class DevBoxesImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("devBoxName") String devBoxName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -488,7 +575,7 @@ public final class DevBoxesImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("devBoxName") String devBoxName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -510,7 +597,7 @@ public final class DevBoxesImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("devBoxName") String devBoxName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -532,7 +619,7 @@ public final class DevBoxesImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("devBoxName") String devBoxName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -554,7 +641,7 @@ public final class DevBoxesImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("devBoxName") String devBoxName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -576,7 +663,7 @@ public final class DevBoxesImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("devBoxName") String devBoxName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -598,7 +685,7 @@ public final class DevBoxesImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("devBoxName") String devBoxName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -620,7 +707,7 @@ public final class DevBoxesImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("devBoxName") String devBoxName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -642,7 +729,7 @@ public final class DevBoxesImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("devBoxName") String devBoxName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -664,7 +751,7 @@ public final class DevBoxesImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("devBoxName") String devBoxName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -680,13 +767,13 @@ public final class DevBoxesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listActions(
+        Mono<Response<BinaryData>> listDevBoxActions(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("devBoxName") String devBoxName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -702,13 +789,13 @@ public final class DevBoxesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listActionsSync(
+        Response<BinaryData> listDevBoxActionsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("devBoxName") String devBoxName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -724,14 +811,14 @@ public final class DevBoxesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAction(
+        Mono<Response<BinaryData>> getDevBoxAction(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("devBoxName") String devBoxName,
                 @PathParam("actionName") String actionName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -747,14 +834,14 @@ public final class DevBoxesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getActionSync(
+        Response<BinaryData> getDevBoxActionSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("devBoxName") String devBoxName,
                 @PathParam("actionName") String actionName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -777,7 +864,7 @@ public final class DevBoxesImpl {
                 @PathParam("userId") String userId,
                 @PathParam("devBoxName") String devBoxName,
                 @PathParam("actionName") String actionName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -800,7 +887,7 @@ public final class DevBoxesImpl {
                 @PathParam("userId") String userId,
                 @PathParam("devBoxName") String devBoxName,
                 @PathParam("actionName") String actionName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -823,8 +910,8 @@ public final class DevBoxesImpl {
                 @PathParam("userId") String userId,
                 @PathParam("devBoxName") String devBoxName,
                 @PathParam("actionName") String actionName,
-                @QueryParam("until") OffsetDateTime until,
-                @HeaderParam("Accept") String accept,
+                @QueryParam("until") OffsetDateTime delayUntil,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -847,8 +934,8 @@ public final class DevBoxesImpl {
                 @PathParam("userId") String userId,
                 @PathParam("devBoxName") String devBoxName,
                 @PathParam("actionName") String actionName,
-                @QueryParam("until") OffsetDateTime until,
-                @HeaderParam("Accept") String accept,
+                @QueryParam("until") OffsetDateTime delayUntil,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -870,8 +957,8 @@ public final class DevBoxesImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("devBoxName") String devBoxName,
-                @QueryParam("until") OffsetDateTime until,
-                @HeaderParam("Accept") String accept,
+                @QueryParam("until") OffsetDateTime delayUntil,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -893,8 +980,8 @@ public final class DevBoxesImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("devBoxName") String devBoxName,
-                @QueryParam("until") OffsetDateTime until,
-                @HeaderParam("Accept") String accept,
+                @QueryParam("until") OffsetDateTime delayUntil,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -913,7 +1000,7 @@ public final class DevBoxesImpl {
         Mono<Response<BinaryData>> listPoolsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -932,7 +1019,7 @@ public final class DevBoxesImpl {
         Response<BinaryData> listPoolsNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -951,7 +1038,7 @@ public final class DevBoxesImpl {
         Mono<Response<BinaryData>> listSchedulesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -970,7 +1057,7 @@ public final class DevBoxesImpl {
         Response<BinaryData> listSchedulesNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -989,7 +1076,7 @@ public final class DevBoxesImpl {
         Mono<Response<BinaryData>> listAllDevBoxesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -1008,7 +1095,7 @@ public final class DevBoxesImpl {
         Response<BinaryData> listAllDevBoxesNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -1027,7 +1114,7 @@ public final class DevBoxesImpl {
         Mono<Response<BinaryData>> listAllDevBoxesByUserNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -1046,7 +1133,7 @@ public final class DevBoxesImpl {
         Response<BinaryData> listAllDevBoxesByUserNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -1065,7 +1152,7 @@ public final class DevBoxesImpl {
         Mono<Response<BinaryData>> listDevBoxesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -1084,7 +1171,7 @@ public final class DevBoxesImpl {
         Response<BinaryData> listDevBoxesNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -1100,10 +1187,10 @@ public final class DevBoxesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listActionsNext(
+        Mono<Response<BinaryData>> listDevBoxActionsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -1119,10 +1206,10 @@ public final class DevBoxesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listActionsNextSync(
+        Response<BinaryData> listDevBoxActionsNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -1141,7 +1228,7 @@ public final class DevBoxesImpl {
         Mono<Response<BinaryData>> delayAllActionsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -1160,7 +1247,7 @@ public final class DevBoxesImpl {
         Response<BinaryData> delayAllActionsNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -1173,8 +1260,8 @@ public final class DevBoxesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1228,8 +1315,8 @@ public final class DevBoxesImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listPools(
-                                        this.client.getEndpoint(),
-                                        this.client.getServiceVersion().getVersion(),
+                                        this.getEndpoint(),
+                                        this.getServiceVersion().getVersion(),
                                         projectName,
                                         accept,
                                         requestOptions,
@@ -1253,8 +1340,8 @@ public final class DevBoxesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1321,8 +1408,8 @@ public final class DevBoxesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1374,8 +1461,8 @@ public final class DevBoxesImpl {
         final String accept = "application/json";
         Response<BinaryData> res =
                 service.listPoolsSync(
-                        this.client.getEndpoint(),
-                        this.client.getServiceVersion().getVersion(),
+                        this.getEndpoint(),
+                        this.getServiceVersion().getVersion(),
                         projectName,
                         accept,
                         requestOptions,
@@ -1397,8 +1484,8 @@ public final class DevBoxesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1510,8 +1597,8 @@ public final class DevBoxesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getPool(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
                                 projectName,
                                 poolName,
                                 accept,
@@ -1570,8 +1657,8 @@ public final class DevBoxesImpl {
             String projectName, String poolName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getPoolSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
                 projectName,
                 poolName,
                 accept,
@@ -1587,8 +1674,8 @@ public final class DevBoxesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1621,8 +1708,8 @@ public final class DevBoxesImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listSchedules(
-                                        this.client.getEndpoint(),
-                                        this.client.getServiceVersion().getVersion(),
+                                        this.getEndpoint(),
+                                        this.getServiceVersion().getVersion(),
                                         projectName,
                                         poolName,
                                         accept,
@@ -1647,8 +1734,8 @@ public final class DevBoxesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1695,8 +1782,8 @@ public final class DevBoxesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1728,8 +1815,8 @@ public final class DevBoxesImpl {
         final String accept = "application/json";
         Response<BinaryData> res =
                 service.listSchedulesSync(
-                        this.client.getEndpoint(),
-                        this.client.getServiceVersion().getVersion(),
+                        this.getEndpoint(),
+                        this.getServiceVersion().getVersion(),
                         projectName,
                         poolName,
                         accept,
@@ -1752,8 +1839,8 @@ public final class DevBoxesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1823,8 +1910,8 @@ public final class DevBoxesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getSchedule(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
                                 projectName,
                                 poolName,
                                 scheduleName,
@@ -1863,8 +1950,8 @@ public final class DevBoxesImpl {
             String projectName, String poolName, String scheduleName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getScheduleSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
                 projectName,
                 poolName,
                 scheduleName,
@@ -1891,7 +1978,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -1906,6 +1993,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -1945,8 +2036,8 @@ public final class DevBoxesImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listAllDevBoxes(
-                                        this.client.getEndpoint(),
-                                        this.client.getServiceVersion().getVersion(),
+                                        this.getEndpoint(),
+                                        this.getServiceVersion().getVersion(),
                                         accept,
                                         requestOptions,
                                         context))
@@ -1979,7 +2070,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -1994,6 +2085,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -2057,7 +2152,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -2072,6 +2167,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -2110,8 +2209,8 @@ public final class DevBoxesImpl {
         final String accept = "application/json";
         Response<BinaryData> res =
                 service.listAllDevBoxesSync(
-                        this.client.getEndpoint(),
-                        this.client.getServiceVersion().getVersion(),
+                        this.getEndpoint(),
+                        this.getServiceVersion().getVersion(),
                         accept,
                         requestOptions,
                         Context.NONE);
@@ -2142,7 +2241,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -2157,6 +2256,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -2220,7 +2323,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -2235,6 +2338,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -2277,8 +2384,8 @@ public final class DevBoxesImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listAllDevBoxesByUser(
-                                        this.client.getEndpoint(),
-                                        this.client.getServiceVersion().getVersion(),
+                                        this.getEndpoint(),
+                                        this.getServiceVersion().getVersion(),
                                         userId,
                                         accept,
                                         requestOptions,
@@ -2312,7 +2419,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -2327,6 +2434,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -2392,7 +2503,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -2407,6 +2518,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -2447,8 +2562,8 @@ public final class DevBoxesImpl {
         final String accept = "application/json";
         Response<BinaryData> res =
                 service.listAllDevBoxesByUserSync(
-                        this.client.getEndpoint(),
-                        this.client.getServiceVersion().getVersion(),
+                        this.getEndpoint(),
+                        this.getServiceVersion().getVersion(),
                         userId,
                         accept,
                         requestOptions,
@@ -2480,7 +2595,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -2495,6 +2610,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -2560,7 +2679,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -2575,6 +2694,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -2618,8 +2741,8 @@ public final class DevBoxesImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listDevBoxes(
-                                        this.client.getEndpoint(),
-                                        this.client.getServiceVersion().getVersion(),
+                                        this.getEndpoint(),
+                                        this.getServiceVersion().getVersion(),
                                         projectName,
                                         userId,
                                         accept,
@@ -2654,7 +2777,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -2669,6 +2792,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -2735,7 +2862,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -2750,6 +2877,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -2792,8 +2923,8 @@ public final class DevBoxesImpl {
         final String accept = "application/json";
         Response<BinaryData> res =
                 service.listDevBoxesSync(
-                        this.client.getEndpoint(),
-                        this.client.getServiceVersion().getVersion(),
+                        this.getEndpoint(),
+                        this.getServiceVersion().getVersion(),
                         projectName,
                         userId,
                         accept,
@@ -2826,7 +2957,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -2841,6 +2972,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -2896,7 +3031,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -2911,6 +3046,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -2955,8 +3094,8 @@ public final class DevBoxesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getDevBox(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
                                 projectName,
                                 userId,
                                 devBoxName,
@@ -2972,7 +3111,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -2987,6 +3126,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -3029,8 +3172,8 @@ public final class DevBoxesImpl {
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getDevBoxSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
                 projectName,
                 userId,
                 devBoxName,
@@ -3046,7 +3189,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -3061,6 +3204,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -3091,7 +3238,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -3106,6 +3253,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -3151,13 +3302,13 @@ public final class DevBoxesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createDevBox(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
                                 projectName,
                                 userId,
                                 devBoxName,
-                                body,
                                 accept,
+                                body,
                                 requestOptions,
                                 context));
     }
@@ -3169,7 +3320,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -3184,6 +3335,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -3214,7 +3369,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -3229,6 +3384,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -3272,13 +3431,13 @@ public final class DevBoxesImpl {
             String projectName, String userId, String devBoxName, BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.createDevBoxSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
                 projectName,
                 userId,
                 devBoxName,
-                body,
                 accept,
+                body,
                 requestOptions,
                 Context.NONE);
     }
@@ -3290,7 +3449,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -3305,6 +3464,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -3335,7 +3498,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -3350,6 +3513,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -3395,12 +3562,12 @@ public final class DevBoxesImpl {
                 Duration.ofSeconds(1),
                 () -> this.createDevBoxWithResponseAsync(projectName, userId, devBoxName, body, requestOptions),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
+                        new PollingStrategyOptions(this.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -3412,7 +3579,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -3427,6 +3594,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -3457,7 +3628,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -3472,6 +3643,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -3517,12 +3692,12 @@ public final class DevBoxesImpl {
                 Duration.ofSeconds(1),
                 () -> this.createDevBoxWithResponse(projectName, userId, devBoxName, body, requestOptions),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
+                        new PollingStrategyOptions(this.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -3536,11 +3711,11 @@ public final class DevBoxesImpl {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)
@@ -3568,8 +3743,8 @@ public final class DevBoxesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.deleteDevBox(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
                                 projectName,
                                 userId,
                                 devBoxName,
@@ -3587,11 +3762,11 @@ public final class DevBoxesImpl {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)
@@ -3616,8 +3791,8 @@ public final class DevBoxesImpl {
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.deleteDevBoxSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
                 projectName,
                 userId,
                 devBoxName,
@@ -3635,11 +3810,11 @@ public final class DevBoxesImpl {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)
@@ -3666,12 +3841,12 @@ public final class DevBoxesImpl {
                 Duration.ofSeconds(1),
                 () -> this.deleteDevBoxWithResponseAsync(projectName, userId, devBoxName, requestOptions),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
+                        new PollingStrategyOptions(this.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(Void.class));
     }
@@ -3685,11 +3860,11 @@ public final class DevBoxesImpl {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)
@@ -3716,12 +3891,12 @@ public final class DevBoxesImpl {
                 Duration.ofSeconds(1),
                 () -> this.deleteDevBoxWithResponse(projectName, userId, devBoxName, requestOptions),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
+                        new PollingStrategyOptions(this.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(Void.class));
     }
@@ -3735,11 +3910,11 @@ public final class DevBoxesImpl {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)
@@ -3767,8 +3942,8 @@ public final class DevBoxesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.startDevBox(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
                                 projectName,
                                 userId,
                                 devBoxName,
@@ -3786,11 +3961,11 @@ public final class DevBoxesImpl {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)
@@ -3815,8 +3990,8 @@ public final class DevBoxesImpl {
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.startDevBoxSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
                 projectName,
                 userId,
                 devBoxName,
@@ -3834,11 +4009,11 @@ public final class DevBoxesImpl {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)
@@ -3865,12 +4040,12 @@ public final class DevBoxesImpl {
                 Duration.ofSeconds(1),
                 () -> this.startDevBoxWithResponseAsync(projectName, userId, devBoxName, requestOptions),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
+                        new PollingStrategyOptions(this.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -3884,11 +4059,11 @@ public final class DevBoxesImpl {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)
@@ -3915,12 +4090,12 @@ public final class DevBoxesImpl {
                 Duration.ofSeconds(1),
                 () -> this.startDevBoxWithResponse(projectName, userId, devBoxName, requestOptions),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
+                        new PollingStrategyOptions(this.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -3944,11 +4119,11 @@ public final class DevBoxesImpl {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)
@@ -3976,8 +4151,8 @@ public final class DevBoxesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.stopDevBox(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
                                 projectName,
                                 userId,
                                 devBoxName,
@@ -4005,11 +4180,11 @@ public final class DevBoxesImpl {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)
@@ -4034,8 +4209,8 @@ public final class DevBoxesImpl {
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.stopDevBoxSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
                 projectName,
                 userId,
                 devBoxName,
@@ -4063,11 +4238,11 @@ public final class DevBoxesImpl {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)
@@ -4094,12 +4269,12 @@ public final class DevBoxesImpl {
                 Duration.ofSeconds(1),
                 () -> this.stopDevBoxWithResponseAsync(projectName, userId, devBoxName, requestOptions),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
+                        new PollingStrategyOptions(this.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -4123,11 +4298,11 @@ public final class DevBoxesImpl {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)
@@ -4154,12 +4329,12 @@ public final class DevBoxesImpl {
                 Duration.ofSeconds(1),
                 () -> this.stopDevBoxWithResponse(projectName, userId, devBoxName, requestOptions),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
+                        new PollingStrategyOptions(this.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -4173,11 +4348,11 @@ public final class DevBoxesImpl {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)
@@ -4205,8 +4380,8 @@ public final class DevBoxesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.restartDevBox(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
                                 projectName,
                                 userId,
                                 devBoxName,
@@ -4224,11 +4399,11 @@ public final class DevBoxesImpl {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)
@@ -4253,8 +4428,8 @@ public final class DevBoxesImpl {
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.restartDevBoxSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
                 projectName,
                 userId,
                 devBoxName,
@@ -4272,11 +4447,11 @@ public final class DevBoxesImpl {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)
@@ -4303,12 +4478,12 @@ public final class DevBoxesImpl {
                 Duration.ofSeconds(1),
                 () -> this.restartDevBoxWithResponseAsync(projectName, userId, devBoxName, requestOptions),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
+                        new PollingStrategyOptions(this.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -4322,11 +4497,11 @@ public final class DevBoxesImpl {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)
@@ -4353,12 +4528,12 @@ public final class DevBoxesImpl {
                 Duration.ofSeconds(1),
                 () -> this.restartDevBoxWithResponse(projectName, userId, devBoxName, requestOptions),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
+                        new PollingStrategyOptions(this.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -4393,8 +4568,8 @@ public final class DevBoxesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getRemoteConnection(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
                                 projectName,
                                 userId,
                                 devBoxName,
@@ -4431,8 +4606,8 @@ public final class DevBoxesImpl {
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getRemoteConnectionSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
                 projectName,
                 userId,
                 devBoxName,
@@ -4470,14 +4645,14 @@ public final class DevBoxesImpl {
      * @return the actions list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listActionsSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listDevBoxActionsSinglePageAsync(
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listActions(
-                                        this.client.getEndpoint(),
-                                        this.client.getServiceVersion().getVersion(),
+                                service.listDevBoxActions(
+                                        this.getEndpoint(),
+                                        this.getServiceVersion().getVersion(),
                                         projectName,
                                         userId,
                                         devBoxName,
@@ -4524,7 +4699,7 @@ public final class DevBoxesImpl {
      * @return the actions list result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listActionsAsync(
+    public PagedFlux<BinaryData> listDevBoxActionsAsync(
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
@@ -4532,8 +4707,8 @@ public final class DevBoxesImpl {
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> listActionsSinglePageAsync(projectName, userId, devBoxName, requestOptions),
-                nextLink -> listActionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                () -> listDevBoxActionsSinglePageAsync(projectName, userId, devBoxName, requestOptions),
+                nextLink -> listDevBoxActionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -4565,13 +4740,13 @@ public final class DevBoxesImpl {
      * @return the actions list result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listActionsSinglePage(
+    private PagedResponse<BinaryData> listDevBoxActionsSinglePage(
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res =
-                service.listActionsSync(
-                        this.client.getEndpoint(),
-                        this.client.getServiceVersion().getVersion(),
+                service.listDevBoxActionsSync(
+                        this.getEndpoint(),
+                        this.getServiceVersion().getVersion(),
                         projectName,
                         userId,
                         devBoxName,
@@ -4616,7 +4791,7 @@ public final class DevBoxesImpl {
      * @return the actions list result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listActions(
+    public PagedIterable<BinaryData> listDevBoxActions(
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
@@ -4624,8 +4799,8 @@ public final class DevBoxesImpl {
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedIterable<>(
-                () -> listActionsSinglePage(projectName, userId, devBoxName, requestOptions),
-                nextLink -> listActionsNextSinglePage(nextLink, requestOptionsForNextPage));
+                () -> listDevBoxActionsSinglePage(projectName, userId, devBoxName, requestOptions),
+                nextLink -> listDevBoxActionsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -4658,14 +4833,14 @@ public final class DevBoxesImpl {
      * @return an action along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getActionWithResponseAsync(
+    public Mono<Response<BinaryData>> getDevBoxActionWithResponseAsync(
             String projectName, String userId, String devBoxName, String actionName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getAction(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
+                        service.getDevBoxAction(
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
                                 projectName,
                                 userId,
                                 devBoxName,
@@ -4705,12 +4880,12 @@ public final class DevBoxesImpl {
      * @return an action along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getActionWithResponse(
+    public Response<BinaryData> getDevBoxActionWithResponse(
             String projectName, String userId, String devBoxName, String actionName, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getActionSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
+        return service.getDevBoxActionSync(
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
                 projectName,
                 userId,
                 devBoxName,
@@ -4742,8 +4917,8 @@ public final class DevBoxesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.skipAction(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
                                 projectName,
                                 userId,
                                 devBoxName,
@@ -4773,8 +4948,8 @@ public final class DevBoxesImpl {
             String projectName, String userId, String devBoxName, String actionName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.skipActionSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
                 projectName,
                 userId,
                 devBoxName,
@@ -4806,7 +4981,7 @@ public final class DevBoxesImpl {
      *     context.
      * @param devBoxName The name of a Dev Box.
      * @param actionName The name of an action that will take place on a Dev Box.
-     * @param until The time to delay the Dev Box action or actions until.
+     * @param delayUntil The time to delay the Dev Box action or actions until.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4821,19 +4996,19 @@ public final class DevBoxesImpl {
             String userId,
             String devBoxName,
             String actionName,
-            OffsetDateTime until,
+            OffsetDateTime delayUntil,
             RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.delayAction(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
                                 projectName,
                                 userId,
                                 devBoxName,
                                 actionName,
-                                until,
+                                delayUntil,
                                 accept,
                                 requestOptions,
                                 context));
@@ -4861,7 +5036,7 @@ public final class DevBoxesImpl {
      *     context.
      * @param devBoxName The name of a Dev Box.
      * @param actionName The name of an action that will take place on a Dev Box.
-     * @param until The time to delay the Dev Box action or actions until.
+     * @param delayUntil The time to delay the Dev Box action or actions until.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4875,17 +5050,17 @@ public final class DevBoxesImpl {
             String userId,
             String devBoxName,
             String actionName,
-            OffsetDateTime until,
+            OffsetDateTime delayUntil,
             RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.delayActionSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
                 projectName,
                 userId,
                 devBoxName,
                 actionName,
-                until,
+                delayUntil,
                 accept,
                 requestOptions,
                 Context.NONE);
@@ -4916,6 +5091,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -4924,7 +5103,7 @@ public final class DevBoxesImpl {
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      *     context.
      * @param devBoxName The name of a Dev Box.
-     * @param until The time to delay the Dev Box action or actions until.
+     * @param delayUntil The time to delay the Dev Box action or actions until.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4934,17 +5113,21 @@ public final class DevBoxesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> delayAllActionsSinglePageAsync(
-            String projectName, String userId, String devBoxName, OffsetDateTime until, RequestOptions requestOptions) {
+            String projectName,
+            String userId,
+            String devBoxName,
+            OffsetDateTime delayUntil,
+            RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.delayAllActions(
-                                        this.client.getEndpoint(),
-                                        this.client.getServiceVersion().getVersion(),
+                                        this.getEndpoint(),
+                                        this.getServiceVersion().getVersion(),
                                         projectName,
                                         userId,
                                         devBoxName,
-                                        until,
+                                        delayUntil,
                                         accept,
                                         requestOptions,
                                         context))
@@ -4984,6 +5167,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -4992,7 +5179,7 @@ public final class DevBoxesImpl {
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      *     context.
      * @param devBoxName The name of a Dev Box.
-     * @param until The time to delay the Dev Box action or actions until.
+     * @param delayUntil The time to delay the Dev Box action or actions until.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5002,14 +5189,18 @@ public final class DevBoxesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> delayAllActionsAsync(
-            String projectName, String userId, String devBoxName, OffsetDateTime until, RequestOptions requestOptions) {
+            String projectName,
+            String userId,
+            String devBoxName,
+            OffsetDateTime delayUntil,
+            RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
                 requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> delayAllActionsSinglePageAsync(projectName, userId, devBoxName, until, requestOptions),
+                () -> delayAllActionsSinglePageAsync(projectName, userId, devBoxName, delayUntil, requestOptions),
                 nextLink -> delayAllActionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
@@ -5038,6 +5229,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -5046,7 +5241,7 @@ public final class DevBoxesImpl {
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      *     context.
      * @param devBoxName The name of a Dev Box.
-     * @param until The time to delay the Dev Box action or actions until.
+     * @param delayUntil The time to delay the Dev Box action or actions until.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5056,16 +5251,20 @@ public final class DevBoxesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> delayAllActionsSinglePage(
-            String projectName, String userId, String devBoxName, OffsetDateTime until, RequestOptions requestOptions) {
+            String projectName,
+            String userId,
+            String devBoxName,
+            OffsetDateTime delayUntil,
+            RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res =
                 service.delayAllActionsSync(
-                        this.client.getEndpoint(),
-                        this.client.getServiceVersion().getVersion(),
+                        this.getEndpoint(),
+                        this.getServiceVersion().getVersion(),
                         projectName,
                         userId,
                         devBoxName,
-                        until,
+                        delayUntil,
                         accept,
                         requestOptions,
                         Context.NONE);
@@ -5103,6 +5302,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -5111,7 +5314,7 @@ public final class DevBoxesImpl {
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      *     context.
      * @param devBoxName The name of a Dev Box.
-     * @param until The time to delay the Dev Box action or actions until.
+     * @param delayUntil The time to delay the Dev Box action or actions until.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5121,14 +5324,18 @@ public final class DevBoxesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> delayAllActions(
-            String projectName, String userId, String devBoxName, OffsetDateTime until, RequestOptions requestOptions) {
+            String projectName,
+            String userId,
+            String devBoxName,
+            OffsetDateTime delayUntil,
+            RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
                 requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedIterable<>(
-                () -> delayAllActionsSinglePage(projectName, userId, devBoxName, until, requestOptions),
+                () -> delayAllActionsSinglePage(projectName, userId, devBoxName, delayUntil, requestOptions),
                 nextLink -> delayAllActionsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
@@ -5183,9 +5390,7 @@ public final class DevBoxesImpl {
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context ->
-                                service.listPoolsNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                        context -> service.listPoolsNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5247,7 +5452,7 @@ public final class DevBoxesImpl {
     private PagedResponse<BinaryData> listPoolsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res =
-                service.listPoolsNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+                service.listPoolsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -5288,7 +5493,7 @@ public final class DevBoxesImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listSchedulesNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                                        nextLink, this.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5328,8 +5533,7 @@ public final class DevBoxesImpl {
     private PagedResponse<BinaryData> listSchedulesNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res =
-                service.listSchedulesNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+                service.listSchedulesNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -5346,7 +5550,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -5361,6 +5565,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -5403,7 +5611,7 @@ public final class DevBoxesImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listAllDevBoxesNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                                        nextLink, this.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5422,7 +5630,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -5437,6 +5645,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -5476,8 +5688,7 @@ public final class DevBoxesImpl {
     private PagedResponse<BinaryData> listAllDevBoxesNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res =
-                service.listAllDevBoxesNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+                service.listAllDevBoxesNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -5494,7 +5705,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -5509,6 +5720,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -5551,7 +5766,7 @@ public final class DevBoxesImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listAllDevBoxesByUserNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                                        nextLink, this.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5570,7 +5785,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -5585,6 +5800,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -5626,7 +5845,7 @@ public final class DevBoxesImpl {
         final String accept = "application/json";
         Response<BinaryData> res =
                 service.listAllDevBoxesByUserNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+                        nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -5643,7 +5862,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -5658,6 +5877,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -5699,8 +5922,7 @@ public final class DevBoxesImpl {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listDevBoxesNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                                service.listDevBoxesNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5719,7 +5941,7 @@ public final class DevBoxesImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -5734,6 +5956,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -5773,7 +5999,7 @@ public final class DevBoxesImpl {
     private PagedResponse<BinaryData> listDevBoxesNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res =
-                service.listDevBoxesNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+                service.listDevBoxesNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -5810,13 +6036,13 @@ public final class DevBoxesImpl {
      * @return the actions list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listActionsNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listDevBoxActionsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listActionsNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                                service.listDevBoxActionsNext(
+                                        nextLink, this.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5855,10 +6081,10 @@ public final class DevBoxesImpl {
      * @return the actions list result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listActionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listDevBoxActionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res =
-                service.listActionsNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+                service.listDevBoxActionsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -5893,6 +6119,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -5913,7 +6143,7 @@ public final class DevBoxesImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.delayAllActionsNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                                        nextLink, this.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -5950,6 +6180,10 @@ public final class DevBoxesImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -5967,8 +6201,7 @@ public final class DevBoxesImpl {
     private PagedResponse<BinaryData> delayAllActionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res =
-                service.delayAllActionsNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+                service.delayAllActionsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),

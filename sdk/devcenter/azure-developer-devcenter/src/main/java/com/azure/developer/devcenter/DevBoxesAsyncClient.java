@@ -17,14 +17,14 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.developer.devcenter.implementation.DevBoxesImpl;
+import com.azure.developer.devcenter.implementation.DevBoxesClientImpl;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous DevCenterClient type. */
+/** Initializes a new instance of the asynchronous DevBoxesClient type. */
 @ServiceClient(builder = DevBoxesClientBuilder.class, isAsync = true)
 public final class DevBoxesAsyncClient {
-    @Generated private final DevBoxesImpl serviceClient;
+    @Generated private final DevBoxesClientImpl serviceClient;
 
     /**
      * Initializes an instance of DevBoxesAsyncClient class.
@@ -32,7 +32,7 @@ public final class DevBoxesAsyncClient {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    DevBoxesAsyncClient(DevBoxesImpl serviceClient) {
+    DevBoxesAsyncClient(DevBoxesClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -44,8 +44,8 @@ public final class DevBoxesAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -159,8 +159,8 @@ public final class DevBoxesAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -242,7 +242,7 @@ public final class DevBoxesAsyncClient {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -257,6 +257,10 @@ public final class DevBoxesAsyncClient {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -314,7 +318,7 @@ public final class DevBoxesAsyncClient {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -329,6 +333,10 @@ public final class DevBoxesAsyncClient {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -388,7 +396,7 @@ public final class DevBoxesAsyncClient {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -403,6 +411,10 @@ public final class DevBoxesAsyncClient {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -452,7 +464,7 @@ public final class DevBoxesAsyncClient {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -467,6 +479,10 @@ public final class DevBoxesAsyncClient {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -518,7 +534,7 @@ public final class DevBoxesAsyncClient {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -533,6 +549,10 @@ public final class DevBoxesAsyncClient {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -563,7 +583,7 @@ public final class DevBoxesAsyncClient {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     projectName: String (Optional)
      *     poolName: String (Required)
      *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
@@ -578,6 +598,10 @@ public final class DevBoxesAsyncClient {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -632,11 +656,11 @@ public final class DevBoxesAsyncClient {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)
@@ -672,11 +696,11 @@ public final class DevBoxesAsyncClient {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)
@@ -722,11 +746,11 @@ public final class DevBoxesAsyncClient {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)
@@ -762,11 +786,11 @@ public final class DevBoxesAsyncClient {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)
@@ -853,9 +877,9 @@ public final class DevBoxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listActions(
+    public PagedFlux<BinaryData> listDevBoxActions(
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
-        return this.serviceClient.listActionsAsync(projectName, userId, devBoxName, requestOptions);
+        return this.serviceClient.listDevBoxActionsAsync(projectName, userId, devBoxName, requestOptions);
     }
 
     /**
@@ -889,9 +913,9 @@ public final class DevBoxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getActionWithResponse(
+    public Mono<Response<BinaryData>> getDevBoxActionWithResponse(
             String projectName, String userId, String devBoxName, String actionName, RequestOptions requestOptions) {
-        return this.serviceClient.getActionWithResponseAsync(
+        return this.serviceClient.getDevBoxActionWithResponseAsync(
                 projectName, userId, devBoxName, actionName, requestOptions);
     }
 
@@ -940,7 +964,7 @@ public final class DevBoxesAsyncClient {
      *     context.
      * @param devBoxName The name of a Dev Box.
      * @param actionName The name of an action that will take place on a Dev Box.
-     * @param until The time to delay the Dev Box action or actions until.
+     * @param delayUntil The time to delay the Dev Box action or actions until.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -956,10 +980,10 @@ public final class DevBoxesAsyncClient {
             String userId,
             String devBoxName,
             String actionName,
-            OffsetDateTime until,
+            OffsetDateTime delayUntil,
             RequestOptions requestOptions) {
         return this.serviceClient.delayActionWithResponseAsync(
-                projectName, userId, devBoxName, actionName, until, requestOptions);
+                projectName, userId, devBoxName, actionName, delayUntil, requestOptions);
     }
 
     /**
@@ -987,6 +1011,10 @@ public final class DevBoxesAsyncClient {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -995,7 +1023,7 @@ public final class DevBoxesAsyncClient {
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      *     context.
      * @param devBoxName The name of a Dev Box.
-     * @param until The time to delay the Dev Box action or actions until.
+     * @param delayUntil The time to delay the Dev Box action or actions until.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1006,7 +1034,11 @@ public final class DevBoxesAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> delayAllActions(
-            String projectName, String userId, String devBoxName, OffsetDateTime until, RequestOptions requestOptions) {
-        return this.serviceClient.delayAllActionsAsync(projectName, userId, devBoxName, until, requestOptions);
+            String projectName,
+            String userId,
+            String devBoxName,
+            OffsetDateTime delayUntil,
+            RequestOptions requestOptions) {
+        return this.serviceClient.delayAllActionsAsync(projectName, userId, devBoxName, delayUntil, requestOptions);
     }
 }

@@ -16,13 +16,13 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.developer.devcenter.implementation.DevCentersImpl;
+import com.azure.developer.devcenter.implementation.DevCenterClientImpl;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous DevCenterClient type. */
 @ServiceClient(builder = DevCenterClientBuilder.class, isAsync = true)
 public final class DevCenterAsyncClient {
-    @Generated private final DevCentersImpl serviceClient;
+    @Generated private final DevCenterClientImpl serviceClient;
 
     /**
      * Initializes an instance of DevCenterAsyncClient class.
@@ -30,7 +30,7 @@ public final class DevCenterAsyncClient {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    DevCenterAsyncClient(DevCentersImpl serviceClient) {
+    DevCenterAsyncClient(DevCenterClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 

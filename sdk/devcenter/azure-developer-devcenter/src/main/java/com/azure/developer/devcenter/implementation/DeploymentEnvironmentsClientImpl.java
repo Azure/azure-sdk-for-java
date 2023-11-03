@@ -22,6 +22,10 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
@@ -34,42 +38,127 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.DefaultPollingStrategy;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.PollingStrategyOptions;
 import com.azure.core.util.polling.SyncDefaultPollingStrategy;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.developer.devcenter.DevCenterServiceVersion;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DeploymentEnvironments. */
-public final class DeploymentEnvironmentsImpl {
+/** Initializes a new instance of the DeploymentEnvironmentsClient type. */
+public final class DeploymentEnvironmentsClientImpl {
     /** The proxy service used to perform REST calls. */
-    private final DeploymentEnvironmentsService service;
+    private final DeploymentEnvironmentsClientService service;
 
-    /** The service client containing this operation class. */
-    private final DevCenterClientImpl client;
+    /** The DevCenter-specific URI to operate on. */
+    private final String endpoint;
 
     /**
-     * Initializes an instance of DeploymentEnvironmentsImpl.
+     * Gets The DevCenter-specific URI to operate on.
      *
-     * @param client the instance of the service client containing this operation class.
+     * @return the endpoint value.
      */
-    DeploymentEnvironmentsImpl(DevCenterClientImpl client) {
-        this.service =
-                RestProxy.create(
-                        DeploymentEnvironmentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
+    public String getEndpoint() {
+        return this.endpoint;
+    }
+
+    /** Service version. */
+    private final DevCenterServiceVersion serviceVersion;
+
+    /**
+     * Gets Service version.
+     *
+     * @return the serviceVersion value.
+     */
+    public DevCenterServiceVersion getServiceVersion() {
+        return this.serviceVersion;
+    }
+
+    /** The HTTP pipeline to send requests through. */
+    private final HttpPipeline httpPipeline;
+
+    /**
+     * Gets The HTTP pipeline to send requests through.
+     *
+     * @return the httpPipeline value.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return this.httpPipeline;
+    }
+
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
     }
 
     /**
-     * The interface defining all the services for DevCenterDeploymentEnvironments to be used by the proxy service to
+     * Initializes an instance of DeploymentEnvironmentsClient client.
+     *
+     * @param endpoint The DevCenter-specific URI to operate on.
+     * @param serviceVersion Service version.
+     */
+    public DeploymentEnvironmentsClientImpl(String endpoint, DevCenterServiceVersion serviceVersion) {
+        this(
+                new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+                JacksonAdapter.createDefaultSerializerAdapter(),
+                endpoint,
+                serviceVersion);
+    }
+
+    /**
+     * Initializes an instance of DeploymentEnvironmentsClient client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param endpoint The DevCenter-specific URI to operate on.
+     * @param serviceVersion Service version.
+     */
+    public DeploymentEnvironmentsClientImpl(
+            HttpPipeline httpPipeline, String endpoint, DevCenterServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+    }
+
+    /**
+     * Initializes an instance of DeploymentEnvironmentsClient client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param endpoint The DevCenter-specific URI to operate on.
+     * @param serviceVersion Service version.
+     */
+    public DeploymentEnvironmentsClientImpl(
+            HttpPipeline httpPipeline,
+            SerializerAdapter serializerAdapter,
+            String endpoint,
+            DevCenterServiceVersion serviceVersion) {
+        this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
+        this.endpoint = endpoint;
+        this.serviceVersion = serviceVersion;
+        this.service =
+                RestProxy.create(
+                        DeploymentEnvironmentsClientService.class, this.httpPipeline, this.getSerializerAdapter());
+    }
+
+    /**
+     * The interface defining all the services for DeploymentEnvironmentsClient to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DevCenterDeploymentE")
-    public interface DeploymentEnvironmentsService {
+    @ServiceInterface(name = "DeploymentEnvironmen")
+    public interface DeploymentEnvironmentsClientService {
         @Get("/projects/{projectName}/environments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -86,7 +175,7 @@ public final class DeploymentEnvironmentsImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -106,7 +195,7 @@ public final class DeploymentEnvironmentsImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -127,7 +216,7 @@ public final class DeploymentEnvironmentsImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -148,7 +237,7 @@ public final class DeploymentEnvironmentsImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -170,7 +259,7 @@ public final class DeploymentEnvironmentsImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("environmentName") String environmentName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -192,7 +281,7 @@ public final class DeploymentEnvironmentsImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("environmentName") String environmentName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -214,8 +303,8 @@ public final class DeploymentEnvironmentsImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("environmentName") String environmentName,
+                @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData body,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -237,8 +326,8 @@ public final class DeploymentEnvironmentsImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("environmentName") String environmentName,
+                @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData body,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -260,7 +349,7 @@ public final class DeploymentEnvironmentsImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("environmentName") String environmentName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -282,7 +371,7 @@ public final class DeploymentEnvironmentsImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("environmentName") String environmentName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -302,7 +391,7 @@ public final class DeploymentEnvironmentsImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -322,7 +411,7 @@ public final class DeploymentEnvironmentsImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -343,7 +432,7 @@ public final class DeploymentEnvironmentsImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("catalogName") String catalogName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -364,7 +453,7 @@ public final class DeploymentEnvironmentsImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("catalogName") String catalogName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -384,7 +473,7 @@ public final class DeploymentEnvironmentsImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -404,7 +493,7 @@ public final class DeploymentEnvironmentsImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -425,7 +514,7 @@ public final class DeploymentEnvironmentsImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("catalogName") String catalogName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -446,7 +535,7 @@ public final class DeploymentEnvironmentsImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("catalogName") String catalogName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -468,7 +557,7 @@ public final class DeploymentEnvironmentsImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("catalogName") String catalogName,
                 @PathParam("definitionName") String definitionName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -490,7 +579,7 @@ public final class DeploymentEnvironmentsImpl {
                 @PathParam("projectName") String projectName,
                 @PathParam("catalogName") String catalogName,
                 @PathParam("definitionName") String definitionName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -510,7 +599,7 @@ public final class DeploymentEnvironmentsImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -530,7 +619,7 @@ public final class DeploymentEnvironmentsImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -549,7 +638,7 @@ public final class DeploymentEnvironmentsImpl {
         Mono<Response<BinaryData>> listAllEnvironmentsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -568,7 +657,7 @@ public final class DeploymentEnvironmentsImpl {
         Response<BinaryData> listAllEnvironmentsNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -587,7 +676,7 @@ public final class DeploymentEnvironmentsImpl {
         Mono<Response<BinaryData>> listEnvironmentsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -606,7 +695,7 @@ public final class DeploymentEnvironmentsImpl {
         Response<BinaryData> listEnvironmentsNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -625,7 +714,7 @@ public final class DeploymentEnvironmentsImpl {
         Mono<Response<BinaryData>> listCatalogsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -644,7 +733,7 @@ public final class DeploymentEnvironmentsImpl {
         Response<BinaryData> listCatalogsNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -663,7 +752,7 @@ public final class DeploymentEnvironmentsImpl {
         Mono<Response<BinaryData>> listEnvironmentDefinitionsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -682,7 +771,7 @@ public final class DeploymentEnvironmentsImpl {
         Response<BinaryData> listEnvironmentDefinitionsNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -701,7 +790,7 @@ public final class DeploymentEnvironmentsImpl {
         Mono<Response<BinaryData>> listEnvironmentDefinitionsByCatalogNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -720,7 +809,7 @@ public final class DeploymentEnvironmentsImpl {
         Response<BinaryData> listEnvironmentDefinitionsByCatalogNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -739,7 +828,7 @@ public final class DeploymentEnvironmentsImpl {
         Mono<Response<BinaryData>> listEnvironmentTypesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -758,7 +847,7 @@ public final class DeploymentEnvironmentsImpl {
         Response<BinaryData> listEnvironmentTypesNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
+                @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -795,6 +884,10 @@ public final class DeploymentEnvironmentsImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -815,8 +908,8 @@ public final class DeploymentEnvironmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listAllEnvironments(
-                                        this.client.getEndpoint(),
-                                        this.client.getServiceVersion().getVersion(),
+                                        this.getEndpoint(),
+                                        this.getServiceVersion().getVersion(),
                                         projectName,
                                         accept,
                                         requestOptions,
@@ -864,6 +957,10 @@ public final class DeploymentEnvironmentsImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -920,6 +1017,10 @@ public final class DeploymentEnvironmentsImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -937,8 +1038,8 @@ public final class DeploymentEnvironmentsImpl {
         final String accept = "application/json";
         Response<BinaryData> res =
                 service.listAllEnvironmentsSync(
-                        this.client.getEndpoint(),
-                        this.client.getServiceVersion().getVersion(),
+                        this.getEndpoint(),
+                        this.getServiceVersion().getVersion(),
                         projectName,
                         accept,
                         requestOptions,
@@ -984,6 +1085,10 @@ public final class DeploymentEnvironmentsImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -1040,6 +1145,10 @@ public final class DeploymentEnvironmentsImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -1062,8 +1171,8 @@ public final class DeploymentEnvironmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listEnvironments(
-                                        this.client.getEndpoint(),
-                                        this.client.getServiceVersion().getVersion(),
+                                        this.getEndpoint(),
+                                        this.getServiceVersion().getVersion(),
                                         projectName,
                                         userId,
                                         accept,
@@ -1112,6 +1221,10 @@ public final class DeploymentEnvironmentsImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -1171,6 +1284,10 @@ public final class DeploymentEnvironmentsImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -1191,8 +1308,8 @@ public final class DeploymentEnvironmentsImpl {
         final String accept = "application/json";
         Response<BinaryData> res =
                 service.listEnvironmentsSync(
-                        this.client.getEndpoint(),
-                        this.client.getServiceVersion().getVersion(),
+                        this.getEndpoint(),
+                        this.getServiceVersion().getVersion(),
                         projectName,
                         userId,
                         accept,
@@ -1239,6 +1356,10 @@ public final class DeploymentEnvironmentsImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -1288,6 +1409,10 @@ public final class DeploymentEnvironmentsImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -1310,8 +1435,8 @@ public final class DeploymentEnvironmentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getEnvironment(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
                                 projectName,
                                 userId,
                                 environmentName,
@@ -1342,6 +1467,10 @@ public final class DeploymentEnvironmentsImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -1362,8 +1491,8 @@ public final class DeploymentEnvironmentsImpl {
             String projectName, String userId, String environmentName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getEnvironmentSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
                 projectName,
                 userId,
                 environmentName,
@@ -1394,6 +1523,10 @@ public final class DeploymentEnvironmentsImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -1417,6 +1550,10 @@ public final class DeploymentEnvironmentsImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -1440,13 +1577,13 @@ public final class DeploymentEnvironmentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdateEnvironment(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
                                 projectName,
                                 userId,
                                 environmentName,
-                                body,
                                 accept,
+                                body,
                                 requestOptions,
                                 context));
     }
@@ -1473,6 +1610,10 @@ public final class DeploymentEnvironmentsImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -1496,6 +1637,10 @@ public final class DeploymentEnvironmentsImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -1517,13 +1662,13 @@ public final class DeploymentEnvironmentsImpl {
             String projectName, String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.createOrUpdateEnvironmentSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
                 projectName,
                 userId,
                 environmentName,
-                body,
                 accept,
+                body,
                 requestOptions,
                 Context.NONE);
     }
@@ -1550,6 +1695,10 @@ public final class DeploymentEnvironmentsImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -1573,6 +1722,10 @@ public final class DeploymentEnvironmentsImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -1598,12 +1751,12 @@ public final class DeploymentEnvironmentsImpl {
                         this.createOrUpdateEnvironmentWithResponseAsync(
                                 projectName, userId, environmentName, body, requestOptions),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
+                        new PollingStrategyOptions(this.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1630,6 +1783,10 @@ public final class DeploymentEnvironmentsImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -1653,6 +1810,10 @@ public final class DeploymentEnvironmentsImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -1678,12 +1839,12 @@ public final class DeploymentEnvironmentsImpl {
                         this.createOrUpdateEnvironmentWithResponse(
                                 projectName, userId, environmentName, body, requestOptions),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
+                        new PollingStrategyOptions(this.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1697,11 +1858,11 @@ public final class DeploymentEnvironmentsImpl {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)
@@ -1729,8 +1890,8 @@ public final class DeploymentEnvironmentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.deleteEnvironment(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
                                 projectName,
                                 userId,
                                 environmentName,
@@ -1748,11 +1909,11 @@ public final class DeploymentEnvironmentsImpl {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)
@@ -1777,8 +1938,8 @@ public final class DeploymentEnvironmentsImpl {
             String projectName, String userId, String environmentName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.deleteEnvironmentSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
                 projectName,
                 userId,
                 environmentName,
@@ -1796,11 +1957,11 @@ public final class DeploymentEnvironmentsImpl {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)
@@ -1827,12 +1988,12 @@ public final class DeploymentEnvironmentsImpl {
                 Duration.ofSeconds(1),
                 () -> this.deleteEnvironmentWithResponseAsync(projectName, userId, environmentName, requestOptions),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
+                        new PollingStrategyOptions(this.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(Void.class));
     }
@@ -1846,11 +2007,11 @@ public final class DeploymentEnvironmentsImpl {
      * {
      *     id: String (Optional)
      *     name: String (Optional)
-     *     status: String (Required)
+     *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
-     *     percentComplete: Float (Optional)
+     *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
      *         code: String (Optional)
@@ -1877,12 +2038,12 @@ public final class DeploymentEnvironmentsImpl {
                 Duration.ofSeconds(1),
                 () -> this.deleteEnvironmentWithResponse(projectName, userId, environmentName, requestOptions),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
+                        new PollingStrategyOptions(this.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(Void.class));
     }
@@ -1924,8 +2085,8 @@ public final class DeploymentEnvironmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listCatalogs(
-                                        this.client.getEndpoint(),
-                                        this.client.getServiceVersion().getVersion(),
+                                        this.getEndpoint(),
+                                        this.getServiceVersion().getVersion(),
                                         projectName,
                                         accept,
                                         requestOptions,
@@ -2016,8 +2177,8 @@ public final class DeploymentEnvironmentsImpl {
         final String accept = "application/json";
         Response<BinaryData> res =
                 service.listCatalogsSync(
-                        this.client.getEndpoint(),
-                        this.client.getServiceVersion().getVersion(),
+                        this.getEndpoint(),
+                        this.getServiceVersion().getVersion(),
                         projectName,
                         accept,
                         requestOptions,
@@ -2100,8 +2261,8 @@ public final class DeploymentEnvironmentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getCatalog(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
                                 projectName,
                                 catalogName,
                                 accept,
@@ -2134,8 +2295,8 @@ public final class DeploymentEnvironmentsImpl {
             String projectName, String catalogName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getCatalogSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
                 projectName,
                 catalogName,
                 accept,
@@ -2199,8 +2360,8 @@ public final class DeploymentEnvironmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listEnvironmentDefinitions(
-                                        this.client.getEndpoint(),
-                                        this.client.getServiceVersion().getVersion(),
+                                        this.getEndpoint(),
+                                        this.getServiceVersion().getVersion(),
                                         projectName,
                                         accept,
                                         requestOptions,
@@ -2330,8 +2491,8 @@ public final class DeploymentEnvironmentsImpl {
         final String accept = "application/json";
         Response<BinaryData> res =
                 service.listEnvironmentDefinitionsSync(
-                        this.client.getEndpoint(),
-                        this.client.getServiceVersion().getVersion(),
+                        this.getEndpoint(),
+                        this.getServiceVersion().getVersion(),
                         projectName,
                         accept,
                         requestOptions,
@@ -2462,8 +2623,8 @@ public final class DeploymentEnvironmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listEnvironmentDefinitionsByCatalog(
-                                        this.client.getEndpoint(),
-                                        this.client.getServiceVersion().getVersion(),
+                                        this.getEndpoint(),
+                                        this.getServiceVersion().getVersion(),
                                         projectName,
                                         catalogName,
                                         accept,
@@ -2598,8 +2759,8 @@ public final class DeploymentEnvironmentsImpl {
         final String accept = "application/json";
         Response<BinaryData> res =
                 service.listEnvironmentDefinitionsByCatalogSync(
-                        this.client.getEndpoint(),
-                        this.client.getServiceVersion().getVersion(),
+                        this.getEndpoint(),
+                        this.getServiceVersion().getVersion(),
                         projectName,
                         catalogName,
                         accept,
@@ -2724,8 +2885,8 @@ public final class DeploymentEnvironmentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getEnvironmentDefinition(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
                                 projectName,
                                 catalogName,
                                 definitionName,
@@ -2779,8 +2940,8 @@ public final class DeploymentEnvironmentsImpl {
             String projectName, String catalogName, String definitionName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getEnvironmentDefinitionSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
                 projectName,
                 catalogName,
                 definitionName,
@@ -2828,8 +2989,8 @@ public final class DeploymentEnvironmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listEnvironmentTypes(
-                                        this.client.getEndpoint(),
-                                        this.client.getServiceVersion().getVersion(),
+                                        this.getEndpoint(),
+                                        this.getServiceVersion().getVersion(),
                                         projectName,
                                         accept,
                                         requestOptions,
@@ -2925,8 +3086,8 @@ public final class DeploymentEnvironmentsImpl {
         final String accept = "application/json";
         Response<BinaryData> res =
                 service.listEnvironmentTypesSync(
-                        this.client.getEndpoint(),
-                        this.client.getServiceVersion().getVersion(),
+                        this.getEndpoint(),
+                        this.getServiceVersion().getVersion(),
                         projectName,
                         accept,
                         requestOptions,
@@ -3005,6 +3166,10 @@ public final class DeploymentEnvironmentsImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -3026,7 +3191,7 @@ public final class DeploymentEnvironmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listAllEnvironmentsNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                                        nextLink, this.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3060,6 +3225,10 @@ public final class DeploymentEnvironmentsImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -3078,8 +3247,7 @@ public final class DeploymentEnvironmentsImpl {
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res =
-                service.listAllEnvironmentsNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+                service.listAllEnvironmentsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -3111,6 +3279,10 @@ public final class DeploymentEnvironmentsImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -3132,7 +3304,7 @@ public final class DeploymentEnvironmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listEnvironmentsNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                                        nextLink, this.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3166,6 +3338,10 @@ public final class DeploymentEnvironmentsImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -3183,8 +3359,7 @@ public final class DeploymentEnvironmentsImpl {
     private PagedResponse<BinaryData> listEnvironmentsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res =
-                service.listEnvironmentsNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+                service.listEnvironmentsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -3221,8 +3396,7 @@ public final class DeploymentEnvironmentsImpl {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listCatalogsNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                                service.listCatalogsNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3258,7 +3432,7 @@ public final class DeploymentEnvironmentsImpl {
     private PagedResponse<BinaryData> listCatalogsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res =
-                service.listCatalogsNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+                service.listCatalogsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -3315,7 +3489,7 @@ public final class DeploymentEnvironmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listEnvironmentDefinitionsNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                                        nextLink, this.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3372,7 +3546,7 @@ public final class DeploymentEnvironmentsImpl {
         final String accept = "application/json";
         Response<BinaryData> res =
                 service.listEnvironmentDefinitionsNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+                        nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -3429,7 +3603,7 @@ public final class DeploymentEnvironmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listEnvironmentDefinitionsByCatalogNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                                        nextLink, this.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3486,7 +3660,7 @@ public final class DeploymentEnvironmentsImpl {
         final String accept = "application/json";
         Response<BinaryData> res =
                 service.listEnvironmentDefinitionsByCatalogNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+                        nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -3526,7 +3700,7 @@ public final class DeploymentEnvironmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listEnvironmentTypesNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                                        nextLink, this.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3566,7 +3740,7 @@ public final class DeploymentEnvironmentsImpl {
         final String accept = "application/json";
         Response<BinaryData> res =
                 service.listEnvironmentTypesNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+                        nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),

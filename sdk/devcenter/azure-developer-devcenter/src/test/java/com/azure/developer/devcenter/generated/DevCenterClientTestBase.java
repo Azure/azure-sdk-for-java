@@ -4,19 +4,17 @@
 
 package com.azure.developer.devcenter.generated;
 
+// The Java test files under 'generated' package are generated for your reference.
+// If you wish to modify these files, please copy them out of the 'generated' package, and modify there.
+// See https://aka.ms/azsdk/dpg/java/tests for guide on adding a test.
+
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-import com.azure.core.util.BinaryData;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.SyncPoller;
-import com.azure.core.util.serializer.TypeReference;
 import com.azure.developer.devcenter.DeploymentEnvironmentsClient;
 import com.azure.developer.devcenter.DeploymentEnvironmentsClientBuilder;
 import com.azure.developer.devcenter.DevBoxesClient;
@@ -25,37 +23,20 @@ import com.azure.developer.devcenter.DevCenterClient;
 import com.azure.developer.devcenter.DevCenterClientBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.OffsetDateTime;
-import java.util.Map;
-
-import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Mono;
 
-class DevCenterClientTestBase extends TestBase {
+class DevCenterClientTestBase extends TestProxyTestBase {
     protected DevCenterClient devCenterClient;
 
     protected DevBoxesClient devBoxesClient;
 
     protected DeploymentEnvironmentsClient deploymentEnvironmentsClient;
 
-    protected String devEnvironmentName = "envName".toLowerCase();
-
-    protected String devBoxName = "myDevBox".toLowerCase();
-
-    protected String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "sdk-project-x2z4o4ohvwcbi");
-
-    protected String catalogName = Configuration.getGlobalConfiguration().get("DEFAULT_CATALOG_NAME", "sdk-default-catalog");
-
-    protected String envTypeName = Configuration.getGlobalConfiguration().get("DEFAULT_ENVIRONMENT_TYPE_NAME", "sdk-environment-type-xmfrmxvisxmbu");
-
-    protected String poolName = Configuration.getGlobalConfiguration().get("DEFAULT_POOL_NAME", "sdk-pool-6ieikn5v2nfnu");
-
-    protected String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT", "https://8ab2df1c-ed88-4946-a8a9-e1bbb3e4d1fd-sdk-dc-fmzegocvsahko.eastus.devcenter.azure.com/");
-
     @Override
     protected void beforeTest() {
         DevCenterClientBuilder devCenterClientbuilder =
                 new DevCenterClientBuilder()
-                        .endpoint(endpoint)
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -73,7 +54,7 @@ class DevCenterClientTestBase extends TestBase {
 
         DevBoxesClientBuilder devBoxesClientbuilder =
                 new DevBoxesClientBuilder()
-                        .endpoint(endpoint)
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -91,7 +72,7 @@ class DevCenterClientTestBase extends TestBase {
 
         DeploymentEnvironmentsClientBuilder deploymentEnvironmentsClientbuilder =
                 new DeploymentEnvironmentsClientBuilder()
-                        .endpoint(endpoint)
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -106,76 +87,5 @@ class DevCenterClientTestBase extends TestBase {
             deploymentEnvironmentsClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
         deploymentEnvironmentsClient = deploymentEnvironmentsClientbuilder.buildClient();
-    }
-
-    protected String getFirstEnvironmentDefinition() {
-        RequestOptions requestOptions = new RequestOptions();
-
-        PagedIterable<BinaryData> response =
-            deploymentEnvironmentsClient.listEnvironmentDefinitionsByCatalog(projectName, catalogName, requestOptions);
-
-        Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
-
-        String environmentDefinitionName = "";
-        for (BinaryData data : response) {
-            Map<String, Object> envDefinition = data.toObject(new TypeReference<Map<String, Object>>() {});
-            environmentDefinitionName = (String) envDefinition.get("name");
-            break;
-        }
-
-        if (environmentDefinitionName.isEmpty()) {
-            Assertions.fail("Couldn't find environment definitions in a project");
-        }
-
-        return environmentDefinitionName;
-    }
-
-    protected String createEnvironment() {
-        String environmentName = getFirstEnvironmentDefinition();
-
-        BinaryData environmentBody = BinaryData.fromString(
-            "{\"catalogItemName\":\"" + environmentName
-                + "\", \"catalogName\":\"" + catalogName
-                + "\", \"environmentType\":\"" + envTypeName + "\"}");
-
-        RequestOptions requestOptions = new RequestOptions();
-        SyncPoller<BinaryData, BinaryData> createOperation =
-            deploymentEnvironmentsClient.beginCreateOrUpdateEnvironment(
-                projectName, "me", devEnvironmentName, environmentBody, requestOptions);
-
-        Assertions.assertEquals(
-            LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, createOperation.waitForCompletion().getStatus());
-
-        return devEnvironmentName;
-    }
-
-    protected void deleteEnvironment(String environmentName) {
-        RequestOptions requestOptions = new RequestOptions();
-        SyncPoller<BinaryData, Void> deleteOperation =
-            deploymentEnvironmentsClient.beginDeleteEnvironment(projectName, "me", environmentName, requestOptions);
-
-        Assertions.assertEquals(
-            LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, deleteOperation.waitForCompletion().getStatus());
-    }
-
-    protected void createDevBox() {
-        BinaryData body = BinaryData.fromString(String.format("{\"poolName\": \"%s\"}", poolName));
-        RequestOptions requestOptions = new RequestOptions();
-
-        SyncPoller<BinaryData, BinaryData> response =
-            devBoxesClient.beginCreateDevBox(projectName, "me", devBoxName, body, requestOptions);
-
-        Assertions.assertEquals(
-            LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
-    }
-
-    protected void deleteDevBox() {
-        RequestOptions requestOptions = new RequestOptions();
-
-        SyncPoller<BinaryData, Void> response =
-            devBoxesClient.beginDeleteDevBox(projectName, "me", devBoxName, requestOptions);
-
-        Assertions.assertEquals(
-            LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
     }
 }
