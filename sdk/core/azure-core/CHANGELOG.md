@@ -1,16 +1,14 @@
 # Release History
 
-## 1.45.0-beta.1 (Unreleased)
+## 1.45.0 (2023-11-03)
 
 ### Features Added
 
 - Added `PollOperationDetails` as details of long-running operations.
 
-### Breaking Changes
-
 ### Bugs Fixed
 
-### Other Changes
+- Checks for HTTPS requirement when using certain credentials now checks for the protocol not being 'https'. ([#37454](https://github.com/Azure/azure-sdk-for-java/pull/37454))
 
 ## 1.44.1 (2023-10-17)
 
