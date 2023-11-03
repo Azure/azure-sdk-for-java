@@ -3,10 +3,7 @@
 
 package com.azure.identity;
 
-import com.azure.core.implementation.util.StreamUtil;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.ValidationUtil;
 
