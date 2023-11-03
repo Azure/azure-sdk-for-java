@@ -15,6 +15,7 @@ import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Objects;
 
@@ -59,6 +60,25 @@ import java.util.Objects;
  *     .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.clientcertificatecredential.construct -->
+ *
+ * <p><strong>Sample: Construct a ClientCertificateCredential using {@link ByteArrayInputStream}</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.ClientCertificateCredential},
+ * using the {@link com.azure.identity.ClientCertificateCredentialBuilder} to configure it. The {@code tenantId},
+ * {@code clientId} and {@code certificate} parameters are required to create
+ * {@link com.azure.identity.ClientSecretCredential}. The {@code certificate} in this example is configured as
+ * a {@link ByteArrayInputStream}. This is helpful if the certificate is available in memory via a cert store.</p>
+ *
+ * <!-- src_embed com.azure.identity.credential.clientcertificatecredential.constructWithStream -->
+ * <pre>
+ * ByteArrayInputStream certificateStream = new ByteArrayInputStream&#40;certificateBytes&#41;;
+ * TokenCredential certificateCredentialWithStream = new ClientCertificateCredentialBuilder&#40;&#41;
+ *     .tenantId&#40;tenantId&#41;
+ *     .clientId&#40;clientId&#41;
+ *     .pemCertificate&#40;certificateStream&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.clientcertificatecredential.constructWithStream -->
  *
  * <p><strong>Sample: Construct a ClientCertificateCredential behind a proxy</strong></p>
  *
