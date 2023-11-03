@@ -33,17 +33,17 @@ public class AnalyzeBusinessCardFromUrl {
     public static void main(final String[] args) {
         // Instantiate a client that will be used to call the service.
         DocumentAnalysisClient client = new DocumentAnalysisClientBuilder()
-            .credential(new AzureKeyCredential("{apikey}"))
-            .endpoint("https:{endpoint}.cognitiveservices.azure.com")
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS).setAllowedHeaderNames(Set.of("Ocp-Apim-Subscription-Key")))
             .buildClient();
 
         String businessCardUrl =
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
-                + "/azure-ai-formrecognizer/src/samples/resources/sample-forms/businessCards/businessCard.jpg";
+                + "/azure-ai-formrecognizer/src/samples/resources/sample-forms/receipts/contoso-allinone.jpg";
 
         SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeBusinessCardPoller =
-            client.beginAnalyzeDocument("prebuilt-businessCard", null, null, null, null, null, null,
+            client.beginAnalyzeDocument("prebuilt-receipt", null, null, null, null, null, null,
                 new AnalyzeDocumentRequest().setUrlSource(businessCardUrl));
 
         AnalyzeResult businessCardPageResults = analyzeBusinessCardPoller.getFinalResult();
