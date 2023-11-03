@@ -4,7 +4,6 @@
 
 package com.azure.communication.jobrouter.implementation.models;
 
-import com.azure.communication.jobrouter.implementation.models.ExceptionActionInternal;
 import com.azure.communication.jobrouter.models.ExceptionTrigger;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
