@@ -13,10 +13,16 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
+import com.azure.search.documents.indexes.SearchableField;
+import com.azure.search.documents.indexes.SimpleField;
 import com.azure.search.documents.indexes.models.HnswAlgorithmConfiguration;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SemanticConfiguration;
+import com.azure.search.documents.indexes.models.SemanticField;
+import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
+import com.azure.search.documents.indexes.models.SemanticSearch;
 import com.azure.search.documents.indexes.models.VectorSearch;
 import com.azure.search.documents.indexes.models.VectorSearchProfile;
 import com.azure.search.documents.models.QueryAnswer;
@@ -73,10 +79,7 @@ public class VectorSearchExample {
             singleVectorSearchWithFilter(searchClient);
             simpleHybridSearch(searchClient);
             multiVectorSearch(searchClient);
-            //The availability of Semantic Search is limited to specific regions, as indicated in the list provided here:
-            // https://azure.microsoft.com/explore/global-infrastructure/products-by-region/?products=search.
-            // Due to this limitation, this sample is disabled by default.
-            // semanticHybridSearch(searchClient);
+            semanticHybridSearch(searchClient);
         } finally {
             // Cleanup the example index.
             searchIndexClient.deleteIndex(INDEX_NAME);
@@ -125,16 +128,12 @@ public class VectorSearchExample {
                 .setProfiles(Collections.singletonList(
                     new VectorSearchProfile("my-vector-profile", "my-vector-config")))
                 .setAlgorithms(Collections.singletonList(
-                    new HnswAlgorithmConfiguration("my-vector-config"))));
-
-        // Semantic search configuration is disabled due to limited availability.
-        // If you know you have access to this feature, you can uncomment the following lines and uncomment the line
-        // calling 'semanticHybridSearch' in the 'main' method.
-//            .setSemanticSettings(new SemanticSettings()
-//                .setConfigurations(Arrays.asList(new SemanticConfiguration("my-semantic-config", new PrioritizedFields()
-//                    .setTitleField(new SemanticField().setFieldName("HotelName"))
-//                    .setPrioritizedContentFields(Arrays.asList(new SemanticField().setFieldName("Description")))
-//                    .setPrioritizedKeywordsFields(Arrays.asList(new SemanticField().setFieldName("Category")))))));
+                    new HnswAlgorithmConfiguration("my-vector-config"))))
+            .setSemanticSearch(new SemanticSearch().setConfigurations(Arrays.asList(new SemanticConfiguration(
+                "my-semantic-config", new SemanticPrioritizedFields()
+                    .setTitleField(new SemanticField("HotelName"))
+                    .setContentFields(new SemanticField("Description"))
+                    .setKeywordsFields(new SemanticField("Category"))))));
 
         searchIndexClient.createOrUpdateIndex(searchIndex);
 
@@ -322,10 +321,15 @@ public class VectorSearchExample {
      * Hotel model with an additional field for the vector description.
      */
     public static final class VectorHotel implements JsonSerializable<VectorHotel> {
+        @SimpleField(isKey = true)
         private String hotelId;
+        @SearchableField(isFilterable = true, isSortable = true, analyzerName = "en.lucene")
         private String hotelName;
+        @SearchableField(analyzerName = "en.lucene")
         private String description;
+        @SearchableField(vectorSearchDimensions = 1536, vectorSearchProfileName = "my-vector-profile")
         private List<Float> descriptionVector;
+        @SearchableField(isFilterable = true, isFacetable = true, isSortable = true)
         private String category;
 
         public VectorHotel() {
