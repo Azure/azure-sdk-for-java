@@ -4,12 +4,14 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Duration;
 import java.util.List;
 
 /** The Recognize configurations specific for Continuous Speech or DTMF Recognition. **/
+@Fluent
 public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOptions {
     /*
      * The length of end silence when user stops speaking and cogservice send

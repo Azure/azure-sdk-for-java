@@ -22,7 +22,7 @@ public final class CustomCallingContext {
     /**
      * Create a CustomCallingContext object with SIP and VOIP headers
      *
-     * @param sipHeaders  custom context SIP headers
+     * @param sipHeaders custom context SIP headers
      * @param voipHeaders custom context VOIP headers
      */
     CustomCallingContext(Map<String, String> sipHeaders, Map<String, String> voipHeaders) {
@@ -67,7 +67,7 @@ public final class CustomCallingContext {
     /**
      * Add a custom context sip X header. The provided key is appended to 'X-MS-Custom-' in last.
      *
-     * @param key   custom context sip x header's key.
+     * @param key custom context sip x header's key.
      * @param value custom context sip x header's value.
      * @throws IllegalStateException If sipHeaders is null
      */
@@ -83,7 +83,7 @@ public final class CustomCallingContext {
     /**
      * Add a custom context voip header.
      *
-     * @param key   custom context voip header's key.
+     * @param key custom context voip header's key.
      * @param value custom context voip header's value.
      * @throws IllegalStateException If voipHeaders is null
      */
