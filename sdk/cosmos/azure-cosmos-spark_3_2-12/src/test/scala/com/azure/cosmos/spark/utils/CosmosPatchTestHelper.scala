@@ -271,7 +271,8 @@ def getPatchFullTestSchemaWithSubpartitions(): StructType = {
   *
   * @return the partition key path without
   */
-  // TODO: Reexamine the logic here when hierarchical partitioning being supported
+  //  TODO: Reexamine the logic here when hierarchical partitioning being supported
+  // for hierarchical partitioning this is not used/circumvented, see logic in getPatchItemWithSchema()
  def getStrippedPartitionKeyPath(partitionKeyDefinition: PartitionKeyDefinition): String = {
   StringUtils.join(partitionKeyDefinition.getPaths, "").substring(1)
  }

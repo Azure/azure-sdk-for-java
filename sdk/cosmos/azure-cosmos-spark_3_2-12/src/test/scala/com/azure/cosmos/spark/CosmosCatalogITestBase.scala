@@ -79,7 +79,7 @@ abstract class CosmosCatalogITestBase extends IntegrationSpec with CosmosClient 
       throughput.getManualThroughput shouldEqual 1100
   }
 
-  it can "create a table with customized properties and hierarchical partition keys, with correct partition kind and version" in {
+  it can "create a table with customized properties and hierarchical partition keys, with correct partition kind" in {
       val databaseName = getAutoCleanableDatabaseName
       val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 
@@ -98,7 +98,7 @@ abstract class CosmosCatalogITestBase extends IntegrationSpec with CosmosClient 
       throughput.getManualThroughput shouldEqual 1100
   }
 
-  it can "create a table with customized properties and hierarchical partition keys, with wrong partition kind and version" in {
+  it can "create a table with customized properties and hierarchical partition keys, with wrong partition kind" in {
       val databaseName = getAutoCleanableDatabaseName
       val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 

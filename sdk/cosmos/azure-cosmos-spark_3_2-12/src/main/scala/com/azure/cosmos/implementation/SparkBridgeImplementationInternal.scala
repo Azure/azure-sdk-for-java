@@ -186,7 +186,6 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
     partitionKeyDefinitionJson: String
   ): NormalizedRange = {
 
-
     val feedRange = FeedRange
       .forLogicalPartition(new PartitionKey(partitionKeyValue))
       .asInstanceOf[FeedRangePartitionKeyImpl]

@@ -322,8 +322,6 @@ trait CosmosContainerWithRetention extends CosmosContainer {
   }
 }
 
-
-
 trait AutoCleanableCosmosContainer extends CosmosContainer with BeforeAndAfterEach {
   this: Suite =>
 

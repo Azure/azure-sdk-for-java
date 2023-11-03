@@ -194,14 +194,22 @@ private[spark] case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: Cosmos
             })
             pathList.foreach(path => paths.add(path.trim))
         } else {
-            partitionKeyDef.setKind(PartitionKind.HASH)
+            partitionKeyDef.setKind(CosmosContainerProperties.getPartitionKeyKind(containerProperties) match {
+                case Some(pkKind) => {
+                    if (pkKind == PartitionKind.MULTI_HASH.toString) {
+                        throw new IllegalArgumentException("PartitionKind MULTI_HASH is not supported for single-hash partition key")
+                    }
+                    PartitionKind.HASH
+                }
+                case None => PartitionKind.HASH
+            })
+            CosmosContainerProperties.getPartitionKeyVersion(containerProperties) match {
+                case Some(pkVersion) => partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.valueOf(pkVersion))
+                case None =>
+            }
             paths.add(partitionKeyPath)
         }
         partitionKeyDef.setPaths(paths)
-        CosmosContainerProperties.getPartitionKeyVersion(containerProperties) match {
-            case Some(pkVersion) => partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.valueOf(pkVersion))
-            case None =>
-        }
         partitionKeyDef
     }
 
