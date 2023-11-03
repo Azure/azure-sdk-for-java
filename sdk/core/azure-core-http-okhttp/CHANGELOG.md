@@ -1,14 +1,13 @@
 # Release History
 
-## 1.12.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.11.16 (2023-11-03)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to `1.45.0`.
+- Upgraded OkHttp from `4.10.0` to `4.12.0`.
 
 ## 1.11.15 (2023-10-17)
 
