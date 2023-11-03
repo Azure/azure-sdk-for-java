@@ -570,12 +570,6 @@ public class BinaryDataTest {
         public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
             jsonWriter.writeStartObject();
 
-            // This makes the final JSON look like: {"property":"{\"test\":\"test\"}"} instead of
-            // {"property":{"test":"test"}}.
-            // TODO (vcolin7): Investigate how (and if it's possible) to handle this without custom logic as shown
-            //  later.
-            //jsonWriter.writeUntypedField("property", property);
-
             BinaryDataPropertyClass binaryDataPropertyClass =
                 property.toObject(TypeReference.createInstance(BinaryDataPropertyClass.class), SERIALIZER);
 

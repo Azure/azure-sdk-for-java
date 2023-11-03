@@ -53,12 +53,8 @@ public class BinaryDataSerializationTests {
     private static final String SIMPLE_PROPERTY_STREAM_JSON = "{\"simpleProperty\":\"" + BASE64_HELLO_BYTES + "\"}";
     private static final String SIMPLE_PROPERTY_STRING_JSON = "{\"simpleProperty\":\"hello\"}";
     private static final String SIMPLE_PROPERTY_OBJECT_JSON =
-        "{\"simpleProperty\":{\"string\":\"hello\",\"number\":3.14,\"boolean\":true}}";
+        "{\"simpleProperty\":\"{\\\"string\\\":\\\"hello\\\",\\\"number\\\":3.14,\\\"boolean\\\":true}\"}";
     private static final SimpleProperty SIMPLE_PROPERTY_NULL = new SimpleProperty();
-    private static final SimpleProperty SIMPLE_PROPERTY_FROM_BYTES = new SimpleProperty()
-        .setSimpleProperty(FROM_BYTES);
-    private static final SimpleProperty SIMPLE_PROPERTY_FROM_STREAM = new SimpleProperty()
-        .setSimpleProperty(FROM_STREAM.get());
     private static final SimpleProperty SIMPLE_PROPERTY_FROM_STRING = new SimpleProperty()
         .setSimpleProperty(FROM_STRING);
     private static final SimpleProperty SIMPLE_PROPERTY_FROM_OBJECT = new SimpleProperty()
@@ -69,22 +65,17 @@ public class BinaryDataSerializationTests {
     private static final String LIST_PROPERTY_STREAM_JSON = "{\"listProperty\":[\"" + BASE64_HELLO_BYTES + "\"]}";
     private static final String LIST_PROPERTY_STRING_JSON = "{\"listProperty\":[\"hello\"]}";
     private static final String LIST_PROPERTY_OBJECT_JSON =
-        "{\"listProperty\":[{\"string\":\"hello\",\"number\":3.14,\"boolean\":true}]}";
+        "{\"listProperty\":[\"{\\\"string\\\":\\\"hello\\\",\\\"number\\\":3.14,\\\"boolean\\\":true}\"]}";
     private static final String LIST_PROPERTY_MULTI_JSON =
-        "{\"listProperty\":[\"" + BASE64_HELLO_BYTES + "\",\"" + BASE64_HELLO_BYTES + "\",\"hello\","
-            + "{\"string\":\"hello\",\"number\":3.14,\"boolean\":true}]}";
+        "{\"listProperty\":[\"hello\",\"{\\\"string\\\":\\\"hello\\\",\\\"number\\\":3.14,\\\"boolean\\\":true}\"]}";
 
     private static final ListProperty LIST_PROPERTY_NULL = new ListProperty();
-    private static final ListProperty LIST_PROPERTY_FROM_BYTES = new ListProperty()
-        .setListProperty(singletonList(FROM_BYTES));
-    private static final ListProperty LIST_PROPERTY_FROM_STREAM = new ListProperty()
-        .setListProperty(singletonList(FROM_STREAM.get()));
     private static final ListProperty LIST_PROPERTY_FROM_STRING = new ListProperty()
         .setListProperty(singletonList(FROM_STRING));
     private static final ListProperty LIST_PROPERTY_FROM_OBJECT = new ListProperty()
         .setListProperty(singletonList(FROM_OBJECT));
     private static final ListProperty LIST_PROPERTY_MULTIPLE = new ListProperty()
-        .setListProperty(Arrays.asList(FROM_BYTES, FROM_STREAM.get(), FROM_STRING, FROM_OBJECT));
+        .setListProperty(Arrays.asList(FROM_STRING, FROM_OBJECT));
     private static final ListProperty LIST_PROPERTY_BASE64 = new ListProperty()
         .setListProperty(singletonList(FROM_STRING_BASE64));
     private static final ListProperty LIST_PROPERTY_BASE64_MULTIPLE = new ListProperty()
@@ -93,13 +84,13 @@ public class BinaryDataSerializationTests {
     private static final String MAP_PROPERTY_STREAM_JSON = "{\"mapProperty\":{\"key\":\"" + BASE64_HELLO_BYTES + "\"}}";
     private static final String MAP_PROPERTY_STRING_JSON = "{\"mapProperty\":{\"key\":\"hello\"}}";
     private static final String MAP_PROPERTY_OBJECT_JSON =
-        "{\"mapProperty\":{\"key\":{\"string\":\"hello\",\"number\":3.14,\"boolean\":true}}}";
+        "{\"mapProperty\":{\"key\":\"{\\\"string\\\":\\\"hello\\\",\\\"number\\\":3.14,\\\"boolean\\\":true}\"}}";
     private static final String MAP_PROPERTY_MULTI_JSON =
         "{\"mapProperty\":{"
             + "\"fromBytes\":\"" + BASE64_HELLO_BYTES + "\","
             + "\"fromStream\":\"" + BASE64_HELLO_BYTES + "\","
             + "\"fromString\":\"hello\","
-            + "\"fromObject\":{\"string\":\"hello\",\"number\":3.14,\"boolean\":true}}}";
+            + "\"fromObject\":\"{\\\"string\\\":\\\"hello\\\",\\\"number\\\":3.14,\\\"boolean\\\":true}\"}}";
     private static final MapProperty MAP_PROPERTY_NULL = new MapProperty();
     private static final MapProperty MAP_PROPERTY_FROM_BYTES = new MapProperty()
         .setMapProperty(singletonMap("key", FROM_BYTES));
@@ -138,21 +129,15 @@ public class BinaryDataSerializationTests {
     private static Stream<Arguments> binaryDataSerializationSupplier() {
         return Stream.of(
             Arguments.of(SIMPLE_PROPERTY_NULL, EMPTY_OBJECT_JSON),
-            Arguments.of(SIMPLE_PROPERTY_FROM_BYTES, SIMPLE_PROPERTY_BYTES_JSON),
-            Arguments.of(SIMPLE_PROPERTY_FROM_STREAM, SIMPLE_PROPERTY_STREAM_JSON),
             Arguments.of(SIMPLE_PROPERTY_FROM_STRING, SIMPLE_PROPERTY_STRING_JSON),
             Arguments.of(SIMPLE_PROPERTY_FROM_OBJECT, SIMPLE_PROPERTY_OBJECT_JSON),
 
             Arguments.of(LIST_PROPERTY_NULL, EMPTY_OBJECT_JSON),
-            Arguments.of(LIST_PROPERTY_FROM_BYTES, LIST_PROPERTY_BYTES_JSON),
-            Arguments.of(LIST_PROPERTY_FROM_STREAM, LIST_PROPERTY_STREAM_JSON),
             Arguments.of(LIST_PROPERTY_FROM_STRING, LIST_PROPERTY_STRING_JSON),
             Arguments.of(LIST_PROPERTY_FROM_OBJECT, LIST_PROPERTY_OBJECT_JSON),
             Arguments.of(LIST_PROPERTY_MULTIPLE, LIST_PROPERTY_MULTI_JSON),
 
             Arguments.of(MAP_PROPERTY_NULL, EMPTY_OBJECT_JSON),
-            Arguments.of(MAP_PROPERTY_FROM_BYTES, MAP_PROPERTY_BYTES_JSON),
-            Arguments.of(MAP_PROPERTY_FROM_STREAM, MAP_PROPERTY_STREAM_JSON),
             Arguments.of(MAP_PROPERTY_FROM_STRING, MAP_PROPERTY_STRING_JSON),
             Arguments.of(MAP_PROPERTY_FROM_OBJECT, MAP_PROPERTY_OBJECT_JSON),
             Arguments.of(MAP_PROPERTY_MULTIPLE, MAP_PROPERTY_MULTI_JSON)
@@ -226,6 +211,7 @@ public class BinaryDataSerializationTests {
             jsonWriter.writeStartObject();
 
             String simplePropertyText;
+
             if (simpleProperty == null) {
                 simplePropertyText = null;
             } else {
@@ -236,9 +222,10 @@ public class BinaryDataSerializationTests {
                 } else if (bytes.length == 0) {
                     simplePropertyText = "";
                 } else {
-                    simplePropertyText = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+                    simplePropertyText = new String(bytes);
                 }
             }
+
             jsonWriter.writeStringField("simpleProperty", simplePropertyText);
             jsonWriter.writeEndObject();
 
@@ -254,8 +241,13 @@ public class BinaryDataSerializationTests {
                     jsonReader.nextToken();
 
                     if (fieldName.equals("simpleProperty")) {
-                        simpleProperty.setSimpleProperty(reader.getNullable(nonNullReader ->
-                            BinaryData.fromString(nonNullReader.getString())));
+                        Object object = reader.readUntyped();
+
+                        if (object instanceof String) {
+                            simpleProperty.setSimpleProperty(BinaryData.fromString((String) object));
+                        } else {
+                            simpleProperty.setSimpleProperty(BinaryData.fromObject(object));
+                        }
                     } else {
                         jsonReader.skipChildren();
                     }
@@ -318,25 +310,29 @@ public class BinaryDataSerializationTests {
         @Override
         public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
             jsonWriter.writeStartObject();
-            jsonWriter.writeFieldName("listProperty");
-            jsonWriter.writeStartArray();
 
-            for (BinaryData binaryData : listProperty) {
-                String binaryDataText;
-                byte[] bytes = binaryData.toBytes();
+            if (listProperty != null) {
+                jsonWriter.writeFieldName("listProperty");
+                jsonWriter.writeStartArray();
 
-                if (bytes == null) {
-                    binaryDataText = null;
-                } else if (bytes.length == 0) {
-                    binaryDataText = "";
-                } else {
-                    binaryDataText = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+                for (BinaryData binaryData : listProperty) {
+                    String binaryDataText;
+                    byte[] bytes = binaryData.toBytes();
+
+                    if (bytes == null) {
+                        binaryDataText = null;
+                    } else if (bytes.length == 0) {
+                        binaryDataText = "";
+                    } else {
+                        binaryDataText = new String(bytes);
+                    }
+
+                    jsonWriter.writeString(binaryDataText);
                 }
 
-                jsonWriter.writeString(binaryDataText);
+                jsonWriter.writeEndArray();
             }
 
-            jsonWriter.writeEndArray();
             jsonWriter.writeEndObject();
 
             return jsonWriter;
@@ -351,9 +347,18 @@ public class BinaryDataSerializationTests {
                     jsonReader.nextToken();
 
                     if (fieldName.equals("listProperty")) {
-                        listProperty.setListProperty(new ArrayList<>(
-                            Objects.requireNonNull(jsonReader.readArray(nonNullReader ->
-                                BinaryData.fromString(nonNullReader.getString())))));
+                        List<BinaryData> list = new ArrayList<>();
+                        List<Object> objectList = (List<Object>) reader.readUntyped();
+
+                        objectList.forEach(object -> {
+                            if (object instanceof String) {
+                                list.add(BinaryData.fromString((String) object));
+                            } else {
+                                list.add(BinaryData.fromObject(object));
+                            }
+                        });
+
+                        listProperty.setListProperty(list);
                     } else {
                         jsonReader.skipChildren();
                     }
@@ -419,33 +424,41 @@ public class BinaryDataSerializationTests {
         @Override
         public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
             jsonWriter.writeStartObject();
-            jsonWriter.writeFieldName("mapProperty");
-            jsonWriter.writeStartObject();
 
-            for (Map.Entry<String, BinaryData> entry : mapProperty.entrySet()) {
-                jsonWriter.writeFieldName(entry.getKey());
+            if (mapProperty != null) {
+                jsonWriter.writeFieldName("mapProperty");
+                jsonWriter.writeStartObject();
 
-                BinaryData binaryData = entry.getValue();
-                String binaryDataText;
+                for (Map.Entry<String, BinaryData> entry : mapProperty.entrySet()) {
+                    jsonWriter.writeFieldName(entry.getKey());
 
-                if (binaryData == null) {
-                    binaryDataText = null;
-                } else {
-                    byte[] bytes = binaryData.toBytes();
+                    BinaryData binaryData = entry.getValue();
+                    String binaryDataText;
 
-                    if (bytes == null) {
+                    if (binaryData == null) {
                         binaryDataText = null;
-                    } else if (bytes.length == 0) {
-                        binaryDataText = "";
                     } else {
-                        binaryDataText = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+                        byte[] bytes = binaryData.toBytes();
+
+                        if (bytes == null) {
+                            binaryDataText = null;
+                        } else if (bytes.length == 0) {
+                            binaryDataText = "";
+                        } else {
+                            if (entry.getKey().equals("fromBytes") || entry.getKey().equals("fromStream")) {
+                                binaryDataText = Base64.getEncoder().encodeToString(bytes);
+                            } else {
+                                binaryDataText = new String(bytes);
+                            }
+                        }
                     }
+
+                    jsonWriter.writeString(binaryDataText);
                 }
 
-                jsonWriter.writeString(binaryDataText);
+                jsonWriter.writeEndObject();
             }
 
-            jsonWriter.writeEndObject();
             jsonWriter.writeEndObject();
 
             return jsonWriter;
@@ -460,8 +473,18 @@ public class BinaryDataSerializationTests {
                     jsonReader.nextToken();
 
                     if (fieldName.equals("mapProperty")) {
-                        mapProperty.setMapProperty(jsonReader.readMap(nonNullReader ->
-                            BinaryData.fromString(nonNullReader.getString())));
+                        Map<String, BinaryData> map = new LinkedHashMap<>();
+                        Map<String, Object> objectMap = (Map<String, Object>) reader.readUntyped();
+
+                        objectMap.forEach((key, value) -> {
+                            if (value instanceof String) {
+                                map.put(key, BinaryData.fromString((String) value));
+                            } else {
+                                map.put(key, BinaryData.fromObject(value));
+                            }
+                        });
+
+                        mapProperty.setMapProperty(map);
                     } else {
                         jsonReader.skipChildren();
                     }
