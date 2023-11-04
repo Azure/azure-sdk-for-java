@@ -5,12 +5,16 @@ package com.generic.core.implementation.http.policy.retry;
 
 import com.generic.core.http.policy.retry.ExponentialBackoffOptions;
 import com.generic.core.implementation.util.CoreUtils;
+import com.generic.core.implementation.util.ObjectsUtil;
 import com.generic.core.util.configuration.Configuration;
 import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.logging.LogLevel;
 
 import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static com.generic.core.util.configuration.Configuration.PROPERTY_REQUEST_RETRY_COUNT;
 
 /**
  * A truncated exponential backoff implementation of {@link RetryStrategy} that has a delay duration that exponentially
@@ -25,7 +29,7 @@ public class ExponentialBackoff implements RetryStrategy {
     private static final ClientLogger LOGGER = new ClientLogger(ExponentialBackoff.class);
 
     static {
-        String envDefaultMaxRetries = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_REQUEST_RETRY_COUNT);
+        String envDefaultMaxRetries = Configuration.getGlobalConfiguration().get(PROPERTY_REQUEST_RETRY_COUNT);
 
         int defaultMaxRetries = 3;
         if (!CoreUtils.isNullOrEmpty(envDefaultMaxRetries)) {
@@ -35,8 +39,8 @@ public class ExponentialBackoff implements RetryStrategy {
                     defaultMaxRetries = 3;
                 }
             } catch (NumberFormatException ignored) {
-//                LOGGER.verbose("{} was loaded but is an invalid number. Using 3 retries as the maximum.",
-//                    Configuration.PROPERTY_REQUEST_RETRY_COUNT);
+                LOGGER.log(LogLevel.VERBOSE, () -> String.format("{%s} was loaded but is an invalid number. Using 3 retries as the maximum.",
+                    PROPERTY_REQUEST_RETRY_COUNT));
             }
         }
 
@@ -54,9 +58,7 @@ public class ExponentialBackoff implements RetryStrategy {
      * with each additional retry attempt to a maximum of 8 seconds.
      */
     public ExponentialBackoff() {
-        this.maxRetries = DEFAULT_MAX_RETRIES;
-        this.baseDelayNanos = DEFAULT_BASE_DELAY.toNanos();
-        this.maxDelayNanos = DEFAULT_MAX_DELAY.toNanos();
+        this(DEFAULT_MAX_RETRIES, DEFAULT_BASE_DELAY, DEFAULT_MAX_DELAY);
     }
 
     /**
@@ -66,10 +68,46 @@ public class ExponentialBackoff implements RetryStrategy {
      * @throws NullPointerException if {@code options} is {@code null}.
      */
     public ExponentialBackoff(ExponentialBackoffOptions options) {
-        Objects.requireNonNull(options, "'options' cannot be null.");
-        this.maxRetries = options.getMaxRetries();
-        this.baseDelayNanos = options.getBaseDelay().toNanos();
-        this.maxDelayNanos = options.getMaxDelay().toNanos();
+        this(
+            ObjectsUtil.requireNonNullElse(
+                Objects.requireNonNull(options, "'options' cannot be null.").getMaxRetries(),
+                DEFAULT_MAX_RETRIES),
+            ObjectsUtil.requireNonNullElse(
+                Objects.requireNonNull(options, "'options' cannot be null.").getBaseDelay(),
+                DEFAULT_BASE_DELAY),
+            ObjectsUtil.requireNonNullElse(
+                Objects.requireNonNull(options, "'options' cannot be null.").getMaxDelay(),
+                DEFAULT_MAX_DELAY)
+        );
+    }
+
+    /**
+     * Creates an instance of {@link ExponentialBackoff}.
+     *
+     * @param maxRetries The max retry attempts that can be made.
+     * @param baseDelay The base delay duration for retry.
+     * @param maxDelay The max delay duration for retry.
+     * @throws IllegalArgumentException if {@code maxRetries} is less than 0 or {@code baseDelay} is less than or equal
+     * to 0 or {@code maxDelay} is less than {@code baseDelay}.
+     */
+    public ExponentialBackoff(int maxRetries, Duration baseDelay, Duration maxDelay) {
+        if (maxRetries < 0) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("Max retries cannot be less than 0."));
+        }
+        Objects.requireNonNull(baseDelay, "'baseDelay' cannot be null.");
+        Objects.requireNonNull(maxDelay, "'maxDelay' cannot be null.");
+
+        if (baseDelay.isZero() || baseDelay.isNegative()) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'baseDelay' cannot be negative or 0."));
+        }
+
+        if (baseDelay.compareTo(maxDelay) > 0) {
+            throw LOGGER
+                .logThrowableAsError(new IllegalArgumentException("'baseDelay' cannot be greater than 'maxDelay'."));
+        }
+        this.maxRetries = maxRetries;
+        this.baseDelayNanos = baseDelay.toNanos();
+        this.maxDelayNanos = maxDelay.toNanos();
     }
 
     @Override

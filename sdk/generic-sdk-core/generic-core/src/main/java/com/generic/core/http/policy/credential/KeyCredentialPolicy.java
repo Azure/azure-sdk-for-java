@@ -4,9 +4,10 @@
 package com.generic.core.http.policy.credential;
 
 import com.generic.core.credential.KeyCredential;
-import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
-import com.generic.core.http.pipeline.HttpPipelineCallContext;
+import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpResponse;
+import com.generic.core.http.pipeline.HttpPipelineCallContext;
+import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
 import com.generic.core.models.Headers;
 import com.generic.core.util.logging.ClientLogger;
@@ -21,9 +22,21 @@ import java.util.Objects;
  */
 public class KeyCredentialPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(KeyCredentialPolicy.class);
-    private final String name;
+    private final HttpHeaderName name;
     private final KeyCredential credential;
     private final String prefix;
+
+    /**
+     * Creates a policy that uses the passed {@link KeyCredential} to set the specified header name.
+     *
+     * @param name The name of the key header that will be set to {@link KeyCredential#getKey()}.
+     * @param credential The {@link KeyCredential} containing the authorization key to use.
+     * @throws NullPointerException If {@code name} or {@code credential} is {@code null}.
+     * @throws IllegalArgumentException If {@code name} is empty.
+     */
+    public KeyCredentialPolicy(String name, KeyCredential credential) {
+        this(name, credential, null);
+    }
 
     /**
      * Creates a policy that uses the passed {@link KeyCredential} to set the specified header name.
@@ -38,19 +51,23 @@ public class KeyCredentialPolicy implements HttpPipelinePolicy {
      * @throws IllegalArgumentException If {@code name} is empty.
      */
     public KeyCredentialPolicy(String name, KeyCredential credential, String prefix) {
-        this.name = name;
-        this.credential = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.prefix = prefix != null ? prefix.trim() : null;
+        this(validateName(name), Objects.requireNonNull(credential, "'credential' cannot be null."), prefix);
     }
 
-//    private static HttpHeaderName validateName(String name) {
-//        Objects.requireNonNull(name, "'name' cannot be null.");
-//        if (name.isEmpty()) {
-//            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be empty."));
-//        }
-//
-//        return HttpHeaderName.fromString(name);
-//    }
+    private static HttpHeaderName validateName(String name) {
+        Objects.requireNonNull(name, "'name' cannot be null.");
+        if (name.isEmpty()) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be empty."));
+        }
+
+        return HttpHeaderName.fromString(name);
+    }
+
+    KeyCredentialPolicy(HttpHeaderName name, KeyCredential credential, String prefix) {
+        this.name = name;
+        this.credential = credential;
+        this.prefix = prefix != null ? prefix.trim() : null;
+    }
 
     @Override
     public HttpResponse process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
@@ -65,6 +82,6 @@ public class KeyCredentialPolicy implements HttpPipelinePolicy {
 
     void setCredential(Headers headers) {
         String credential = this.credential.getKey();
-//        headers.set(name, (prefix == null) ? credential : prefix + " " + credential);
+        headers.set(name, (prefix == null) ? credential : prefix + " " + credential);
     }
 }

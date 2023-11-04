@@ -385,4 +385,9 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
      * {@code WWW-Authenticate}/{@code www-authenticate}
      */
     public static final HttpHeaderName WWW_AUTHENTICATE = fromString("WWW-Authenticate");
+
+    /**
+     * {@code x-ms-client-request-id}
+     */
+    public static final HttpHeaderName CLIENT_REQUEST_ID = fromString("client-request-id");
 }

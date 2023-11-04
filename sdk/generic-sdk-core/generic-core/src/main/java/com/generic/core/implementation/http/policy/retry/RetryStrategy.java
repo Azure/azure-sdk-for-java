@@ -14,11 +14,6 @@ import java.time.Duration;
 public interface RetryStrategy {
 
     /**
-     * HTTP response status code for {@code Too Many Requests}.
-     */
-//    private int HTTP_STATUS_TOO_MANY_REQUESTS = 429;
-
-    /**
      * Max number of retry attempts to be make.
      *
      * @return The max number of retry attempts.
@@ -57,7 +52,6 @@ public interface RetryStrategy {
      * @return Whether a retry should be attempted.
      */
     default boolean shouldRetryException(Exception exception) {
-//        return throwable instanceof Exception;
-        return false;
+        return exception != null;
     }
 }

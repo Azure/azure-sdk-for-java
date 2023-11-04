@@ -10,7 +10,9 @@ import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.policy.redirect.RedirectStrategy;
 import com.generic.core.implementation.util.CoreUtils;
+import com.generic.core.implementation.util.LoggingKeys;
 import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.logging.LogLevel;
 
 import java.net.HttpURLConnection;
 import java.util.EnumSet;
@@ -34,6 +36,19 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
     private final int maxAttempts;
     private final HttpHeaderName locationHeader;
     private final Set<HttpMethod> allowedRedirectHttpMethods;
+
+    /**
+     * Creates an instance of {@link DefaultRedirectStrategy}.
+     *
+     * @param maxAttempts The max number of redirect attempts that can be made.
+     * @param locationHeader The header name containing the redirect URL.
+     * @param allowedMethods The set of {@link HttpMethod} that are allowed to be redirected.
+     * @throws IllegalArgumentException if {@code maxAttempts} is less than 0.
+     */
+    public DefaultRedirectStrategy(int maxAttempts, String locationHeader, Set<HttpMethod> allowedMethods) {
+        this(maxAttempts, validateLocationHeader(locationHeader), validateAllowedMethods(allowedMethods));
+    }
+
     private DefaultRedirectStrategy(int maxAttempts, HttpHeaderName locationHeader, Set<HttpMethod> allowedMethods) {
         if (maxAttempts < 0) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("Max attempts cannot be less than 0."));
@@ -45,16 +60,18 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
 
     private static HttpHeaderName validateLocationHeader(String locationHeader) {
         if (CoreUtils.isNullOrEmpty(locationHeader)) {
-//            LOGGER.error("'locationHeader' provided as null will be defaulted to {}", HttpHeaderName.LOCATION);
+            LOGGER.log(LogLevel.ERROR, () -> String.format("'locationHeader' provided as null will be defaulted to {%s}"
+                , HttpHeaderName.LOCATION));
             return HttpHeaderName.LOCATION;
         } else {
-            return HttpHeaderName.LOCATION; //change
+            return HttpHeaderName.fromString(locationHeader);
         }
     }
 
     private static Set<HttpMethod> validateAllowedMethods(Set<HttpMethod> allowedMethods) {
         if (CoreUtils.isNullOrEmpty(allowedMethods)) {
-//            LOGGER.error("'allowedMethods' provided as null will be defaulted to {}", DEFAULT_REDIRECT_ALLOWED_METHODS);
+            LOGGER.log(LogLevel.ERROR, () -> String.format("'allowedMethods' provided as null will be defaulted to {%s}",
+                DEFAULT_REDIRECT_ALLOWED_METHODS));
             return DEFAULT_REDIRECT_ALLOWED_METHODS;
         } else {
             return EnumSet.copyOf(allowedMethods);
@@ -73,7 +90,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
             String redirectUrl = httpResponse.getHeaderValue(locationHeader);
             if (redirectUrl != null && !alreadyAttemptedRedirectUrl(redirectUrl, attemptedRedirectUrls)) {
                 LOGGER.atVerbose()
-//                    .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+                    .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
                     .addKeyValue(REDIRECT_URLS_KEY, attemptedRedirectUrls::toString)
                     .log("Redirecting.");
                 attemptedRedirectUrls.add(redirectUrl);
@@ -108,7 +125,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
                                                 Set<String> attemptedRedirectUrls) {
         if (attemptedRedirectUrls.contains(redirectUrl)) {
             LOGGER.atError()
-                // .addKeyValue(LoggingKeys.REDIRECT_URL_KEY, redirectUrl)
+                .addKeyValue(LoggingKeys.REDIRECT_URL_KEY, redirectUrl)
                 .log("Request was redirected more than once to the same URL.");
 
             return true;
@@ -144,7 +161,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
             return true;
         } else {
             LOGGER.atError()
-                // .addKeyValue(LoggingKeys.HTTP_METHOD_KEY, httpMethod)
+                .addKeyValue(LoggingKeys.HTTP_METHOD_KEY, httpMethod)
                 .log("Request was redirected from an invalid redirect allowed method.");
 
             return false;
