@@ -2431,8 +2431,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosEndToEndOperationLatencyPolicyConfig policyConfig) {
         return policyConfig != null ? policyConfig : this.cosmosEndToEndOperationLatencyPolicyConfig;
     }
-
-
+    
     @Override
     public Mono<ResourceResponse<Document>> patchDocument(String documentLink,
                                                           CosmosPatchOperations cosmosPatchOperations,
