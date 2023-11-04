@@ -361,9 +361,8 @@ public class IdentitySyncClient extends IdentityClientBase {
         String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
         ValidationUtil.validateTenantIdCharacterRange(tenant, LOGGER);
 
-        if (!CoreUtils.isNullOrEmpty(tenant)) {
+        if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
             azCommand.append(" --tenant ").append(tenant);
-
         }
 
         try {
@@ -410,7 +409,7 @@ public class IdentitySyncClient extends IdentityClientBase {
         String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
         ValidationUtil.validateTenantIdCharacterRange(tenant, LOGGER);
 
-        if (!CoreUtils.isNullOrEmpty(tenant)) {
+        if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
             azdCommand.append(" --tenant-id ").append(tenant);
         }
 

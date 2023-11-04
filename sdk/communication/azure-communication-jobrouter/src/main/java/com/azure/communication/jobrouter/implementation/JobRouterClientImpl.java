@@ -374,7 +374,7 @@ public final class JobRouterClientImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData completeJobOptions,
+                @BodyParam("application/json") BinaryData options,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -395,7 +395,7 @@ public final class JobRouterClientImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData completeJobOptions,
+                @BodyParam("application/json") BinaryData options,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -416,7 +416,7 @@ public final class JobRouterClientImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData closeJobOptions,
+                @BodyParam("application/json") BinaryData options,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -437,7 +437,7 @@ public final class JobRouterClientImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData closeJobOptions,
+                @BodyParam("application/json") BinaryData options,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -955,7 +955,7 @@ public final class JobRouterClientImpl {
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
      *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1010,7 +1010,7 @@ public final class JobRouterClientImpl {
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
      *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1106,7 +1106,7 @@ public final class JobRouterClientImpl {
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
      *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1161,7 +1161,7 @@ public final class JobRouterClientImpl {
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
      *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1244,7 +1244,7 @@ public final class JobRouterClientImpl {
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
      *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1324,7 +1324,7 @@ public final class JobRouterClientImpl {
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
      *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1595,7 +1595,7 @@ public final class JobRouterClientImpl {
      * }</pre>
      *
      * @param jobId Id of the job.
-     * @param completeJobOptions Request model for completing job.
+     * @param options Request model for completing job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1605,7 +1605,7 @@ public final class JobRouterClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> completeJobWithResponseAsync(
-            String jobId, BinaryData completeJobOptions, RequestOptions requestOptions) {
+            String jobId, BinaryData options, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1614,7 +1614,7 @@ public final class JobRouterClientImpl {
                                 this.getServiceVersion().getVersion(),
                                 jobId,
                                 accept,
-                                completeJobOptions,
+                                options,
                                 requestOptions,
                                 context));
     }
@@ -1632,7 +1632,7 @@ public final class JobRouterClientImpl {
      * }</pre>
      *
      * @param jobId Id of the job.
-     * @param completeJobOptions Request model for completing job.
+     * @param options Request model for completing job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1641,15 +1641,14 @@ public final class JobRouterClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> completeJobWithResponse(
-            String jobId, BinaryData completeJobOptions, RequestOptions requestOptions) {
+    public Response<Void> completeJobWithResponse(String jobId, BinaryData options, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.completeJobSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
                 jobId,
                 accept,
-                completeJobOptions,
+                options,
                 requestOptions,
                 Context.NONE);
     }
@@ -1669,7 +1668,7 @@ public final class JobRouterClientImpl {
      * }</pre>
      *
      * @param jobId Id of the job.
-     * @param closeJobOptions Request model for closing job.
+     * @param options Request model for closing job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1679,7 +1678,7 @@ public final class JobRouterClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> closeJobWithResponseAsync(
-            String jobId, BinaryData closeJobOptions, RequestOptions requestOptions) {
+            String jobId, BinaryData options, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1688,7 +1687,7 @@ public final class JobRouterClientImpl {
                                 this.getServiceVersion().getVersion(),
                                 jobId,
                                 accept,
-                                closeJobOptions,
+                                options,
                                 requestOptions,
                                 context));
     }
@@ -1708,7 +1707,7 @@ public final class JobRouterClientImpl {
      * }</pre>
      *
      * @param jobId Id of the job.
-     * @param closeJobOptions Request model for closing job.
+     * @param options Request model for closing job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1717,15 +1716,14 @@ public final class JobRouterClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> closeJobWithResponse(
-            String jobId, BinaryData closeJobOptions, RequestOptions requestOptions) {
+    public Response<Void> closeJobWithResponse(String jobId, BinaryData options, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.closeJobSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
                 jobId,
                 accept,
-                closeJobOptions,
+                options,
                 requestOptions,
                 Context.NONE);
     }
@@ -1743,10 +1741,8 @@ public final class JobRouterClientImpl {
      *     <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, filter jobs by queue.</td></tr>
      *     <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, filter jobs by channel.</td></tr>
      *     <tr><td>classificationPolicyId</td><td>String</td><td>No</td><td>If specified, filter jobs by classificationPolicy.</td></tr>
-     *     <tr><td>scheduledBefore</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled before or at given timestamp.
-     * Range: (-Inf, scheduledBefore].</td></tr>
-     *     <tr><td>scheduledAfter</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled at or after given value. Range:
-     * [scheduledAfter, +Inf).</td></tr>
+     *     <tr><td>scheduledBefore</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled before or at given timestamp. Range: (-Inf, scheduledBefore].</td></tr>
+     *     <tr><td>scheduledAfter</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled at or after given value. Range: [scheduledAfter, +Inf).</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1768,7 +1764,7 @@ public final class JobRouterClientImpl {
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
      *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1811,7 +1807,8 @@ public final class JobRouterClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of jobs along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of RouterJob items along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listJobsSinglePageAsync(RequestOptions requestOptions) {
@@ -1848,10 +1845,8 @@ public final class JobRouterClientImpl {
      *     <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, filter jobs by queue.</td></tr>
      *     <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, filter jobs by channel.</td></tr>
      *     <tr><td>classificationPolicyId</td><td>String</td><td>No</td><td>If specified, filter jobs by classificationPolicy.</td></tr>
-     *     <tr><td>scheduledBefore</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled before or at given timestamp.
-     * Range: (-Inf, scheduledBefore].</td></tr>
-     *     <tr><td>scheduledAfter</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled at or after given value. Range:
-     * [scheduledAfter, +Inf).</td></tr>
+     *     <tr><td>scheduledBefore</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled before or at given timestamp. Range: (-Inf, scheduledBefore].</td></tr>
+     *     <tr><td>scheduledAfter</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled at or after given value. Range: [scheduledAfter, +Inf).</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1873,7 +1868,7 @@ public final class JobRouterClientImpl {
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
      *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1916,7 +1911,7 @@ public final class JobRouterClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of jobs as paginated response with {@link PagedFlux}.
+     * @return paged collection of RouterJob items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listJobsAsync(RequestOptions requestOptions) {
@@ -1966,10 +1961,8 @@ public final class JobRouterClientImpl {
      *     <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, filter jobs by queue.</td></tr>
      *     <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, filter jobs by channel.</td></tr>
      *     <tr><td>classificationPolicyId</td><td>String</td><td>No</td><td>If specified, filter jobs by classificationPolicy.</td></tr>
-     *     <tr><td>scheduledBefore</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled before or at given timestamp.
-     * Range: (-Inf, scheduledBefore].</td></tr>
-     *     <tr><td>scheduledAfter</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled at or after given value. Range:
-     * [scheduledAfter, +Inf).</td></tr>
+     *     <tr><td>scheduledBefore</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled before or at given timestamp. Range: (-Inf, scheduledBefore].</td></tr>
+     *     <tr><td>scheduledAfter</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled at or after given value. Range: [scheduledAfter, +Inf).</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1991,7 +1984,7 @@ public final class JobRouterClientImpl {
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
      *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -2034,7 +2027,7 @@ public final class JobRouterClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of jobs along with {@link PagedResponse}.
+     * @return paged collection of RouterJob items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listJobsSinglePage(RequestOptions requestOptions) {
@@ -2068,10 +2061,8 @@ public final class JobRouterClientImpl {
      *     <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, filter jobs by queue.</td></tr>
      *     <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, filter jobs by channel.</td></tr>
      *     <tr><td>classificationPolicyId</td><td>String</td><td>No</td><td>If specified, filter jobs by classificationPolicy.</td></tr>
-     *     <tr><td>scheduledBefore</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled before or at given timestamp.
-     * Range: (-Inf, scheduledBefore].</td></tr>
-     *     <tr><td>scheduledAfter</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled at or after given value. Range:
-     * [scheduledAfter, +Inf).</td></tr>
+     *     <tr><td>scheduledBefore</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled before or at given timestamp. Range: (-Inf, scheduledBefore].</td></tr>
+     *     <tr><td>scheduledAfter</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled at or after given value. Range: [scheduledAfter, +Inf).</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -2093,7 +2084,7 @@ public final class JobRouterClientImpl {
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
      *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -2136,7 +2127,7 @@ public final class JobRouterClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of jobs as paginated response with {@link PagedIterable}.
+     * @return paged collection of RouterJob items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listJobs(RequestOptions requestOptions) {
@@ -3045,10 +3036,7 @@ public final class JobRouterClientImpl {
      *     <tr><td>state</td><td>String</td><td>No</td><td>If specified, select workers by worker state. Allowed values: "active", "draining", "inactive", "all".</td></tr>
      *     <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, select workers who have a channel configuration with this channel.</td></tr>
      *     <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, select workers who are assigned to this queue.</td></tr>
-     *     <tr><td>hasCapacity</td><td>Boolean</td><td>No</td><td>If set to true, select only workers who have capacity for the channel specified
-     * by `channelId` or for any channel if `channelId` not specified. If set to
-     * false, then will return all workers including workers without any capacity for
-     * jobs. Defaults to false.</td></tr>
+     *     <tr><td>hasCapacity</td><td>Boolean</td><td>No</td><td>If set to true, select only workers who have capacity for the channel specified by `channelId` or for any channel if `channelId` not specified. If set to false, then will return all workers including workers without any capacity for jobs. Defaults to false.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -3104,7 +3092,8 @@ public final class JobRouterClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of workers along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of RouterWorker items along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listWorkersSinglePageAsync(RequestOptions requestOptions) {
@@ -3140,10 +3129,7 @@ public final class JobRouterClientImpl {
      *     <tr><td>state</td><td>String</td><td>No</td><td>If specified, select workers by worker state. Allowed values: "active", "draining", "inactive", "all".</td></tr>
      *     <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, select workers who have a channel configuration with this channel.</td></tr>
      *     <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, select workers who are assigned to this queue.</td></tr>
-     *     <tr><td>hasCapacity</td><td>Boolean</td><td>No</td><td>If set to true, select only workers who have capacity for the channel specified
-     * by `channelId` or for any channel if `channelId` not specified. If set to
-     * false, then will return all workers including workers without any capacity for
-     * jobs. Defaults to false.</td></tr>
+     *     <tr><td>hasCapacity</td><td>Boolean</td><td>No</td><td>If set to true, select only workers who have capacity for the channel specified by `channelId` or for any channel if `channelId` not specified. If set to false, then will return all workers including workers without any capacity for jobs. Defaults to false.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -3199,7 +3185,7 @@ public final class JobRouterClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of workers as paginated response with {@link PagedFlux}.
+     * @return paged collection of RouterWorker items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listWorkersAsync(RequestOptions requestOptions) {
@@ -3248,10 +3234,7 @@ public final class JobRouterClientImpl {
      *     <tr><td>state</td><td>String</td><td>No</td><td>If specified, select workers by worker state. Allowed values: "active", "draining", "inactive", "all".</td></tr>
      *     <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, select workers who have a channel configuration with this channel.</td></tr>
      *     <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, select workers who are assigned to this queue.</td></tr>
-     *     <tr><td>hasCapacity</td><td>Boolean</td><td>No</td><td>If set to true, select only workers who have capacity for the channel specified
-     * by `channelId` or for any channel if `channelId` not specified. If set to
-     * false, then will return all workers including workers without any capacity for
-     * jobs. Defaults to false.</td></tr>
+     *     <tr><td>hasCapacity</td><td>Boolean</td><td>No</td><td>If set to true, select only workers who have capacity for the channel specified by `channelId` or for any channel if `channelId` not specified. If set to false, then will return all workers including workers without any capacity for jobs. Defaults to false.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -3307,7 +3290,7 @@ public final class JobRouterClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of workers along with {@link PagedResponse}.
+     * @return paged collection of RouterWorker items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listWorkersSinglePage(RequestOptions requestOptions) {
@@ -3340,10 +3323,7 @@ public final class JobRouterClientImpl {
      *     <tr><td>state</td><td>String</td><td>No</td><td>If specified, select workers by worker state. Allowed values: "active", "draining", "inactive", "all".</td></tr>
      *     <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, select workers who have a channel configuration with this channel.</td></tr>
      *     <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, select workers who are assigned to this queue.</td></tr>
-     *     <tr><td>hasCapacity</td><td>Boolean</td><td>No</td><td>If set to true, select only workers who have capacity for the channel specified
-     * by `channelId` or for any channel if `channelId` not specified. If set to
-     * false, then will return all workers including workers without any capacity for
-     * jobs. Defaults to false.</td></tr>
+     *     <tr><td>hasCapacity</td><td>Boolean</td><td>No</td><td>If set to true, select only workers who have capacity for the channel specified by `channelId` or for any channel if `channelId` not specified. If set to false, then will return all workers including workers without any capacity for jobs. Defaults to false.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -3399,7 +3379,7 @@ public final class JobRouterClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of workers as paginated response with {@link PagedIterable}.
+     * @return paged collection of RouterWorker items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listWorkers(RequestOptions requestOptions) {
@@ -3458,7 +3438,7 @@ public final class JobRouterClientImpl {
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
      *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -3503,7 +3483,8 @@ public final class JobRouterClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of jobs along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of RouterJob items along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listJobsNextSinglePageAsync(
@@ -3544,7 +3525,7 @@ public final class JobRouterClientImpl {
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
      *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -3589,7 +3570,7 @@ public final class JobRouterClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of jobs along with {@link PagedResponse}.
+     * @return paged collection of RouterJob items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listJobsNextSinglePage(String nextLink, RequestOptions requestOptions) {
@@ -3663,7 +3644,8 @@ public final class JobRouterClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of workers along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of RouterWorker items along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listWorkersNextSinglePageAsync(
@@ -3741,7 +3723,7 @@ public final class JobRouterClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of workers along with {@link PagedResponse}.
+     * @return paged collection of RouterWorker items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listWorkersNextSinglePage(String nextLink, RequestOptions requestOptions) {

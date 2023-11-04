@@ -3,11 +3,12 @@
 
 package com.azure.communication.jobrouter.implementation.converters;
 
+import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterWorkerSelectorInternal;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
-import com.azure.communication.jobrouter.models.LabelValue;
+import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobNote;
-import com.azure.communication.jobrouter.models.RouterWorkerSelector;
 
 import java.util.List;
 import java.util.Map;
@@ -23,17 +24,27 @@ public class JobAdapter {
      * @param createJobOptions Container with options to create {@link RouterJob}
      * @return RouterJob
      */
-    public static RouterJob convertCreateJobOptionsToRouterJob(CreateJobOptions createJobOptions) {
-        Map<String, LabelValue> labelValueMap = createJobOptions.getLabels();
+    public static RouterJobInternal convertCreateJobOptionsToRouterJob(CreateJobOptions createJobOptions) {
+        Map<String, RouterValue> labelValueMap = createJobOptions.getLabels();
         Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
             .collect(Collectors.toMap(entry -> entry.getKey(), entry -> getValue(entry.getValue()))) : null;
-        Map<String, LabelValue> tagValueMap = createJobOptions.getLabels();
+        Map<String, RouterValue> tagValueMap = createJobOptions.getLabels();
         Map<String, Object> tags = tagValueMap != null ? tagValueMap.entrySet().stream()
             .collect(Collectors.toMap(entry -> entry.getKey(), entry -> getValue(entry.getValue()))) : null;
-        List<RouterWorkerSelector> workerSelectors = createJobOptions.getRequestedWorkerSelectors();
         List<RouterJobNote> jobNotes = createJobOptions.getNotes();
+        List<RouterWorkerSelectorInternal> workerSelectors = createJobOptions.getRequestedWorkerSelectors()
+            .stream()
+            .map(workerSelector ->
+                new RouterWorkerSelectorInternal(workerSelector.getKey(), workerSelector.getLabelOperator())
+                    .setValue(getValue(workerSelector.getValue()))
+                    .setExpedite(workerSelector.isExpedite())
+                    .setExpiresAt(workerSelector.getExpiresAt())
+                    .setExpiresAfterSeconds((double) workerSelector.getExpiresAfter().getSeconds())
+                    .setStatus(workerSelector.getStatus())
+            )
+            .collect(Collectors.toList());
 
-        return new RouterJob()
+        return new RouterJobInternal()
             .setChannelId(createJobOptions.getChannelId())
             .setChannelReference(createJobOptions.getChannelReference())
             .setQueueId(createJobOptions.getQueueId())
@@ -46,15 +57,15 @@ public class JobAdapter {
             .setMatchingMode(createJobOptions.getMatchingMode());
     }
 
-    private static Object getValue(LabelValue labelValue) {
-        if (labelValue.getValueAsBoolean()) {
-            return labelValue.getValueAsBoolean();
-        } else if (labelValue.getValueAsDouble() != null) {
-            return labelValue.getValueAsDouble();
-        } else if (labelValue.getValueAsInteger() != null) {
-            return labelValue.getValueAsInteger();
-        } else if (labelValue.getValueAsString() != null) {
-            return labelValue.getValueAsString();
+    private static Object getValue(RouterValue routerValue) {
+        if (routerValue.getValueAsBoolean()) {
+            return routerValue.getValueAsBoolean();
+        } else if (routerValue.getValueAsDouble() != null) {
+            return routerValue.getValueAsDouble();
+        } else if (routerValue.getValueAsInteger() != null) {
+            return routerValue.getValueAsInteger();
+        } else if (routerValue.getValueAsString() != null) {
+            return routerValue.getValueAsString();
         }
         return null;
     }

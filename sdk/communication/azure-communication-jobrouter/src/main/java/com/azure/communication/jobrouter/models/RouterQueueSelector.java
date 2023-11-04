@@ -32,7 +32,7 @@ public final class RouterQueueSelector {
      */
     @Generated
     @JsonProperty(value = "value")
-    private Object value;
+    private RouterValue value;
 
     /**
      * Creates an instance of RouterQueueSelector class.
@@ -76,7 +76,7 @@ public final class RouterQueueSelector {
      * @return the value value.
      */
     @Generated
-    public Object getValue() {
+    public RouterValue getValue() {
         return this.value;
     }
 
@@ -87,7 +87,7 @@ public final class RouterQueueSelector {
      * @return the RouterQueueSelector object itself.
      */
     @Generated
-    public RouterQueueSelector setValue(Object value) {
+    public RouterQueueSelector setValue(RouterValue value) {
         this.value = value;
         return this;
     }

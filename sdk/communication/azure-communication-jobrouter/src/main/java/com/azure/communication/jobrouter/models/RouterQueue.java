@@ -38,9 +38,8 @@ public final class RouterQueue {
      * A set of key/value pairs that are identifying attributes used by the rules
      * engines to make decisions.
      */
-    @Generated
     @JsonProperty(value = "labels")
-    private Map<String, Object> labels;
+    private Map<String, RouterValue> labels;
 
     /*
      * (Optional) The ID of the exception policy that determines various job
@@ -116,8 +115,7 @@ public final class RouterQueue {
      *
      * @return the labels value.
      */
-    @Generated
-    public Map<String, Object> getLabels() {
+    public Map<String, RouterValue> getLabels() {
         return this.labels;
     }
 
@@ -128,8 +126,7 @@ public final class RouterQueue {
      * @param labels the labels value to set.
      * @return the RouterQueue object itself.
      */
-    @Generated
-    public RouterQueue setLabels(Map<String, Object> labels) {
+    public RouterQueue setLabels(Map<String, RouterValue> labels) {
         this.labels = labels;
         return this;
     }

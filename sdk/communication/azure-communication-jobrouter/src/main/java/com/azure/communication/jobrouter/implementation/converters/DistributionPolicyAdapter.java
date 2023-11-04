@@ -3,6 +3,7 @@
 
 package com.azure.communication.jobrouter.implementation.converters;
 
+import com.azure.communication.jobrouter.implementation.models.DistributionPolicyInternal;
 import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 
@@ -11,14 +12,14 @@ import com.azure.communication.jobrouter.models.DistributionPolicy;
  */
 public class DistributionPolicyAdapter {
     /**
-     * Converts {@link CreateDistributionPolicyOptions} to {@link DistributionPolicy}.
+     * Converts {@link CreateDistributionPolicyOptions} to {@link DistributionPolicyInternal}.
      * @param createDistributionPolicyOptions Container with options to create a DistributionPolicy.
      * @return distribution policy.
      */
-    public static DistributionPolicy convertCreateOptionsToDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
-        return new DistributionPolicy()
+    public static DistributionPolicyInternal convertCreateOptionsToDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
+        return new DistributionPolicyInternal()
             .setMode(createDistributionPolicyOptions.getMode())
-            .setOfferExpiresAfterSeconds(Long.valueOf(createDistributionPolicyOptions.getOfferExpiresAfter().getSeconds()).doubleValue())
+            .setOfferExpiresAfterSeconds((double) createDistributionPolicyOptions.getOfferExpiresAfter().getSeconds())
             .setName(createDistributionPolicyOptions.getName());
     }
 }
