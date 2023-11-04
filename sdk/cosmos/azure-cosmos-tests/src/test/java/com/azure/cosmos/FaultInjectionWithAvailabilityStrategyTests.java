@@ -2152,407 +2152,407 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // },
 
             // Plain vanilla single partition query. No failure injection and all records will fit into a single page
-//            new Object[] {
-//                "DefaultPageSize_SinglePartition_AllGood_NoAvailabilityStrategy",
-//                Duration.ofSeconds(1),
-//                noAvailabilityStrategy,
-//                noRegionSwitchHint,
-//                ConnectionMode.DIRECT,
-//                singlePartitionQueryGenerator,
-//                queryReturnsTotalRecordCountWithDefaultPageSize,
-//                noFailureInjection,
-//                validateStatusCodeIs200Ok,
-//                1,
-//                ArrayUtils.toArray(
-//                    validateCtxSingleRegion,
-//                    validateCtxQueryPlan,
-//                    validateCtxOnlyFeedResponsesExceptQueryPlan
-//                ),
-//                null,
-//                validateExactlyOneRecordReturned,
-//                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
-//                NO_OTHER_DOCS_WITH_SAME_PK
-//            },
-//
-//            // Simple cross partition query. No failure injection and all records returned for a partition will fit
-//            // into a single page. But there will be one page per partition
-//            new Object[] {
-//                "DefaultPageSize_CrossPartition_AllGood_NoAvailabilityStrategy",
-//                Duration.ofSeconds(1),
-//                noAvailabilityStrategy,
-//                noRegionSwitchHint,
-//                ConnectionMode.DIRECT,
-//                crossPartitionQueryGenerator,
-//                queryReturnsTotalRecordCountWithDefaultPageSize,
-//                noFailureInjection,
-//                validateStatusCodeIs200Ok,
-//                PHYSICAL_PARTITION_COUNT,
-//                ArrayUtils.toArray(
-//                    validateCtxSingleRegion,
-//                    validateCtxQueryPlan,
-//                    validateCtxOnlyFeedResponsesExceptQueryPlan
-//                ),
-//                ArrayUtils.toArray(
-//                    validateCtxSingleRegion,
-//                    validateCtxOnlyFeedResponsesExceptQueryPlan
-//                ),
-//                validateAllRecordsSameIdReturned,
-//                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
-//                NO_OTHER_DOCS_WITH_SAME_PK
-//            },
-//
-//            // Simple single partition query. No failure injection but page size set to 1 - so, multiple pages will
-//            // be returned from the PagedFlux - for each document one page - and the expectation is that there
-//            // will be as many CosmosDiagnosticsContext instances as pages.
-//            new Object[] {
-//                "PageSizeOne_SinglePartition_AllGood_NoAvailabilityStrategy",
-//                Duration.ofSeconds(1),
-//                noAvailabilityStrategy,
-//                noRegionSwitchHint,
-//                ConnectionMode.DIRECT,
-//                singlePartitionQueryGenerator,
-//                queryReturnsTotalRecordCountWithPageSizeOne,
-//                noFailureInjection,
-//                validateStatusCodeIs200Ok,
-//                1 + ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE,
-//                ArrayUtils.toArray(
-//                    validateCtxSingleRegion,
-//                    validateCtxQueryPlan,
-//                    validateCtxOnlyFeedResponsesExceptQueryPlan
-//                ),
-//                ArrayUtils.toArray(
-//                    validateCtxSingleRegion,
-//                    validateCtxOnlyFeedResponsesExceptQueryPlan
-//                ),
-//                validateAllRecordsSamePartitionReturned,
-//                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
-//                ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
-//            },
-//
-//            // Simple cross partition query. No failure injection but page size set to 1 - so, multiple pages will
-//            // be returned from the PagedFlux per physical partition - for each document one page - and the
-//            // expectation is that there will be as many CosmosDiagnosticsContext instances as pages.
-//            new Object[] {
-//                "PageSizeOne_CrossPartition_AllGood_NoAvailabilityStrategy",
-//                Duration.ofSeconds(1),
-//                noAvailabilityStrategy,
-//                noRegionSwitchHint,
-//                ConnectionMode.DIRECT,
-//                crossPartitionQueryGenerator,
-//                queryReturnsTotalRecordCountWithPageSizeOne,
-//                noFailureInjection,
-//                validateStatusCodeIs200Ok,
-//                1 + ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
-//                ArrayUtils.toArray(
-//                    validateCtxSingleRegion,
-//                    validateCtxQueryPlan,
-//                    validateCtxOnlyFeedResponsesExceptQueryPlan
-//                ),
-//                ArrayUtils.toArray(
-//                    validateCtxSingleRegion,
-//                    validateCtxOnlyFeedResponsesExceptQueryPlan
-//                ),
-//                validateAllRecordsSameIdReturned,
-//                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
-//                NO_OTHER_DOCS_WITH_SAME_PK
-//            },
-//
-//            // Simple single partition query intended to not return any results. No failure injection and only
-//            // one empty page expected - with exactly one CosmosDiagnostics instance
-//            new Object[] {
-//                "EmptyResults_SinglePartition_AllGood_NoAvailabilityStrategy",
-//                Duration.ofSeconds(1),
-//                noAvailabilityStrategy,
-//                noRegionSwitchHint,
-//                ConnectionMode.DIRECT,
-//                singlePartitionEmptyResultQueryGenerator,
-//                queryReturnsTotalRecordCountWithPageSizeOne,
-//                noFailureInjection,
-//                validateStatusCodeIs200Ok,
-//                1,
-//                ArrayUtils.toArray(
-//                    validateCtxSingleRegion,
-//                    validateCtxQueryPlan
-//                ),
-//                null,
-//                validateEmptyResults,
-//                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
-//                NO_OTHER_DOCS_WITH_SAME_PK
-//            },
-//
-//            // Simple cross partition query intended to not return any results. No failures injected.
-//            // Empty pages should be skipped (except for the last one) - so, exactly one empty page expected -
-//            // with exactly one CosmosDiagnostics instance - even when this is a cross-partition query touching all
-//            // partitions
-//            new Object[] {
-//                "EmptyResults_CrossPartition_AllGood_NoAvailabilityStrategy",
-//                Duration.ofSeconds(1),
-//                noAvailabilityStrategy,
-//                noRegionSwitchHint,
-//                ConnectionMode.DIRECT,
-//                crossPartitionEmptyResultQueryGenerator,
-//                queryReturnsTotalRecordCountWithPageSizeOne,
-//                noFailureInjection,
-//                validateStatusCodeIs200Ok,
-//                // empty pages are skipped except for the last one
-//                1,
-//                ArrayUtils.toArray(
-//                    validateCtxSingleRegion,
-//                    validateCtxQueryPlan,
-//                    validateCtxOnlyFeedResponsesExceptQueryPlan,
-//                    (ctx) -> {
-//                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-//                        assertThat(diagnostics[1].getClientSideRequestStatistics().size())
-//                            .isEqualTo(PHYSICAL_PARTITION_COUNT);
-//                        assertThat(diagnostics[1].getFeedResponseDiagnostics().getQueryMetricsMap().size())
-//                            .isEqualTo(PHYSICAL_PARTITION_COUNT);
-//                    }
-//                ),
-//                null,
-//                validateEmptyResults,
-//                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
-//                NO_OTHER_DOCS_WITH_SAME_PK
-//            },
-//
-//            // Simple cross partition query intended to not return any results. No failures injected.
-//            // Empty pages should be returned - so, exactly one page per partition expected -
-//            // with exactly one CosmosDiagnostics instance (plus query plan on very first one)
-//            new Object[] {
-//                "EmptyResults_EnableEmptyPageRetrieval_CrossPartition_AllGood_NoAvailabilityStrategy",
-//                Duration.ofSeconds(1),
-//                noAvailabilityStrategy,
-//                noRegionSwitchHint,
-//                ConnectionMode.DIRECT,
-//                crossPartitionEmptyResultQueryGenerator,
-//                queryReturnsTotalRecordCountWithPageSizeOneAndEmptyPagesEnabled,
-//                noFailureInjection,
-//                validateStatusCodeIs200Ok,
-//                // empty pages are bubbled up
-//                PHYSICAL_PARTITION_COUNT,
-//                ArrayUtils.toArray(
-//                    validateCtxSingleRegion,
-//                    validateCtxQueryPlan,
-//                    validateCtxOnlyFeedResponsesExceptQueryPlan,
-//                    (ctx) -> {
-//                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-//                        assertThat(diagnostics[1].getClientSideRequestStatistics().size())
-//                            .isEqualTo(1);
-//                        assertThat(diagnostics[1].getFeedResponseDiagnostics().getQueryMetricsMap().size())
-//                            .isEqualTo(1);
-//                    }
-//                ),
-//                ArrayUtils.toArray(
-//                    validateCtxSingleRegion,
-//                    validateCtxOnlyFeedResponsesExceptQueryPlan,
-//                    (ctx) -> {
-//                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-//                        assertThat(diagnostics[0].getClientSideRequestStatistics().size())
-//                            .isEqualTo(1);
-//                        assertThat(diagnostics[0].getFeedResponseDiagnostics().getQueryMetricsMap().size())
-//                            .isEqualTo(1);
-//                    }
-//                ),
-//                validateEmptyResults,
-//                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
-//                NO_OTHER_DOCS_WITH_SAME_PK
-//            },
-//
-//            // Simple cross partition query intended to not return any results except on one partition.
-//            // No failures injected. Empty pages of all but one partition will be skipped, but
-//            // query metrics and client side request statistics are captured in the merged diagnostics.
-//            new Object[] {
-//                "AllButOnePartitionEmptyResults_CrossPartition_AllGood_NoAvailabilityStrategy",
-//                Duration.ofSeconds(1),
-//                noAvailabilityStrategy,
-//                noRegionSwitchHint,
-//                ConnectionMode.DIRECT,
-//                crossPartitionQueryGenerator,
-//                queryReturnsTotalRecordCountWithDefaultPageSize,
-//                noFailureInjection,
-//                validateStatusCodeIs200Ok,
-//                1,
-//                ArrayUtils.toArray(
-//                    validateCtxSingleRegion,
-//                    validateCtxQueryPlan,
-//                    validateCtxOnlyFeedResponsesExceptQueryPlan,
-//                    (ctx) -> {
-//                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-//                        assertThat(diagnostics[1].getClientSideRequestStatistics().size())
-//                            .isEqualTo(PHYSICAL_PARTITION_COUNT);
-//                        assertThat(diagnostics[1].getFeedResponseDiagnostics().getQueryMetricsMap().size())
-//                            .isEqualTo(PHYSICAL_PARTITION_COUNT);
-//                    }
-//                ),
-//                null,
-//                validateExactlyOneRecordReturned,
-//                NO_OTHER_DOCS_WITH_SAME_ID,
-//                NO_OTHER_DOCS_WITH_SAME_PK
-//            },
-//
-//            // Single partition query with DISTINCT and ORDER BY. No failures injected
-//            // Expect to get as many pages and diagnostics contexts as there are documents for this PK-value
-//            new Object[] {
-//                "AggregatesAndOrderBy_PageSizeOne_SinglePartition_AllGood_NoAvailabilityStrategy",
-//                Duration.ofSeconds(1),
-//                noAvailabilityStrategy,
-//                noRegionSwitchHint,
-//                ConnectionMode.DIRECT,
-//                singlePartitionWithAggregatesAndOrderByQueryGenerator,
-//                queryReturnsTotalRecordCountWithPageSizeOne,
-//                noFailureInjection,
-//                validateStatusCodeIs200Ok,
-//                1 + ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE,
-//                ArrayUtils.toArray(
-//                    validateCtxSingleRegion,
-//                    validateCtxQueryPlan,
-//                    validateCtxOnlyFeedResponsesExceptQueryPlan
-//                ),
-//                ArrayUtils.toArray(
-//                    validateCtxSingleRegion,
-//                    validateCtxOnlyFeedResponsesExceptQueryPlan
-//                ),
-//                validateAllRecordsSamePartitionReturned,
-//                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
-//                ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
-//            },
-//
-//            // Single partition query with DISTINCT and ORDER BY. No failures injected
-//            // Only a single document matches the where condition - but this is a cross partition query. Because
-//            // the single page returned in the CosmosPagedFlux had to peek into all physical partitions to be
-//            // able to achieve global ordering in the query pipeline a single CosmosDiagnosticsContext instance
-//            // is returned - but with query metrics and client request statistics for all partitions
-//            new Object[] {
-//                "AggregatesAndOrderBy_PageSizeOne_CrossPartitionSingleRecord_AllGood_NoAvailabilityStrategy",
-//                Duration.ofSeconds(1),
-//                noAvailabilityStrategy,
-//                noRegionSwitchHint,
-//                ConnectionMode.DIRECT,
-//                crossPartitionWithAggregatesAndOrderByQueryGenerator,
-//                queryReturnsTotalRecordCountWithPageSizeOne,
-//                noFailureInjection,
-//                validateStatusCodeIs200Ok,
-//                1,
-//                ArrayUtils.toArray(
-//                    validateCtxSingleRegion,
-//                    validateCtxQueryPlan,
-//                    validateCtxOnlyFeedResponsesExceptQueryPlan,
-//                    (ctx) -> {
-//                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-//                        assertThat(diagnostics[1].getClientSideRequestStatistics().size())
-//                            .isEqualTo(PHYSICAL_PARTITION_COUNT);
-//                        assertThat(diagnostics[1].getFeedResponseDiagnostics().getQueryMetricsMap().size())
-//                            .isEqualTo(PHYSICAL_PARTITION_COUNT);
-//                    }
-//                ),
-//                null,
-//                validateExactlyOneRecordReturned,
-//                NO_OTHER_DOCS_WITH_SAME_PK,
-//                NO_OTHER_DOCS_WITH_SAME_ID
-//            },
-//
-//            // Cross partition query with DISTINCT and ORDER BY. Documents from all partitions meet the where
-//            // condition but the distinct id value is identical - so, to the application only a single record is
-//            // returned. Because the page size is 1 we expect as many pages / CosmosDiagnosticsContext instances
-//            // as there are documents with the same id-value.
-//            new Object[] {
-//                "AggregatesAndOrderBy_PageSizeOne_CrossPartition_AllGood_NoAvailabilityStrategy",
-//                Duration.ofSeconds(1),
-//                noAvailabilityStrategy,
-//                noRegionSwitchHint,
-//                ConnectionMode.DIRECT,
-//                crossPartitionWithAggregatesAndOrderByQueryGenerator,
-//                queryReturnsTotalRecordCountWithPageSizeOne,
-//                noFailureInjection,
-//                validateStatusCodeIs200Ok,
-//                1 + ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
-//                ArrayUtils.toArray(
-//                    validateCtxSingleRegion,
-//                    validateCtxQueryPlan,
-//                    validateCtxOnlyFeedResponsesExceptQueryPlan
-//                ),
-//                ArrayUtils.toArray(
-//                    validateCtxSingleRegion,
-//                    validateCtxOnlyFeedResponsesExceptQueryPlan
-//                ),
-//                validateExactlyOneRecordReturned,
-//                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
-//                NO_OTHER_DOCS_WITH_SAME_PK
-//            },
-//
-//            // Cross partition query with DISTINCT and ORDER BY. Documents from all partitions meet the where
-//            // condition but the distinct id value is identical - so, to the application only a single record is
-//            // returned. Because the page size is 1 we expect as many pages / CosmosDiagnosticsContext instances
-//            // as there are documents with the same id-value.
-//            new Object[] {
-//                "AggregatesAndOrderBy_DefaultPageSize_CrossPartition_AllGood_NoAvailabilityStrategy",
-//                Duration.ofSeconds(1),
-//                noAvailabilityStrategy,
-//                noRegionSwitchHint,
-//                ConnectionMode.DIRECT,
-//                crossPartitionWithAggregatesAndOrderByQueryGenerator,
-//                queryReturnsTotalRecordCountWithDefaultPageSize,
-//                noFailureInjection,
-//                validateStatusCodeIs200Ok,
-//                PHYSICAL_PARTITION_COUNT,
-//                ArrayUtils.toArray(
-//                    validateCtxSingleRegion,
-//                    validateCtxQueryPlan,
-//                    validateCtxOnlyFeedResponsesExceptQueryPlan,
-//                    (ctx) -> {
-//                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-//                        assertThat(diagnostics[1].getClientSideRequestStatistics().size())
-//                            .isEqualTo(1);
-//                        assertThat(diagnostics[1].getFeedResponseDiagnostics().getQueryMetricsMap().size())
-//                            .isEqualTo(1);
-//                    }
-//                ),
-//                ArrayUtils.toArray(
-//                    validateCtxSingleRegion,
-//                    validateCtxOnlyFeedResponsesExceptQueryPlan,
-//                    (ctx) -> {
-//                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-//                        assertThat(diagnostics[0].getClientSideRequestStatistics().size())
-//                            .isEqualTo(1);
-//                        assertThat(diagnostics[0].getFeedResponseDiagnostics().getQueryMetricsMap().size())
-//                            .isEqualTo(1);
-//                    }
-//                ),
-//                validateExactlyOneRecordReturned,
-//                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
-//                NO_OTHER_DOCS_WITH_SAME_PK
-//            },
-//
-//            // Cross partition query with DISTINCT and ORDER BY. Single document meets the where
-//            // condition, but queries against all partitions need to be executed. Expect to see a single
-//            // page and CosmosDiagnosticsContext - but including three request statistics and query metrics.
-//            new Object[] {
-//                "AggregatesAndOrderBy_DefaultPageSize_SingleRecordCrossPartition_AllGood_NoAvailabilityStrategy",
-//                Duration.ofSeconds(1),
-//                noAvailabilityStrategy,
-//                noRegionSwitchHint,
-//                ConnectionMode.DIRECT,
-//                crossPartitionWithAggregatesAndOrderByQueryGenerator,
-//                queryReturnsTotalRecordCountWithDefaultPageSize,
-//                noFailureInjection,
-//                validateStatusCodeIs200Ok,
-//                1,
-//                ArrayUtils.toArray(
-//                    validateCtxSingleRegion,
-//                    validateCtxQueryPlan,
-//                    validateCtxOnlyFeedResponsesExceptQueryPlan,
-//                    (ctx) -> {
-//                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-//                        assertThat(diagnostics[1].getClientSideRequestStatistics().size())
-//                            .isEqualTo(PHYSICAL_PARTITION_COUNT);
-//                        assertThat(diagnostics[1].getFeedResponseDiagnostics().getQueryMetricsMap().size())
-//                            .isEqualTo(PHYSICAL_PARTITION_COUNT);
-//                    }
-//                ),
-//                null,
-//                validateExactlyOneRecordReturned,
-//                NO_OTHER_DOCS_WITH_SAME_ID,
-//                NO_OTHER_DOCS_WITH_SAME_PK
-//            },
+            new Object[] {
+                "DefaultPageSize_SinglePartition_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                singlePartitionQueryGenerator,
+                queryReturnsTotalRecordCountWithDefaultPageSize,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
+                ),
+                null,
+                validateExactlyOneRecordReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+
+            // Simple cross partition query. No failure injection and all records returned for a partition will fit
+            // into a single page. But there will be one page per partition
+            new Object[] {
+                "DefaultPageSize_CrossPartition_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                crossPartitionQueryGenerator,
+                queryReturnsTotalRecordCountWithDefaultPageSize,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                PHYSICAL_PARTITION_COUNT,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
+                ),
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
+                ),
+                validateAllRecordsSameIdReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+
+            // Simple single partition query. No failure injection but page size set to 1 - so, multiple pages will
+            // be returned from the PagedFlux - for each document one page - and the expectation is that there
+            // will be as many CosmosDiagnosticsContext instances as pages.
+            new Object[] {
+                "PageSizeOne_SinglePartition_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                singlePartitionQueryGenerator,
+                queryReturnsTotalRecordCountWithPageSizeOne,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                1 + ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
+                ),
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
+                ),
+                validateAllRecordsSamePartitionReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
+            },
+
+            // Simple cross partition query. No failure injection but page size set to 1 - so, multiple pages will
+            // be returned from the PagedFlux per physical partition - for each document one page - and the
+            // expectation is that there will be as many CosmosDiagnosticsContext instances as pages.
+            new Object[] {
+                "PageSizeOne_CrossPartition_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                crossPartitionQueryGenerator,
+                queryReturnsTotalRecordCountWithPageSizeOne,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                1 + ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
+                ),
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
+                ),
+                validateAllRecordsSameIdReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+
+            // Simple single partition query intended to not return any results. No failure injection and only
+            // one empty page expected - with exactly one CosmosDiagnostics instance
+            new Object[] {
+                "EmptyResults_SinglePartition_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                singlePartitionEmptyResultQueryGenerator,
+                queryReturnsTotalRecordCountWithPageSizeOne,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxQueryPlan
+                ),
+                null,
+                validateEmptyResults,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+
+            // Simple cross partition query intended to not return any results. No failures injected.
+            // Empty pages should be skipped (except for the last one) - so, exactly one empty page expected -
+            // with exactly one CosmosDiagnostics instance - even when this is a cross-partition query touching all
+            // partitions
+            new Object[] {
+                "EmptyResults_CrossPartition_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                crossPartitionEmptyResultQueryGenerator,
+                queryReturnsTotalRecordCountWithPageSizeOne,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                // empty pages are skipped except for the last one
+                1,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                        assertThat(diagnostics[1].getClientSideRequestStatistics().size())
+                            .isEqualTo(PHYSICAL_PARTITION_COUNT);
+                        assertThat(diagnostics[1].getFeedResponseDiagnostics().getQueryMetricsMap().size())
+                            .isEqualTo(PHYSICAL_PARTITION_COUNT);
+                    }
+                ),
+                null,
+                validateEmptyResults,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+
+            // Simple cross partition query intended to not return any results. No failures injected.
+            // Empty pages should be returned - so, exactly one page per partition expected -
+            // with exactly one CosmosDiagnostics instance (plus query plan on very first one)
+            new Object[] {
+                "EmptyResults_EnableEmptyPageRetrieval_CrossPartition_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                crossPartitionEmptyResultQueryGenerator,
+                queryReturnsTotalRecordCountWithPageSizeOneAndEmptyPagesEnabled,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                // empty pages are bubbled up
+                PHYSICAL_PARTITION_COUNT,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                        assertThat(diagnostics[1].getClientSideRequestStatistics().size())
+                            .isEqualTo(1);
+                        assertThat(diagnostics[1].getFeedResponseDiagnostics().getQueryMetricsMap().size())
+                            .isEqualTo(1);
+                    }
+                ),
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                        assertThat(diagnostics[0].getClientSideRequestStatistics().size())
+                            .isEqualTo(1);
+                        assertThat(diagnostics[0].getFeedResponseDiagnostics().getQueryMetricsMap().size())
+                            .isEqualTo(1);
+                    }
+                ),
+                validateEmptyResults,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+
+            // Simple cross partition query intended to not return any results except on one partition.
+            // No failures injected. Empty pages of all but one partition will be skipped, but
+            // query metrics and client side request statistics are captured in the merged diagnostics.
+            new Object[] {
+                "AllButOnePartitionEmptyResults_CrossPartition_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                crossPartitionQueryGenerator,
+                queryReturnsTotalRecordCountWithDefaultPageSize,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                        assertThat(diagnostics[1].getClientSideRequestStatistics().size())
+                            .isEqualTo(PHYSICAL_PARTITION_COUNT);
+                        assertThat(diagnostics[1].getFeedResponseDiagnostics().getQueryMetricsMap().size())
+                            .isEqualTo(PHYSICAL_PARTITION_COUNT);
+                    }
+                ),
+                null,
+                validateExactlyOneRecordReturned,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+
+            // Single partition query with DISTINCT and ORDER BY. No failures injected
+            // Expect to get as many pages and diagnostics contexts as there are documents for this PK-value
+            new Object[] {
+                "AggregatesAndOrderBy_PageSizeOne_SinglePartition_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                singlePartitionWithAggregatesAndOrderByQueryGenerator,
+                queryReturnsTotalRecordCountWithPageSizeOne,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                1 + ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
+                ),
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
+                ),
+                validateAllRecordsSamePartitionReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
+            },
+
+            // Single partition query with DISTINCT and ORDER BY. No failures injected
+            // Only a single document matches the where condition - but this is a cross partition query. Because
+            // the single page returned in the CosmosPagedFlux had to peek into all physical partitions to be
+            // able to achieve global ordering in the query pipeline a single CosmosDiagnosticsContext instance
+            // is returned - but with query metrics and client request statistics for all partitions
+            new Object[] {
+                "AggregatesAndOrderBy_PageSizeOne_CrossPartitionSingleRecord_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                crossPartitionWithAggregatesAndOrderByQueryGenerator,
+                queryReturnsTotalRecordCountWithPageSizeOne,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                        assertThat(diagnostics[1].getClientSideRequestStatistics().size())
+                            .isEqualTo(PHYSICAL_PARTITION_COUNT);
+                        assertThat(diagnostics[1].getFeedResponseDiagnostics().getQueryMetricsMap().size())
+                            .isEqualTo(PHYSICAL_PARTITION_COUNT);
+                    }
+                ),
+                null,
+                validateExactlyOneRecordReturned,
+                NO_OTHER_DOCS_WITH_SAME_PK,
+                NO_OTHER_DOCS_WITH_SAME_ID
+            },
+
+            // Cross partition query with DISTINCT and ORDER BY. Documents from all partitions meet the where
+            // condition but the distinct id value is identical - so, to the application only a single record is
+            // returned. Because the page size is 1 we expect as many pages / CosmosDiagnosticsContext instances
+            // as there are documents with the same id-value.
+            new Object[] {
+                "AggregatesAndOrderBy_PageSizeOne_CrossPartition_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                crossPartitionWithAggregatesAndOrderByQueryGenerator,
+                queryReturnsTotalRecordCountWithPageSizeOne,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                1 + ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
+                ),
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
+                ),
+                validateExactlyOneRecordReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+
+            // Cross partition query with DISTINCT and ORDER BY. Documents from all partitions meet the where
+            // condition but the distinct id value is identical - so, to the application only a single record is
+            // returned. Because the page size is 1 we expect as many pages / CosmosDiagnosticsContext instances
+            // as there are documents with the same id-value.
+            new Object[] {
+                "AggregatesAndOrderBy_DefaultPageSize_CrossPartition_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                crossPartitionWithAggregatesAndOrderByQueryGenerator,
+                queryReturnsTotalRecordCountWithDefaultPageSize,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                PHYSICAL_PARTITION_COUNT,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                        assertThat(diagnostics[1].getClientSideRequestStatistics().size())
+                            .isEqualTo(1);
+                        assertThat(diagnostics[1].getFeedResponseDiagnostics().getQueryMetricsMap().size())
+                            .isEqualTo(1);
+                    }
+                ),
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                        assertThat(diagnostics[0].getClientSideRequestStatistics().size())
+                            .isEqualTo(1);
+                        assertThat(diagnostics[0].getFeedResponseDiagnostics().getQueryMetricsMap().size())
+                            .isEqualTo(1);
+                    }
+                ),
+                validateExactlyOneRecordReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+
+            // Cross partition query with DISTINCT and ORDER BY. Single document meets the where
+            // condition, but queries against all partitions need to be executed. Expect to see a single
+            // page and CosmosDiagnosticsContext - but including three request statistics and query metrics.
+            new Object[] {
+                "AggregatesAndOrderBy_DefaultPageSize_SingleRecordCrossPartition_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                crossPartitionWithAggregatesAndOrderByQueryGenerator,
+                queryReturnsTotalRecordCountWithDefaultPageSize,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                        assertThat(diagnostics[1].getClientSideRequestStatistics().size())
+                            .isEqualTo(PHYSICAL_PARTITION_COUNT);
+                        assertThat(diagnostics[1].getFeedResponseDiagnostics().getQueryMetricsMap().size())
+                            .isEqualTo(PHYSICAL_PARTITION_COUNT);
+                    }
+                ),
+                null,
+                validateExactlyOneRecordReturned,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
 
             // Simple single partition query - 404/1002 injected into all partition of the first region
             // RegionSwitchHint is local - with eager availability strategy - so, the expectation is that the
@@ -2595,308 +2595,308 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 NO_OTHER_DOCS_WITH_SAME_PK
             },
 
-//            // Simple cross partition query - 404/1002 injected into all partition of the first region
-//            // RegionSwitchHint is remote - with reluctant availability strategy - so, the expectation is that the
-//            // retry on the first region will provide a successful response and no hedging is happening.
-//            // There should be one CosmosDiagnosticsContext (and page) per partition - each should only have
-//            // a single CosmosDiagnostics instance contacting both regions.
-//            new Object[] {
-//                "DefaultPageSize_CrossPartition_404-1002_OnlyFirstRegion_AllPartitions_RemotePreferred_ReluctantAvailabilityStrategy",
-//                Duration.ofSeconds(3),
-//                reluctantThresholdAvailabilityStrategy,
-//                CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
-//                ConnectionMode.DIRECT,
-//                crossPartitionQueryGenerator,
-//                queryReturnsTotalRecordCountWithDefaultPageSize,
-//                injectReadSessionNotAvailableIntoFirstRegionOnly,
-//                validateStatusCodeIs200Ok,
-//                PHYSICAL_PARTITION_COUNT,
-//                ArrayUtils.toArray(
-//                    validateCtxTwoRegions,
-//                    validateCtxQueryPlan,
-//                    validateCtxOnlyFeedResponsesExceptQueryPlan,
-//                    (ctx) -> {
-//                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-//                        assertThat(diagnostics.length).isEqualTo(2);
-//
-//                        // Ensure fail-over happened
-//                        assertThat(diagnostics[1].getContactedRegionNames().size()).isEqualTo(2);
-//                        assertThat(diagnostics[1].getContactedRegionNames().contains(FIRST_REGION_NAME))
-//                            .isEqualTo(true);
-//                        assertThat(diagnostics[1].getContactedRegionNames().contains(SECOND_REGION_NAME))
-//                            .isEqualTo(true);
-//                    }
-//                ),
-//                ArrayUtils.toArray(
-//                    validateCtxTwoRegions,
-//                    validateCtxOnlyFeedResponsesExceptQueryPlan,
-//                    (ctx) -> {
-//                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-//                        assertThat(diagnostics.length).isEqualTo(1);
-//
-//                        // Ensure fail-over happened
-//                        assertThat(diagnostics[0].getContactedRegionNames().size()).isEqualTo(2);
-//                        assertThat(diagnostics[0].getContactedRegionNames().contains(FIRST_REGION_NAME))
-//                            .isEqualTo(true);
-//                        assertThat(diagnostics[0].getContactedRegionNames().contains(SECOND_REGION_NAME))
-//                            .isEqualTo(true);
-//                    }
-//                ),
-//                validateAllRecordsSameIdReturned,
-//                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
-//                NO_OTHER_DOCS_WITH_SAME_PK
-//            },
-//
-//            // Simple cross partition query - 404/1002 injected into only a single partition of the first region
-//            // RegionSwitchHint is remote - with reluctant availability strategy - so, the expectation is that the
-//            // retry on the first region will provide a successful response for the one partition and no hedging is
-//            // happening. There should be one CosmosDiagnosticsContext (and page) per partition - each should only have
-//            // a single CosmosDiagnostics instance contacting both regions.
-//            new Object[] {
-//                "DefaultPageSize_CrossPartition_404-1002_OnlyFirstRegion_SinglePartition_RemotePreferred_ReluctantAvailabilityStrategy",
-//                Duration.ofSeconds(1),
-//                reluctantThresholdAvailabilityStrategy,
-//                CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
-//                ConnectionMode.DIRECT,
-//                crossPartitionQueryGenerator,
-//                queryReturnsTotalRecordCountWithDefaultPageSize,
-//                injectReadSessionNotAvailableIntoFirstRegionOnlyForSinglePartition,
-//                validateStatusCodeIs200Ok,
-//                PHYSICAL_PARTITION_COUNT,
-//                ArrayUtils.toArray(
-//                    validateCtxTwoRegions,
-//                    validateCtxQueryPlan,
-//                    validateCtxOnlyFeedResponsesExceptQueryPlan,
-//                    (ctx) -> {
-//                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-//                        assertThat(diagnostics.length).isEqualTo(2);
-//
-//                        // Ensure fail-over happened
-//                        assertThat(diagnostics[1].getContactedRegionNames().size()).isEqualTo(2);
-//                        assertThat(diagnostics[1].getContactedRegionNames().contains(FIRST_REGION_NAME))
-//                            .isEqualTo(true);
-//                        assertThat(diagnostics[1].getContactedRegionNames().contains(SECOND_REGION_NAME))
-//                            .isEqualTo(true);
-//                    }
-//                ),
-//                ArrayUtils.toArray(
-//                    validateCtxSingleRegion,
-//                    validateCtxOnlyFeedResponsesExceptQueryPlan,
-//                    (ctx) -> {
-//                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-//                        assertThat(diagnostics.length).isEqualTo(1);
-//
-//                        // Ensure no fail-over happened
-//                        assertThat(diagnostics[0].getContactedRegionNames().size()).isEqualTo(1);
-//                        assertThat(diagnostics[0].getContactedRegionNames().contains(FIRST_REGION_NAME))
-//                            .isEqualTo(true);
-//                    }
-//                ),
-//                validateAllRecordsSameIdReturned,
-//                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
-//                NO_OTHER_DOCS_WITH_SAME_PK
-//            },
-//
-//            // Simple single partition query - 404/1002 injected into all partition of the first region
-//            // RegionSwitchHint is local - with eager availability strategy - so, the expectation is that the
-//            // hedging will provide a successful response. There should only be a single CosmosDiagnosticsContext
-//            // (and page) - but it should have three CosmosDiagnostics instances - first for query plan, second for
-//            // the attempt in the first region and third one for hedging returning successful response.
-//            new Object[] {
-//                "DefaultPageSize_SinglePartition_503_AllRegions_EagerAvailabilityStrategy",
-//                Duration.ofSeconds(10),
-//                eagerThresholdAvailabilityStrategy,
-//                CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
-//                ConnectionMode.DIRECT,
-//                singlePartitionQueryGenerator,
-//                queryReturnsTotalRecordCountWithDefaultPageSize,
-//                injectServiceUnavailableIntoAllRegions,
-//                validateStatusCodeIsServiceUnavailable,
-//                1,
-//                ArrayUtils.toArray(
-//                    validateCtxTwoRegions,
-//                    (ctx) -> {
-//                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-//                        assertThat(diagnostics.length).isEqualTo(3);
-//
-//                        // Ensure first FeedResponse reaches both regions since Clinet Retry
-//                        // policy should kick in and retry in remote region
-//                        assertThat(diagnostics[1].getContactedRegionNames().size()).isEqualTo(2);
-//                        assertThat(diagnostics[1].getContactedRegionNames().contains(FIRST_REGION_NAME))
-//                            .isEqualTo(true);
-//                        assertThat(diagnostics[1].getContactedRegionNames().contains(SECOND_REGION_NAME))
-//                            .isEqualTo(true);
-//
-//                        // Ensure second FeedResponse CosmoDiagnostics has only requests to second region
-//                        assertThat(diagnostics[2].getContactedRegionNames().size()).isEqualTo(1);
-//                        assertThat(diagnostics[2].getContactedRegionNames().contains(SECOND_REGION_NAME))
-//                            .isEqualTo(true);
-//                    }
-//                ),
-//                null,
-//                null,
-//                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
-//                NO_OTHER_DOCS_WITH_SAME_PK
-//            },
-//
-//            // Simple single partition query. Gateway timeout for query plan retrieval in first region injected.
-//            // This test case validates that the availability strategy and hedging is also applied for the
-//            // query plan request. The expectation is that the query plan request in the first region won't finish,
-//            // the query plan will then be retrieved from the second region but the actual query is executed against the
-//            // first region.
-//            new Object[] {
-//                "DefaultPageSize_SinglePartition_QueryPLanHighLatency_EagerAvailabilityStrategy",
-//                Duration.ofSeconds(3),
-//                reluctantThresholdAvailabilityStrategy,
-//                noRegionSwitchHint,
-//                ConnectionMode.DIRECT,
-//                singlePartitionQueryGenerator,
-//                queryReturnsTotalRecordCountWithDefaultPageSize,
-//                injectQueryPlanTransitTimeoutIntoFirstRegionOnly,
-//                validateStatusCodeIs200Ok,
-//                1,
-//                ArrayUtils.toArray(
-//                    validateCtxTwoRegions,
-//                    validateCtxQueryPlan,
-//                    (ctx) -> {
-//                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-//                        assertThat(diagnostics.length).isGreaterThanOrEqualTo(3);
-//
-//                        // Ensure that the query plan has been retrieved from the second region
-//                        assertThat(diagnostics[0].getContactedRegionNames().size()).isEqualTo(1);
-//                        assertThat(diagnostics[0].getContactedRegionNames().iterator().next()).isEqualTo(FIRST_REGION_NAME);
-//                        assertThat(diagnostics[0].getClientSideRequestStatistics()).isNotNull();
-//                        assertThat(diagnostics[0].getClientSideRequestStatistics().size()).isGreaterThanOrEqualTo(1);
-//                        ClientSideRequestStatistics requestStats = diagnostics[0].getClientSideRequestStatistics().iterator().next();
-//                        assertThat(requestStats.getGatewayStatisticsList()).isNotNull();
-//                        assertThat(requestStats.getGatewayStatisticsList().size()).isGreaterThanOrEqualTo(1);
-//                        assertThat(requestStats.getGatewayStatisticsList().iterator().next().getOperationType()).isEqualTo(OperationType.QueryPlan);
-//                        assertThat(requestStats.getGatewayStatisticsList().iterator().next().getStatusCode()).isEqualTo(408);
-//
-//                        // Ensure that the query plan has been retrieved from the second region
-//                        assertThat(diagnostics[1].getContactedRegionNames().size()).isEqualTo(1);
-//                        assertThat(diagnostics[1].getContactedRegionNames().iterator().next()).isEqualTo(SECOND_REGION_NAME);
-//                        assertThat(diagnostics[1].getClientSideRequestStatistics()).isNotNull();
-//                        assertThat(diagnostics[1].getClientSideRequestStatistics().size()).isGreaterThanOrEqualTo(1);
-//                        requestStats = diagnostics[1].getClientSideRequestStatistics().iterator().next();
-//                        assertThat(requestStats.getGatewayStatisticsList()).isNotNull();
-//                        assertThat(requestStats.getGatewayStatisticsList().size()).isGreaterThanOrEqualTo(1);
-//                        assertThat(requestStats.getGatewayStatisticsList().iterator().next().getOperationType()).isEqualTo(OperationType.QueryPlan);
-//                        assertThat(requestStats.getGatewayStatisticsList().iterator().next().getStatusCode()).isEqualTo(200);
-//
-//
-//                        // There possibly is an incomplete diagnostics for the failed query plan retrieval in the first region
-//                        // Last Diagnostics should be for processed request against the first region with the
-//                        // query plan retrieved from the second region
-//                        boolean found = false;
-//                        for (int i = 2; i < diagnostics.length; i++) {
-//                            if (diagnostics[i].getFeedResponseDiagnostics() != null &&
-//                                diagnostics[i].getFeedResponseDiagnostics().getQueryMetricsMap() != null) {
-//
-//                                found = true;
-//                                assertThat(diagnostics[i].getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
-//                                assertThat(diagnostics[i].getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isGreaterThanOrEqualTo(1);
-//                                assertThat(diagnostics[i].getContactedRegionNames().size()).isEqualTo(1);
-//                                assertThat(diagnostics[i].getContactedRegionNames().iterator().next()).isEqualTo(FIRST_REGION_NAME);
-//                            }
-//                        }
-//
-//                        assertThat(found).isEqualTo(true);
-//                    }
-//                ),
-//                null,
-//                validateExactlyOneRecordReturned,
-//                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
-//                NO_OTHER_DOCS_WITH_SAME_PK
-//            },
-//
-//            // GATEWAY MODE
-//            // ------------
-//
-//            // Simple cross partition query - 404/1002 injected into all partition of the first region
-//            // RegionSwitchHint is remote - with reluctant availability strategy - so, the expectation is that the
-//            // retry on the first region will provide a successful response and no hedging is happening.
-//            // There should be one CosmosDiagnosticsContext (and page) per partition - each should only have
-//            // a single CosmosDiagnostics instance contacting both regions.
-//            new Object[] {
-//                "GW_DefaultPageSize_CrossPartition_GW408_EagerAvailabilityStrategy",
-//                Duration.ofSeconds(3),
-//                eagerThresholdAvailabilityStrategy,
-//                noRegionSwitchHint,
-//                ConnectionMode.GATEWAY,
-//                crossPartitionQueryGenerator,
-//                queryReturnsTotalRecordCountWithDefaultPageSize,
-//                injectGatewayTransitTimeoutIntoFirstRegionOnly,
-//                validateStatusCodeIs200Ok,
-//                PHYSICAL_PARTITION_COUNT,
-//                ArrayUtils.toArray(
-//                    validateCtxTwoRegions, // query plan 1st region, all queries 2nd region
-//                    validateCtxQueryPlan,
-//                    (ctx) -> {
-//                        assertThat(ctx.getDiagnostics()).isNotNull();
-//                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-//
-//                        // Diagnostics of query attempt in first region not even available yet
-//                        assertThat(diagnostics.length).isEqualTo(2);
-//
-//                        // query plan on first region
-//                        assertThat(diagnostics[0].getContactedRegionNames().size()).isEqualTo(1);
-//                        assertThat(diagnostics[0].getContactedRegionNames().iterator().next()).isEqualTo(FIRST_REGION_NAME);
-//                    },
-//                    (ctx) -> {
-//                        assertThat(ctx.getDiagnostics()).isNotNull();
-//                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-//                        assertThat(diagnostics[1].getContactedRegionNames().size()).isEqualTo(1);
-//                        assertThat(diagnostics[1].getContactedRegionNames().iterator().next()).isEqualTo(SECOND_REGION_NAME);
-//                        assertThat(diagnostics[1].getFeedResponseDiagnostics()).isNotNull();
-//                        assertThat(diagnostics[1].getFeedResponseDiagnostics().getQueryMetricsMap()).isNotNull();
-//                        assertThat(diagnostics[1].getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
-//                        ClientSideRequestStatistics[] clientStats =
-//                            diagnostics[1]
-//                                .getFeedResponseDiagnostics()
-//                                .getClientSideRequestStatistics()
-//                                .toArray(new ClientSideRequestStatistics[0]);
-//                        assertThat(clientStats.length).isEqualTo(1);
-//                        for (int i = 0; i < clientStats.length; i++) {
-//                            assertThat(clientStats[i].getContactedRegionNames()).isNotNull();
-//                            assertThat(clientStats[i].getContactedRegionNames().size()).isEqualTo(1);
-//                            assertThat(clientStats[i].getContactedRegionNames().iterator().next()).isEqualTo(SECOND_REGION_NAME);
-//                            assertThat(clientStats[i].getGatewayStatisticsList()).isNotNull();
-//                            assertThat(clientStats[i].getResponseStatisticsList()).isNotNull();
-//                            assertThat(clientStats[i].getResponseStatisticsList().size()).isEqualTo(0);
-//                        }
-//                    }
-//                ),
-//                ArrayUtils.toArray(
-//                    validateCtxSingleRegion,
-//                    (ctx) -> {
-//                        assertThat(ctx.getDiagnostics()).isNotNull();
-//                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-//                        assertThat(diagnostics[0].getContactedRegionNames().size()).isEqualTo(1);
-//                        assertThat(diagnostics[0].getContactedRegionNames().iterator().next()).isEqualTo(SECOND_REGION_NAME);
-//                        assertThat(diagnostics[0].getFeedResponseDiagnostics()).isNotNull();
-//                        assertThat(diagnostics[0].getFeedResponseDiagnostics().getQueryMetricsMap()).isNotNull();
-//                        assertThat(diagnostics[0].getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
-//                        ClientSideRequestStatistics[] clientStats =
-//                            diagnostics[0]
-//                                .getFeedResponseDiagnostics()
-//                                .getClientSideRequestStatistics()
-//                                .toArray(new ClientSideRequestStatistics[0]);
-//                        assertThat(clientStats.length).isEqualTo(1);
-//                        for (int i = 0; i < clientStats.length; i++) {
-//                            assertThat(clientStats[i].getContactedRegionNames()).isNotNull();
-//                            assertThat(clientStats[i].getContactedRegionNames().size()).isEqualTo(1);
-//                            assertThat(clientStats[i].getContactedRegionNames().iterator().next()).isEqualTo(SECOND_REGION_NAME);
-//                            assertThat(clientStats[i].getGatewayStatisticsList()).isNotNull();
-//                            assertThat(clientStats[i].getResponseStatisticsList()).isNotNull();
-//                            assertThat(clientStats[i].getResponseStatisticsList().size()).isEqualTo(0);
-//                        }
-//                    }
-//                ),
-//                validateAllRecordsSameIdReturned,
-//                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
-//                NO_OTHER_DOCS_WITH_SAME_PK
-//            },
+            // Simple cross partition query - 404/1002 injected into all partition of the first region
+            // RegionSwitchHint is remote - with reluctant availability strategy - so, the expectation is that the
+            // retry on the first region will provide a successful response and no hedging is happening.
+            // There should be one CosmosDiagnosticsContext (and page) per partition - each should only have
+            // a single CosmosDiagnostics instance contacting both regions.
+            new Object[] {
+                "DefaultPageSize_CrossPartition_404-1002_OnlyFirstRegion_AllPartitions_RemotePreferred_ReluctantAvailabilityStrategy",
+                Duration.ofSeconds(3),
+                reluctantThresholdAvailabilityStrategy,
+                CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                ConnectionMode.DIRECT,
+                crossPartitionQueryGenerator,
+                queryReturnsTotalRecordCountWithDefaultPageSize,
+                injectReadSessionNotAvailableIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                PHYSICAL_PARTITION_COUNT,
+                ArrayUtils.toArray(
+                    validateCtxTwoRegions,
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                        assertThat(diagnostics.length).isEqualTo(2);
+
+                        // Ensure fail-over happened
+                        assertThat(diagnostics[1].getContactedRegionNames().size()).isEqualTo(2);
+                        assertThat(diagnostics[1].getContactedRegionNames().contains(FIRST_REGION_NAME))
+                            .isEqualTo(true);
+                        assertThat(diagnostics[1].getContactedRegionNames().contains(SECOND_REGION_NAME))
+                            .isEqualTo(true);
+                    }
+                ),
+                ArrayUtils.toArray(
+                    validateCtxTwoRegions,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                        assertThat(diagnostics.length).isEqualTo(1);
+
+                        // Ensure fail-over happened
+                        assertThat(diagnostics[0].getContactedRegionNames().size()).isEqualTo(2);
+                        assertThat(diagnostics[0].getContactedRegionNames().contains(FIRST_REGION_NAME))
+                            .isEqualTo(true);
+                        assertThat(diagnostics[0].getContactedRegionNames().contains(SECOND_REGION_NAME))
+                            .isEqualTo(true);
+                    }
+                ),
+                validateAllRecordsSameIdReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+
+            // Simple cross partition query - 404/1002 injected into only a single partition of the first region
+            // RegionSwitchHint is remote - with reluctant availability strategy - so, the expectation is that the
+            // retry on the first region will provide a successful response for the one partition and no hedging is
+            // happening. There should be one CosmosDiagnosticsContext (and page) per partition - each should only have
+            // a single CosmosDiagnostics instance contacting both regions.
+            new Object[] {
+                "DefaultPageSize_CrossPartition_404-1002_OnlyFirstRegion_SinglePartition_RemotePreferred_ReluctantAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                reluctantThresholdAvailabilityStrategy,
+                CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                ConnectionMode.DIRECT,
+                crossPartitionQueryGenerator,
+                queryReturnsTotalRecordCountWithDefaultPageSize,
+                injectReadSessionNotAvailableIntoFirstRegionOnlyForSinglePartition,
+                validateStatusCodeIs200Ok,
+                PHYSICAL_PARTITION_COUNT,
+                ArrayUtils.toArray(
+                    validateCtxTwoRegions,
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                        assertThat(diagnostics.length).isEqualTo(2);
+
+                        // Ensure fail-over happened
+                        assertThat(diagnostics[1].getContactedRegionNames().size()).isEqualTo(2);
+                        assertThat(diagnostics[1].getContactedRegionNames().contains(FIRST_REGION_NAME))
+                            .isEqualTo(true);
+                        assertThat(diagnostics[1].getContactedRegionNames().contains(SECOND_REGION_NAME))
+                            .isEqualTo(true);
+                    }
+                ),
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                        assertThat(diagnostics.length).isEqualTo(1);
+
+                        // Ensure no fail-over happened
+                        assertThat(diagnostics[0].getContactedRegionNames().size()).isEqualTo(1);
+                        assertThat(diagnostics[0].getContactedRegionNames().contains(FIRST_REGION_NAME))
+                            .isEqualTo(true);
+                    }
+                ),
+                validateAllRecordsSameIdReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+
+            // Simple single partition query - 404/1002 injected into all partition of the first region
+            // RegionSwitchHint is local - with eager availability strategy - so, the expectation is that the
+            // hedging will provide a successful response. There should only be a single CosmosDiagnosticsContext
+            // (and page) - but it should have three CosmosDiagnostics instances - first for query plan, second for
+            // the attempt in the first region and third one for hedging returning successful response.
+            new Object[] {
+                "DefaultPageSize_SinglePartition_503_AllRegions_EagerAvailabilityStrategy",
+                Duration.ofSeconds(10),
+                eagerThresholdAvailabilityStrategy,
+                CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+                ConnectionMode.DIRECT,
+                singlePartitionQueryGenerator,
+                queryReturnsTotalRecordCountWithDefaultPageSize,
+                injectServiceUnavailableIntoAllRegions,
+                validateStatusCodeIsServiceUnavailable,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxTwoRegions,
+                    (ctx) -> {
+                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                        assertThat(diagnostics.length).isEqualTo(3);
+
+                        // Ensure first FeedResponse reaches both regions since Clinet Retry
+                        // policy should kick in and retry in remote region
+                        assertThat(diagnostics[1].getContactedRegionNames().size()).isEqualTo(2);
+                        assertThat(diagnostics[1].getContactedRegionNames().contains(FIRST_REGION_NAME))
+                            .isEqualTo(true);
+                        assertThat(diagnostics[1].getContactedRegionNames().contains(SECOND_REGION_NAME))
+                            .isEqualTo(true);
+
+                        // Ensure second FeedResponse CosmoDiagnostics has only requests to second region
+                        assertThat(diagnostics[2].getContactedRegionNames().size()).isEqualTo(1);
+                        assertThat(diagnostics[2].getContactedRegionNames().contains(SECOND_REGION_NAME))
+                            .isEqualTo(true);
+                    }
+                ),
+                null,
+                null,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+
+            // Simple single partition query. Gateway timeout for query plan retrieval in first region injected.
+            // This test case validates that the availability strategy and hedging is also applied for the
+            // query plan request. The expectation is that the query plan request in the first region won't finish,
+            // the query plan will then be retrieved from the second region but the actual query is executed against the
+            // first region.
+            new Object[] {
+                "DefaultPageSize_SinglePartition_QueryPLanHighLatency_EagerAvailabilityStrategy",
+                Duration.ofSeconds(3),
+                reluctantThresholdAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                singlePartitionQueryGenerator,
+                queryReturnsTotalRecordCountWithDefaultPageSize,
+                injectQueryPlanTransitTimeoutIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxTwoRegions,
+                    validateCtxQueryPlan,
+                    (ctx) -> {
+                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                        assertThat(diagnostics.length).isGreaterThanOrEqualTo(3);
+
+                        // Ensure that the query plan has been retrieved from the second region
+                        assertThat(diagnostics[0].getContactedRegionNames().size()).isEqualTo(1);
+                        assertThat(diagnostics[0].getContactedRegionNames().iterator().next()).isEqualTo(FIRST_REGION_NAME);
+                        assertThat(diagnostics[0].getClientSideRequestStatistics()).isNotNull();
+                        assertThat(diagnostics[0].getClientSideRequestStatistics().size()).isGreaterThanOrEqualTo(1);
+                        ClientSideRequestStatistics requestStats = diagnostics[0].getClientSideRequestStatistics().iterator().next();
+                        assertThat(requestStats.getGatewayStatisticsList()).isNotNull();
+                        assertThat(requestStats.getGatewayStatisticsList().size()).isGreaterThanOrEqualTo(1);
+                        assertThat(requestStats.getGatewayStatisticsList().iterator().next().getOperationType()).isEqualTo(OperationType.QueryPlan);
+                        assertThat(requestStats.getGatewayStatisticsList().iterator().next().getStatusCode()).isEqualTo(408);
+
+                        // Ensure that the query plan has been retrieved from the second region
+                        assertThat(diagnostics[1].getContactedRegionNames().size()).isEqualTo(1);
+                        assertThat(diagnostics[1].getContactedRegionNames().iterator().next()).isEqualTo(SECOND_REGION_NAME);
+                        assertThat(diagnostics[1].getClientSideRequestStatistics()).isNotNull();
+                        assertThat(diagnostics[1].getClientSideRequestStatistics().size()).isGreaterThanOrEqualTo(1);
+                        requestStats = diagnostics[1].getClientSideRequestStatistics().iterator().next();
+                        assertThat(requestStats.getGatewayStatisticsList()).isNotNull();
+                        assertThat(requestStats.getGatewayStatisticsList().size()).isGreaterThanOrEqualTo(1);
+                        assertThat(requestStats.getGatewayStatisticsList().iterator().next().getOperationType()).isEqualTo(OperationType.QueryPlan);
+                        assertThat(requestStats.getGatewayStatisticsList().iterator().next().getStatusCode()).isEqualTo(200);
+
+
+                        // There possibly is an incomplete diagnostics for the failed query plan retrieval in the first region
+                        // Last Diagnostics should be for processed request against the first region with the
+                        // query plan retrieved from the second region
+                        boolean found = false;
+                        for (int i = 2; i < diagnostics.length; i++) {
+                            if (diagnostics[i].getFeedResponseDiagnostics() != null &&
+                                diagnostics[i].getFeedResponseDiagnostics().getQueryMetricsMap() != null) {
+
+                                found = true;
+                                assertThat(diagnostics[i].getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
+                                assertThat(diagnostics[i].getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isGreaterThanOrEqualTo(1);
+                                assertThat(diagnostics[i].getContactedRegionNames().size()).isEqualTo(1);
+                                assertThat(diagnostics[i].getContactedRegionNames().iterator().next()).isEqualTo(FIRST_REGION_NAME);
+                            }
+                        }
+
+                        assertThat(found).isEqualTo(true);
+                    }
+                ),
+                null,
+                validateExactlyOneRecordReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+
+            // GATEWAY MODE
+            // ------------
+
+            // Simple cross partition query - 404/1002 injected into all partition of the first region
+            // RegionSwitchHint is remote - with reluctant availability strategy - so, the expectation is that the
+            // retry on the first region will provide a successful response and no hedging is happening.
+            // There should be one CosmosDiagnosticsContext (and page) per partition - each should only have
+            // a single CosmosDiagnostics instance contacting both regions.
+            new Object[] {
+                "GW_DefaultPageSize_CrossPartition_GW408_EagerAvailabilityStrategy",
+                Duration.ofSeconds(3),
+                eagerThresholdAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.GATEWAY,
+                crossPartitionQueryGenerator,
+                queryReturnsTotalRecordCountWithDefaultPageSize,
+                injectGatewayTransitTimeoutIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                PHYSICAL_PARTITION_COUNT,
+                ArrayUtils.toArray(
+                    validateCtxTwoRegions, // query plan 1st region, all queries 2nd region
+                    validateCtxQueryPlan,
+                    (ctx) -> {
+                        assertThat(ctx.getDiagnostics()).isNotNull();
+                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+
+                        // Diagnostics of query attempt in first region not even available yet
+                        assertThat(diagnostics.length).isEqualTo(2);
+
+                        // query plan on first region
+                        assertThat(diagnostics[0].getContactedRegionNames().size()).isEqualTo(1);
+                        assertThat(diagnostics[0].getContactedRegionNames().iterator().next()).isEqualTo(FIRST_REGION_NAME);
+                    },
+                    (ctx) -> {
+                        assertThat(ctx.getDiagnostics()).isNotNull();
+                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                        assertThat(diagnostics[1].getContactedRegionNames().size()).isEqualTo(1);
+                        assertThat(diagnostics[1].getContactedRegionNames().iterator().next()).isEqualTo(SECOND_REGION_NAME);
+                        assertThat(diagnostics[1].getFeedResponseDiagnostics()).isNotNull();
+                        assertThat(diagnostics[1].getFeedResponseDiagnostics().getQueryMetricsMap()).isNotNull();
+                        assertThat(diagnostics[1].getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
+                        ClientSideRequestStatistics[] clientStats =
+                            diagnostics[1]
+                                .getFeedResponseDiagnostics()
+                                .getClientSideRequestStatistics()
+                                .toArray(new ClientSideRequestStatistics[0]);
+                        assertThat(clientStats.length).isEqualTo(1);
+                        for (int i = 0; i < clientStats.length; i++) {
+                            assertThat(clientStats[i].getContactedRegionNames()).isNotNull();
+                            assertThat(clientStats[i].getContactedRegionNames().size()).isEqualTo(1);
+                            assertThat(clientStats[i].getContactedRegionNames().iterator().next()).isEqualTo(SECOND_REGION_NAME);
+                            assertThat(clientStats[i].getGatewayStatisticsList()).isNotNull();
+                            assertThat(clientStats[i].getResponseStatisticsList()).isNotNull();
+                            assertThat(clientStats[i].getResponseStatisticsList().size()).isEqualTo(0);
+                        }
+                    }
+                ),
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    (ctx) -> {
+                        assertThat(ctx.getDiagnostics()).isNotNull();
+                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                        assertThat(diagnostics[0].getContactedRegionNames().size()).isEqualTo(1);
+                        assertThat(diagnostics[0].getContactedRegionNames().iterator().next()).isEqualTo(SECOND_REGION_NAME);
+                        assertThat(diagnostics[0].getFeedResponseDiagnostics()).isNotNull();
+                        assertThat(diagnostics[0].getFeedResponseDiagnostics().getQueryMetricsMap()).isNotNull();
+                        assertThat(diagnostics[0].getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
+                        ClientSideRequestStatistics[] clientStats =
+                            diagnostics[0]
+                                .getFeedResponseDiagnostics()
+                                .getClientSideRequestStatistics()
+                                .toArray(new ClientSideRequestStatistics[0]);
+                        assertThat(clientStats.length).isEqualTo(1);
+                        for (int i = 0; i < clientStats.length; i++) {
+                            assertThat(clientStats[i].getContactedRegionNames()).isNotNull();
+                            assertThat(clientStats[i].getContactedRegionNames().size()).isEqualTo(1);
+                            assertThat(clientStats[i].getContactedRegionNames().iterator().next()).isEqualTo(SECOND_REGION_NAME);
+                            assertThat(clientStats[i].getGatewayStatisticsList()).isNotNull();
+                            assertThat(clientStats[i].getResponseStatisticsList()).isNotNull();
+                            assertThat(clientStats[i].getResponseStatisticsList().size()).isEqualTo(0);
+                        }
+                    }
+                ),
+                validateAllRecordsSameIdReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
         };
     }
 
