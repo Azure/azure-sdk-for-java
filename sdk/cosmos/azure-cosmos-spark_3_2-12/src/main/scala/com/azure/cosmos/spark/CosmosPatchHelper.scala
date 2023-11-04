@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import java.io.IOException
 import scala.collection.mutable.ListBuffer
 
-class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
+private class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
                         cosmosPatchConfigs: CosmosPatchConfigs) {
  private val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
   private val objectMapper = new ObjectMapper()
@@ -35,7 +35,7 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
   ResourceIdAttributeName,
   AttachmentsAttributeName)
 
- def isAllowedProperty(path: String, partitionKeyDefinition: PartitionKeyDefinition): Boolean = {
+ private def isAllowedProperty(path: String, partitionKeyDefinition: PartitionKeyDefinition): Boolean = {
   assertNotNullOrEmpty(path, "path")
   assertNotNull(partitionKeyDefinition, "partitionKeyDefinition")
 
@@ -64,11 +64,11 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
     }
   }
 
- def addOperationConditionally(cosmosPatchOperations: CosmosPatchOperations,
-                               columnConfig: CosmosPatchColumnConfig,
-                               objectNode: ObjectNode,
-                               condition: Boolean,
-                               message: String): Unit = {
+ private def addOperationConditionally(cosmosPatchOperations: CosmosPatchOperations,
+                                       columnConfig: CosmosPatchColumnConfig,
+                                       objectNode: ObjectNode,
+                                       condition: Boolean,
+                                       message: String): Unit = {
   if (condition) {
     if (columnConfig.operationType == CosmosPatchOperationTypes.Remove) {
       cosmosPatchOperations.remove(columnConfig.mappingPath)

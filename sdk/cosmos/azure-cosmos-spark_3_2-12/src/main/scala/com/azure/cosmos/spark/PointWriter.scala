@@ -29,11 +29,12 @@ import scala.util.{Failure, Success, Try}
 import scala.compat.java8.FutureConverters._
 // scalastyle:on underscore.import
 
-class PointWriter(container: CosmosAsyncContainer,
+private class PointWriter(container: CosmosAsyncContainer,
                   partitionKeyDefinition: PartitionKeyDefinition,
                   cosmosWriteConfig: CosmosWriteConfig,
                   diagnosticsConfig: DiagnosticsConfig,
-                  taskContext: TaskContext)
+                  taskContext: TaskContext,
+                  outputMetricsPublisher: OutputMetricsPublisherTrait)
   extends AsyncItemWriter {
 
   @transient private val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
@@ -41,7 +42,6 @@ class PointWriter(container: CosmosAsyncContainer,
   private val maxConcurrency = cosmosWriteConfig.pointMaxConcurrency
     .getOrElse(SparkUtils.getNumberOfHostCPUCores * MaxNumberOfThreadsPerCPUCore)
 
-  // TODO: moderakh do perf tuning on the maxConcurrency and also the thread pool config
   val executorService: ExecutorService = new ThreadPoolExecutor(
     maxConcurrency,
     maxConcurrency,
@@ -256,20 +256,37 @@ class PointWriter(container: CosmosAsyncContainer,
     var exceptionOpt = Option.empty[Exception]
     for (attempt <- 0 to cosmosWriteConfig.maxRetryCount) {
       try {
-        // TODO: moderakh, there is room for further improvement by making this code nonblocking
-        // using reactive stream retry pattern
-        container.createItem(objectNode, partitionKeyValue, getOptions).block()
+        val response: CosmosItemResponse[ObjectNode] =
+          container.createItem(objectNode, partitionKeyValue, getOptions).block()
+
+        outputMetricsPublisher.trackWriteOperation(
+          1,
+          Option.apply(response.getDiagnostics) match {
+            case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+            case None => None
+          })
+
         return
       } catch {
         case e: CosmosException if Exceptions.isResourceExistsException(e.getStatusCode) =>
-          // TODO: what should we do on unique index violation? should we ignore or throw?
-          // TODO moderakh we need to add log messages extract identifier (id, pk) and log
           log.logItemWriteDetails(createOperation, "item already exists")
+          outputMetricsPublisher.trackWriteOperation(
+            0,
+            Option.apply(e.getDiagnostics) match {
+              case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+              case None => None
+            })
           return
         case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
           log.logWarning(
             s"create item $createOperation attempt #$attempt max remaining retries"
               + s"${cosmosWriteConfig.maxRetryCount - attempt}, encountered ${e.getMessage}")
+          outputMetricsPublisher.trackWriteOperation(
+            0,
+            Option.apply(e.getDiagnostics) match {
+              case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+              case None => None
+            })
           exceptionOpt = Option.apply(e)
       }
     }
@@ -286,18 +303,30 @@ class PointWriter(container: CosmosAsyncContainer,
     var exceptionOpt = Option.empty[Exception]
     for (attempt <- 0 to cosmosWriteConfig.maxRetryCount) {
       try {
-        // TODO: moderakh, there is room for further improvement by making this code nonblocking
-        // using reactive stream retry pattern
-        container.upsertItem(objectNode,
+        val response : CosmosItemResponse[ObjectNode] = container.upsertItem(objectNode,
           partitionKeyValue,
           getOptions)
           .block()
+
+        outputMetricsPublisher.trackWriteOperation(
+          1,
+          Option.apply(response.getDiagnostics) match {
+            case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+            case None => None
+          })
+
         return
       } catch {
         case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
           log.logWarning(
             s"upsert item $upsertOperation attempt #$attempt max remaining retries "
               + s"${cosmosWriteConfig.maxRetryCount - attempt}, encountered ${e.getMessage}")
+          outputMetricsPublisher.trackWriteOperation(
+            0,
+            Option.apply(e.getDiagnostics) match {
+              case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+              case None => None
+            })
           exceptionOpt = Option.apply(e)
       }
     }
@@ -318,13 +347,28 @@ class PointWriter(container: CosmosAsyncContainer,
 
     for (attempt <- 0 to cosmosWriteConfig.maxRetryCount) {
       try {
-        patchItem(container, partitionKeyValue, objectNode)
+        val response: CosmosItemResponse[ObjectNode] =
+          patchItem(container, partitionKeyValue, objectNode)
+
+        outputMetricsPublisher.trackWriteOperation(
+          1,
+          Option.apply(response.getDiagnostics) match {
+            case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+            case None => None
+          })
+
         return
       } catch {
         case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
           log.logWarning(
             s"patch item $patchOperation attempt #$attempt max remaining retries "
              + s"${cosmosWriteConfig.maxRetryCount - attempt}, encountered ${e.getMessage}")
+          outputMetricsPublisher.trackWriteOperation(
+            0,
+            Option.apply(e.getDiagnostics) match {
+              case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+              case None => None
+            })
           exceptionOpt = Option.apply(e)
       }
     }
@@ -347,16 +391,32 @@ class PointWriter(container: CosmosAsyncContainer,
 
       for (attempt <- 0 to cosmosWriteConfig.maxRetryCount) {
           try {
-              patchBulkUpdateItem(container, partitionKeyValue, objectNode)
+              val response: CosmosItemResponse[ObjectNode] =
+                patchBulkUpdateItem(container, partitionKeyValue, objectNode)
+
+              outputMetricsPublisher.trackWriteOperation(
+                1,
+                Option.apply(response.getDiagnostics) match {
+                  case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+                  case None => None
+                })
+
               return
           } catch {
-              case e: CosmosException if (
-                  Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) ||
-                  Exceptions.isPreconditionFailedException(e.getStatusCode) ||
-                  Exceptions.isResourceExistsException(e.getStatusCode)) =>
+              case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) ||
+              Exceptions.isPreconditionFailedException(e.getStatusCode) ||
+              Exceptions.isResourceExistsException(e.getStatusCode) =>
                   log.logWarning(
                       s"patch update item $patchBulkUpdateOperation attempt #$attempt max remaining retries "
                           + s"${cosmosWriteConfig.maxRetryCount - attempt}, encountered ${e.getMessage}")
+
+                  outputMetricsPublisher.trackWriteOperation(
+                    0,
+                    Option.apply(e.getDiagnostics) match {
+                      case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+                      case None => None
+                    })
+
                   exceptionOpt = Option.apply(e)
           }
       }
@@ -377,21 +437,31 @@ class PointWriter(container: CosmosAsyncContainer,
       val patchBulkUpdateOperations = cosmosPatchHelpOpt.get.createCosmosPatchBulkUpdateOperations(objectNode)
 
       container
-          .readItem(itemId, partitionKey, classOf[ObjectNode])
-          .flatMap(response => {
-              val updatedNode = cosmosPatchHelpOpt.get.patchBulkUpdateItem(Some(response.getItem), patchBulkUpdateOperations)
-              val cosmosItemRequestOptions = new CosmosItemRequestOptions().setIfMatchETag(response.getETag)
-              container.replaceItem(updatedNode, itemId, partitionKey, cosmosItemRequestOptions)
-          })
-          .asScala
-          .onErrorResume(throwable => {
-              throwable match {
-                  case e: CosmosException if Exceptions.isNotFoundException(e) =>
-                      val updatedNode = cosmosPatchHelpOpt.get.patchBulkUpdateItem(None, patchBulkUpdateOperations)
-                      container.createItem(updatedNode, partitionKey, new CosmosItemRequestOptions()).asScala
-              }
-          })
-          .block()
+        .readItem(itemId, partitionKey, classOf[ObjectNode])
+        .flatMap(response => {
+          outputMetricsPublisher.trackWriteOperation(
+            0,
+            Option.apply(response.getDiagnostics) match {
+              case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+              case None => None
+            })
+          val updatedNode = cosmosPatchHelpOpt.get.patchBulkUpdateItem(Some(response.getItem), patchBulkUpdateOperations)
+          val cosmosItemRequestOptions = new CosmosItemRequestOptions().setIfMatchETag(response.getETag)
+          container.replaceItem(updatedNode, itemId, partitionKey, cosmosItemRequestOptions)
+        })
+        .asScala
+        .onErrorResume {
+          case e: CosmosException if Exceptions.isNotFoundException(e) =>
+            outputMetricsPublisher.trackWriteOperation(
+              0,
+              Option.apply(e.getDiagnostics) match {
+                case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+                case None => None
+              })
+            val updatedNode = cosmosPatchHelpOpt.get.patchBulkUpdateItem(None, patchBulkUpdateOperations)
+            container.createItem(updatedNode, partitionKey, new CosmosItemRequestOptions()).asScala
+        }
+        .block()
 
   }
 
@@ -425,8 +495,6 @@ class PointWriter(container: CosmosAsyncContainer,
     var exceptionOpt = Option.empty[Exception]
     for (attempt <- 0 to cosmosWriteConfig.maxRetryCount) {
       try {
-        // TODO: moderakh, there is room for further improvement by making this code nonblocking
-        // using reactive stream retry pattern
         val itemId = objectNode.get(CosmosConstants.Properties.Id).asText()
 
         val options = if (onlyIfNotModified) {
@@ -436,22 +504,48 @@ class PointWriter(container: CosmosAsyncContainer,
           getOptions
         }
 
-        container.deleteItem(itemId,
+        val response: CosmosItemResponse[_] = container.deleteItem(itemId,
           partitionKeyValue,
           options)
           .block()
+
+        outputMetricsPublisher.trackWriteOperation(
+          1,
+          Option.apply(response.getDiagnostics) match {
+            case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+            case None => None
+          })
+
         return
       } catch {
         case e: CosmosException if Exceptions.isNotFoundExceptionCore(e.getStatusCode, e.getSubStatusCode) =>
           log.logItemWriteSkipped(deleteOperation, "notFound")
+          outputMetricsPublisher.trackWriteOperation(
+            0,
+            Option.apply(e.getDiagnostics) match {
+              case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+              case None => None
+            })
           return
         case e: CosmosException if Exceptions.isPreconditionFailedException(e.getStatusCode) && onlyIfNotModified =>
           log.logItemWriteSkipped(deleteOperation, "preConditionNotMet")
+          outputMetricsPublisher.trackWriteOperation(
+            0,
+            Option.apply(e.getDiagnostics) match {
+              case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+              case None => None
+            })
           return
         case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
           log.logWarning(
             s"delete item attempt #$attempt max remaining retries"
               + s"${cosmosWriteConfig.maxRetryCount - attempt}, encountered ${e.getMessage}")
+          outputMetricsPublisher.trackWriteOperation(
+            0,
+            Option.apply(e.getDiagnostics) match {
+              case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+              case None => None
+            })
           exceptionOpt = Option.apply(e)
       }
     }
@@ -473,32 +567,56 @@ class PointWriter(container: CosmosAsyncContainer,
     var exceptionOpt = Option.empty[Exception]
     for (attempt <- 0 to cosmosWriteConfig.maxRetryCount) {
       try {
-        // TODO: moderakh, there is room for further improvement by making this code nonblocking
-        // using reactive stream retry pattern
         val itemId = objectNode.get(CosmosConstants.Properties.Id).asText()
 
         val options = getOptions
           .setIfMatchETag(etag)
           .setContentResponseOnWriteEnabled(false)
 
-        container.replaceItem(
+        val response: CosmosItemResponse[ObjectNode] = container.replaceItem(
           objectNode,
           itemId,
           partitionKeyValue,
           options)
           .block()
+
+        outputMetricsPublisher.trackWriteOperation(
+          1,
+          Option.apply(response.getDiagnostics) match {
+            case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+            case None => None
+          })
+
         return
       } catch {
         case e: CosmosException if Exceptions.isNotFoundExceptionCore(e.getStatusCode, e.getSubStatusCode) =>
           log.logItemWriteSkipped(replaceOperation, "notFound")
+          outputMetricsPublisher.trackWriteOperation(
+            0,
+            Option.apply(e.getDiagnostics) match {
+              case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+              case None => None
+            })
           return
         case e: CosmosException if Exceptions.isPreconditionFailedException(e.getStatusCode) =>
           log.logItemWriteSkipped(replaceOperation, "preConditionNotMet")
+          outputMetricsPublisher.trackWriteOperation(
+            0,
+            Option.apply(e.getDiagnostics) match {
+              case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+              case None => None
+            })
           return
         case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
           log.logWarning(
             s"replace item if not modified attempt #$attempt max remaining retries"
               + s"${cosmosWriteConfig.maxRetryCount - attempt}, encountered ${e.getMessage}")
+          outputMetricsPublisher.trackWriteOperation(
+            0,
+            Option.apply(e.getDiagnostics) match {
+              case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+              case None => None
+            })
           exceptionOpt = Option.apply(e)
       }
     }

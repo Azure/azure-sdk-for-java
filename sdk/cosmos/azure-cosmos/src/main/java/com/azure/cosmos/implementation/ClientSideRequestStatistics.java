@@ -141,7 +141,15 @@ public class ClientSideRequestStatistics {
         storeResponseStatistics.excludedRegions = null;
         activityId = request.getActivityId().toString();
 
-        this.requestPayloadSizeInBytes = request.getContentLength();
+        if (request.getContentLength() > 0) {
+            this.requestPayloadSizeInBytes = request.getContentLength();
+        } else if (storeResultDiagnostics != null && storeResultDiagnostics.getStoreResponseDiagnostics() != null) {
+            this.requestPayloadSizeInBytes = storeResultDiagnostics
+                .getStoreResponseDiagnostics()
+                .getRntbdRequestLength();
+        } else {
+            this.requestPayloadSizeInBytes = 0;
+        }
 
         URI locationEndPoint = null;
         if (request.requestContext != null) {

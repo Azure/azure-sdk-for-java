@@ -4,9 +4,9 @@ package com.azure.cosmos.spark
 
 // scalastyle:off underscore.import
 import com.azure.cosmos.implementation.CosmosDaemonThreadFactory
-import com.azure.cosmos.{BridgeInternal, CosmosAsyncContainer, CosmosException}
+import com.azure.cosmos.{BridgeInternal, CosmosAsyncContainer, CosmosDiagnosticsContext, CosmosException}
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
-import com.azure.cosmos.implementation.batch.{BatchRequestResponseConstants, ItemBulkOperation}
+import com.azure.cosmos.implementation.batch.{BatchRequestResponseConstants, BulkExecutorDiagnosticsTracker, ItemBulkOperation}
 import com.azure.cosmos.models._
 import com.azure.cosmos.spark.BulkWriter.{BulkOperationFailedException, bulkWriterBoundedElastic, getThreadInfo, readManyBoundedElastic}
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
@@ -46,18 +46,15 @@ import scala.collection.JavaConverters._
 //scalastyle:off null
 //scalastyle:off multiple.string.literals
 //scalastyle:off file.size.limit
-class BulkWriter(container: CosmosAsyncContainer,
+private class BulkWriter(container: CosmosAsyncContainer,
                  partitionKeyDefinition: PartitionKeyDefinition,
                  writeConfig: CosmosWriteConfig,
-                 diagnosticsConfig: DiagnosticsConfig)
+                 diagnosticsConfig: DiagnosticsConfig,
+                 outputMetricsPublisher: OutputMetricsPublisherTrait)
   extends AsyncItemWriter {
 
   private val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
-  // TODO: moderakh add a mocking unit test for Bulk where CosmosClient is mocked to simulator failure/retry scenario
-
-  // TODO: moderakh this requires tuning.
-  // TODO: moderakh should we do a max on the max memory to ensure we don't run out of memory?
   private val cpuCount = SparkUtils.getNumberOfHostCPUCores
   // each bulk writer allows up to maxPendingOperations being buffered
   // there is one bulk writer per spark task/partition
@@ -81,7 +78,7 @@ class BulkWriter(container: CosmosAsyncContainer,
   // the buffer should be flushed. A timer-based scheduler will publish this
   // dummy operation for every batchIntervalInMs ms. This operation
   // is filtered out and will never be flushed to the backend
-  private val readManyFlushOperationSingleton = new ReadManyOperation(
+  private val readManyFlushOperationSingleton = ReadManyOperation(
     new CosmosItemIdentity(
       new PartitionKey("ReadManyOperation.FlushSingleton"),
       "ReadManyOperation.FlushSingleton"
@@ -98,8 +95,6 @@ class BulkWriter(container: CosmosAsyncContainer,
   private val errorCaptureFirstException = new AtomicReference[Throwable]()
   private val bulkInputEmitter: Sinks.Many[CosmosItemOperation] = Sinks.many().unicast().onBackpressureBuffer()
 
-  // TODO: fabianm - remove this later
-  // Leaving activeOperations here primarily for debugging purposes (for example in case of hangs)
   private val activeBulkWriteOperations = java.util.concurrent.ConcurrentHashMap.newKeySet[CosmosItemOperation]().asScala
   private val activeReadManyOperations = java.util.concurrent.ConcurrentHashMap.newKeySet[ReadManyOperation]().asScala
   private val semaphore = new Semaphore(maxPendingOperations)
@@ -113,6 +108,20 @@ class BulkWriter(container: CosmosAsyncContainer,
       new CosmosBulkExecutionOptions(BulkWriter.bulkProcessingThresholds),
       maxConcurrentPartitions
     )
+
+  private class ForwardingMetricTracker extends BulkExecutorDiagnosticsTracker {
+    override def trackDiagnostics(ctx: CosmosDiagnosticsContext): Unit = {
+      outputMetricsPublisher.trackWriteOperation(0, Option.apply(ctx))
+    }
+  }
+
+  ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+    .getCosmosBulkExecutionOptionsAccessor
+    .setDiagnosticsTracker(
+      cosmosBulkExecutionOptions,
+      new ForwardingMetricTracker
+    )
+
   ThroughputControlHelper.populateThroughputControlGroupName(cosmosBulkExecutionOptions, writeConfig.throughputControlConfig)
 
   writeConfig.maxMicroBatchPayloadSizeInBytes match {
@@ -165,9 +174,9 @@ class BulkWriter(container: CosmosAsyncContainer,
     .getMaxMicroBatchInterval(cosmosBulkExecutionOptions)
     .toMillis
 
-  private[this] val flushExecutorHolder: Option[Tuple2[ScheduledThreadPoolExecutor, ScheduledFuture[_]]] = {
+  private[this] val flushExecutorHolder: Option[(ScheduledThreadPoolExecutor, ScheduledFuture[_])] = {
     writeConfig.itemWriteStrategy match {
-      case ItemWriteStrategy.ItemBulkUpdate => {
+      case ItemWriteStrategy.ItemBulkUpdate =>
         val executor = new ScheduledThreadPoolExecutor(
           1,
           new CosmosDaemonThreadFactory(
@@ -183,7 +192,6 @@ class BulkWriter(container: CosmosAsyncContainer,
           TimeUnit.MILLISECONDS)
 
         Some(executor, future)
-      }
       case _ => None
     }
   }
@@ -225,9 +233,8 @@ class BulkWriter(container: CosmosAsyncContainer,
     try {
       this.readManyInputEmitterOpt.get.tryEmitNext(readManyFlushOperationSingleton) match {
         case EmitResult.OK => log.logInfo("onFlushReadMany Successfully emitted flush")
-        case faultEmitResult =>  {
+        case faultEmitResult =>
           log.logError(s"Callback invocation 'onFlush' failed with result: $faultEmitResult.")
-        }
       }
     }
     catch {
@@ -329,6 +336,12 @@ class BulkWriter(container: CosmosAsyncContainer,
                                   .getFeedResponseAccessor
                                   .createFeedResponse(new util.ArrayList[ObjectNode](), null, null)))
                       .doOnNext(feedResponse => {
+                          outputMetricsPublisher.trackWriteOperation(
+                           0,
+                            Option.apply(feedResponse.getCosmosDiagnostics) match {
+                              case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+                              case None => None
+                            })
                           val resultMap = new TrieMap[CosmosItemIdentity, ObjectNode]()
                           for (itemNode: ObjectNode <- feedResponse.getResults.asScala) {
                               resultMap += (
@@ -408,6 +421,12 @@ class BulkWriter(container: CosmosAsyncContainer,
   private def handleReadManyExceptions(throwable: Throwable, ReadManyOperation: ReadManyOperation): Unit = {
       throwable match {
           case e: CosmosException =>
+              outputMetricsPublisher.trackWriteOperation(
+                0,
+                Option.apply(e.getDiagnostics) match {
+                  case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+                  case None => None
+                })
               val requestOperationContext = ReadManyOperation.operationContext
               if (shouldRetry(e.getStatusCode, e.getSubStatusCode, requestOperationContext)) {
                   log.logWarning(s"for itemId=[${requestOperationContext.itemId}], partitionKeyValue=[${requestOperationContext.partitionKeyValue}], " +
@@ -529,6 +548,7 @@ class BulkWriter(container: CosmosAsyncContainer,
             handleNonSuccessfulStatusCode(context, itemOperation, itemResponse, isGettingRetried, None)
           } else {
             // no error case
+            outputMetricsPublisher.trackWriteOperation(1, None)
             totalSuccessfulIngestionMetrics.getAndIncrement()
           }
         }
@@ -549,7 +569,6 @@ class BulkWriter(container: CosmosAsyncContainer,
           // we don't know the list of failed item-operations
           // they only way to retry to keep a dictionary of pending operations outside
           // so we know which operations failed and which ones can be retried.
-          // TODO: moderakh discuss the bulk API in the core SDK.
           // this is currently a kill scenario.
           captureIfFirstFailure(ex)
           cancelWork()
@@ -703,6 +722,16 @@ class BulkWriter(container: CosmosAsyncContainer,
     isGettingRetried: AtomicBoolean,
     responseException: Option[CosmosException]
   ) : Unit = {
+
+    val cosmosDiagnosticsContext: Option[CosmosDiagnosticsContext] = {
+      responseException match {
+        case Some(e) => Option.apply(e.getDiagnostics) match {
+          case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+          case None => None
+        }
+        case None => None
+      }
+    }
 
     val exceptionMessage = responseException match {
       case Some(e) => e.getMessage
@@ -959,16 +988,15 @@ class BulkWriter(container: CosmosAsyncContainer,
       } finally {
         subscriptionDisposable.dispose()
         readManySubscriptionDisposableOpt match {
-            case Some(readManySubscriptionDisposable) => {
+            case Some(readManySubscriptionDisposable) =>
 
 
               readManySubscriptionDisposable.dispose()
-            }
             case _ =>
         }
 
         flushExecutorHolder match {
-          case Some(executorAndFutureTuple) => {
+          case Some(executorAndFutureTuple) =>
             val executor: ScheduledThreadPoolExecutor = executorAndFutureTuple._1
             val future: ScheduledFuture[_] = executorAndFutureTuple._2
 
@@ -988,7 +1016,6 @@ class BulkWriter(container: CosmosAsyncContainer,
               case e: Exception =>
                 log.logWarning(s"Failed to shut down the executor service, Context: ${operationContext.toString}", e)
             }
-          }
           case _ =>
         }
         closed.set(true)
