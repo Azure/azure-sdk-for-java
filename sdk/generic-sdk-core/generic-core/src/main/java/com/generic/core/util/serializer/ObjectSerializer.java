@@ -3,12 +3,15 @@
 
 package com.generic.core.util.serializer;
 
+import com.generic.core.models.Headers;
 import com.generic.core.models.TypeReference;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 
 /**
  * Generic interface covering serializing and deserialization objects.
@@ -41,6 +44,31 @@ public interface ObjectSerializer {
      * @return The object represented by the deserialized stream.
      */
     <T> T deserialize(InputStream stream, TypeReference<T> typeReference);
+
+    /**
+     * Deserialize the provided headers returned from a REST API to an entity instance declared as the model to hold
+     * 'Matching' headers.
+     * <p>
+     * 'Matching' headers are the REST API returned headers those with:
+     *
+     * <ol>
+     *   <li>header names same as name of a properties in the entity.</li>
+     *   <li>header names start with value of {@link com.generic.core.annotation.HeaderCollection} annotation applied to
+     *   the properties in the entity.</li>
+     * </ol>
+     *
+     *
+     * in the case of above example, this method produces an instance of FooMetadataHeaders from provided
+     * {@code headers}.
+     *
+     * @param headers the REST API returned headers
+     * @param <T> the type of the deserialized object
+     * @param type the type to deserialize
+     * @return instance of header entity type created based on provided {@code headers}, if header entity model does
+     * not exist then return null
+     * @throws IOException If an I/O error occurs
+     */
+    <T> T deserialize(Headers headers, Type type) throws IOException;
 
     /**
      * Converts the object into a byte array.

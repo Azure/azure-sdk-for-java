@@ -80,8 +80,21 @@ public final class HttpResponseDecoder {
             if (this.bodyCached == null) {
                 this.bodyCached = HttpResponseBodyDecoder.decodeByteArray(body, response, serializer, decodeData);
             }
-
             return this.bodyCached;
+        }
+
+        /**
+         * Gets the decoded {@link Headers} object.
+         * <p>
+         * Null is returned if the headers aren't able to be decoded or if there is no decoded headers type.
+         *
+         * @return The decoded headers object, or null if they aren't able to be decoded.
+         */
+        public Object getDecodedHeaders() {
+            if (headersCached == null) {
+                headersCached = HttpResponseHeaderDecoder.decode(response, serializer, decodeData.getHeadersType());
+            }
+            return this.headersCached;
         }
 
         @Override

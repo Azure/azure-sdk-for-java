@@ -6,9 +6,8 @@ package com.generic.core.http;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
-import com.generic.core.implementation.http.rest.RequestOptions;
 import com.generic.core.http.pipeline.HttpPipeline;
-import com.generic.core.implementation.http.rest.ErrorOptions;
+import com.generic.core.implementation.http.rest.RequestOptions;
 import com.generic.core.implementation.http.rest.RestProxyImpl;
 import com.generic.core.implementation.http.rest.RestProxyUtils;
 import com.generic.core.implementation.http.rest.SwaggerInterfaceParser;
@@ -19,7 +18,6 @@ import com.generic.core.util.serializer.ObjectSerializer;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.EnumSet;
 
 /**
  * Type to create a proxy implementation for an interface describing REST API methods.

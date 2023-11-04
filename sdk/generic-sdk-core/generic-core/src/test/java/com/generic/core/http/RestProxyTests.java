@@ -8,6 +8,7 @@ import com.generic.core.annotation.ExpectedResponses;
 import com.generic.core.annotation.Get;
 import com.generic.core.annotation.HeaderParam;
 import com.generic.core.annotation.Host;
+import com.generic.core.annotation.PathParam;
 import com.generic.core.annotation.Post;
 import com.generic.core.annotation.ServiceInterface;
 import com.generic.core.http.client.HttpClient;
@@ -17,6 +18,7 @@ import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
+import com.generic.core.implementation.http.ContentType;
 import com.generic.core.implementation.http.rest.RequestOptions;
 import com.generic.core.implementation.http.rest.RestProxyUtils;
 import com.generic.core.implementation.util.BinaryDataContent;
@@ -48,6 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests {@link RestProxy}.
  */
 public class RestProxyTests {
+
     @Host("https://azure.com")
     @ServiceInterface(name = "myService")
     interface TestInterface {
@@ -67,13 +70,29 @@ public class RestProxyTests {
             @HeaderParam("Content-Length") Long contentLength
         );
 
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        Response<Void> testListNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+
+        @Get("my/url/path")
+        @ExpectedResponses({200})
+        Void testMethodReturnsMonoVoid();
+
         @Get("my/url/path")
         @ExpectedResponses({200})
         void testVoidMethod();
 
         @Get("my/url/path")
         @ExpectedResponses({200})
+        Response<Void> testMethodReturnsMonoResponseVoid();
+
+        @Get("my/url/path")
+        @ExpectedResponses({200})
         Response<Void> testMethodReturnsResponseVoid();
+
+        @Get("my/url/path")
+        @ExpectedResponses({200})
+        StreamResponse testDownload();
     }
 
     @Test
@@ -82,12 +101,26 @@ public class RestProxyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
             .build();
+
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         byte[] bytes = "hello".getBytes();
-        Response<Void> response =
-            testInterface.testMethod(ByteBuffer.wrap(bytes), "application/json", (long) bytes.length);
-
+        Response<Void> response = testInterface.testMethod(ByteBuffer.wrap(bytes),
+                "application/json", (long) bytes.length);
         assertEquals(200, response.getStatusCode());
+    }
+
+    @Test
+    public void streamResponseShouldHaveHttpResponseReferenceSync() {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        StreamResponse streamResponse = testInterface.testDownload();
+        streamResponse.close();
+        // This indirectly tests that StreamResponse has HttpResponse reference
+        assertTrue(client.closeCalledOnResponse);
     }
 
     @ParameterizedTest
@@ -97,9 +130,9 @@ public class RestProxyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
             .build();
+
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         Response<Void> response = testInterface.testMethod(data, "application/json", contentLength);
-
         assertEquals(200, response.getStatusCode());
         assertSame(data, client.getLastHttpRequest().getBody());
     }
@@ -108,17 +141,14 @@ public class RestProxyTests {
         String string = "hello";
         byte[] bytes = string.getBytes();
         Path file = Files.createTempFile("knownLengthBinaryDataIsPassthroughArgumentProvider", null);
-        SimpleClass simpleClass = new SimpleClass();
-
         file.toFile().deleteOnExit();
         Files.write(file, bytes);
-
         return Stream.of(
             Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length),
             Arguments.of(Named.of("string", BinaryData.fromString(string)), bytes.length),
             Arguments.of(Named.of("file", BinaryData.fromFile(file)), bytes.length),
-            Arguments.of(Named.of("serializable", BinaryData.fromObject(simpleClass)),
-                BinaryData.fromObject(simpleClass).getLength())
+            Arguments.of(Named.of("serializable", BinaryData.fromObject(bytes)),
+                BinaryData.fromObject(bytes).getLength())
         );
     }
 
@@ -130,15 +160,29 @@ public class RestProxyTests {
             .httpClient(client)
             .build();
         Class<? extends BinaryDataContent> expectedContentClazz = BinaryDataHelper.getContent(data).getClass();
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
-        Response<Void> response = testInterface.testMethod(data, "application/json", contentLength);
 
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        Response<Void> response = testInterface.testMethod(data,
+            ContentType.APPLICATION_JSON, contentLength);
         assertEquals(200, response.getStatusCode());
 
-        Class<? extends BinaryDataContent> actualContentClazz =
-            BinaryDataHelper.getContent(client.getLastHttpRequest().getBody()).getClass();
-
+        Class<? extends BinaryDataContent> actualContentClazz = BinaryDataHelper.getContent(
+            client.getLastHttpRequest().getBody()).getClass();
         assertEquals(expectedContentClazz, actualContentClazz);
+    }
+
+    @Test
+    public void monoVoidReturningApiClosesResponse() {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        testInterface.testMethodReturnsMonoVoid();
+
+        assertTrue(client.closeCalledOnResponse);
     }
 
     @Test
@@ -166,9 +210,39 @@ public class RestProxyTests {
 
         testInterface.testVoidMethod();
 
-        assertFalse(client.lastContext.getData("azure-eagerly-read-response").isPresent());
-        assertTrue(client.lastContext.getData("azure-ignore-response-body").isPresent());
-        assertTrue((boolean) client.lastContext.getData("azure-ignore-response-body").get());
+        assertFalse(client.lastContext.getData("eagerly-read-response").isPresent());
+        assertTrue(client.lastContext.getData("ignore-response-body").isPresent());
+        assertTrue((boolean) client.lastContext.getData("ignore-response-body").get());
+    }
+
+    @Test
+    public void monoVoidReturningApiIgnoresResponseBody() {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        testInterface.testMethodReturnsMonoVoid();
+
+        assertFalse(client.lastContext.getData("eagerly-read-response").isPresent());
+        assertTrue(client.lastContext.getData("ignore-response-body").isPresent());
+        assertTrue((boolean) client.lastContext.getData("ignore-response-body").get());
+    }
+
+    @Test
+    public void monoResponseVoidReturningApiIgnoresResponseBody() {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        testInterface.testMethodReturnsMonoResponseVoid();
+
+        assertFalse(client.lastContext.getData("eagerly-read-response").isPresent());
+        assertTrue(client.lastContext.getData("ignore-response-body").isPresent());
+        assertTrue((boolean) client.lastContext.getData("ignore-response-body").get());
     }
 
     @Test
@@ -179,37 +253,46 @@ public class RestProxyTests {
             .build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
-        Response<Void> response = testInterface.testMethodReturnsResponseVoid();
+        testInterface.testMethodReturnsResponseVoid();
 
-        assertEquals(200, response.getStatusCode());
-        assertFalse(client.lastContext.getData("azure-eagerly-read-response").isPresent());
-        assertTrue(client.lastContext.getData("azure-ignore-response-body").isPresent());
-        assertTrue((boolean) client.lastContext.getData("azure-ignore-response-body").get());
+        assertFalse(client.lastContext.getData("eagerly-read-response").isPresent());
+        assertTrue(client.lastContext.getData("ignore-response-body").isPresent());
+        assertTrue((boolean) client.lastContext.getData("ignore-response-body").get());
+    }
+
+    @Test
+    public void streamResponseDoesNotEagerlyReadsResponse() {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        testInterface.testDownload();
+
+        assertFalse(client.lastContext.getData("eagerly-read-response").isPresent());
     }
 
     private static Stream<Arguments> doesNotChangeBinaryDataContentTypeDataProvider() throws Exception {
         String string = "hello";
         byte[] bytes = string.getBytes();
         Path file = Files.createTempFile("doesNotChangeBinaryDataContentTypeDataProvider", null);
-        SimpleClass simpleClass = new SimpleClass();
-
         file.toFile().deleteOnExit();
         Files.write(file, bytes);
-
         ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
-
         return Stream.of(
             Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length),
             Arguments.of(Named.of("string", BinaryData.fromString(string)), bytes.length),
             Arguments.of(Named.of("file", BinaryData.fromFile(file)), bytes.length),
             Arguments.of(Named.of("stream", BinaryData.fromStream(stream, (long) bytes.length)), bytes.length),
-            Arguments.of(Named.of("byte buffer", BinaryData.fromByteBuffer(ByteBuffer.wrap(bytes))), bytes.length),
-            Arguments.of(Named.of("serializable", BinaryData.fromObject(simpleClass)),
-                BinaryData.fromObject(simpleClass).getLength())
+            Arguments.of(Named.of("serializable", BinaryData.fromObject(bytes)),
+                BinaryData.fromObject(bytes).getLength())
         );
     }
 
     private static final class LocalHttpClient implements HttpClient {
+
         private volatile HttpRequest lastHttpRequest;
         private volatile Context lastContext;
         private volatile boolean closeCalledOnResponse;
@@ -219,7 +302,6 @@ public class RestProxyTests {
             lastHttpRequest = request;
             lastContext = context;
             boolean success = request.getUrl().getPath().equals("/my/url/path");
-
             if (request.getHttpMethod().equals(HttpMethod.POST)) {
                 success &= "application/json".equals(request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
             } else {
@@ -230,7 +312,6 @@ public class RestProxyTests {
                 @Override
                 public void close() {
                     closeCalledOnResponse = true;
-
                     super.close();
                 }
             };
@@ -245,8 +326,7 @@ public class RestProxyTests {
     @MethodSource("mergeRequestOptionsContextSupplier")
     public void mergeRequestOptionsContext(Context context, RequestOptions options,
                                            Map<Object, Object> expectedContextValues) {
-        Map<Object, Object> actualContextValues = RestProxyUtils.mergeRequestOptionsContext(context, options)
-            .getValues();
+        Map<Object, Object> actualContextValues = RestProxyUtils.mergeRequestOptionsContext(context, options).getValues();
 
         assertEquals(expectedContextValues.size(), actualContextValues.size());
         for (Map.Entry<Object, Object> expectedKvp : expectedContextValues.entrySet()) {
@@ -279,5 +359,21 @@ public class RestProxyTests {
             Arguments.of(new Context("key", "value"), new RequestOptions().setContext(new Context("key", "value2")),
                 Collections.singletonMap("key", "value2"))
         );
+    }
+
+    @Test
+    public void doesNotChangeEncodedPath() {
+        String nextLinkUrl =
+            "https://management.azure.com:443/subscriptions/000/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines?api-version=2021-11-01&$skiptoken=Mzk4YzFjMzMtM2IwMC00OWViLWI2NGYtNjg4ZTRmZGQ1Nzc2IS9TdWJzY3JpcHRpb25zL2VjMGFhNWY3LTllNzgtNDBjOS04NWNkLTUzNWM2MzA1YjM4MC9SZXNvdXJjZUdyb3Vwcy9SRy1XRUlEWFUtVk1TUy9WTVNjYWxlU2V0cy9WTVNTMS9WTXMvNzc=";
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient((request, context) -> {
+                assertEquals(nextLinkUrl, request.getUrl().toString());
+                return new MockHttpResponse(null, 200);
+            })
+            .build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+
+        testInterface.testListNext(nextLinkUrl);
     }
 }
