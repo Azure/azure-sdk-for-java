@@ -9,7 +9,7 @@
 #### Bugs Fixed
 * Fixed a bug resulting in `CosmosDiagnosticsContext.getStatusCode()` always returning `0` for `readMany` operations. - See [PR 37394](https://github.com/Azure/azure-sdk-for-java/pull/37394)
 * Fixed an issue where PartitionKeyRange request will not do cross region retry. - See [PR 37403](https://github.com/Azure/azure-sdk-for-java/pull/37403)
-
+* Fixed an issue where client level `EndToEndOperationLatencyPolicyConfig` is not being applied for `query` - See [PR 37511](https://github.com/Azure/azure-sdk-for-java/pull/37511)
 #### Other Changes
 
 ### 4.52.0 (2023-10-24)

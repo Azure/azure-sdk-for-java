@@ -5525,6 +5525,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .requestContext
             .getEndToEndOperationLatencyPolicyConfig();
 
+        if (endToEndPolicyConfig == null) {
+            endToEndPolicyConfig = this.cosmosEndToEndOperationLatencyPolicyConfig;
+        }
+
         List<String> initialExcludedRegions = req.requestContext.getExcludeRegions();
         List<String> orderedApplicableRegionsForSpeculation = this.getApplicableRegionsForSpeculation(
             endToEndPolicyConfig,
