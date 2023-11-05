@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.azure.communication.jobrouter.implementation.converters.RouterValueAdapter.getValue;
+
 /**
  * Converts request options for create and update Job to {@link RouterJob}.
  */
@@ -55,18 +57,5 @@ public class JobAdapter {
             .setRequestedWorkerSelectors(workerSelectors)
             .setTags(tags)
             .setMatchingMode(createJobOptions.getMatchingMode());
-    }
-
-    private static Object getValue(RouterValue routerValue) {
-        if (routerValue.getValueAsBoolean()) {
-            return routerValue.getValueAsBoolean();
-        } else if (routerValue.getValueAsDouble() != null) {
-            return routerValue.getValueAsDouble();
-        } else if (routerValue.getValueAsInteger() != null) {
-            return routerValue.getValueAsInteger();
-        } else if (routerValue.getValueAsString() != null) {
-            return routerValue.getValueAsString();
-        }
-        return null;
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterAdministrationClientImpl;
+import com.azure.communication.jobrouter.implementation.accesshelpers.RouterQueueConstructorProxy;
 import com.azure.communication.jobrouter.implementation.converters.ClassificationPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.ExceptionPolicyAdapter;
@@ -975,7 +976,7 @@ public final class JobRouterAdministrationClient {
      * }</pre>
      *
      * @param id The Id of this queue.
-     * @param routerQueue The routerQueue instance.
+     * @param resource RouterQueue resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1022,7 +1023,9 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouterQueue createQueue(CreateQueueOptions createQueueOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        return this.createQueueWithResponse(createQueueOptions, requestOptions).getValue().toObject(RouterQueue.class);
+        BinaryData resource = this.createQueueWithResponse(createQueueOptions, requestOptions).getValue();
+        RouterQueueInternal internal = resource.toObject(RouterQueueInternal.class);
+        return RouterQueueConstructorProxy.create(internal);
     }
 
     /**

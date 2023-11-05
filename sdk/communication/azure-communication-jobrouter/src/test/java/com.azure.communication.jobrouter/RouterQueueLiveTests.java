@@ -58,16 +58,17 @@ public class RouterQueueLiveTests extends JobRouterTestBase {
 
         Map<String, RouterValue> updatedQueueLabels = new HashMap<String, RouterValue>() {
             {
-                put("Label_1", new RouterValue("UpdatedValue"));
+                put("Label_1", new RouterValue("UpdatedValue", null, null, null));
             }
         };
 
         // Action
-        queue = routerAdminClient.updateQueueWithResponse(queueId, BinaryData.fromObject(new RouterQueue().setLabels(updatedQueueLabels)), new RequestOptions())
+        RouterQueue updatedRouterQueue = queue.setLabels(updatedQueueLabels);
+        queue = routerAdminClient.updateQueueWithResponse(queueId, BinaryData.fromObject(updatedRouterQueue), new RequestOptions())
             .getValue().toObject(RouterQueue.class);
 
         // Verify
-        assertEquals(updatedQueueLabels.get("Label_1").getValueAsString(), queue.getLabels().get("Label_1").getValueAsString());
+        assertEquals(updatedQueueLabels.get("Label_1").getStringValue(), queue.getLabels().get("Label_1").getStringValue());
 
         // Cleanup
         routerAdminClient.deleteQueue(queueId);

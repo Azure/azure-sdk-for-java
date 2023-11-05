@@ -3,96 +3,111 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.communication.jobrouter.implementation.accesshelpers.RouterValueConstructorProxy;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Wrapper class for labels. Supports double, String and boolean types.
+ * Wrapper class for labels. Supports String, int, double and boolean types.
+ *
+ * If multiple values are set only one value will be used with following precedence.
+ *
+ * 1. stringValue.
+ * 2. intValue.
+ * 3. doubleValue.
+ * 4. boolValue.
  */
 public final class RouterValue {
     private static final ClientLogger LOGGER = new ClientLogger(RouterValue.class);
 
     /**
-     * Value to pass to server.
+     * String Value to pass to server.
      */
-    private final Object value;
+    @JsonProperty(value = "stringValue", access = JsonProperty.Access.WRITE_ONLY)
+    private String stringValue;
 
     /**
-     * Constructor for integer value.
-     * @param integerValue integer value of label.
+     * Integer Value to pass to server.
      */
-    public RouterValue(Integer integerValue) {
-        this.value = integerValue;
+    @JsonProperty(value = "intValue", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer intValue;
+
+    /**
+     * Double Value to pass to server.
+     */
+    @JsonProperty(value = "doubleValue", access = JsonProperty.Access.WRITE_ONLY)
+    private Double doubleValue;
+
+    /**
+     * Boolean Value to pass to server.
+     */
+    @JsonProperty(value = "boolValue", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean boolValue;
+
+    /**
+     * Constructor
+     *
+     */
+    @JsonCreator
+    public RouterValue(@JsonProperty(value = "stringValue") String stringValue,
+                       @JsonProperty(value = "intValue") Integer intValue,
+                       @JsonProperty(value = "doubleValue") Double doubleValue,
+                       @JsonProperty(value = "boolValue") Boolean boolValue) {
+        this.stringValue = stringValue;
+        this.intValue = intValue;
+        this.doubleValue = doubleValue;
+        this.boolValue = boolValue;
     }
 
-    /**
-     * Constructor for numerical value.
-     * @param numericValue numeric value of label.
-     */
-    public RouterValue(Double numericValue) {
-        this.value = numericValue;
-    }
-
-    /**
-     * Constructor for string value.
-     * @param stringValue string value of label.
-     */
-    public RouterValue(String stringValue) {
-        this.value = stringValue;
-    }
-
-    /**
-     * Constructor for boolean value.
-     * @param boolValue boolean value of label.
-     */
-    public RouterValue(Boolean boolValue) {
-        this.value = boolValue;
+    static {
+        RouterValueConstructorProxy.setAccessor(internal -> new RouterValue(internal));
     }
 
     RouterValue(Object objectValue) {
-        this.value = objectValue;
+        if (objectValue.getClass() == String.class) {
+            this.stringValue = (String) objectValue;
+        }
+        if (objectValue.getClass() == Integer.class) {
+            this.intValue = (int) objectValue;
+        }
+        if (objectValue.getClass() == Double.class) {
+            this.doubleValue = (double) objectValue;
+        }
+        if (objectValue.getClass() == Boolean.class) {
+            this.boolValue = (Boolean) objectValue;
+         }
     }
 
     /**
-     * Returns Integer value of object
-     * @return (Integer) value.
+     * Returns stringValue
+     * @return stringValue.
      */
-    public Integer getValueAsInteger() {
-        if (value.getClass() == Integer.class) {
-            return (Integer) this.value;
-        }
-        throw LOGGER.logExceptionAsError(new IllegalStateException("value is not of type Integer."));
+    public String getStringValue() {
+        return stringValue;
     }
 
     /**
-     * Returns Double value of object
-     * @return (Double) value.
+     * Returns intValue.
+     * @return intValue
      */
-    public Double getValueAsDouble() {
-        if (value.getClass() == Double.class) {
-            return (Double) this.value;
-        }
-        throw LOGGER.logExceptionAsError(new IllegalStateException("value is not of type Double."));
+    public Integer getIntValue() {
+        return intValue;
     }
 
     /**
-     * Returns String value of object
-     * @return (String) value.
+     * Returns doubleValue.
+     * @return doubleValue
      */
-    public String getValueAsString() {
-        if (value.getClass() == String.class) {
-            return (String) this.value;
-        }
-        throw LOGGER.logExceptionAsError(new IllegalStateException("value is not of type String."));
+    public Double getDoubleValue() {
+        return doubleValue;
     }
 
     /**
-     * Returns Boolean value of object
-     * @return (Boolean) value.
+     * Returns boolValue.
+     * @return boolValue.
      */
-    public Boolean getValueAsBoolean() {
-        if (value.getClass() == Boolean.class) {
-            return (Boolean) this.value;
-        }
-        throw LOGGER.logExceptionAsError(new IllegalStateException("value is not of type Boolean."));
+    public Boolean getBoolValue() {
+        return boolValue;
     }
 }
