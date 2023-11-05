@@ -231,7 +231,7 @@ private[cosmos] class CosmosRowConverterBase(
         }
     }
 
-    private def convertToJsonNodeConditionally[T](value: T) = {
+    protected[spark] def convertToJsonNodeConditionally[T](value: T) = {
         if (skipDefaultValues && isDefaultValue(value)) {
             None
         } else {
@@ -393,7 +393,7 @@ private[cosmos] class CosmosRowConverterBase(
         }
     }
 
-    private def convertSparkDataTypeToJsonNodeConditionallyForSparkRuntimeSpecificDataType
+    protected[spark] def convertSparkDataTypeToJsonNodeConditionallyForSparkRuntimeSpecificDataType
     (
         fieldType: DataType,
         rowData: Any
@@ -517,7 +517,7 @@ private[cosmos] class CosmosRowConverterBase(
         }
     }
 
-    private def convertSparkDataTypeToJsonNodeNonNullForSparkRuntimeSpecificDataType(fieldType: DataType, rowData: Any): JsonNode = {
+    protected[spark] def convertSparkDataTypeToJsonNodeNonNullForSparkRuntimeSpecificDataType(fieldType: DataType, rowData: Any): JsonNode = {
         throw new Exception(s"Cannot cast $rowData into a Json value. $fieldType has no matching Json value.")
     }
 
@@ -873,7 +873,7 @@ private[cosmos] class CosmosRowConverterBase(
                 }
         }
 
-    private def convertToSparkDataTypeForSparkRuntimeSpecificDataType
+    protected[spark] def convertToSparkDataTypeForSparkRuntimeSpecificDataType
     (dataType: DataType,
      value: JsonNode,
      schemaConversionMode: SchemaConversionMode): Any =
@@ -942,7 +942,7 @@ private[cosmos] class CosmosRowConverterBase(
         }
     }
 
-    private object isJsonNumber {
+    protected[spark] object isJsonNumber {
         def unapply(x: JsonNode): Boolean = x match {
             case _: com.fasterxml.jackson.databind.node.IntNode
                  | _: com.fasterxml.jackson.databind.node.DecimalNode
