@@ -45,7 +45,7 @@ public final class DistributionPolicyInternal {
      */
     @Generated
     @JsonProperty(value = "mode")
-    private DistributionMode mode;
+    private DistributionModeInternal mode;
 
     /** Creates an instance of DistributionPolicyInternal class. */
     @Generated
@@ -123,7 +123,7 @@ public final class DistributionPolicyInternal {
      * @return the mode value.
      */
     @Generated
-    public DistributionMode getMode() {
+    public DistributionModeInternal getMode() {
         return this.mode;
     }
 
@@ -134,7 +134,7 @@ public final class DistributionPolicyInternal {
      * @return the DistributionPolicyInternal object itself.
      */
     @Generated
-    public DistributionPolicyInternal setMode(DistributionMode mode) {
+    public DistributionPolicyInternal setMode(DistributionModeInternal mode) {
         this.mode = mode;
         return this;
     }

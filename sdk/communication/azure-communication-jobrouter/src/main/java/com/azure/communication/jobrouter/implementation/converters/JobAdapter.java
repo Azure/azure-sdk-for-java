@@ -6,6 +6,7 @@ package com.azure.communication.jobrouter.implementation.converters;
 import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerSelectorInternal;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.RouterJobAssignment;
 import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobNote;
