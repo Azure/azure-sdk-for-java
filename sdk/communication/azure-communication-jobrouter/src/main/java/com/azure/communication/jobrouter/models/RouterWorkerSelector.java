@@ -114,7 +114,6 @@ public final class RouterWorkerSelector {
      * @param value the value value to set.
      * @return the RouterWorkerSelector object itself.
      */
-    @Generated
     public RouterWorkerSelector setValue(RouterValue value) {
         this.value = value;
         return this;
@@ -125,7 +124,6 @@ public final class RouterWorkerSelector {
      *
      * @return the expiresAfter value.
      */
-    @Generated
     public Duration getExpiresAfter() {
         return this.expiresAfter;
     }
@@ -136,7 +134,6 @@ public final class RouterWorkerSelector {
      * @param expiresAfter the expiresAfter value to set.
      * @return the RouterWorkerSelector object itself.
      */
-    @Generated
     public RouterWorkerSelector setExpiresAfter(Duration expiresAfter) {
         this.expiresAfter = expiresAfter;
         return this;

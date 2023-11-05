@@ -78,7 +78,6 @@ public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAtt
      *
      * @return the expiresAfter value.
      */
-    @Generated
     public Duration getExpiresAfter() {
         return this.expiresAfter;
     }
@@ -89,7 +88,6 @@ public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAtt
      * @param expiresAfter the expiresAfter value to set.
      * @return the PassThroughWorkerSelectorAttachment object itself.
      */
-    @Generated
     public PassThroughWorkerSelectorAttachment setExpiresAfter(Duration expiresAfter) {
         this.expiresAfter = expiresAfter;
         return this;
