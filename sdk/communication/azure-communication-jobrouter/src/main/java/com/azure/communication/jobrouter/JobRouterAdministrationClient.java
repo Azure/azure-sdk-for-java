@@ -985,7 +985,8 @@ public final class JobRouterAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateQueueWithResponse(
-            String id, RouterQueue routerQueue, RequestOptions requestOptions) {
+            String id, BinaryData resource, RequestOptions requestOptions) {
+        RouterQueue routerQueue = BinaryData.fromObject(resource).toObject(RouterQueue.class);
         RouterQueueInternal routerQueueInternal = QueueAdapter.convertRouterQueueToRouterQueueInternal(routerQueue);
         return this.serviceClient.upsertQueueWithResponse(
                 id, BinaryData.fromObject(routerQueueInternal), requestOptions);

@@ -384,7 +384,6 @@ public final class RouterJob {
      *
      * @return the tags value.
      */
-    @Generated
     public Map<String, RouterValue> getTags() {
         return this.tags;
     }
@@ -395,7 +394,6 @@ public final class RouterJob {
      * @param tags the tags value to set.
      * @return the RouterJob object itself.
      */
-    @Generated
     public RouterJob setTags(Map<String, RouterValue> tags) {
         this.tags = tags;
         return this;

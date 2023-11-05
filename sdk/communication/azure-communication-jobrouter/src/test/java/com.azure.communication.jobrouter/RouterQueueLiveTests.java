@@ -8,6 +8,7 @@ import com.azure.communication.jobrouter.models.RouterQueue;
 import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -62,7 +63,7 @@ public class RouterQueueLiveTests extends JobRouterTestBase {
         };
 
         // Action
-        queue = routerAdminClient.updateQueueWithResponse(queueId, new RouterQueue().setLabels(updatedQueueLabels), new RequestOptions())
+        queue = routerAdminClient.updateQueueWithResponse(queueId, BinaryData.fromObject(new RouterQueue().setLabels(updatedQueueLabels)), new RequestOptions())
             .getValue().toObject(RouterQueue.class);
 
         // Verify
