@@ -5,12 +5,12 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.communication.jobrouter.implementation.accesshelpers.RouterJobConstructorProxy;
 import com.azure.communication.jobrouter.implementation.accesshelpers.RouterValueConstructorProxy;
-import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
 import com.azure.communication.jobrouter.implementation.converters.LabelSelectorAdapter;
 import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;

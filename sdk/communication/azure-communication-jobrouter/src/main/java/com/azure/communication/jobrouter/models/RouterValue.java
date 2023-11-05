@@ -47,7 +47,10 @@ public final class RouterValue {
 
     /**
      * Constructor
-     *
+     * @param stringValue stringValue.
+     * @param intValue intValue.
+     * @param doubleValue doubleValue.
+     * @param boolValue boolValue.
      */
     @JsonCreator
     public RouterValue(@JsonProperty(value = "stringValue") String stringValue,
@@ -64,6 +67,10 @@ public final class RouterValue {
         RouterValueConstructorProxy.setAccessor(internal -> new RouterValue(internal));
     }
 
+    /**
+     * Package-protected constructor.
+     * @param objectValue
+     */
     RouterValue(Object objectValue) {
         if (objectValue.getClass() == String.class) {
             this.stringValue = (String) objectValue;
