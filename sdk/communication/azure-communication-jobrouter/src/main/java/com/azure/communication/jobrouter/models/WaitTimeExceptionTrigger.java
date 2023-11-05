@@ -21,7 +21,6 @@ public final class WaitTimeExceptionTrigger extends ExceptionTrigger {
     /*
      * Threshold for wait time for this trigger.
      */
-    @Generated
     @JsonProperty(value = "thresholdSeconds")
     private Duration threshold;
 
@@ -30,7 +29,6 @@ public final class WaitTimeExceptionTrigger extends ExceptionTrigger {
      *
      * @param threshold the thresholdSeconds value to set.
      */
-    @Generated
     @JsonCreator
     public WaitTimeExceptionTrigger(@JsonProperty(value = "thresholdSeconds") Duration threshold) {
         this.threshold = threshold;
@@ -41,7 +39,6 @@ public final class WaitTimeExceptionTrigger extends ExceptionTrigger {
      *
      * @return the thresholdSeconds value.
      */
-    @Generated
     public Duration getThreshold() {
         return this.threshold;
     }
