@@ -23,7 +23,7 @@ public final class ConditionalQueueSelectorAttachmentInternal extends QueueSelec
      */
     @Generated
     @JsonProperty(value = "condition")
-    private RouterRule condition;
+    private RouterRuleInternal condition;
 
     /*
      * The queue selectors to attach
@@ -41,7 +41,7 @@ public final class ConditionalQueueSelectorAttachmentInternal extends QueueSelec
     @Generated
     @JsonCreator
     public ConditionalQueueSelectorAttachmentInternal(
-            @JsonProperty(value = "condition") RouterRule condition,
+            @JsonProperty(value = "condition") RouterRuleInternal condition,
             @JsonProperty(value = "queueSelectors") List<RouterQueueSelectorInternal> queueSelectors) {
         this.condition = condition;
         this.queueSelectors = queueSelectors;
@@ -53,7 +53,7 @@ public final class ConditionalQueueSelectorAttachmentInternal extends QueueSelec
      * @return the condition value.
      */
     @Generated
-    public RouterRule getCondition() {
+    public RouterRuleInternal getCondition() {
         return this.condition;
     }
 

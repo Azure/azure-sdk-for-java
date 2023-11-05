@@ -22,7 +22,7 @@ public final class RuleEngineQueueSelectorAttachmentInternal extends QueueSelect
      */
     @Generated
     @JsonProperty(value = "rule")
-    private RouterRule rule;
+    private RouterRuleInternal rule;
 
     /**
      * Creates an instance of RuleEngineQueueSelectorAttachmentInternal class.
@@ -31,7 +31,7 @@ public final class RuleEngineQueueSelectorAttachmentInternal extends QueueSelect
      */
     @Generated
     @JsonCreator
-    public RuleEngineQueueSelectorAttachmentInternal(@JsonProperty(value = "rule") RouterRule rule) {
+    public RuleEngineQueueSelectorAttachmentInternal(@JsonProperty(value = "rule") RouterRuleInternal rule) {
         this.rule = rule;
     }
 
@@ -41,7 +41,7 @@ public final class RuleEngineQueueSelectorAttachmentInternal extends QueueSelect
      * @return the rule value.
      */
     @Generated
-    public RouterRule getRule() {
+    public RouterRuleInternal getRule() {
         return this.rule;
     }
 }

@@ -23,7 +23,7 @@ public final class ConditionalWorkerSelectorAttachmentInternal extends WorkerSel
      */
     @Generated
     @JsonProperty(value = "condition")
-    private RouterRule condition;
+    private RouterRuleInternal condition;
 
     /*
      * The worker selectors to attach
@@ -41,7 +41,7 @@ public final class ConditionalWorkerSelectorAttachmentInternal extends WorkerSel
     @Generated
     @JsonCreator
     public ConditionalWorkerSelectorAttachmentInternal(
-            @JsonProperty(value = "condition") RouterRule condition,
+            @JsonProperty(value = "condition") RouterRuleInternal condition,
             @JsonProperty(value = "workerSelectors") List<RouterWorkerSelectorInternal> workerSelectors) {
         this.condition = condition;
         this.workerSelectors = workerSelectors;
@@ -53,7 +53,7 @@ public final class ConditionalWorkerSelectorAttachmentInternal extends WorkerSel
      * @return the condition value.
      */
     @Generated
-    public RouterRule getCondition() {
+    public RouterRuleInternal getCondition() {
         return this.condition;
     }
 

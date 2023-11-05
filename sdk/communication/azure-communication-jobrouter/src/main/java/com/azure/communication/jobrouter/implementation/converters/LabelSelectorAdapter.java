@@ -36,6 +36,8 @@ import com.azure.communication.jobrouter.models.WorkerSelectorAttachment;
 
 import java.util.stream.Collectors;
 
+import static com.azure.communication.jobrouter.implementation.converters.RouterRuleAdapter.getRouterRuleInternal;
+
 /**
  * Converts queue and worker selectors to
  * {@link com.azure.communication.jobrouter.implementation.models.RouterQueueSelectorInternal} and
@@ -72,7 +74,7 @@ public class LabelSelectorAdapter {
                 LabelSelectorAdapter.convertQueueSelectorToInternal(staticAttach.getQueueSelector()));
         } else if (attachment instanceof ConditionalQueueSelectorAttachment) {
             ConditionalQueueSelectorAttachment conditional = (ConditionalQueueSelectorAttachment) attachment;
-            return new ConditionalQueueSelectorAttachmentInternal(conditional.getCondition(),
+            return new ConditionalQueueSelectorAttachmentInternal(getRouterRuleInternal(conditional.getCondition()),
                 conditional.getQueueSelectors().stream()
                     .map(LabelSelectorAdapter::convertQueueSelectorToInternal).collect(Collectors.toList()));
         } else if (attachment instanceof PassThroughQueueSelectorAttachment) {
@@ -81,7 +83,7 @@ public class LabelSelectorAdapter {
                 passThrough.getLabelOperator());
         } else if (attachment instanceof RuleEngineQueueSelectorAttachment) {
             RuleEngineQueueSelectorAttachment rule = (RuleEngineQueueSelectorAttachment) attachment;
-            return new RuleEngineQueueSelectorAttachmentInternal(rule.getRule());
+            return new RuleEngineQueueSelectorAttachmentInternal(getRouterRuleInternal(rule.getRule()));
         } else if (attachment instanceof WeightedAllocationQueueSelectorAttachment) {
             WeightedAllocationQueueSelectorAttachment weighted = (WeightedAllocationQueueSelectorAttachment) attachment;
             return new WeightedAllocationQueueSelectorAttachmentInternal(
@@ -104,7 +106,7 @@ public class LabelSelectorAdapter {
         } else if (attachment instanceof ConditionalWorkerSelectorAttachment) {
             ConditionalWorkerSelectorAttachment conditional = (ConditionalWorkerSelectorAttachment) attachment;
             return new ConditionalWorkerSelectorAttachmentInternal(
-                conditional.getCondition(),
+                getRouterRuleInternal(conditional.getCondition()),
                 conditional.getWorkerSelectors().stream()
                     .map(LabelSelectorAdapter::convertWorkerSelectorToInternal).collect(Collectors.toList()));
         } else if (attachment instanceof PassThroughWorkerSelectorAttachment) {
@@ -116,7 +118,7 @@ public class LabelSelectorAdapter {
                 .setExpiresAfterSeconds((double) passThrough.getExpiresAfter().getSeconds());
         } else if (attachment instanceof RuleEngineWorkerSelectorAttachment) {
             RuleEngineWorkerSelectorAttachment rule = (RuleEngineWorkerSelectorAttachment) attachment;
-            return new RuleEngineWorkerSelectorAttachmentInternal(rule.getRule());
+            return new RuleEngineWorkerSelectorAttachmentInternal(getRouterRuleInternal(rule.getRule()));
         } else if (attachment instanceof WeightedAllocationWorkerSelectorAttachment) {
             WeightedAllocationWorkerSelectorAttachment weighted = (WeightedAllocationWorkerSelectorAttachment) attachment;
             return new WeightedAllocationWorkerSelectorAttachmentInternal(

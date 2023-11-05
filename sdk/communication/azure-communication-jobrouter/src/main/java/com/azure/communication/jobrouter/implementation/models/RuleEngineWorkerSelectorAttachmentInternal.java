@@ -22,7 +22,7 @@ public final class RuleEngineWorkerSelectorAttachmentInternal extends WorkerSele
      */
     @Generated
     @JsonProperty(value = "rule")
-    private RouterRule rule;
+    private RouterRuleInternal rule;
 
     /**
      * Creates an instance of RuleEngineWorkerSelectorAttachmentInternal class.
@@ -31,7 +31,7 @@ public final class RuleEngineWorkerSelectorAttachmentInternal extends WorkerSele
      */
     @Generated
     @JsonCreator
-    public RuleEngineWorkerSelectorAttachmentInternal(@JsonProperty(value = "rule") RouterRule rule) {
+    public RuleEngineWorkerSelectorAttachmentInternal(@JsonProperty(value = "rule") RouterRuleInternal rule) {
         this.rule = rule;
     }
 
@@ -41,7 +41,7 @@ public final class RuleEngineWorkerSelectorAttachmentInternal extends WorkerSele
      * @return the rule value.
      */
     @Generated
-    public RouterRule getRule() {
+    public RouterRuleInternal getRule() {
         return this.rule;
     }
 }
