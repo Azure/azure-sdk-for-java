@@ -231,7 +231,7 @@ private[cosmos] class CosmosRowConverterBase(
         }
     }
 
-    protected[spark] def convertToJsonNodeConditionally[T](value: T) = {
+    protected[spark] def convertToJsonNodeConditionally[T](value: T): Option[JsonNode] = {
         if (skipDefaultValues && isDefaultValue(value)) {
             None
         } else {
