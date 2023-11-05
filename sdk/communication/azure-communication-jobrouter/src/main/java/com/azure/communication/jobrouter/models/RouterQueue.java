@@ -79,17 +79,6 @@ public final class RouterQueue {
     public RouterQueue() {}
 
     /**
-     * Jsoncreator.
-     * @param id id
-     * @param etag etag.
-     */
-    @JsonCreator
-    public RouterQueue(String id, String etag) {
-        this.id = id;
-        this.etag = etag;
-    }
-
-    /**
      * Get the id property: The Id of this queue.
      *
      * @return the id value.

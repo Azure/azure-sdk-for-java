@@ -64,6 +64,7 @@ public class RouterQueueLiveTests extends JobRouterTestBase {
 
         // Action
         RouterQueue updatedRouterQueue = queue.setLabels(updatedQueueLabels);
+        BinaryData resource = BinaryData.fromObject(updatedRouterQueue);
         queue = routerAdminClient.updateQueueWithResponse(queueId, BinaryData.fromObject(updatedRouterQueue), new RequestOptions())
             .getValue().toObject(RouterQueue.class);
 

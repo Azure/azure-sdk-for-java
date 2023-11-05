@@ -144,7 +144,8 @@ public class LabelSelectorAdapter {
             LabelOperator.fromString(ws.getLabelOperator().toString()))
             .setValue(RouterValueConstructorProxy.create(ws))
             .setExpedite(ws.isExpedite())
-            .setExpiresAfter(Duration.ofSeconds(ws.getExpiresAfterSeconds().longValue()));
+            .setExpiresAfter(ws.getExpiresAfterSeconds() != null ?
+                Duration.ofSeconds(ws.getExpiresAfterSeconds().longValue()) : null);
 
         return workerSelector;
     }

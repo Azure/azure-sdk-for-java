@@ -4,6 +4,7 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterClientImpl;
+import com.azure.communication.jobrouter.implementation.accesshelpers.RouterWorkerConstructorProxy;
 import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
 import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
 import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
@@ -1059,9 +1060,10 @@ public final class JobRouterClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouterWorker createWorker(CreateWorkerOptions createWorkerOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        return this.createWorkerWithResponse(createWorkerOptions, requestOptions)
+        RouterWorkerInternal internal = this.createWorkerWithResponse(createWorkerOptions, requestOptions)
                 .getValue()
-                .toObject(RouterWorker.class);
+                .toObject(RouterWorkerInternal.class);
+        return RouterWorkerConstructorProxy.create(internal);
     }
 
     /**

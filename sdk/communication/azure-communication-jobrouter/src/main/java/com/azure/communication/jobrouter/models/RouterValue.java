@@ -24,25 +24,25 @@ public final class RouterValue {
     /**
      * String Value to pass to server.
      */
-    @JsonProperty(value = "stringValue", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "stringValue", access = JsonProperty.Access.READ_WRITE)
     private String stringValue;
 
     /**
      * Integer Value to pass to server.
      */
-    @JsonProperty(value = "intValue", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "intValue", access = JsonProperty.Access.READ_WRITE)
     private Integer intValue;
 
     /**
      * Double Value to pass to server.
      */
-    @JsonProperty(value = "doubleValue", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "doubleValue", access = JsonProperty.Access.READ_WRITE)
     private Double doubleValue;
 
     /**
      * Boolean Value to pass to server.
      */
-    @JsonProperty(value = "boolValue", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "boolValue", access = JsonProperty.Access.READ_WRITE)
     private Boolean boolValue;
 
     /**

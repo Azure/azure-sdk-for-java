@@ -4,6 +4,7 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterAdministrationClientImpl;
+import com.azure.communication.jobrouter.implementation.accesshelpers.ClassificationPolicyConstructorProxy;
 import com.azure.communication.jobrouter.implementation.accesshelpers.RouterQueueConstructorProxy;
 import com.azure.communication.jobrouter.implementation.converters.ClassificationPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
@@ -32,6 +33,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 
 /** Initializes a new instance of the synchronous JobRouterAdministrationClient type. */
@@ -481,9 +483,10 @@ public final class JobRouterAdministrationClient {
     public ClassificationPolicy createClassificationPolicy(
             CreateClassificationPolicyOptions createClassificationPolicyOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        return this.createClassificationPolicyWithResponse(createClassificationPolicyOptions, requestOptions)
+        ClassificationPolicyInternal internal = this.createClassificationPolicyWithResponse(createClassificationPolicyOptions, requestOptions)
                 .getValue()
-                .toObject(ClassificationPolicy.class);
+                .toObject(ClassificationPolicyInternal.class);
+        return ClassificationPolicyConstructorProxy.create(internal);
     }
 
     /**
@@ -989,8 +992,10 @@ public final class JobRouterAdministrationClient {
             String id, BinaryData resource, RequestOptions requestOptions) {
         RouterQueue routerQueue = BinaryData.fromObject(resource).toObject(RouterQueue.class);
         RouterQueueInternal routerQueueInternal = QueueAdapter.convertRouterQueueToRouterQueueInternal(routerQueue);
-        return this.serviceClient.upsertQueueWithResponse(
+        Response<BinaryData> response = this.serviceClient.upsertQueueWithResponse(
                 id, BinaryData.fromObject(routerQueueInternal), requestOptions);
+        RouterQueueInternal internal = response.getValue().toObject(RouterQueueInternal.class);
+        return new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(), BinaryData.fromObject(RouterQueueConstructorProxy.create(internal)));
     }
 
     /**
