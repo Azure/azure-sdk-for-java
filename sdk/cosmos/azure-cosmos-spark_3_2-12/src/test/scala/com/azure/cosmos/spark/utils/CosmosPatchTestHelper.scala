@@ -111,7 +111,7 @@ private[spark] object CosmosPatchTestHelper {
                            container: CosmosAsyncContainer,
                            partitionKeyDefinition: PartitionKeyDefinition,
                            patchPredicateFilter: Option[String] = None,
-                           metricsPublisher: OutputMetricsPublisherTrait = new DummyOutputMetricsPublisher): BulkWriter = {
+                           metricsPublisher: OutputMetricsPublisherTrait = new TestOutputMetricsPublisher): BulkWriter = {
   val patchConfigs = CosmosPatchConfigs(columnConfigsMap, patchPredicateFilter)
   val writeConfigForPatch = CosmosWriteConfig(
    ItemWriteStrategy.ItemPatch,
@@ -143,13 +143,14 @@ private[spark] object CosmosPatchTestHelper {
        partitionKeyDefinition,
        writeConfigForPatch,
        DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
-       new DummyOutputMetricsPublisher)
+       new TestOutputMetricsPublisher)
  }
 
  def getPointWriterForPatch(columnConfigsMap: TrieMap[String, CosmosPatchColumnConfig],
                             container: CosmosAsyncContainer,
                             partitionKeyDefinition: PartitionKeyDefinition,
-                            patchPredicateFilter: Option[String] = None): PointWriter = {
+                            patchPredicateFilter: Option[String] = None,
+                            metricsPublisher: OutputMetricsPublisherTrait = new TestOutputMetricsPublisher): PointWriter = {
 
   val patchConfigs = CosmosPatchConfigs(columnConfigsMap, patchPredicateFilter)
   val writeConfigForPatch = CosmosWriteConfig(
@@ -164,7 +165,7 @@ private[spark] object CosmosPatchTestHelper {
     writeConfigForPatch,
     DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
     MockTaskContext.mockTaskContext(),
-    new DummyOutputMetricsPublisher)
+    metricsPublisher)
  }
 
  def getPointWriterForPatchBulkUpdate(columnConfigsMap: TrieMap[String, CosmosPatchColumnConfig],
@@ -185,7 +186,7 @@ private[spark] object CosmosPatchTestHelper {
        writeConfigForPatch,
        DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
        MockTaskContext.mockTaskContext(),
-       new DummyOutputMetricsPublisher)
+       new TestOutputMetricsPublisher)
  }
 
  def getPatchConfigTestSchema(): StructType = {

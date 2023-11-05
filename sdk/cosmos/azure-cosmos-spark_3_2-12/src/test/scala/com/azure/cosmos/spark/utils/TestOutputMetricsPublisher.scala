@@ -9,7 +9,7 @@ import com.google.common.util.concurrent.AtomicDouble
 
 import java.util.concurrent.atomic.AtomicLong
 
-private[spark] class DummyOutputMetricsPublisher extends OutputMetricsPublisherTrait {
+private[spark] class TestOutputMetricsPublisher extends OutputMetricsPublisherTrait {
   private val recordsWritten = new AtomicLong(0)
   private val bytesWritten = new AtomicLong(0)
   private val totalRequestCharge = new AtomicDouble()

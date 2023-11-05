@@ -6,7 +6,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
 import com.azure.cosmos.models.{CosmosContainerProperties, PartitionKey, ThroughputProperties}
-import com.azure.cosmos.spark.utils.{CosmosPatchTestHelper, DummyOutputMetricsPublisher}
+import com.azure.cosmos.spark.utils.{CosmosPatchTestHelper, TestOutputMetricsPublisher}
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.commons.lang3.RandomUtils
@@ -33,13 +33,14 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
 
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false)
 
+    val metricsPublisher = new TestOutputMetricsPublisher
     val pointWriter = new PointWriter(
       container,
       partitionKeyDefinition,
       writeConfig,
       DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
       MockTaskContext.mockTaskContext(),
-      new DummyOutputMetricsPublisher)
+      metricsPublisher)
 
     val items = mutable.Map[String, ObjectNode]()
     for(_ <- 0 until 5000) {
@@ -53,6 +54,12 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val allItems = readAllItems()
 
     allItems should have size items.size
+
+    metricsPublisher.getRecordsWrittenSnapshot() shouldEqual items.size
+    metricsPublisher.getBytesWrittenSnapshot() > 0 shouldEqual true
+    metricsPublisher.getTotalRequestChargeSnapshot() > 5 * items.size shouldEqual true
+    metricsPublisher.getTotalRequestChargeSnapshot() < 10 * items.size shouldEqual true
+
 
     for(itemFromDB <- allItems) {
       items.contains(itemFromDB.get("id").textValue()) shouldBe true
@@ -68,13 +75,14 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
 
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false)
 
+    val metricsPublisher = new TestOutputMetricsPublisher
     val pointWriter = new PointWriter(
       container,
       partitionKeyDefinition,
       writeConfig,
       DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
       MockTaskContext.mockTaskContext(),
-      new DummyOutputMetricsPublisher)
+      metricsPublisher)
 
     val items = mutable.Map[String, ObjectNode]()
     for(_ <- 0 until 5000) {
@@ -88,6 +96,10 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val allItems = readAllItems()
 
     allItems should have size items.size
+    metricsPublisher.getRecordsWrittenSnapshot() shouldEqual items.size
+    metricsPublisher.getBytesWrittenSnapshot() > 0 shouldEqual true
+    metricsPublisher.getTotalRequestChargeSnapshot() > 5 * items.size shouldEqual true
+    metricsPublisher.getTotalRequestChargeSnapshot() < 10 * items.size shouldEqual true
 
     for(itemFromDB <- allItems) {
       items.contains(itemFromDB.get("id").textValue()) shouldBe true
@@ -103,7 +115,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       deleteConfig,
       DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
       MockTaskContext.mockTaskContext(),
-      new DummyOutputMetricsPublisher)
+      new TestOutputMetricsPublisher)
 
     for(i <- 0 until 5000) {
       val item = allItems(i)
@@ -129,7 +141,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       writeConfig,
       DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
       MockTaskContext.mockTaskContext(),
-      new DummyOutputMetricsPublisher)
+      new TestOutputMetricsPublisher)
 
     val items = mutable.Map[String, ObjectNode]()
     for(_ <- 0 until 5000) {
@@ -150,7 +162,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       writeConfig,
       DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
       MockTaskContext.mockTaskContext(),
-      new DummyOutputMetricsPublisher)
+      new TestOutputMetricsPublisher)
 
     for(itemFromDB <- allItems) {
       items.contains(itemFromDB.get("id").textValue()) shouldBe true
@@ -188,7 +200,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       deleteConfig,
       DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
       MockTaskContext.mockTaskContext(),
-      new DummyOutputMetricsPublisher)
+      new TestOutputMetricsPublisher)
 
     for(i <- 0 until 5000) {
       val item = allItems(i)
@@ -212,7 +224,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       writeConfig,
       DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
       MockTaskContext.mockTaskContext(),
-      new DummyOutputMetricsPublisher)
+      new TestOutputMetricsPublisher)
     val items = new mutable.HashMap[String, mutable.Set[ObjectNode]] with mutable.MultiMap[String, ObjectNode]
 
     for(i <- 0 until 5000) {
@@ -243,13 +255,14 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwriteIfNotModified, maxRetryCount = 3, bulkEnabled = false)
 
+    val metricsPublisher = new TestOutputMetricsPublisher
     var pointWriter = new PointWriter(
       container,
       partitionKeyDefinition,
       writeConfig,
       DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
       MockTaskContext.mockTaskContext(),
-      new DummyOutputMetricsPublisher)
+      metricsPublisher)
 
     val items = mutable.Map[String, ObjectNode]()
     for(_ <- 0 until 5000) {
@@ -263,6 +276,10 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val allItems = readAllItems()
 
     allItems should have size items.size
+    metricsPublisher.getRecordsWrittenSnapshot() shouldEqual items.size
+    metricsPublisher.getBytesWrittenSnapshot() > 0 shouldEqual true
+    metricsPublisher.getTotalRequestChargeSnapshot() > 5 * items.size shouldEqual true
+    metricsPublisher.getTotalRequestChargeSnapshot() < 10 * items.size shouldEqual true
 
     pointWriter = new PointWriter(
       container,
@@ -270,7 +287,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       writeConfig,
       DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
       MockTaskContext.mockTaskContext(),
-      new DummyOutputMetricsPublisher)
+      metricsPublisher)
 
     val secondWriteId = UUID.randomUUID().toString
     // now modify the items read back from DB (so they have etag)
@@ -284,6 +301,12 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     }
 
     pointWriter.flushAndClose()
+
+    metricsPublisher.getRecordsWrittenSnapshot() shouldEqual 2 * items.size
+    metricsPublisher.getBytesWrittenSnapshot() > 0 shouldEqual true
+    metricsPublisher.getTotalRequestChargeSnapshot() > 5 * 2 * items.size shouldEqual true
+    metricsPublisher.getTotalRequestChargeSnapshot() < 10 * 2 * items.size shouldEqual true
+
     val allItemsAfterSecondWrite = readAllItems()
     allItemsAfterSecondWrite should have size items.size
 
@@ -303,7 +326,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       writeConfig,
       DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
       MockTaskContext.mockTaskContext(),
-      new DummyOutputMetricsPublisher)
+      metricsPublisher)
     // now modify the items read back from DB after the first write
     // (so they have stale etag) and modify them
     // subsequent write operation should update none of them because all etags are stale
@@ -313,6 +336,12 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     }
 
     pointWriter.flushAndClose()
+
+    // RecordsCount and BytesWritten should not have changed
+    metricsPublisher.getRecordsWrittenSnapshot() shouldEqual 2 * items.size
+    metricsPublisher.getBytesWrittenSnapshot() > 0 shouldEqual true
+    metricsPublisher.getTotalRequestChargeSnapshot() > 5 * 2 * items.size shouldEqual true
+    metricsPublisher.getTotalRequestChargeSnapshot() < 10 * 2 * items.size shouldEqual true
 
     val allItemsAfterThirdWrite = readAllItems()
     allItemsAfterThirdWrite should have size items.size
@@ -345,13 +374,14 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       5,
       bulkEnabled = false)
 
+    val metricsPublisher = new TestOutputMetricsPublisher
     val pointWriter = new PointWriter(
       container,
       partitionKeyDefinition,
       writeConfig,
       DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
       MockTaskContext.mockTaskContext(),
-      new DummyOutputMetricsPublisher)
+      metricsPublisher)
 
     // First create one item, as patch can only operate on existing items
     val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
@@ -360,10 +390,17 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
 
     pointWriter.scheduleWrite(partitionKey, itemWithFullSchema)
     pointWriter.flushAndClose()
+
+    metricsPublisher.getRecordsWrittenSnapshot() shouldEqual 1
+    metricsPublisher.getBytesWrittenSnapshot() > 0 shouldEqual true
+    metricsPublisher.getTotalRequestChargeSnapshot() > 5 shouldEqual true
+    metricsPublisher.getTotalRequestChargeSnapshot() < 10 shouldEqual true
+
     // make sure the item exists
     container.readItem(id, partitionKey, classOf[ObjectNode]).block()
 
     // Test for each cosmos patch operation type, ignore increment type for as there will be a separate test for it
+    var i = 0
     CosmosPatchOperationTypes.values.foreach {
       case CosmosPatchOperationTypes.Increment => // no-op
       case operationType =>
@@ -381,7 +418,12 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
             field.getKey, operationType, s"/${field.getKey}", isRawJson = false)
         })
 
-        val pointWriterForPatch = CosmosPatchTestHelper.getPointWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
+        val pointWriterForPatch = CosmosPatchTestHelper.getPointWriterForPatch(
+          columnConfigsMap,
+          container,
+          partitionKeyDefinition,
+          patchPredicateFilter = None,
+          metricsPublisher)
 
         operationType match {
           case CosmosPatchOperationTypes.None =>
@@ -393,8 +435,17 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
             }
 
           case CosmosPatchOperationTypes.Add | CosmosPatchOperationTypes.Set | CosmosPatchOperationTypes.Replace =>
+            i+=1
+
             pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
             pointWriterForPatch.flushAndClose()
+            metricsPublisher.getRecordsWrittenSnapshot() shouldEqual 1 + i
+            metricsPublisher.getBytesWrittenSnapshot() > 0 shouldEqual true
+            metricsPublisher.getTotalRequestChargeSnapshot() > 5 * (1 + i) shouldEqual true
+            info(s"TotalRequestChargeSnapshot: ${metricsPublisher.getTotalRequestChargeSnapshot()}")
+            withClue(s"TotalRequestChargeSnapshot: ${metricsPublisher.getTotalRequestChargeSnapshot()} for {$i}th patch operation: ") {
+              metricsPublisher.getTotalRequestChargeSnapshot() < 15 * (1 + i) shouldEqual true
+            }
             val updatedItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem
 
             for (field: StructField <- partialUpdateSchema.fields) {
@@ -416,8 +467,16 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
               }
             }
           case CosmosPatchOperationTypes.Remove =>
+            i+=1
+
             pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
             pointWriterForPatch.flushAndClose()
+
+            metricsPublisher.getRecordsWrittenSnapshot() shouldEqual (i + 1)
+            metricsPublisher.getBytesWrittenSnapshot() > 0 shouldEqual true
+            metricsPublisher.getTotalRequestChargeSnapshot() > 5 * (i + 1) shouldEqual true
+            metricsPublisher.getTotalRequestChargeSnapshot() < 15 * (i + 1) shouldEqual true
+
             val updatedItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem
 
             for (field: StructField <- partialUpdateSchema.fields) {
@@ -450,7 +509,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       writeConfig,
       DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
       MockTaskContext.mockTaskContext(),
-      new DummyOutputMetricsPublisher)
+      new TestOutputMetricsPublisher)
 
     // First create one item, as patch can only operate on existing items
     val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, partitionKeyPath)
@@ -527,7 +586,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       writeConfig,
       DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
       MockTaskContext.mockTaskContext(),
-      new DummyOutputMetricsPublisher)
+      new TestOutputMetricsPublisher)
 
     // First create one item with nestedObject, as patch can only operate on existing items
     val itemWithNestedObject: ObjectNode = objectMapper.createObjectNode()
@@ -586,7 +645,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       writeConfig,
       DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
       MockTaskContext.mockTaskContext(),
-      new DummyOutputMetricsPublisher)
+      new TestOutputMetricsPublisher)
 
     // First create one item, as patch can only operate on existing items
     val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
@@ -667,7 +726,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       writeConfig,
       DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
       MockTaskContext.mockTaskContext(),
-      new DummyOutputMetricsPublisher)
+      new TestOutputMetricsPublisher)
 
     // First create one item, as patch can only operate on existing items
     val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
@@ -742,7 +801,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
           partitionKeyDefinition,
           writeConfig,
           DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
-          new DummyOutputMetricsPublisher)
+          new TestOutputMetricsPublisher)
 
         // First create one item, as patch can only operate on existing items
         val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
@@ -806,7 +865,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       writeConfig,
       DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
       MockTaskContext.mockTaskContext(),
-      new DummyOutputMetricsPublisher)
+      new TestOutputMetricsPublisher)
 
     // First create one item, as patch can only operate on existing items
     val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
@@ -895,6 +954,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       val containerProperties = container.read().block().getProperties
       val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
+      val metricsPublisher = new TestOutputMetricsPublisher
       // if the item does not exists, patchBulkUpdate essentially will create those items
       // Validate that patchBulkUpdate can create items successfully
       val writeConfig = CosmosWriteConfig(
@@ -911,7 +971,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
               writeConfig,
               DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
               MockTaskContext.mockTaskContext(),
-              new DummyOutputMetricsPublisher)
+              metricsPublisher)
 
       val items = mutable.Map[String, ObjectNode]()
       for (_ <- 0 until 2) {
@@ -922,6 +982,12 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       }
 
       pointWriter.flushAndClose()
+
+      metricsPublisher.getRecordsWrittenSnapshot() shouldEqual items.size
+      metricsPublisher.getBytesWrittenSnapshot() > 0 shouldEqual true
+      metricsPublisher.getTotalRequestChargeSnapshot() > 5 * items.size shouldEqual true
+      metricsPublisher.getTotalRequestChargeSnapshot() < (10 + 2) * items.size shouldEqual true
+
       val allItems = readAllItems()
 
       allItems should have size items.size
@@ -953,7 +1019,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
               writeConfig,
               DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
               MockTaskContext.mockTaskContext(),
-            new DummyOutputMetricsPublisher)
+            new TestOutputMetricsPublisher)
 
       val item = getItem(UUID.randomUUID().toString)
       val id = item.get("id").textValue()
@@ -998,7 +1064,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       writeConfig,
       DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
       MockTaskContext.mockTaskContext(),
-      new DummyOutputMetricsPublisher)
+      new TestOutputMetricsPublisher)
 
     // First create one item
     val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
@@ -1071,7 +1137,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
         writeConfig,
         DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
         MockTaskContext.mockTaskContext(),
-        new DummyOutputMetricsPublisher)
+        new TestOutputMetricsPublisher)
 
       // First create one item, as patch can only operate on existing items
       val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, partitionKeyPath)
@@ -1118,7 +1184,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
         writeConfig,
         DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
         MockTaskContext.mockTaskContext(),
-        new DummyOutputMetricsPublisher)
+        new TestOutputMetricsPublisher)
 
       // First create one item with nestedObject, as patch can only operate on existing items
       val itemWithNestedObject: ObjectNode = objectMapper.createObjectNode()
@@ -1177,7 +1243,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
         writeConfig,
         DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
         MockTaskContext.mockTaskContext(),
-        new DummyOutputMetricsPublisher)
+        new TestOutputMetricsPublisher)
 
       // First create one item, as patch can only operate on existing items
       val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
@@ -1252,7 +1318,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
                 partitionKeyDefinition,
                 writeConfig,
                 DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
-                new DummyOutputMetricsPublisher)
+                new TestOutputMetricsPublisher)
 
               // First create one item
               val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
