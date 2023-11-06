@@ -15,11 +15,13 @@ import org.apache.qpid.jms.JmsConnectionFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * A factory for ServiceBusJmsConnectionFactory.
@@ -78,6 +80,21 @@ public class ServiceBusJmsConnectionFactoryFactory {
                     (connection, uri) -> {
                         Map<String, Object> properties = new HashMap<>();
                         properties.put("com.microsoft:is-client-provider", false);
+
+                        String servicebusJmsVersion = "";
+                        Properties applicationProperties = new Properties();
+                        try {
+                            applicationProperties.load(this.getClass().getClassLoader().getResourceAsStream("application.properties"));
+                            servicebusJmsVersion = applicationProperties.getProperty("azure.servicebus.jms.version");
+                        } catch (IOException e) {
+                            servicebusJmsVersion = "unknown";
+                        }
+
+                        StringBuilder userAgent = new StringBuilder("ServiceBusJms");
+                        userAgent.append("-").append(servicebusJmsVersion);
+
+                        properties.put("user-agent", userAgent.toString());
+
                         return properties;
                     });
             }
