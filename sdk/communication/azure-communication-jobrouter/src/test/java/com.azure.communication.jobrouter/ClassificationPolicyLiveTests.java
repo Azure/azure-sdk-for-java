@@ -10,6 +10,7 @@ import com.azure.communication.jobrouter.models.LabelOperator;
 import com.azure.communication.jobrouter.models.QueueSelectorAttachment;
 import com.azure.communication.jobrouter.models.RouterQueue;
 import com.azure.communication.jobrouter.models.RouterQueueSelector;
+import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.communication.jobrouter.models.RouterWorkerSelector;
 import com.azure.communication.jobrouter.models.StaticQueueSelectorAttachment;
 import com.azure.communication.jobrouter.models.StaticRouterRule;
@@ -46,7 +47,7 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
          */
         StaticQueueSelectorAttachment staticQueueSelector = new StaticQueueSelectorAttachment(
             new RouterQueueSelector("queueId", LabelOperator.EQUAL)
-                .setValue(queueId));
+                .setValue(new RouterValue(queueId)));
 
         List<QueueSelectorAttachment> queueSelectors = new ArrayList<QueueSelectorAttachment>() {
             {
@@ -60,7 +61,7 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
          */
         StaticWorkerSelectorAttachment staticWorkerSelector = new StaticWorkerSelectorAttachment(
             new RouterWorkerSelector("key", LabelOperator.EQUAL)
-                .setValue("value"));
+                .setValue(new RouterValue("value")));
 
         List<WorkerSelectorAttachment> workerSelectors = new ArrayList<WorkerSelectorAttachment>() {
             {

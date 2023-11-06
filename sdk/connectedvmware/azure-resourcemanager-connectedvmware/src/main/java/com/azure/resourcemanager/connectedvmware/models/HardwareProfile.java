@@ -7,7 +7,7 @@ package com.azure.resourcemanager.connectedvmware.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the resource properties. */
+/** Specifies the hardware settings for the virtual machine. */
 @Fluent
 public final class HardwareProfile {
     /*
@@ -45,6 +45,10 @@ public final class HardwareProfile {
      */
     @JsonProperty(value = "memoryHotAddEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean memoryHotAddEnabled;
+
+    /** Creates an instance of HardwareProfile class. */
+    public HardwareProfile() {
+    }
 
     /**
      * Get the memorySizeMB property: Gets or sets memory size in MBs for the vm.

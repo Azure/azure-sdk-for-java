@@ -66,7 +66,7 @@ public enum Feature {
     PREVIEW_GENERAL_EXPORT_QUEUE_CAPACITY(51), // track generalExportQueueCapacity
     PREVIEW_METRICS_EXPORT_QUEUE_CAPACITY(52), // track metricsExportQueueCapacity
     PREVIEW_DISK_PERSISTENCE_MAX_SIZE_MB(53), // track diskPersistenceMaxSizeMb
-    PREVIEW_USE_NORMALIZED_VALUE_FOR_NON_NORMALIZED_CPU_PERCENTAGE(54), // track useNormalizedValueForNonNormalizedCpuPercentage
+    PREVIEW_DONT_USE_NORMALIZED(54), // track useNormalizedValueForNonNormalizedCpuPercentage
     PREVIEW_CUSTOM_INSTRUMENTATION(55); // track customInstrumentation
 
     private static final Map<String, Feature> javaVendorFeatureMap;

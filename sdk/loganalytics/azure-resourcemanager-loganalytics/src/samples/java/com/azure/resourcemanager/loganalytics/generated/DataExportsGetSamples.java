@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DataExports Get. */
 public final class DataExportsGetSamples {
     /*
@@ -17,6 +15,6 @@ public final class DataExportsGetSamples {
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void dataExportGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.dataExports().getWithResponse("RgTest1", "DeWnTest1234", "export1", Context.NONE);
+        manager.dataExports().getWithResponse("RgTest1", "DeWnTest1234", "export1", com.azure.core.util.Context.NONE);
     }
 }

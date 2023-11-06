@@ -58,6 +58,6 @@ public final class VirtualMachineSchedulesExecuteMockTests {
 
         manager
             .virtualMachineSchedules()
-            .execute("tnqsktx", "fpjbqggwe", "iwdhdmncgbfzu", "cstu", com.azure.core.util.Context.NONE);
+            .execute("cuxd", "zcqipsdudgcozzo", "ehxlantolamlb", "juxkqll", com.azure.core.util.Context.NONE);
     }
 }
