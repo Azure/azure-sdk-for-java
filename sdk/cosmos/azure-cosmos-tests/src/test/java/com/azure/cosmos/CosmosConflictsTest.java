@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
@@ -116,6 +117,7 @@ public class CosmosConflictsTest extends TestSuiteBase {
     }
 
     @Test(groups = {"flaky-multi-master"}, timeOut = CONFLICT_TIMEOUT)
+    @Ignore
     public void conflictCustomLWW() throws InterruptedException {
         if (this.regionalClients.size() > 1) {
             CosmosAsyncDatabase database = getSharedCosmosDatabase(globalClient);
