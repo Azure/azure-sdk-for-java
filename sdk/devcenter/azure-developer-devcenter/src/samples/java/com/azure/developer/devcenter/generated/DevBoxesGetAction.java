@@ -22,7 +22,7 @@ public class DevBoxesGetAction {
         // BEGIN:com.azure.developer.devcenter.generated.devboxesgetaction.devboxesgetaction
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                devBoxesClient.getActionWithResponse("myProject", "me", "myDevBox", "schedule-default", requestOptions);
+                devBoxesClient.getDevBoxActionWithResponse("myProject", "me", "myDevBox", "schedule-default", requestOptions);
         // END:com.azure.developer.devcenter.generated.devboxesgetaction.devboxesgetaction
     }
 }

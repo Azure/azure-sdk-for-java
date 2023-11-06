@@ -8,6 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.developer.devcenter.DevCenterClientTestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,7 @@ public final class DevBoxesListActionsTests extends DevCenterClientTestBase {
         createDevBox();
 
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = devBoxesClient.listActions(projectName, "me", devBoxName, requestOptions);
+        PagedIterable<BinaryData> response = devBoxesClient.listDevBoxActions(projectName, "me", devBoxName, requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
 
         int numberOfActions = 0;

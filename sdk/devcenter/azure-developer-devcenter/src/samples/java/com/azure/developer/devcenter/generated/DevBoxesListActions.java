@@ -21,7 +21,7 @@ public class DevBoxesListActions {
                         .buildClient();
         // BEGIN:com.azure.developer.devcenter.generated.devboxeslistactions.devboxeslistactions
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = devBoxesClient.listActions("myProject", "me", "myDevBox", requestOptions);
+        PagedIterable<BinaryData> response = devBoxesClient.listDevBoxActions("myProject", "me", "myDevBox", requestOptions);
         // END:com.azure.developer.devcenter.generated.devboxeslistactions.devboxeslistactions
     }
 }

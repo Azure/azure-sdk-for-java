@@ -7,6 +7,7 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.developer.devcenter.DevCenterClientTestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,7 @@ public final class DevBoxesGetActionTests extends DevCenterClientTestBase {
 
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                devBoxesClient.getActionWithResponse(projectName, "me", devBoxName, "schedule-default", requestOptions);
+                devBoxesClient.getDevBoxActionWithResponse(projectName, "me", devBoxName, "schedule-default", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals("schedule-default", response.getValue().toObject(LinkedHashMap.class).get("name"));
 

@@ -8,6 +8,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.developer.devcenter.DevCenterClientTestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +18,7 @@ public final class EnvironmentsCreateByEnvironmentDefinitionTests extends DevCen
         String environmentName = getFirstEnvironmentDefinition();
 
         BinaryData environmentBody = BinaryData.fromString(
-            "{\"catalogItemName\":\"" + environmentName
+            "{\"environmentDefinitionName\":\"" + environmentName
                 + "\", \"catalogName\":\"" + catalogName
                 + "\", \"environmentType\":\"" + envTypeName + "\"}");
 

@@ -82,7 +82,7 @@ And finally, tear down the Dev Box when we're finished:
 // Tear down the Dev Box when we're finished:
 SyncPoller<BinaryData, Void> devBoxDeleteResponse =
                 devBoxClient.beginDeleteDevBox("myProject", "me", "MyDevBox", null);
-devBoxDeleteResponse.waitForCompletion();        
+devBoxDeleteResponse.waitForCompletion();
 ```
 
 ## Environment samples
@@ -113,12 +113,11 @@ Environments clients are created in essentially the same manner:
 
 
 ```java com.azure.developer.devcenter.readme.createEnvironmentsClient
-DeploymentEnvironmentsClientBuilder deploymentEnvironmentsClientbuilder =
-                new DeploymentEnvironmentsClientBuilder()
-                        .endpoint(endpoint)
-                        .httpClient(HttpClient.createDefault());
-
-DeploymentEnvironmentsClient environmentsClient = deploymentEnvironmentsClientbuilder.buildClient();
+DeploymentEnvironmentsClient environmentsClient =
+                    new DeploymentEnvironmentsClientBuilder()
+                            .endpoint("ENDPOINT")
+                            .credential(new DefaultAzureCredentialBuilder().build())
+                            .buildClient();
 ```
 
 ### Fetching resources
@@ -148,7 +147,7 @@ Once we've decided on which environment definition and environment type to use, 
 // Create an environment
 BinaryData environmentBody = BinaryData.fromString("{\"environmentDefinitionName\":\"myEnvironmentDefinition\", \"environmentType\":\"myEnvironmentType\", \"catalogName\":\"myCatalog\"}");
 SyncPoller<BinaryData, BinaryData> environmentCreateResponse =
-environmentsClient.beginCreateOrUpdateEnvironment("myProject", "me", "TestEnvironment", environmentBody, null);
+                environmentsClient.beginCreateOrUpdateEnvironment("myProject", "me", "TestEnvironment", environmentBody, null);
 environmentCreateResponse.waitForCompletion();
 ```
 
@@ -203,16 +202,16 @@ System.out.println(remoteConnectionResponse.getValue());
 // Tear down the Dev Box when we're finished:
 SyncPoller<BinaryData, Void> devBoxDeleteResponse =
                 devBoxClient.beginDeleteDevBox("myProject", "me", "MyDevBox", null);
-devBoxDeleteResponse.waitForCompletion();        
+devBoxDeleteResponse.waitForCompletion();
 ```
 
 ### Environments
 ```java com.azure.developer.devcenter.readme.environments
-EnvironmentsClient environmentsClient =
-                new EnvironmentsClientBuilder()
-                        .endpoint(endpoint)
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .buildClient();
+DeploymentEnvironmentsClient environmentsClient =
+                    new DeploymentEnvironmentsClientBuilder()
+                            .endpoint("ENDPOINT")
+                            .credential(new DefaultAzureCredentialBuilder().build())
+                            .buildClient();
 
 // Fetch available environment definitions and environment types
 PagedIterable<BinaryData> listCatalogsResponse = environmentsClient.listCatalogs("myProject", null);
