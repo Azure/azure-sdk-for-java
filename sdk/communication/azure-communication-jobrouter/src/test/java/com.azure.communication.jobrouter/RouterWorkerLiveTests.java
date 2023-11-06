@@ -47,13 +47,13 @@ public class RouterWorkerLiveTests extends JobRouterTestBase {
 
         Map<String, RouterValue> labels = new HashMap<String, RouterValue>() {
             {
-                put("Label", new RouterValue("Value"));
+                put("Label", new RouterValue("Value", null, null, null));
             }
         };
 
         Map<String, RouterValue> tags = new HashMap<String, RouterValue>() {
             {
-                put("Tag", new RouterValue("Value"));
+                put("Tag", new RouterValue("Value", null, null, null));
             }
         };
 
