@@ -134,21 +134,21 @@ public final class BatchNode {
      */
     @Generated
     @JsonProperty(value = "recentTasks")
-    private List<TaskInformation> recentTasks;
+    private List<BatchTaskInfo> recentTasks;
 
     /*
      * The Task specified to run on the Compute Node as it joins the Pool.
      */
     @Generated
     @JsonProperty(value = "startTask")
-    private StartTask startTask;
+    private BatchStartTask startTask;
 
     /*
      * Runtime information about the execution of the StartTask on the Compute Node.
      */
     @Generated
     @JsonProperty(value = "startTaskInfo")
-    private StartTaskInformation startTaskInfo;
+    private BatchStartTaskInfo startTaskInfo;
 
     /*
      * For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
@@ -161,7 +161,7 @@ public final class BatchNode {
      */
     @Generated
     @JsonProperty(value = "certificateReferences")
-    private List<CertificateReference> certificateReferences;
+    private List<BatchCertificateReference> certificateReferences;
 
     /*
      * The list of errors that are currently being encountered by the Compute Node.
@@ -190,7 +190,7 @@ public final class BatchNode {
      */
     @Generated
     @JsonProperty(value = "nodeAgentInfo")
-    private NodeAgentInformation nodeAgentInfo;
+    private BatchNodeAgentInfo nodeAgentInfo;
 
     /*
      * Info about the current state of the virtual machine.
@@ -370,7 +370,7 @@ public final class BatchNode {
      * @return the recentTasks value.
      */
     @Generated
-    public List<TaskInformation> getRecentTasks() {
+    public List<BatchTaskInfo> getRecentTasks() {
         return this.recentTasks;
     }
 
@@ -380,7 +380,7 @@ public final class BatchNode {
      * @return the startTask value.
      */
     @Generated
-    public StartTask getStartTask() {
+    public BatchStartTask getStartTask() {
         return this.startTask;
     }
 
@@ -390,7 +390,7 @@ public final class BatchNode {
      * @return the startTaskInfo value.
      */
     @Generated
-    public StartTaskInformation getStartTaskInfo() {
+    public BatchStartTaskInfo getStartTaskInfo() {
         return this.startTaskInfo;
     }
 
@@ -406,7 +406,7 @@ public final class BatchNode {
      * @return the certificateReferences value.
      */
     @Generated
-    public List<CertificateReference> getCertificateReferences() {
+    public List<BatchCertificateReference> getCertificateReferences() {
         return this.certificateReferences;
     }
 
@@ -448,7 +448,7 @@ public final class BatchNode {
      * @return the nodeAgentInfo value.
      */
     @Generated
-    public NodeAgentInformation getNodeAgentInfo() {
+    public BatchNodeAgentInfo getNodeAgentInfo() {
         return this.nodeAgentInfo;
     }
 

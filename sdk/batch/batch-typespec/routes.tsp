@@ -59,6 +59,7 @@ API.
 """)
   @example("./examples/ApplicationList.json", "List applications")
   @route("/applications")
+  @projectedName("java", "listApplicationsInternal")
   @get
   listApplications is RpcOperation<
     BatchApplicationListHeaders,
@@ -77,6 +78,7 @@ API.
 """)
   @example("./examples/ApplicationGet.json", "Get applications")
   @route("/applications")
+  @projectedName("java", "getApplicationInternal")
   @get
   getApplication is RpcOperation<
     BatchClientRequestHeaders & {
@@ -109,6 +111,7 @@ last aggregation interval is returned.
 """)
   @example("./examples/PoolListUsageMetrics.json", "Pool list usage metrics")
   @route("/poolusagemetrics")
+  @projectedName("java", "listPoolUsageMetricsInternal")
   @get
   listPoolUsageMetrics is RpcOperation<
     BatchApplicationListHeaders & {
@@ -167,6 +170,7 @@ to Microsoft Support engineers.
     "Creates a pool with mount drive specified"
   )
   @route("/pools")
+  @projectedName("java", "createPoolInternal")
   createPool is RpcOperation<
     BatchClientRequestHeaders & {
       @doc("Type of content")
@@ -194,6 +198,7 @@ to Microsoft Support engineers.
   @doc("Lists all of the Pools in the specified Account.")
   @route("/pools")
   @example("./examples/PoolList_Basic.json", "Pool list")
+  @projectedName("java", "listPoolsInternal")
   @get
   listPools is RpcOperation<
     BatchApplicationListHeaders & {
@@ -234,6 +239,7 @@ error code PoolBeingDeleted.
 """)
   @example("./examples/PoolDelete.json", "Pool delete")
   @route("/pools/{poolId}")
+  @projectedName("java", "deletePoolInternal")
   @delete
   deletePool is RpcOperation<
     BatchClientRequestHeaders & BatchPoolHeaders,
@@ -245,6 +251,7 @@ error code PoolBeingDeleted.
   @doc("Gets basic properties of a Pool.")
   @example("./examples/PoolExists.json", "Check Pool Exists")
   @route("/pools/{poolId}")
+  @projectedName("java", "poolExistsInternal")
   @head
   poolExists is RpcOperationWithAdditionalResponse<
     BatchClientRequestHeaders & BatchPoolHeaders,
@@ -260,6 +267,7 @@ error code PoolBeingDeleted.
     "Get a VirtualMachineConfiguration pool with extensions"
   )
   @route("/pools/{poolId}")
+  @projectedName("java", "getPoolInternal")
   @get
   getPool is RpcOperation<
     BatchClientRequestHeaders &
@@ -285,6 +293,7 @@ a StartTask element, then the Pool keeps the existing StartTask.
 """)
   @example("./examples/PoolPatch.json", "Patch the Pool")
   @route("/pools/{poolId}")
+  @projectedName("java", "updatePoolInternal")
   @patch
   updatePool is RpcOperation<
     BatchClientRequestHeaders &
@@ -314,6 +323,7 @@ a StartTask element, then the Pool keeps the existing StartTask.
   @doc("Disables automatic scaling for a Pool.")
   @example("./examples/PoolDisableAutoScale.json", "Disable pool autoscale")
   @route("/pools/{poolId}/disableautoscale")
+  @projectedName("java", "disablePoolAutoScaleInternal")
   @post
   disablePoolAutoScale is RpcOperation<
     BatchClientRequestHeaders & {
@@ -345,6 +355,7 @@ more than once every 30 seconds.
 """)
   @example("./examples/PoolEnableAutoscale.json", "Pool enable autoscale")
   @route("/pools/{poolId}/enableautoscale")
+  @projectedName("java", "enablePoolAutoScaleInternal")
   @post
   enablePoolAutoScale is RpcOperation<
     BatchClientRequestHeaders &
@@ -378,6 +389,7 @@ scaling enabled in order to evaluate a formula.
 """)
   @example("./examples/PoolEvaluateAutoscale.json", "Pool evaluate autoscale")
   @route("/pools/{poolId}/evaluateautoscale")
+  @projectedName("java", "evaluatePoolAutoScaleInternal")
   @post
   evaluatePoolAutoScale is RpcOperation<
     BatchClientRequestHeaders & {
@@ -419,6 +431,7 @@ Nodes, use the Pool remove Compute Nodes API instead.
 """)
   @example("./examples/PoolResize.json", "Pool resize")
   @route("/pools/{poolId}/resize")
+  @projectedName("java", "resizePoolInternal")
   @post
   resizePool is RpcOperation<
     BatchClientRequestHeaders &
@@ -456,6 +469,7 @@ be used to halt the initial sizing of the Pool when it is created.
 """)
   @example("./examples/PoolStopResize.json", "Pool stop resize")
   @route("/pools/{poolId}/stopresize")
+  @projectedName("java", "stopPoolResizeInternal")
   @post
   stopPoolResize is RpcOperation<
     BatchClientRequestHeaders & BatchPoolHeaders,
@@ -472,6 +486,7 @@ with this request, then the Batch service will remove the existing StartTask.
 """)
   @example("./examples/PoolUpdate.json", "Pool update")
   @route("/pools/{poolId}/updateproperties")
+  @projectedName("java", "replacePoolPropertiesInternal")
   @post
   replacePoolProperties is RpcOperation<
     BatchClientRequestHeaders & {
@@ -500,6 +515,7 @@ Each request may remove up to 100 nodes.
 """)
   @example("./examples/PoolRemoveNodes.json", "Pool remove nodes")
   @route("/pools/{poolId}/removenodes")
+  @projectedName("java", "removeNodesInternal")
   @post
   removeNodes is RpcOperation<
     BatchClientRequestHeaders &
@@ -529,6 +545,7 @@ interface Accounts {
     "Account list node agent skus"
   )
   @route("/supportedimages")
+  @projectedName("java", "listSupportedImagesInternal")
   @get
   listSupportedImages is RpcOperation<
     BatchApplicationListHeaders & {
@@ -551,6 +568,7 @@ use a list query.
 """)
   @example("./examples/AccountListPoolNodeCounts.json", "NodeCountsPayload")
   @route("/nodecounts")
+  @projectedName("java", "listPoolNodeCountsInternal")
   @get
   listPoolNodeCounts is RpcOperation<
     BatchApplicationListHeaders & {
@@ -584,6 +602,7 @@ that the Job is being deleted.
 """)
   @example("./examples/JobDelete.json", "Delete Job")
   @route("/jobs/{jobId}")
+  @projectedName("java", "deleteJobInternal")
   @delete
   deleteJob is RpcOperation<
     BatchClientRequestHeaders &
@@ -601,6 +620,7 @@ that the Job is being deleted.
   @doc("Gets information about the specified Job.")
   @example("./examples/JobGet.json", "Job get")
   @route("/jobs/{jobId}")
+  @projectedName("java", "getJobInternal")
   @get
   getJob is RpcOperation<
     BatchClientRequestHeaders &
@@ -630,6 +650,7 @@ element, then the Job keeps the existing constraints.
 """)
   @example("./examples/JobPatch.json", "Job patch")
   @route("/jobs/{jobId}")
+  @projectedName("java", "updateJobInternal")
   @patch
   updateJob is RpcOperation<
     BatchClientRequestHeaders &
@@ -667,6 +688,7 @@ with this request, then the Batch service will remove the existing constraints.
 """)
   @example("./examples/JobUpdate.json", "Job update")
   @route("/jobs/{jobId}")
+  @projectedName("java", "replaceJobInternal")
   @put
   replaceJob is RpcOperation<
     BatchClientRequestHeaders &
@@ -709,6 +731,7 @@ the request fails with status code 409.
 """)
   @example("./examples/JobDisable.json", "Job disable")
   @route("/jobs/{jobId}/disable")
+  @projectedName("java", "disableJobInternal")
   @post
   disableJob is RpcOperation<
     BatchClientRequestHeaders &
@@ -749,6 +772,7 @@ than 180 days ago, those Tasks will not run.
 """)
   @example("./examples/JobEnable.json", "Job enable")
   @route("/jobs/{jobId}/enable")
+  @projectedName("java", "enableJobInternal")
   @post
   enableJob is RpcOperation<
     BatchClientRequestHeaders &
@@ -781,6 +805,7 @@ Tasks cannot be added and any remaining active Tasks will not be scheduled.
 """)
   @example("./examples/JobTerminate.json", "Job terminate")
   @route("/jobs/{jobId}/terminate")
+  @projectedName("java", "terminateJobInternal")
   @post
   terminateJob is RpcOperation<
     BatchClientRequestHeaders &
@@ -825,6 +850,7 @@ engineers.
   @example("./examples/JobAdd_Basic.json", "Creates a basic job")
   @example("./examples/JobAdd_Complex.json", "Creates a complex job")
   @route("/jobs")
+  @projectedName("java", "createJobInternal")
   @post
   createJob is RpcOperation<
     BatchClientRequestHeaders & {
@@ -853,6 +879,7 @@ engineers.
   @doc("Lists all of the Jobs in the specified Account.")
   @example("./examples/JobList.json", "Job list")
   @route("/jobs")
+  @projectedName("java", "listJobsInternal")
   @get
   listJobs is RpcOperation<
     BatchApplicationListHeaders & {
@@ -883,6 +910,7 @@ https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#li
     "List Job Under Job Schedule"
   )
   @route("/jobschedules/{jobScheduleId}/jobs")
+  @projectedName("java", "listJobsFromScheduleInternal")
   @get
   listJobsFromSchedule is RpcOperation<
     BatchApplicationListHeaders & {
@@ -927,6 +955,7 @@ JobPreparationTaskNotSpecified.
     "Job list preparation and release task status"
   )
   @route("/jobs/{jobId}/jobpreparationandreleasetaskstatus")
+  @projectedName("java", "listJobPreparationAndReleaseTaskStatusInternal")
   @get
   listJobPreparationAndReleaseTaskStatus is RpcOperation<
     BatchApplicationListHeaders & {
@@ -959,6 +988,7 @@ up to date. If you need exact task counts, use a list query.
 """)
   @example("./examples/JobGetTaskCounts.json", "Job get task counts")
   @route("/jobs/{jobId}/taskcounts")
+  @projectedName("java", "getJobTaskCountsInternal")
   @get
   getJobTaskCounts is RpcOperation<
     BatchClientRequestHeaders & {
@@ -981,6 +1011,7 @@ interface Certificates {
   @doc("Creates a Certificate to the specified Account.")
   @example("./examples/CertificateAdd.json", "Certificate Create")
   @route("/certificates")
+  @projectedName("java", "createCertificateInternal")
   @post
   createCertificate is RpcOperation<
     BatchClientRequestHeaders & {
@@ -1010,6 +1041,7 @@ interface Certificates {
   @doc("Lists all of the Certificates that have been added to the specified Account.")
   @example("./examples/CertificateList.json", "Certificate list")
   @route("/certificates")
+  @projectedName("java", "listCertificatesInternal")
   @get
   listCertificates is RpcOperation<
     BatchApplicationListHeaders & {
@@ -1045,6 +1077,7 @@ then you can try again to delete the Certificate.
     "Certificate cancel delete"
   )
   @route("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})/canceldelete")
+  @projectedName("java", "cancelCertificateDeletionInternal")
   @post
   cancelCertificateDeletion is RpcOperation<
     BatchClientRequestHeaders & {
@@ -1084,6 +1117,7 @@ active if you decide that you want to continue using the Certificate.
 """)
   @example("./examples/CertificateDelete.json", "Certificate delete")
   @route("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
+  @projectedName("java", "deleteCertificateInternal")
   @delete
   deleteCertificate is RpcOperation<
     BatchClientRequestHeaders & {
@@ -1108,6 +1142,7 @@ active if you decide that you want to continue using the Certificate.
   @doc("Gets information about the specified Certificate.")
   @example("./examples/CertificateGet.json", "Certificate get")
   @route("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
+  @projectedName("java", "getCertificateInternal")
   @get
   getCertificate is RpcOperation<
     BatchClientRequestHeaders & {
@@ -1139,6 +1174,7 @@ interface JobSchedules {
   @doc("Checks the specified Job Schedule exists.")
   @example("./examples/JobScheduleExists.json", "Check Job Schedule Exists")
   @route("/jobschedules/{jobScheduleId}")
+  @projectedName("java", "jobScheduleExistsInternal")
   @head
   jobScheduleExists is RpcOperationWithAdditionalResponse<
     BatchClientRequestHeaders &
@@ -1170,6 +1206,7 @@ though they are still counted towards Account lifetime statistics.
 """)
   @example("./examples/JobScheduleDelete.json", "JobSchedule delete")
   @route("/jobschedules/{jobScheduleId}")
+  @projectedName("java", "deleteJobScheduleInternal")
   @delete
   deleteJobSchedule is RpcOperation<
     BatchClientRequestHeaders &
@@ -1186,6 +1223,7 @@ though they are still counted towards Account lifetime statistics.
   @doc("Gets information about the specified Job Schedule.")
   @example("./examples/JobScheduleGet.json", "JobSchedule get")
   @route("/jobschedules/{jobScheduleId}")
+  @projectedName("java", "getJobScheduleInternal")
   @get
   getJobSchedule is RpcOperation<
     BatchClientRequestHeaders &
@@ -1217,6 +1255,7 @@ running Jobs are unaffected.
 """)
   @example("./examples/JobSchedulePatch.json", "JobSchedule patch")
   @route("/jobschedules/{jobScheduleId}")
+  @projectedName("java", "updateJobScheduleInternal")
   @patch
   updateJobSchedule is RpcOperation<
     BatchClientRequestHeaders &
@@ -1256,6 +1295,7 @@ running Jobs are unaffected.
 """)
   @example("./examples/JobScheduleUpdate.json", "JobSchedule update")
   @route("/jobschedules/{jobScheduleId}")
+  @projectedName("java", "replaceJobScheduleInternal")
   @put
   replaceJobSchedule is RpcOperation<
     BatchClientRequestHeaders &
@@ -1289,6 +1329,7 @@ running Jobs are unaffected.
   @doc("No new Jobs will be created until the Job Schedule is enabled again.")
   @example("./examples/JobScheduleDisable.json", "JobSchedule disable")
   @route("/jobschedules/{jobScheduleId}/disable")
+  @projectedName("java", "disableJobScheduleInternal")
   @post
   disableJobSchedule is RpcOperation<
     BatchClientRequestHeaders &
@@ -1314,6 +1355,7 @@ running Jobs are unaffected.
   @doc("Enables a Job Schedule.")
   @example("./examples/JobScheduleEnable.json", "JobSchedule enable")
   @route("/jobschedules/{jobScheduleId}/enable")
+  @projectedName("java", "enableJobScheduleInternal")
   @post
   enableJobSchedule is RpcOperation<
     BatchClientRequestHeaders &
@@ -1339,6 +1381,7 @@ running Jobs are unaffected.
   @doc("Terminates a Job Schedule.")
   @example("./examples/JobScheduleTerminate.json", "JobSchedule terminate")
   @route("/jobschedules/{jobScheduleId}/terminate")
+  @projectedName("java", "terminateJobScheduleInternal")
   @post
   terminateJobSchedule is RpcOperation<
     BatchClientRequestHeaders &
@@ -1368,6 +1411,7 @@ running Jobs are unaffected.
     "Creates a complex JobScheduleAdd"
   )
   @route("/jobschedules")
+  @projectedName("java", "createJobScheduleInternal")
   @post
   createJobSchedule is RpcOperation<
     BatchClientRequestHeaders & {
@@ -1396,6 +1440,7 @@ running Jobs are unaffected.
   @doc("Lists all of the Job Schedules in the specified Account.")
   @example("./examples/JobScheduleList.json", "JobSchedule list")
   @route("/jobschedules")
+  @projectedName("java", "listJobSchedulesInternal")
   @get
   listJobSchedules is RpcOperation<
     BatchApplicationListHeaders & {
@@ -1444,6 +1489,7 @@ the Batch service and left in whatever state it was in at that time.
     "Creates a task with extra slot requirement"
   )
   @route("/jobs/{jobId}/tasks")
+  @projectedName("java", "createTaskInternal")
   @post
   createTask is RpcOperation<
     BatchClientRequestHeaders & {
@@ -1480,6 +1526,7 @@ information about subtasks.
 """)
   @example("./examples/TaskList.json", "Task list")
   @route("/jobs/{jobId}/tasks")
+  @projectedName("java", "listTasksInternal")
   @get
   listTasks is RpcOperation<
     BatchApplicationListHeaders & {
@@ -1533,6 +1580,7 @@ service and left in whatever state it was in at that time.
     "Add a complex collection of tasks"
   )
   @route("/jobs/{jobId}/addtaskcollection")
+  @projectedName("java", "createTaskCollectionInternal")
   @post
   createTaskCollection is RpcOperation<
     BatchClientRequestHeaders & {
@@ -1563,6 +1611,7 @@ background.
 """)
   @example("./examples/TaskDelete.json", "Task delete")
   @route("/jobs/{jobId}/tasks/{taskId}")
+  @projectedName("java", "deleteTaskInternal")
   @delete
   deleteTask is RpcOperation<
     BatchClientRequestHeaders &
@@ -1592,6 +1641,7 @@ information about subtasks.
 """)
   @example("./examples/TaskGet.json", "Task get")
   @route("/jobs/{jobId}/tasks/{taskId}")
+  @projectedName("java", "getTaskInternal")
   @get
   getTask is RpcOperation<
     BatchClientRequestHeaders &
@@ -1625,6 +1675,7 @@ information about subtasks.
   @doc("Updates the properties of the specified Task.")
   @example("./examples/TaskUpdate.json", "Task update")
   @route("/jobs/{jobId}/tasks/{taskId}")
+  @projectedName("java", "replaceTaskInternal")
   @put
   replaceTask is RpcOperation<
     BatchClientRequestHeaders &
@@ -1666,6 +1717,7 @@ Task.
   @doc("If the Task is not a multi-instance Task then this returns an empty collection.")
   @example("./examples/TaskListSubtasks.json", "Task list subtasks")
   @route("/jobs/{jobId}/tasks/{taskId}/subtasksinfo")
+  @projectedName("java", "listSubTasksInternal")
   @get
   listSubTasks is RpcOperation<
     BatchClientRequestHeaders & {
@@ -1694,6 +1746,7 @@ primary task; subtasks are then terminated asynchronously in the background.
 """)
   @example("./examples/TaskTerminate.json", "Task terminate")
   @route("/jobs/{jobId}/tasks/{taskId}/terminate")
+  @projectedName("java", "terminateTaskInternal")
   @post
   terminateTask is RpcOperation<
     BatchClientRequestHeaders &
@@ -1730,6 +1783,7 @@ will fail if the Job has completed (or is terminating or deleting).
 """)
   @example("./examples/TaskReactivate.json", "Task reactivate")
   @route("/jobs/{jobId}/tasks/{taskId}/reactivate")
+  @projectedName("java", "reactivateTaskInternal")
   @post
   reactivateTask is RpcOperation<
     BatchClientRequestHeaders &
@@ -1755,6 +1809,7 @@ will fail if the Job has completed (or is terminating or deleting).
   @doc("Deletes the specified Task file from the Compute Node where the Task ran.")
   @example("./examples/FileDeleteFromTask.json", "File delete from task")
   @route("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
+  @projectedName("java", "deleteTaskFileInternal")
   @delete
   deleteTaskFile is RpcOperation<
     BatchTaskFileClientPathParameters & {
@@ -1779,6 +1834,7 @@ then the directory must be empty or deletion will fail.
   @doc("Returns the content of the specified Task file.")
   @example("./examples/FileGetFromTask.json", "Get File From Task")
   @route("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
+  @projectedName("java", "getTaskFileInternal")
   @get
   getTaskFile is RpcOperation<
     BatchTaskFileClientPathParameters &
@@ -1810,6 +1866,7 @@ format is bytes=startRange-endRange.
     "File get properties from task"
   )
   @route("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
+  @projectedName("java", "getTaskFilePropertiesInternal")
   @head
   getTaskFileProperties is RpcOperation<
     BatchTaskFileClientPathParameters & BatchModifiedSinceHeaders,
@@ -1822,6 +1879,7 @@ format is bytes=startRange-endRange.
   @doc("Lists the files in a Task's directory on its Compute Node.")
   @example("./examples/FileListFromTask.json", "File list from task")
   @route("/jobs/{jobId}/tasks/{taskId}/files")
+  @projectedName("java", "listTaskFilesInternal")
   @get
   listTaskFiles is RpcOperation<
     BatchApplicationListHeaders & {
@@ -1864,6 +1922,7 @@ running state.
 """)
   @example("./examples/NodeAddUser.json", "Node add user")
   @route("/pools/{poolId}/nodes/{nodeId}/users")
+  @projectedName("java", "createNodeUserInternal")
   @post
   createNodeUser is RpcOperation<
     BatchClientRequestHeaders & {
@@ -1903,6 +1962,7 @@ running state.
 """)
   @example("./examples/NodeDeleteUser.json", "Node delete user")
   @route("/pools/{poolId}/nodes/{nodeId}/users/{userName}")
+  @projectedName("java", "deleteNodeUserInternal")
   @delete
   deleteNodeUser is RpcOperation<
     BatchClientRequestHeaders & {
@@ -1938,6 +1998,7 @@ Account on a Compute Node only when it is in the idle or running state.
 """)
   @example("./examples/NodeUpdateUser.json", "Node update user")
   @route("/pools/{poolId}/nodes/{nodeId}/users/{userName}")
+  @projectedName("java", "replaceNodeUserInternal")
   @put
   replaceNodeUser is RpcOperation<
     BatchClientRequestHeaders & {
@@ -1978,6 +2039,7 @@ Account on a Compute Node only when it is in the idle or running state.
   @doc("Gets information about the specified Compute Node.")
   @example("./examples/NodeGet_Basic.json", "Node get")
   @route("/pools/{poolId}/nodes/{nodeId}")
+  @projectedName("java", "getNodeInternal")
   @get
   getNode is RpcOperation<
     BatchClientRequestHeaders & {
@@ -2002,6 +2064,7 @@ Account on a Compute Node only when it is in the idle or running state.
   @doc("You can restart a Compute Node only if it is in an idle or running state.")
   @example("./examples/NodeReboot.json", "Node reboot")
   @route("/pools/{poolId}/nodes/{nodeId}/reboot")
+  @projectedName("java", "rebootNodeInternal")
   @post
   rebootNode is RpcOperation<
     BatchClientRequestHeaders & {
@@ -2042,6 +2105,7 @@ cloud service configuration property.
 """)
   @example("./examples/NodeReimage.json", "Node reimage")
   @route("/pools/{poolId}/nodes/{nodeId}/reimage")
+  @projectedName("java", "reimageNodeInternal")
   @post
   reimageNode is RpcOperation<
     BatchClientRequestHeaders & {
@@ -2081,6 +2145,7 @@ scheduling state is enabled.
 """)
   @example("./examples/NodeDisableScheduling.json", "Node disable scheduling")
   @route("/pools/{poolId}/nodes/{nodeId}/disablescheduling")
+  @projectedName("java", "disableNodeSchedulingInternal")
   @post
   disableNodeScheduling is RpcOperation<
     BatchClientRequestHeaders & {
@@ -2120,6 +2185,7 @@ state is disabled
 """)
   @example("./examples/NodeEnableScheduling.json", "Node enable scheduling")
   @route("/pools/{poolId}/nodes/{nodeId}/enablescheduling")
+  @projectedName("java", "enableNodeSchedulingInternal")
   @post
   enableNodeScheduling is RpcOperation<
     BatchClientRequestHeaders & {
@@ -2157,6 +2223,7 @@ API.
     "Node get remote login settings"
   )
   @route("/pools/{poolId}/nodes/{nodeId}/remoteloginsettings")
+  @projectedName("java", "getNodeRemoteLoginSettingsInternal")
   @get
   getNodeRemoteLoginSettings is RpcOperation<
     BatchClientRequestHeaders & {
@@ -2185,6 +2252,7 @@ configuration, see the GetRemoteLoginSettings API.
     "Get RDP file of the compute node"
   )
   @route("/pools/{poolId}/nodes/{nodeId}/rdp")
+  @projectedName("java", "getNodeRemoteDesktopFileInternal")
   @get
   getNodeRemoteDesktopFile is RpcOperation<
     BatchClientRequestHeaders & {
@@ -2223,6 +2291,7 @@ support to aid in debugging issues with the Batch service.
     "Upload BatchService Logs"
   )
   @route("/pools/{poolId}/nodes/{nodeId}/uploadbatchservicelogs")
+  @projectedName("java", "uploadNodeLogsInternal")
   @post
   uploadNodeLogs is RpcOperation<
     BatchClientRequestHeaders & {
@@ -2254,6 +2323,7 @@ Protocol file.
   @doc("Lists the Compute Nodes in the specified Pool.")
   @example("./examples/NodeList.json", "Node list")
   @route("/pools/{poolId}/nodes")
+  @projectedName("java", "listNodesInternal")
   @get
   listNodes is RpcOperation<
     BatchApplicationListHeaders & {
@@ -2284,6 +2354,7 @@ https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#li
     "Get compute node extension"
   )
   @route("/pools/{poolId}/nodes/{nodeId}/extensions/{extensionName}")
+  @projectedName("java", "getNodeExtensionInternal")
   @get
   getNodeExtension is RpcOperation<
     BatchClientRequestHeaders & {
@@ -2317,6 +2388,7 @@ The name of the Compute Node Extension that you want to get information about.
     "List compute node extensions"
   )
   @route("/pools/{poolId}/nodes/{nodeId}/extensions")
+  @projectedName("java", "listNodeExtensionsInternal")
   @get
   listNodeExtensions is RpcOperation<
     BatchApplicationListHeaders & {
@@ -2341,6 +2413,7 @@ The name of the Compute Node Extension that you want to get information about.
   @doc("Deletes the specified file from the Compute Node.")
   @example("./examples/FileDeleteFromNode.json", "File delete from node")
   @route("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
+  @projectedName("java", "deleteNodeFileInternal")
   @delete
   deleteNodeFile is RpcOperation<
     BatchNodeFileClientPathParameters & {
@@ -2365,6 +2438,7 @@ then the directory must be empty or deletion will fail.
   @doc("Returns the content of the specified Compute Node file.")
   @example("./examples/FileGetFromNode.json", "Get File From Compute Node")
   @route("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
+  @projectedName("java", "getNodeFileInternal")
   @get
   getNodeFile is RpcOperation<
     BatchNodeFileClientPathParameters &
@@ -2392,6 +2466,7 @@ format is bytes=startRange-endRange.
     "File get properties from node"
   )
   @route("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
+  @projectedName("java", "getNodeFilePropertiesInternal")
   @head
   getNodeFileProperties is RpcOperation<
     BatchNodeFileClientPathParameters & BatchModifiedSinceHeaders,
@@ -2404,6 +2479,7 @@ format is bytes=startRange-endRange.
   @doc("Lists all of the files in Task directories on the specified Compute Node.")
   @example("./examples/FileListFromNode.json", "File list from node")
   @route("/pools/{poolId}/nodes/{nodeId}/files")
+  @projectedName("java", "listNodeFilesInternal")
   @get
   listNodeFiles is RpcOperation<
     BatchApplicationListHeaders & {

@@ -1,6 +1,6 @@
 package com.azure.compute.batch.models;
 
-public class DeleteBatchNodeFileOptions extends BatchDeleteOptions {
+public class DeleteBatchNodeFileOptions extends BatchBaseOptions {
     private Boolean recursive;
 
     /**

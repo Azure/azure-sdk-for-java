@@ -13,6 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class BatchNodeRemoteLoginSettingsResult {
 
     /*
+     * The IP address used for remote login to the Compute Node.
+     */
+    @Generated
+    @JsonProperty(value = "remoteLoginIPAddress")
+    private String remoteLoginIpAddress;
+
+    /*
      * The port used for remote login to the Compute Node.
      */
     @Generated
@@ -35,23 +42,6 @@ public final class BatchNodeRemoteLoginSettingsResult {
     }
 
     /**
-     * Get the remoteLoginPort property: The port used for remote login to the Compute Node.
-     *
-     * @return the remoteLoginPort value.
-     */
-    @Generated
-    public int getRemoteLoginPort() {
-        return this.remoteLoginPort;
-    }
-
-    /*
-     * The IP address used for remote login to the Compute Node.
-     */
-    @Generated
-    @JsonProperty(value = "remoteLoginIPAddress")
-    private String remoteLoginIpAddress;
-
-    /**
      * Get the remoteLoginIpAddress property: The IP address used for remote login to the Compute Node.
      *
      * @return the remoteLoginIpAddress value.
@@ -59,5 +49,15 @@ public final class BatchNodeRemoteLoginSettingsResult {
     @Generated
     public String getRemoteLoginIpAddress() {
         return this.remoteLoginIpAddress;
+    }
+
+    /**
+     * Get the remoteLoginPort property: The port used for remote login to the Compute Node.
+     *
+     * @return the remoteLoginPort value.
+     */
+    @Generated
+    public int getRemoteLoginPort() {
+        return this.remoteLoginPort;
     }
 }

@@ -20,7 +20,7 @@ public final class ExitOptions {
      */
     @Generated
     @JsonProperty(value = "jobAction")
-    private JobAction jobAction;
+    private BatchJobAction jobAction;
 
     /*
      * An action that the Batch service performs on Tasks that depend on this Task. Possible values are 'satisfy'
@@ -45,7 +45,7 @@ public final class ExitOptions {
      * @return the jobAction value.
      */
     @Generated
-    public JobAction getJobAction() {
+    public BatchJobAction getJobAction() {
         return this.jobAction;
     }
 
@@ -60,7 +60,7 @@ public final class ExitOptions {
      * @return the ExitOptions object itself.
      */
     @Generated
-    public ExitOptions setJobAction(JobAction jobAction) {
+    public ExitOptions setJobAction(BatchJobAction jobAction) {
         this.jobAction = jobAction;
         return this;
     }

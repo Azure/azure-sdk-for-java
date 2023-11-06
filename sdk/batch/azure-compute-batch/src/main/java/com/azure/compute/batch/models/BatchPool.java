@@ -69,7 +69,7 @@ public final class BatchPool {
      */
     @Generated
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
-    private PoolState state;
+    private BatchPoolState state;
 
     /*
      * The time at which the Pool entered its current state.
@@ -217,7 +217,7 @@ public final class BatchPool {
      */
     @Generated
     @JsonProperty(value = "startTask")
-    private StartTask startTask;
+    private BatchStartTask startTask;
 
     /*
      * For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
@@ -230,7 +230,7 @@ public final class BatchPool {
      */
     @Generated
     @JsonProperty(value = "certificateReferences", access = JsonProperty.Access.WRITE_ONLY)
-    private List<CertificateReference> certificateReferences;
+    private List<BatchCertificateReference> certificateReferences;
 
     /*
      * The list of Packages to be installed on each Compute Node in the Pool. Changes to Package references affect all
@@ -239,7 +239,7 @@ public final class BatchPool {
      */
     @Generated
     @JsonProperty(value = "applicationPackageReferences", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ApplicationPackageReference> applicationPackageReferences;
+    private List<BatchApplicationPackageReference> applicationPackageReferences;
 
     /*
      * The list of application licenses the Batch service will make available on each Compute Node in the Pool. The
@@ -264,7 +264,7 @@ public final class BatchPool {
      */
     @Generated
     @JsonProperty(value = "taskSchedulingPolicy", access = JsonProperty.Access.WRITE_ONLY)
-    private TaskSchedulingPolicy taskSchedulingPolicy;
+    private BatchTaskSchedulingPolicy taskSchedulingPolicy;
 
     /*
      * The list of user Accounts to be created on each Compute Node in the Pool.
@@ -288,7 +288,7 @@ public final class BatchPool {
      */
     @Generated
     @JsonProperty(value = "stats", access = JsonProperty.Access.WRITE_ONLY)
-    private PoolStatistics stats;
+    private BatchPoolStatistics stats;
 
     /*
      * A list of file systems to mount on each node in the pool. This supports Azure Files, NFS, CIFS/SMB, and
@@ -312,14 +312,14 @@ public final class BatchPool {
      */
     @Generated
     @JsonProperty(value = "targetNodeCommunicationMode")
-    private NodeCommunicationMode targetNodeCommunicationMode;
+    private BatchNodeCommunicationMode targetNodeCommunicationMode;
 
     /*
      * The current state of the pool communication mode.
      */
     @Generated
     @JsonProperty(value = "currentNodeCommunicationMode", access = JsonProperty.Access.WRITE_ONLY)
-    private NodeCommunicationMode currentNodeCommunicationMode;
+    private BatchNodeCommunicationMode currentNodeCommunicationMode;
 
     /** Creates an instance of BatchPool class. */
     @Generated
@@ -399,7 +399,7 @@ public final class BatchPool {
      * @return the state value.
      */
     @Generated
-    public PoolState getState() {
+    public BatchPoolState getState() {
         return this.state;
     }
 
@@ -608,7 +608,7 @@ public final class BatchPool {
      * @return the startTask value.
      */
     @Generated
-    public StartTask getStartTask() {
+    public BatchStartTask getStartTask() {
         return this.startTask;
     }
 
@@ -624,7 +624,7 @@ public final class BatchPool {
      * @return the certificateReferences value.
      */
     @Generated
-    public List<CertificateReference> getCertificateReferences() {
+    public List<BatchCertificateReference> getCertificateReferences() {
         return this.certificateReferences;
     }
 
@@ -637,7 +637,7 @@ public final class BatchPool {
      * @return the applicationPackageReferences value.
      */
     @Generated
-    public List<ApplicationPackageReference> getApplicationPackageReferences() {
+    public List<BatchApplicationPackageReference> getApplicationPackageReferences() {
         return this.applicationPackageReferences;
     }
 
@@ -672,7 +672,7 @@ public final class BatchPool {
      * @return the taskSchedulingPolicy value.
      */
     @Generated
-    public TaskSchedulingPolicy getTaskSchedulingPolicy() {
+    public BatchTaskSchedulingPolicy getTaskSchedulingPolicy() {
         return this.taskSchedulingPolicy;
     }
 
@@ -705,7 +705,7 @@ public final class BatchPool {
      * @return the stats value.
      */
     @Generated
-    public PoolStatistics getStats() {
+    public BatchPoolStatistics getStats() {
         return this.stats;
     }
 
@@ -739,7 +739,7 @@ public final class BatchPool {
      * @return the targetNodeCommunicationMode value.
      */
     @Generated
-    public NodeCommunicationMode getTargetNodeCommunicationMode() {
+    public BatchNodeCommunicationMode getTargetNodeCommunicationMode() {
         return this.targetNodeCommunicationMode;
     }
 
@@ -749,7 +749,7 @@ public final class BatchPool {
      * @return the currentNodeCommunicationMode value.
      */
     @Generated
-    public NodeCommunicationMode getCurrentNodeCommunicationMode() {
+    public BatchNodeCommunicationMode getCurrentNodeCommunicationMode() {
         return this.currentNodeCommunicationMode;
     }
 }

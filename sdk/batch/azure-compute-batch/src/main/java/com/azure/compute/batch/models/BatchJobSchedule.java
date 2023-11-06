@@ -67,7 +67,7 @@ public final class BatchJobSchedule {
      */
     @Generated
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
-    private JobScheduleState state;
+    private BatchJobScheduleState state;
 
     /*
      * The time at which the Job Schedule entered the current state.
@@ -82,7 +82,7 @@ public final class BatchJobSchedule {
      */
     @Generated
     @JsonProperty(value = "previousState", access = JsonProperty.Access.WRITE_ONLY)
-    private JobScheduleState previousState;
+    private BatchJobScheduleState previousState;
 
     /*
      * The time at which the Job Schedule entered its previous state. This property is not present if the Job Schedule
@@ -105,14 +105,14 @@ public final class BatchJobSchedule {
      */
     @Generated
     @JsonProperty(value = "jobSpecification")
-    private JobSpecification jobSpecification;
+    private BatchJobSpecification jobSpecification;
 
     /*
      * Information about Jobs that have been and will be run under this schedule.
      */
     @Generated
     @JsonProperty(value = "executionInfo", access = JsonProperty.Access.WRITE_ONLY)
-    private JobScheduleExecutionInformation executionInfo;
+    private BatchJobScheduleExecutionInfo executionInfo;
 
     /*
      * A list of name-value pairs associated with the schedule as metadata. The Batch service does not assign any
@@ -128,7 +128,7 @@ public final class BatchJobSchedule {
      */
     @Generated
     @JsonProperty(value = "stats", access = JsonProperty.Access.WRITE_ONLY)
-    private JobScheduleStatistics stats;
+    private BatchJobScheduleStatistics stats;
 
     /**
      * Creates an instance of BatchJobSchedule class.
@@ -140,7 +140,7 @@ public final class BatchJobSchedule {
     @JsonCreator
     public BatchJobSchedule(
             @JsonProperty(value = "schedule") Schedule schedule,
-            @JsonProperty(value = "jobSpecification") JobSpecification jobSpecification) {
+            @JsonProperty(value = "jobSpecification") BatchJobSpecification jobSpecification) {
         this.schedule = schedule;
         this.jobSpecification = jobSpecification;
     }
@@ -216,7 +216,7 @@ public final class BatchJobSchedule {
      * @return the state value.
      */
     @Generated
-    public JobScheduleState getState() {
+    public BatchJobScheduleState getState() {
         return this.state;
     }
 
@@ -237,7 +237,7 @@ public final class BatchJobSchedule {
      * @return the previousState value.
      */
     @Generated
-    public JobScheduleState getPreviousState() {
+    public BatchJobScheduleState getPreviousState() {
         return this.previousState;
     }
 
@@ -269,7 +269,7 @@ public final class BatchJobSchedule {
      * @return the jobSpecification value.
      */
     @Generated
-    public JobSpecification getJobSpecification() {
+    public BatchJobSpecification getJobSpecification() {
         return this.jobSpecification;
     }
 
@@ -279,7 +279,7 @@ public final class BatchJobSchedule {
      * @return the executionInfo value.
      */
     @Generated
-    public JobScheduleExecutionInformation getExecutionInfo() {
+    public BatchJobScheduleExecutionInfo getExecutionInfo() {
         return this.executionInfo;
     }
 
@@ -315,7 +315,7 @@ public final class BatchJobSchedule {
      * @return the stats value.
      */
     @Generated
-    public JobScheduleStatistics getStats() {
+    public BatchJobScheduleStatistics getStats() {
         return this.stats;
     }
 }

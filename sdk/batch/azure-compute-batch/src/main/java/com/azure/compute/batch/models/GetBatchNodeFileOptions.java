@@ -2,7 +2,7 @@ package com.azure.compute.batch.models;
 
 import java.time.OffsetDateTime;
 
-public class GetBatchNodeFileOptions extends BatchGetOptions {
+public class GetBatchNodeFileOptions extends BatchBaseOptions {
     private OffsetDateTime ifModifiedSince;
     private OffsetDateTime ifUnmodifiedSince;
     private String ocpRange;

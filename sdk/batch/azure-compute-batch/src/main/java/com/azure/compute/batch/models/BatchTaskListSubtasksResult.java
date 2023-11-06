@@ -17,7 +17,7 @@ public final class BatchTaskListSubtasksResult {
      */
     @Generated
     @JsonProperty(value = "value")
-    private List<SubtaskInformation> value;
+    private List<BatchSubtask> value;
 
     /** Creates an instance of BatchTaskListSubtasksResult class. */
     @Generated
@@ -29,7 +29,7 @@ public final class BatchTaskListSubtasksResult {
      * @return the value value.
      */
     @Generated
-    public List<SubtaskInformation> getValue() {
+    public List<BatchSubtask> getValue() {
         return this.value;
     }
 }

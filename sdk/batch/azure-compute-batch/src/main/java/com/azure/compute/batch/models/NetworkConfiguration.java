@@ -49,7 +49,7 @@ public final class NetworkConfiguration {
      */
     @Generated
     @JsonProperty(value = "endpointConfiguration")
-    private PoolEndpointConfiguration endpointConfiguration;
+    private BatchPoolEndpointConfiguration endpointConfiguration;
 
     /*
      * The Public IPAddress configuration for Compute Nodes in the Batch Pool. Public IP configuration property is only
@@ -159,7 +159,7 @@ public final class NetworkConfiguration {
      * @return the endpointConfiguration value.
      */
     @Generated
-    public PoolEndpointConfiguration getEndpointConfiguration() {
+    public BatchPoolEndpointConfiguration getEndpointConfiguration() {
         return this.endpointConfiguration;
     }
 
@@ -171,7 +171,7 @@ public final class NetworkConfiguration {
      * @return the NetworkConfiguration object itself.
      */
     @Generated
-    public NetworkConfiguration setEndpointConfiguration(PoolEndpointConfiguration endpointConfiguration) {
+    public NetworkConfiguration setEndpointConfiguration(BatchPoolEndpointConfiguration endpointConfiguration) {
         this.endpointConfiguration = endpointConfiguration;
         return this;
     }
