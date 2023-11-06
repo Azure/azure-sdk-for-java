@@ -40,12 +40,12 @@ public class JobScheduleTests extends BatchServiceClientTestBase {
         // CREATE
         String jobScheduleId = getStringIdWithUserNamePrefix("-JobSchedule-canCRUD");
 
-        PoolInformation poolInfo = new PoolInformation();
+        BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(poolId);
 
         Schedule schedule = new Schedule().setDoNotRunUntil(now()).setDoNotRunAfter(now().plusHours(5)).setStartWindow(Duration.ofDays(5));
-        JobSpecification spec = new JobSpecification(poolInfo).setPriority(100);
-        batchClient.createJobSchedule(new BatchJobScheduleCreateOptions(jobScheduleId, schedule, spec));
+        BatchJobSpecification spec = new BatchJobSpecification(poolInfo).setPriority(100);
+        batchClient.createJobSchedule(new BatchJobScheduleCreateParameters(jobScheduleId, schedule, spec));
 
         try {
             // GET
@@ -62,9 +62,9 @@ public class JobScheduleTests extends BatchServiceClientTestBase {
             }
 
             // LIST
-            RequestOptions listOptions = new RequestOptions();
-            listOptions.addQueryParam("$filter", String.format("id eq '%s'", jobScheduleId));
-            PagedIterable<BatchJobSchedule> jobSchedules = batchClient.listJobSchedules(listOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJobSchedule.class));
+            ListBatchJobSchedulesOptions listOptions = new ListBatchJobSchedulesOptions();
+            listOptions.setFilter(String.format("id eq '%s'", jobScheduleId));
+            PagedIterable<BatchJobSchedule> jobSchedules = batchClient.listJobSchedules(listOptions);
             Assert.assertNotNull(jobSchedules);
 
             boolean found = false;
@@ -90,7 +90,7 @@ public class JobScheduleTests extends BatchServiceClientTestBase {
             // UPDATE
             LinkedList<MetadataItem> metadata = new LinkedList<MetadataItem>();
             metadata.add((new MetadataItem("key1", "value1")));
-            BatchJobScheduleUpdateOptions jobScheduleUpdateOptions = new BatchJobScheduleUpdateOptions();
+            BatchJobScheduleUpdateParameters jobScheduleUpdateOptions = new BatchJobScheduleUpdateParameters();
             jobScheduleUpdateOptions.setMetadata(metadata);
             batchClient.updateJobSchedule(jobScheduleId, jobScheduleUpdateOptions);
 
@@ -125,33 +125,33 @@ public class JobScheduleTests extends BatchServiceClientTestBase {
         // CREATE
         String jobScheduleId = getStringIdWithUserNamePrefix("-JobSchedule-updateJobScheduleState");
 
-        PoolInformation poolInfo = new PoolInformation();
+        BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(poolId);
 
-        JobSpecification spec = new JobSpecification(poolInfo).setPriority(100);
+        BatchJobSpecification spec = new BatchJobSpecification(poolInfo).setPriority(100);
         Schedule schedule = new Schedule().setDoNotRunUntil(now()).setDoNotRunAfter(now().plusHours(5)).setStartWindow(Duration.ofDays(5));
-        batchClient.createJobSchedule(new BatchJobScheduleCreateOptions(jobScheduleId, schedule, spec));
+        batchClient.createJobSchedule(new BatchJobScheduleCreateParameters(jobScheduleId, schedule, spec));
 
         try {
             // GET
             BatchJobSchedule jobSchedule = batchClient.getJobSchedule(jobScheduleId);
-            Assert.assertEquals(JobScheduleState.ACTIVE, jobSchedule.getState());
+            Assert.assertEquals(BatchJobScheduleState.ACTIVE, jobSchedule.getState());
 
             batchClient.disableJobSchedule(jobScheduleId);
             jobSchedule = batchClient.getJobSchedule(jobScheduleId);
-            Assert.assertEquals(JobScheduleState.DISABLED, jobSchedule.getState());
+            Assert.assertEquals(BatchJobScheduleState.DISABLED, jobSchedule.getState());
 
             batchClient.enableJobSchedule(jobScheduleId);
             jobSchedule = batchClient.getJobSchedule(jobScheduleId);
-            Assert.assertEquals(JobScheduleState.ACTIVE, jobSchedule.getState());
+            Assert.assertEquals(BatchJobScheduleState.ACTIVE, jobSchedule.getState());
 
             batchClient.terminateJobSchedule(jobScheduleId);
             jobSchedule = batchClient.getJobSchedule(jobScheduleId);
-            Assert.assertTrue(jobSchedule.getState() == JobScheduleState.TERMINATING || jobSchedule.getState() == JobScheduleState.COMPLETED);
+            Assert.assertTrue(jobSchedule.getState() == BatchJobScheduleState.TERMINATING || jobSchedule.getState() == BatchJobScheduleState.COMPLETED);
 
             Thread.sleep(2 * 1000);
             jobSchedule = batchClient.getJobSchedule(jobScheduleId);
-            Assert.assertEquals(JobScheduleState.COMPLETED, jobSchedule.getState());
+            Assert.assertEquals(BatchJobScheduleState.COMPLETED, jobSchedule.getState());
 
             batchClient.deleteJobSchedule(jobScheduleId);
             try {

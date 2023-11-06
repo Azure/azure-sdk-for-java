@@ -36,9 +36,9 @@ public class JobTests extends BatchServiceClientTestBase {
     	 // CREATE
         String jobId = getStringIdWithUserNamePrefix("-Job-canCRUD");
 
-        PoolInformation poolInfo = new PoolInformation();
+        BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(poolId);
-        BatchJobCreateOptions jobCreateOptions = new BatchJobCreateOptions(jobId, poolInfo);
+        BatchJobCreateParameters jobCreateOptions = new BatchJobCreateParameters(jobId, poolInfo);
 
         batchClient.createJob(jobCreateOptions);
 
@@ -102,57 +102,57 @@ public class JobTests extends BatchServiceClientTestBase {
     public void canUpdateJobState() throws Exception {
         // CREATE
         String jobId = getStringIdWithUserNamePrefix("-Job-CanUpdateState");
-        PoolInformation poolInfo = new PoolInformation();
+        BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(poolId);
 
-        BatchJobCreateOptions jobtoCreate = new BatchJobCreateOptions(jobId, poolInfo);
+        BatchJobCreateParameters jobtoCreate = new BatchJobCreateParameters(jobId, poolInfo);
         batchClient.createJob(jobtoCreate);
 
         try {
             // GET
             BatchJob job = batchClient.getJob(jobId);
-            Assertions.assertEquals(JobState.ACTIVE, job.getState());
+            Assertions.assertEquals(BatchJobState.ACTIVE, job.getState());
 
             // REPLACE
             Integer maxTaskRetryCount = 3;
             Integer priority = 500;
             job.setPriority(priority);
-            job.setConstraints(new JobConstraints().setMaxTaskRetryCount(maxTaskRetryCount));
-            job.setPoolInfo(new PoolInformation().setPoolId(poolId));
+            job.setConstraints(new BatchJobConstraints().setMaxTaskRetryCount(maxTaskRetryCount));
+            job.setPoolInfo(new BatchPoolInfo().setPoolId(poolId));
             batchClient.replaceJob(jobId, job);
 
             job = batchClient.getJob(jobId);
             Assertions.assertEquals(priority, job.getPriority());
             Assertions.assertEquals(maxTaskRetryCount, job.getConstraints().getMaxTaskRetryCount());
 
-            batchClient.disableJob(jobId, new BatchJobDisableOptions(DisableJobOption.REQUEUE));
+            batchClient.disableJob(jobId, new BatchJobDisableParameters(DisableBatchJobOption.REQUEUE));
             job = batchClient.getJob(jobId);
-            Assertions.assertEquals(JobState.DISABLING, job.getState());
+            Assertions.assertEquals(BatchJobState.DISABLING, job.getState());
 
             Thread.sleep(5 * 1000);
 
             job = batchClient.getJob(jobId);
-            Assertions.assertTrue(job.getState() == JobState.DISABLED || job.getState() == JobState.DISABLING);
-            Assertions.assertEquals(OnAllTasksComplete.NO_ACTION, job.getOnAllTasksComplete());
+            Assertions.assertTrue(job.getState() == BatchJobState.DISABLED || job.getState() == BatchJobState.DISABLING);
+            Assertions.assertEquals(OnAllBatchTasksComplete.NO_ACTION, job.getOnAllTasksComplete());
 
             // UPDATE
-            BatchJobUpdateOptions jobUpdateOptions = new BatchJobUpdateOptions();
-            jobUpdateOptions.setOnAllTasksComplete(OnAllTasksComplete.TERMINATE_JOB);
+            BatchJobUpdateParameters jobUpdateOptions = new BatchJobUpdateParameters();
+            jobUpdateOptions.setOnAllTasksComplete(OnAllBatchTasksComplete.TERMINATE_JOB);
             batchClient.updateJob(jobId, jobUpdateOptions);
             job = batchClient.getJob(jobId);
-            Assertions.assertEquals(OnAllTasksComplete.TERMINATE_JOB, job.getOnAllTasksComplete());
+            Assertions.assertEquals(OnAllBatchTasksComplete.TERMINATE_JOB, job.getOnAllTasksComplete());
 
             batchClient.enableJob(jobId);
             job = batchClient.getJob(jobId);
-            Assertions.assertEquals(JobState.ACTIVE, job.getState());
+            Assertions.assertEquals(BatchJobState.ACTIVE, job.getState());
 
-            batchClient.terminateJob(jobId, null, new BatchJobTerminateOptions().setTerminateReason("myreason"), null);
+            batchClient.terminateJob(jobId, new TerminateBatchJobOptions(), new BatchJobTerminateParameters().setTerminateReason("myreason"));
             job = batchClient.getJob(jobId);
-            Assertions.assertEquals(JobState.TERMINATING, job.getState());
+            Assertions.assertEquals(BatchJobState.TERMINATING, job.getState());
 
             Thread.sleep(2 * 1000);
             job = batchClient.getJob(jobId);
-            Assertions.assertEquals(JobState.COMPLETED, job.getState());
+            Assertions.assertEquals(BatchJobState.COMPLETED, job.getState());
         }
         finally {
             try {
@@ -168,21 +168,21 @@ public class JobTests extends BatchServiceClientTestBase {
     public void canCRUDJobWithPoolNodeCommunicationMode() throws Exception {
         // CREATE
         String jobId = getStringIdWithUserNamePrefix("-Job-canCRUDWithPoolNodeComm");
-        NodeCommunicationMode targetMode = NodeCommunicationMode.SIMPLIFIED;
+        BatchNodeCommunicationMode targetMode = BatchNodeCommunicationMode.SIMPLIFIED;
 
         ImageReference imgRef = new ImageReference().setPublisher("Canonical").setOffer("UbuntuServer")
                 .setSku("18.04-LTS").setVersion("latest");
 
         VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
 
-        PoolSpecification poolSpec = new PoolSpecification("STANDARD_D1_V2");
+        BatchPoolSpecification poolSpec = new BatchPoolSpecification("STANDARD_D1_V2");
         poolSpec.setVirtualMachineConfiguration(configuration)
                 .setTargetNodeCommunicationMode(targetMode);
 
-        PoolInformation poolInfo = new PoolInformation();
-        poolInfo.setAutoPoolSpecification(new AutoPoolSpecification(PoolLifetimeOption.JOB).setPool(poolSpec));
+        BatchPoolInfo poolInfo = new BatchPoolInfo();
+        poolInfo.setAutoPoolSpecification(new BatchAutoPoolSpecification(BatchPoolLifetimeOption.JOB).setPool(poolSpec));
 
-        BatchJobCreateOptions jobCreateOptions = new BatchJobCreateOptions(jobId, poolInfo);
+        BatchJobCreateParameters jobCreateOptions = new BatchJobCreateParameters(jobId, poolInfo);
         batchClient.createJob(jobCreateOptions);
 
         try {

@@ -160,13 +160,13 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
          // Need VNet to allow security to inject NSGs
             NetworkConfiguration networkConfiguration = createNetworkConfiguration();
 
-            BatchPoolCreateOptions poolCreateOptions = new BatchPoolCreateOptions(poolId, poolVmSize);
-            poolCreateOptions.setTargetDedicatedNodes(poolVmCount)
+            BatchPoolCreateParameters poolCreateParameters = new BatchPoolCreateParameters(poolId, poolVmSize);
+            poolCreateParameters.setTargetDedicatedNodes(poolVmCount)
                     .setVirtualMachineConfiguration(configuration)
                     .setUserAccounts(userList)
                     .setNetworkConfiguration(networkConfiguration);
 
-           batchClient.createPool(poolCreateOptions);
+           batchClient.createPool(poolCreateParameters);
         }
         else {
         	System.out.println(String.format("The %s already exists.", poolId));
@@ -317,11 +317,14 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
         long elapsedTime = 0L;
 
         while (elapsedTime < expiryTimeInSeconds * 1000) {
-            PagedIterable<BatchTask> taskIterator = batchClient.listTasks(jobId, null, null, null,   Arrays.asList("id", "state"), null);
+
+            ListBatchTasksOptions options = new ListBatchTasksOptions();
+            options.setSelect(Arrays.asList("id", "state"));
+            PagedIterable<BatchTask> taskIterator = batchClient.listTasks(jobId, options);
 
             boolean allComplete = true;
             for (BatchTask task : taskIterator) {
-                if (task.getState() != TaskState.COMPLETED) {
+                if (task.getState() != BatchTaskState.COMPLETED) {
                     allComplete = false;
                     break;
                 }
