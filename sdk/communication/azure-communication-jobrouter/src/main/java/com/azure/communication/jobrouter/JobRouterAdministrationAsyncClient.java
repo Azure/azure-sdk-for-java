@@ -10,6 +10,7 @@ import com.azure.communication.jobrouter.implementation.converters.ExceptionPoli
 import com.azure.communication.jobrouter.implementation.converters.QueueAdapter;
 import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.DistributionPolicyInternal;
+import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterQueueInternal;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
@@ -741,7 +742,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createExceptionPolicyWithResponse(
             CreateExceptionPolicyOptions createExceptionPolicyOptions, RequestOptions requestOptions) {
-        ExceptionPolicy exceptionPolicy =
+        ExceptionPolicyInternal exceptionPolicy =
                 ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
         return upsertExceptionPolicyWithResponse(
                 createExceptionPolicyOptions.getExceptionPolicyId(),

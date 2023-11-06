@@ -9,7 +9,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.experimental.models.PollResult;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
@@ -19,6 +18,7 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
 import com.azure.data.appconfiguration.implementation.CreateSnapshotUtilClient;
@@ -1324,7 +1324,7 @@ public final class ConfigurationClient {
      * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
      * Context ctx = new Context&#40;key2, value2&#41;;
      *
-     * SyncPoller&lt;PollResult, ConfigurationSnapshot&gt; poller =
+     * SyncPoller&lt;PollOperationDetails, ConfigurationSnapshot&gt; poller =
      *     client.beginCreateSnapshot&#40;snapshotName,
      *         new ConfigurationSnapshot&#40;filters&#41;.setRetentionPeriod&#40;Duration.ofHours&#40;1&#41;&#41;, ctx&#41;;
      * poller.setPollInterval&#40;Duration.ofSeconds&#40;10&#41;&#41;;
@@ -1342,7 +1342,7 @@ public final class ConfigurationClient {
      * has failed. The completed operation returns a {@link ConfigurationSnapshot}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult, ConfigurationSnapshot> beginCreateSnapshot(
+    public SyncPoller<PollOperationDetails, ConfigurationSnapshot> beginCreateSnapshot(
         String snapshotName, ConfigurationSnapshot snapshot, Context context) {
         return createSnapshotUtilClient.beginCreateSnapshot(snapshotName, snapshot, context);
     }

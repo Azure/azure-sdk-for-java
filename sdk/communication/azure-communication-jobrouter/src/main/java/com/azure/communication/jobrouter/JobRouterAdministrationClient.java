@@ -4,12 +4,15 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterAdministrationClientImpl;
+import com.azure.communication.jobrouter.implementation.accesshelpers.ClassificationPolicyConstructorProxy;
+import com.azure.communication.jobrouter.implementation.accesshelpers.RouterQueueConstructorProxy;
 import com.azure.communication.jobrouter.implementation.converters.ClassificationPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.ExceptionPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.QueueAdapter;
 import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.DistributionPolicyInternal;
+import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterQueueInternal;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
@@ -30,6 +33,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 
 /** Initializes a new instance of the synchronous JobRouterAdministrationClient type. */
@@ -479,9 +483,10 @@ public final class JobRouterAdministrationClient {
     public ClassificationPolicy createClassificationPolicy(
             CreateClassificationPolicyOptions createClassificationPolicyOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        return this.createClassificationPolicyWithResponse(createClassificationPolicyOptions, requestOptions)
+        ClassificationPolicyInternal internal = this.createClassificationPolicyWithResponse(createClassificationPolicyOptions, requestOptions)
                 .getValue()
-                .toObject(ClassificationPolicy.class);
+                .toObject(ClassificationPolicyInternal.class);
+        return ClassificationPolicyConstructorProxy.create(internal);
     }
 
     /**
@@ -742,7 +747,7 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createExceptionPolicyWithResponse(
             CreateExceptionPolicyOptions createExceptionPolicyOptions, RequestOptions requestOptions) {
-        ExceptionPolicy exceptionPolicy =
+        ExceptionPolicyInternal exceptionPolicy =
                 ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
         return this.serviceClient.upsertExceptionPolicyWithResponse(
                 createExceptionPolicyOptions.getExceptionPolicyId(),
@@ -974,7 +979,7 @@ public final class JobRouterAdministrationClient {
      * }</pre>
      *
      * @param id The Id of this queue.
-     * @param routerQueue The routerQueue instance.
+     * @param resource RouterQueue resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -984,10 +989,13 @@ public final class JobRouterAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateQueueWithResponse(
-            String id, RouterQueue routerQueue, RequestOptions requestOptions) {
+            String id, BinaryData resource, RequestOptions requestOptions) {
+        RouterQueue routerQueue = BinaryData.fromObject(resource).toObject(RouterQueue.class);
         RouterQueueInternal routerQueueInternal = QueueAdapter.convertRouterQueueToRouterQueueInternal(routerQueue);
-        return this.serviceClient.upsertQueueWithResponse(
+        Response<BinaryData> response = this.serviceClient.upsertQueueWithResponse(
                 id, BinaryData.fromObject(routerQueueInternal), requestOptions);
+        RouterQueueInternal internal = response.getValue().toObject(RouterQueueInternal.class);
+        return new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(), BinaryData.fromObject(RouterQueueConstructorProxy.create(internal)));
     }
 
     /**
@@ -1020,7 +1028,9 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouterQueue createQueue(CreateQueueOptions createQueueOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        return this.createQueueWithResponse(createQueueOptions, requestOptions).getValue().toObject(RouterQueue.class);
+        BinaryData resource = this.createQueueWithResponse(createQueueOptions, requestOptions).getValue();
+        RouterQueueInternal internal = resource.toObject(RouterQueueInternal.class);
+        return RouterQueueConstructorProxy.create(internal);
     }
 
     /**

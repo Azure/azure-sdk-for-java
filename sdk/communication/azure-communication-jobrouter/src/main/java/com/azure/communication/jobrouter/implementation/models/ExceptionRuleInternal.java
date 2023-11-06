@@ -4,11 +4,11 @@
 
 package com.azure.communication.jobrouter.implementation.models;
 
-import com.azure.communication.jobrouter.models.ExceptionTrigger;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /** A rule that defines actions to execute upon a specific trigger. */
@@ -26,7 +26,7 @@ public final class ExceptionRuleInternal {
      */
     @Generated
     @JsonProperty(value = "trigger")
-    private ExceptionTrigger trigger;
+    private ExceptionTriggerInternal trigger;
 
     /*
      * A collection of actions to perform once the exception is triggered.
@@ -46,7 +46,7 @@ public final class ExceptionRuleInternal {
     @JsonCreator
     public ExceptionRuleInternal(
             @JsonProperty(value = "id") String id,
-            @JsonProperty(value = "trigger") ExceptionTrigger trigger,
+            @JsonProperty(value = "trigger") ExceptionTriggerInternal trigger,
             @JsonProperty(value = "actions") List<ExceptionActionInternal> actions) {
         this.id = id;
         this.trigger = trigger;
@@ -69,7 +69,7 @@ public final class ExceptionRuleInternal {
      * @return the trigger value.
      */
     @Generated
-    public ExceptionTrigger getTrigger() {
+    public ExceptionTriggerInternal getTrigger() {
         return this.trigger;
     }
 
