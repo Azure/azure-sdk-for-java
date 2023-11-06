@@ -22,6 +22,7 @@ spec:
           export APPLICATIONINSIGHTS_INSTRUMENTATION_LOGGING_LEVEL="DEBUG";
           export APPLICATIONINSIGHTS_ROLE_NAME=storage-{{ .Stress.BaseName }};
           java \
+          -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.17.jar \
           -Dasync={{ default false .Stress.async }} \
           -DfaultInjection={{ default false .Stress.faultInjection }} \
           -DblobSizeBytes={{ .Stress.blobSizeBytes }} \

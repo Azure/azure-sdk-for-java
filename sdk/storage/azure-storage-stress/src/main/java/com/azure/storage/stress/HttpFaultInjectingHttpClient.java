@@ -7,6 +7,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Queue;
 
 public class HttpFaultInjectingHttpClient implements HttpClient {
+    private static final ClientLogger LOGGER = new ClientLogger(HttpFaultInjectingHttpClient.class);
     private static final String UPSTREAM_URI_HEADER = "X-Upstream-Base-Uri";
     private static final String HTTP_FAULT_INJECTOR_RESPONSE_HEADER = "x-ms-faultinjector-response-option";
     public static final Object FAULT_TRACKING_CONTEXT_KEY = "fault-tracking";
@@ -68,9 +70,21 @@ public class HttpFaultInjectingHttpClient implements HttpClient {
                 HttpRequest request1 = response.getRequest();
                 request1.getHeaders().remove(UPSTREAM_URI_HEADER);
                 request1.setUrl(originalUrl);
-
+                logResponse(faultType, request, response);
                 return response;
-            });
+            })
+            .doOnCancel(() -> logResponse(faultType,  request, null))
+            .doOnError(e -> logResponse(faultType, request,null));
+    }
+
+    private static void logResponse(String faultType, HttpRequest request, HttpResponse response) {
+        // TODO (limolkova): move it to policy and leverage SDK logging policy instead.
+        LOGGER.atInfo()
+            .addKeyValue(HTTP_FAULT_INJECTOR_RESPONSE_HEADER, faultType)
+            .addKeyValue("x-ms-client-request-id", request.getHeaders().getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID))
+            .addKeyValue("x-ms-request-id", response == null ? null : response.getHeaders().getValue("x-ms-request-id"))
+            .addKeyValue("responseCode", response == null ? null : response.getStatusCode())
+            .log("HTTP response with fault injection");
     }
 
     @SuppressWarnings("unchecked")
@@ -83,10 +97,14 @@ public class HttpFaultInjectingHttpClient implements HttpClient {
             .add(createMetadata(faultType, request.getHeaders()));
         request.setHeader(HTTP_FAULT_INJECTOR_RESPONSE_HEADER, faultType);
 
-        HttpResponse response = wrappedHttpClient.sendSync(request, context);
-        response.getRequest().setUrl(originalUrl);
-        response.getRequest().getHeaders().remove(UPSTREAM_URI_HEADER);
-
+        HttpResponse response = null;
+        try {
+            response = wrappedHttpClient.sendSync(request, context);
+            response.getRequest().setUrl(originalUrl);
+            response.getRequest().getHeaders().remove(UPSTREAM_URI_HEADER);
+        } finally {
+            logResponse(faultType, request, response);
+        }
         return response;
     }
 
