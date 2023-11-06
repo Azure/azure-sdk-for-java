@@ -8,6 +8,9 @@ import com.azure.communication.jobrouter.implementation.converters.Classificatio
 import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.ExceptionPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.QueueAdapter;
+import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyInternal;
+import com.azure.communication.jobrouter.implementation.models.DistributionPolicyInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterQueueInternal;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
@@ -189,7 +192,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createDistributionPolicyWithResponse(
             CreateDistributionPolicyOptions createDistributionPolicyOptions, RequestOptions requestOptions) {
-        DistributionPolicy distributionPolicy =
+        DistributionPolicyInternal distributionPolicy =
                 DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
         return upsertDistributionPolicyWithResponse(
                 createDistributionPolicyOptions.getDistributionPolicyId(),
@@ -266,7 +269,7 @@ public final class JobRouterAdministrationAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of distribution policies as paginated response with {@link PagedFlux}.
+     * @return paged collection of DistributionPolicy items as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -450,8 +453,8 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createClassificationPolicyWithResponse(
             CreateClassificationPolicyOptions createClassificationPolicyOptions, RequestOptions requestOptions) {
-        ClassificationPolicy classificationPolicy =
-                ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicy(
+        ClassificationPolicyInternal classificationPolicy =
+                ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicyInternal(
                         createClassificationPolicyOptions);
         return upsertClassificationPolicyWithResponse(
                 createClassificationPolicyOptions.getClassificationPolicyId(),
@@ -556,7 +559,7 @@ public final class JobRouterAdministrationAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of classification policies as paginated response with {@link PagedFlux}.
+     * @return paged collection of ClassificationPolicy items as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -827,7 +830,7 @@ public final class JobRouterAdministrationAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of exception policies as paginated response with {@link PagedFlux}.
+     * @return paged collection of ExceptionPolicy items as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -985,7 +988,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createQueueWithResponse(
             CreateQueueOptions createQueueOptions, RequestOptions requestOptions) {
-        RouterQueue queue = QueueAdapter.convertCreateQueueOptionsToRouterQueue(createQueueOptions);
+        RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueueInternal(createQueueOptions);
         return upsertQueueWithResponse(createQueueOptions.getQueueId(), BinaryData.fromObject(queue), requestOptions);
     }
 
@@ -1055,7 +1058,7 @@ public final class JobRouterAdministrationAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of queues as paginated response with {@link PagedFlux}.
+     * @return paged collection of RouterQueue items as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1092,7 +1095,6 @@ public final class JobRouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return policy governing how jobs are distributed to workers on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DistributionPolicy> getDistributionPolicy(String distributionPolicyId) {
         // Generated convenience method for getDistributionPolicyWithResponse
@@ -1112,7 +1114,6 @@ public final class JobRouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of distribution policies as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DistributionPolicy> listDistributionPolicies() {
         // Generated convenience method for listDistributionPolicies
@@ -1174,7 +1175,6 @@ public final class JobRouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container for the rules that govern how jobs are classified on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ClassificationPolicy> getClassificationPolicy(String classificationPolicyId) {
         // Generated convenience method for getClassificationPolicyWithResponse
@@ -1194,7 +1194,6 @@ public final class JobRouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of classification policies as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ClassificationPolicy> listClassificationPolicies() {
         // Generated convenience method for listClassificationPolicies
@@ -1275,7 +1274,7 @@ public final class JobRouterAdministrationAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of exception policies as paginated response with {@link PagedFlux}.
+     * @return paged collection of ExceptionPolicy items as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1339,7 +1338,6 @@ public final class JobRouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a queue that can contain jobs to be routed on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterQueue> getQueue(String queueId) {
         // Generated convenience method for getQueueWithResponse
@@ -1359,7 +1357,6 @@ public final class JobRouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of queues as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RouterQueue> listQueues() {
         // Generated convenience method for listQueues

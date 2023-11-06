@@ -31,16 +31,14 @@ public final class RouterWorker {
      * A set of key/value pairs that are identifying attributes used by the rules
      * engines to make decisions.
      */
-    @Generated
     @JsonProperty(value = "labels")
-    private Map<String, Object> labels;
+    private Map<String, RouterValue> labels;
 
     /*
      * A set of non-identifying attributes attached to this worker.
      */
-    @Generated
     @JsonProperty(value = "tags")
-    private Map<String, Object> tags;
+    private Map<String, RouterValue> tags;
 
     /*
      * A list of active offers issued to this worker.
@@ -101,8 +99,7 @@ public final class RouterWorker {
      *
      * @return the labels value.
      */
-    @Generated
-    public Map<String, Object> getLabels() {
+    public Map<String, RouterValue> getLabels() {
         return this.labels;
     }
 
@@ -113,8 +110,7 @@ public final class RouterWorker {
      * @param labels the labels value to set.
      * @return the RouterWorker object itself.
      */
-    @Generated
-    public RouterWorker setLabels(Map<String, Object> labels) {
+    public RouterWorker setLabels(Map<String, RouterValue> labels) {
         this.labels = labels;
         return this;
     }
@@ -124,8 +120,7 @@ public final class RouterWorker {
      *
      * @return the tags value.
      */
-    @Generated
-    public Map<String, Object> getTags() {
+    public Map<String, RouterValue> getTags() {
         return this.tags;
     }
 
@@ -135,8 +130,7 @@ public final class RouterWorker {
      * @param tags the tags value to set.
      * @return the RouterWorker object itself.
      */
-    @Generated
-    public RouterWorker setTags(Map<String, Object> tags) {
+    public RouterWorker setTags(Map<String, RouterValue> tags) {
         this.tags = tags;
         return this;
     }

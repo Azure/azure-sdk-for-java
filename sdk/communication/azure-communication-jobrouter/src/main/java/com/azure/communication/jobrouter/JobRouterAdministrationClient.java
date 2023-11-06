@@ -8,6 +8,9 @@ import com.azure.communication.jobrouter.implementation.converters.Classificatio
 import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.ExceptionPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.QueueAdapter;
+import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyInternal;
+import com.azure.communication.jobrouter.implementation.models.DistributionPolicyInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterQueueInternal;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
@@ -179,7 +182,7 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createDistributionPolicyWithResponse(
             CreateDistributionPolicyOptions createDistributionPolicyOptions, RequestOptions requestOptions) {
-        DistributionPolicy distributionPolicy =
+        DistributionPolicyInternal distributionPolicy =
                 DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
         return this.serviceClient.upsertDistributionPolicyWithResponse(
                 createDistributionPolicyOptions.getDistributionPolicyId(),
@@ -273,7 +276,7 @@ public final class JobRouterAdministrationClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of distribution policies as paginated response with {@link PagedIterable}.
+     * @return paged collection of DistributionPolicy items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -454,8 +457,8 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createClassificationPolicyWithResponse(
             CreateClassificationPolicyOptions createClassificationPolicyOptions, RequestOptions requestOptions) {
-        ClassificationPolicy classificationPolicy =
-                ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicy(
+        ClassificationPolicyInternal classificationPolicy =
+                ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicyInternal(
                         createClassificationPolicyOptions);
         return this.serviceClient.upsertClassificationPolicyWithResponse(
                 createClassificationPolicyOptions.getClassificationPolicyId(),
@@ -559,7 +562,7 @@ public final class JobRouterAdministrationClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of classification policies as paginated response with {@link PagedIterable}.
+     * @return paged collection of ClassificationPolicy items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -844,7 +847,7 @@ public final class JobRouterAdministrationClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of exception policies as paginated response with {@link PagedIterable}.
+     * @return paged collection of ExceptionPolicy items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -971,7 +974,7 @@ public final class JobRouterAdministrationClient {
      * }</pre>
      *
      * @param id The Id of this queue.
-     * @param resource The resource instance.
+     * @param routerQueue The routerQueue instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -980,8 +983,11 @@ public final class JobRouterAdministrationClient {
      * @return a queue that can contain jobs to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateQueueWithResponse(String id, BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.upsertQueueWithResponse(id, resource, requestOptions);
+    public Response<BinaryData> updateQueueWithResponse(
+            String id, RouterQueue routerQueue, RequestOptions requestOptions) {
+        RouterQueueInternal routerQueueInternal = QueueAdapter.convertRouterQueueToRouterQueueInternal(routerQueue);
+        return this.serviceClient.upsertQueueWithResponse(
+                id, BinaryData.fromObject(routerQueueInternal), requestOptions);
     }
 
     /**
@@ -997,7 +1003,7 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createQueueWithResponse(
             CreateQueueOptions createQueueOptions, RequestOptions requestOptions) {
-        RouterQueue queue = QueueAdapter.convertCreateQueueOptionsToRouterQueue(createQueueOptions);
+        RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueueInternal(createQueueOptions);
         return this.serviceClient.upsertQueueWithResponse(
                 createQueueOptions.getQueueId(), BinaryData.fromObject(queue), requestOptions);
     }
@@ -1082,7 +1088,7 @@ public final class JobRouterAdministrationClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of queues as paginated response with {@link PagedIterable}.
+     * @return paged collection of RouterQueue items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1119,7 +1125,6 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return policy governing how jobs are distributed to workers.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DistributionPolicy getDistributionPolicy(String distributionPolicyId) {
         // Generated convenience method for getDistributionPolicyWithResponse
@@ -1139,7 +1144,6 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of distribution policies as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DistributionPolicy> listDistributionPolicies() {
         // Generated convenience method for listDistributionPolicies
@@ -1180,7 +1184,6 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container for the rules that govern how jobs are classified.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClassificationPolicy getClassificationPolicy(String classificationPolicyId) {
         // Generated convenience method for getClassificationPolicyWithResponse
@@ -1200,7 +1203,6 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of classification policies as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClassificationPolicy> listClassificationPolicies() {
         // Generated convenience method for listClassificationPolicies
@@ -1259,7 +1261,7 @@ public final class JobRouterAdministrationClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of exception policies as paginated response with {@link PagedIterable}.
+     * @return paged collection of ExceptionPolicy items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1302,7 +1304,6 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a queue that can contain jobs to be routed.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouterQueue getQueue(String queueId) {
         // Generated convenience method for getQueueWithResponse
@@ -1320,7 +1321,6 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of queues as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RouterQueue> listQueues() {
         // Generated convenience method for listQueues

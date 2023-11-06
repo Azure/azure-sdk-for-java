@@ -77,7 +77,7 @@ public class ExceptionPolicyExample {
         /**
          * Update policy using routerClient.
          */
-        routerAdminClient.updateQueueWithResponse(createExceptionPolicyOptions.getExceptionPolicyId(), BinaryData.fromObject(exceptionPolicy), new RequestOptions());
+        routerAdminClient.updateExceptionPolicyWithResponse(createExceptionPolicyOptions.getExceptionPolicyId(), BinaryData.fromObject(exceptionPolicy), new RequestOptions());
 
         System.out.println("Exception policy has been successfully updated.");
     }

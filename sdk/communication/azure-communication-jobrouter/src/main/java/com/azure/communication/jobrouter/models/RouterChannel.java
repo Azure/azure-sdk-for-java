@@ -20,8 +20,7 @@ public final class RouterChannel {
     private String channelId;
 
     /*
-     * The amount of capacity that an instance of a job of this channel will consume
-     * of the total worker capacity.
+     * The amount of capacity that an instance of a job of this channel will consume of the total worker capacity.
      */
     @Generated
     @JsonProperty(value = "capacityCostPerJob")

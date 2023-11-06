@@ -97,9 +97,8 @@ public final class RouterJob {
      * A set of key/value pairs that are identifying attributes used by the rules
      * engines to make decisions.
      */
-    @Generated
     @JsonProperty(value = "labels")
-    private Map<String, Object> labels;
+    private Map<String, RouterValue> labels;
 
     /*
      * A collection of the assignments of the job.
@@ -112,9 +111,8 @@ public final class RouterJob {
     /*
      * A set of non-identifying attributes attached to this job
      */
-    @Generated
     @JsonProperty(value = "tags")
-    private Map<String, Object> tags;
+    private Map<String, RouterValue> tags;
 
     /*
      * Notes attached to a job, sorted by timestamp
@@ -355,8 +353,7 @@ public final class RouterJob {
      *
      * @return the labels value.
      */
-    @Generated
-    public Map<String, Object> getLabels() {
+    public Map<String, RouterValue> getLabels() {
         return this.labels;
     }
 
@@ -367,8 +364,7 @@ public final class RouterJob {
      * @param labels the labels value to set.
      * @return the RouterJob object itself.
      */
-    @Generated
-    public RouterJob setLabels(Map<String, Object> labels) {
+    public RouterJob setLabels(Map<String, RouterValue> labels) {
         this.labels = labels;
         return this;
     }
@@ -389,7 +385,7 @@ public final class RouterJob {
      * @return the tags value.
      */
     @Generated
-    public Map<String, Object> getTags() {
+    public Map<String, RouterValue> getTags() {
         return this.tags;
     }
 
@@ -400,7 +396,7 @@ public final class RouterJob {
      * @return the RouterJob object itself.
      */
     @Generated
-    public RouterJob setTags(Map<String, Object> tags) {
+    public RouterJob setTags(Map<String, RouterValue> tags) {
         this.tags = tags;
         return this;
     }

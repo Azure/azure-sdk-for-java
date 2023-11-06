@@ -8,8 +8,8 @@ import com.azure.core.util.logging.ClientLogger;
 /**
  * Wrapper class for labels. Supports double, String and boolean types.
  */
-public final class LabelValue {
-    private static final ClientLogger LOGGER = new ClientLogger(LabelValue.class);
+public final class RouterValue {
+    private static final ClientLogger LOGGER = new ClientLogger(RouterValue.class);
 
     /**
      * Value to pass to server.
@@ -20,7 +20,7 @@ public final class LabelValue {
      * Constructor for integer value.
      * @param integerValue integer value of label.
      */
-    public LabelValue(Integer integerValue) {
+    public RouterValue(Integer integerValue) {
         this.value = integerValue;
     }
 
@@ -28,7 +28,7 @@ public final class LabelValue {
      * Constructor for numerical value.
      * @param numericValue numeric value of label.
      */
-    public LabelValue(Double numericValue) {
+    public RouterValue(Double numericValue) {
         this.value = numericValue;
     }
 
@@ -36,7 +36,7 @@ public final class LabelValue {
      * Constructor for string value.
      * @param stringValue string value of label.
      */
-    public LabelValue(String stringValue) {
+    public RouterValue(String stringValue) {
         this.value = stringValue;
     }
 
@@ -44,11 +44,11 @@ public final class LabelValue {
      * Constructor for boolean value.
      * @param boolValue boolean value of label.
      */
-    public LabelValue(Boolean boolValue) {
+    public RouterValue(Boolean boolValue) {
         this.value = boolValue;
     }
 
-    LabelValue(Object objectValue) {
+    RouterValue(Object objectValue) {
         this.value = objectValue;
     }
 
