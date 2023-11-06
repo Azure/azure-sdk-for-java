@@ -41,10 +41,10 @@ public class SharedKeyTests extends BatchServiceClientTestBase {
 
             VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, nodeAgentSkuId);
 
-            BatchPoolCreateOptions poolCreateOptions = new BatchPoolCreateOptions(sharedKeyPoolId, vmSize);
+            BatchPoolCreateParameters poolCreateOptions = new BatchPoolCreateParameters(sharedKeyPoolId, vmSize);
             poolCreateOptions.setTargetDedicatedNodes(2)
                                 .setVirtualMachineConfiguration(configuration)
-                                .setTargetNodeCommunicationMode(NodeCommunicationMode.DEFAULT);
+                                .setTargetNodeCommunicationMode(BatchNodeCommunicationMode.DEFAULT);
 
             Response<Void> response = batchClientWithSharedKey.createPoolWithResponse(BinaryData.fromObject(poolCreateOptions), null);
             String authorizationValue = response.getRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
@@ -65,14 +65,14 @@ public class SharedKeyTests extends BatchServiceClientTestBase {
             ArrayList<MetadataItem> updatedMetadata = new ArrayList<MetadataItem>();
             updatedMetadata.add(new MetadataItem("foo", "bar"));
 
-            BatchPoolReplaceOptions poolReplaceOptions = new BatchPoolReplaceOptions(new ArrayList<>(), new ArrayList<>(), updatedMetadata);
+            BatchPoolReplaceParameters poolReplaceOptions = new BatchPoolReplaceParameters(new ArrayList<>(), new ArrayList<>(), updatedMetadata);
 
-            poolReplaceOptions.setTargetNodeCommunicationMode(NodeCommunicationMode.SIMPLIFIED);
+            poolReplaceOptions.setTargetNodeCommunicationMode(BatchNodeCommunicationMode.SIMPLIFIED);
 
             batchClientWithSharedKey.replacePoolProperties(sharedKeyPoolId, poolReplaceOptions);
 
             pool = batchClientWithSharedKey.getPool(sharedKeyPoolId);
-            Assertions.assertEquals(NodeCommunicationMode.SIMPLIFIED, pool.getTargetNodeCommunicationMode());
+            Assertions.assertEquals(BatchNodeCommunicationMode.SIMPLIFIED, pool.getTargetNodeCommunicationMode());
             List<MetadataItem> metadata = pool.getMetadata();
             Assertions.assertTrue(metadata.size() == 1 && metadata.get(0).getName().equals("foo"));
 
@@ -81,7 +81,7 @@ public class SharedKeyTests extends BatchServiceClientTestBase {
              */
             updatedMetadata.clear();
             updatedMetadata.add(new MetadataItem("key1", "value1"));
-            BatchPoolUpdateOptions poolUpdateOptions = new BatchPoolUpdateOptions().setMetadata(updatedMetadata).setTargetNodeCommunicationMode(NodeCommunicationMode.CLASSIC);
+            BatchPoolUpdateParameters poolUpdateOptions = new BatchPoolUpdateParameters().setMetadata(updatedMetadata).setTargetNodeCommunicationMode(BatchNodeCommunicationMode.CLASSIC);
             Response<Void> updatePoolResponse = batchClientWithSharedKey.updatePoolWithResponse(sharedKeyPoolId, BinaryData.fromObject(poolUpdateOptions), null);
             HttpRequest updatePoolRequest = updatePoolResponse.getRequest();
             HttpHeader ocpDateHeader = updatePoolRequest.getHeaders().get(HttpHeaderName.fromString("ocp-date"));
@@ -107,7 +107,7 @@ public class SharedKeyTests extends BatchServiceClientTestBase {
             authorizationValue = getPoolRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
             Assertions.assertTrue(authorizationValue.contains("SharedKey"), "Test is not using SharedKey authentication");
 
-            Assertions.assertEquals(NodeCommunicationMode.CLASSIC, pool.getTargetNodeCommunicationMode());
+            Assertions.assertEquals(BatchNodeCommunicationMode.CLASSIC, pool.getTargetNodeCommunicationMode());
             metadata = pool.getMetadata();
             Assertions.assertTrue(metadata.size() == 1 && metadata.get(0).getName().equals("key1"));
 

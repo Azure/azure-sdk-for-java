@@ -40,19 +40,19 @@ public class FileTests extends BatchServiceClientTestBase {
         int TASK_COMPLETE_TIMEOUT_IN_SECONDS = 60; // 60 seconds timeout
 
         try {
-            PoolInformation poolInfo = new PoolInformation();
+            BatchPoolInfo poolInfo = new BatchPoolInfo();
             poolInfo.setPoolId(poolId);
 
-            batchClient.createJob(new BatchJobCreateOptions(jobId, poolInfo));
+            batchClient.createJob(new BatchJobCreateParameters(jobId, poolInfo));
 
-            BatchTaskCreateOptions taskToAdd = new BatchTaskCreateOptions(taskId, "/bin/bash -c \"echo hello\"");
+            BatchTaskCreateParameters taskToAdd = new BatchTaskCreateParameters(taskId, "/bin/bash -c \"echo hello\"");
 
             batchClient.createTask(jobId, taskToAdd);
 
             if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
-                PagedIterable<NodeFile> filesIterable = batchClient.listTaskFiles(jobId, taskId);
+                PagedIterable<BatchNodeFile> filesIterable = batchClient.listTaskFiles(jobId, taskId);
                 boolean found = false;
-                for (NodeFile f : filesIterable) {
+                for (BatchNodeFile f : filesIterable) {
                     if (f.getName().equals("stdout.txt")) {
                         found = true;
                         break;
@@ -90,19 +90,23 @@ public class FileTests extends BatchServiceClientTestBase {
         int TASK_COMPLETE_TIMEOUT_IN_SECONDS = 60; // 60 seconds timeout
 
         try {
-            PoolInformation poolInfo = new PoolInformation();
+            BatchPoolInfo poolInfo = new BatchPoolInfo();
             poolInfo.setPoolId(poolId);
 
-            batchClient.createJob(new BatchJobCreateOptions(jobId, poolInfo));
-            BatchTaskCreateOptions taskToAdd = new BatchTaskCreateOptions(taskId, "/bin/bash -c \"echo hello\"");
+            batchClient.createJob(new BatchJobCreateParameters(jobId, poolInfo));
+            BatchTaskCreateParameters taskToAdd = new BatchTaskCreateParameters(taskId, "/bin/bash -c \"echo hello\"");
             batchClient.createTask(jobId, taskToAdd);
 
             if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
                 BatchTask task = batchClient.getTask(jobId, taskId);
                 String nodeId = task.getNodeInfo().getNodeId();
-                PagedIterable<NodeFile> files = batchClient.listNodeFiles(poolId, nodeId, null, null, null, true);
+
+                ListBatchNodeFilesOptions options = new ListBatchNodeFilesOptions();
+                options.setRecursive(true);
+                PagedIterable<BatchNodeFile> files = batchClient.listNodeFiles(poolId, nodeId, options);
+
                 String fileName = null;
-                for (NodeFile f : files) {
+                for (BatchNodeFile f : files) {
                     if (f.getName().endsWith("stdout.txt")) {
                         fileName = f.getName();
                         break;
