@@ -289,6 +289,38 @@ Get-AzAccessToken -ResourceUrl "https://management.core.windows.net"
 |---|---|---|
 |The current credential is not configured to acquire tokens for tenant <tenant ID>|The application must configure the credential to allow acquiring tokens from the requested tenant.|Add the requested tenant ID it to the `additionallyAllowedTenants` on the credential builder, or add \"*\" to `additionallyAllowedTenants` to allow acquiring tokens for any tenant.</p>This exception was added as part of a breaking change to multi tenant authentication in version `1.6.0`. Users experiencing this error after upgrading can find details on the change and migration in [BREAKING_CHANGES.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/BREAKING_CHANGES.md) |
 
+## Troubleshoot authentication timeout issues
+
+### Using Thread pool
+The Azure Identity library plays a pivotal role in executing authentication requests. However, a potential concern 
+arises when your application concurrently relies on the common fork-join pool. This concurrency scenario can lead to
+a deadlock situation, wherein both the Azure Identity library and your application compete for threads from the 
+common fork-join pool. In order to prevent such a deadlock and ensure smooth authentication processes, it is 
+strongly recommended that you configure a dedicated thread pool specifically for the credentials. By implementing
+this configuration, you can ensure that the Azure Identity library and your application do not clash over the 
+allocation of threads from the common fork-join pool.
+
+To effectively address this deadlock situation, follow these steps:
+
+* Create a Dedicated Thread Pool: Configure a separate and dedicated thread pool for the credential processes within your application. This ensures that the Azure Identity library does not interfere with your application's use of the common fork-join pool.
+
+* Isolation of Thread Pools: Ensure that the dedicated thread pool for credential operations remains isolated and distinct from the common fork-join pool, which is used by the application.
+
+Here's a code sample below:
+
+```java
+ExecutorService executorService =  Executors.newCachedThreadPool();
+ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+        .clientId("<Client-Id>")
+        .tenantId("<Tenant-Id>")
+        .clientSecret("<Client-Secret>")
+        .executorService(executorService)
+        .build();
+
+//Shutdown the thread pool once no longer needed.
+executorService.shutdown();
+```
+
 ## Get additional help
 
 Additional information on ways to reach out for support can be found in the [SUPPORT.md](https://github.com/Azure/azure-sdk-for-java/blob/main/SUPPORT.md) at the root of the repo.
