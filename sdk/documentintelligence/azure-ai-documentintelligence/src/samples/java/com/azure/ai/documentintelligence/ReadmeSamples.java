@@ -4,6 +4,9 @@
 
 package com.azure.ai.documentintelligence;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
+
 public final class ReadmeSamples {
     public void readmeSamples() {
         // BEGIN: com.azure.ai.documentintelligence.readme
