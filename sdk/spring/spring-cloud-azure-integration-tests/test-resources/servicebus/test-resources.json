@@ -33,15 +33,16 @@
       "name": "[variables('azureServiceBusNamespaceName')]",
       "location": "[variables('location')]",
       "sku": {
-        "name": "Standard",
-        "tier": "Standard"
+        "name": "Premium",
+        "tier": "Premium",
+        "capacity": 1
       },
       "properties": {
-        "premiumMessagingPartitions": 0,
+        "premiumMessagingPartitions": 1,
         "minimumTlsVersion": "1.2",
         "publicNetworkAccess": "Enabled",
         "disableLocalAuth": false,
-        "zoneRedundant": false
+        "zoneRedundant": true
       }
     },
     {
