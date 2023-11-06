@@ -233,7 +233,9 @@ public class IdentityClient extends IdentityClientBase {
             if (authDetails == null) {
                 return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                     new CredentialUnavailableException("IntelliJ Authentication not available."
-                        + " Please log in with Azure Tools for IntelliJ plugin in the IDE.")));
+                        + " Please log in with Azure Tools for IntelliJ plugin in the IDE."
+                        + " Fore more details refer to the troubleshooting guidelines here at"
+                        + " https://aka.ms/azsdk/java/identity/intellijcredential/troubleshoot")));
             }
             String authType = authDetails.getAuthMethod();
             if ("SP".equalsIgnoreCase(authType)) {

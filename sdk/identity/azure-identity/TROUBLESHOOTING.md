@@ -23,6 +23,7 @@ This troubleshooting guide covers failure investigation techniques, common error
 - [Troubleshoot AzurePowerShellCredential authentication issues](#troubleshoot-azurepowershellcredential-authentication-issues)
 - [Troubleshoot WorkloadIdentityCredential authentication issues](#troubleshoot-workloadidentitycredential-authentication-issues)
 - [Troubleshoot IntelliJCredential authentication issues](#troubleshoot-intellij-authentication-issues)
+- [Troubleshoot authentication timeout issues](#troubleshoot-authentication-timeout-issues)
 - [Get additional help](#get-additional-help)
 
 ## Handle Azure Identity exceptions
@@ -309,17 +310,23 @@ To effectively address this deadlock situation, follow these steps:
 Here's a code sample below:
 
 ```java
-ExecutorService executorService =  Executors.newCachedThreadPool();
-ClientSecretCredential credential = new ClientSecretCredentialBuilder()
-        .clientId("<Client-Id>")
-        .tenantId("<Tenant-Id>")
-        .clientSecret("<Client-Secret>")
-        .executorService(executorService)
-        .build();
+ExecutorService executorService = Executors.newCachedThreadPool();
 
-//Shutdown the thread pool once no longer needed.
-executorService.shutdown();
+try {
+    ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+      .clientId("<Client-Id>")
+      .tenantId("<Tenant-Id>")
+      .clientSecret("<Client-Secret>")
+      .executorService(executorService)
+      .build();
+
+} finally {
+   //Shutdown the thread pool once no longer needed.
+   executorService.shutdown();
+}
 ```
+
+You can find more info about Fork Join Pool [here](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinPool.html).
 
 ## Get additional help
 
