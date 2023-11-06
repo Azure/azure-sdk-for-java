@@ -6,19 +6,19 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "1050426a-313e-416b-84ce-f2096affca89",
+        "client-request-id": "02d442fb-d1f9-4a14-aec6-8112ee577cb3",
         "Content-Length": "0",
-        "Date": "Mon, 23 Oct 2023 18:06:19 GMT",
+        "Date": "Mon, 06 Nov 2023 22:42:03 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 23 Oct 2023 18:06:19 GMT",
+        "Date": "Mon, 06 Nov 2023 22:42:01 GMT",
         "ETag": "0x8DBC52C54B88553",
         "Last-Modified": "Wed, 04 Oct 2023 22:50:39 GMT",
-        "request-id": "80cb39b7-4140-4f1b-bf12-eeb1f1af664e",
+        "request-id": "344cb522-eee5-4f19-bed3-7cccd8213d7c",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -32,9 +32,9 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "ed8c4712-7104-4d42-b4a0-387b0137020b",
+        "client-request-id": "16deefe3-b745-403a-9304-271d48f7550b",
         "Content-Length": "0",
-        "Date": "Mon, 23 Oct 2023 18:06:20 GMT",
+        "Date": "Mon, 06 Nov 2023 22:42:04 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
       },
       "RequestBody": null,
@@ -42,10 +42,10 @@
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 23 Oct 2023 18:06:19 GMT",
+        "Date": "Mon, 06 Nov 2023 22:42:01 GMT",
         "ETag": "0x8DBC52C54B88553",
         "Last-Modified": "Wed, 04 Oct 2023 22:50:39 GMT",
-        "request-id": "70c2f29f-a28e-4151-a922-9d00245b3a3a",
+        "request-id": "731c2b24-f305-44cf-b9d5-219bf0d18d67",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -107,19 +107,19 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "d520ebc8-05ba-400c-bc8a-ca59f576ec69",
+        "client-request-id": "a1f3ecd5-cde4-4aa2-8433-548d43f3adc6",
         "Content-Length": "0",
-        "Date": "Mon, 23 Oct 2023 18:06:20 GMT",
+        "Date": "Mon, 06 Nov 2023 22:42:04 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 23 Oct 2023 18:06:20 GMT",
-        "ETag": "0x8DBD3F2BC63A1DC",
-        "Last-Modified": "Mon, 23 Oct 2023 18:06:09 GMT",
-        "request-id": "86569f53-d05a-4453-a427-ba001760faf5",
+        "Date": "Mon, 06 Nov 2023 22:42:01 GMT",
+        "ETag": "0x8DBDF19954A8DC9",
+        "Last-Modified": "Mon, 06 Nov 2023 22:41:57 GMT",
+        "request-id": "f5c8a407-4021-4e19-b2d0-2c06143d1421",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -133,9 +133,9 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "9682c4a3-8de7-4689-8041-d0590adebf8b",
+        "client-request-id": "7fdc559a-03ba-432c-a35c-966a25e0b77b",
         "Content-Length": "0",
-        "Date": "Mon, 23 Oct 2023 18:06:20 GMT",
+        "Date": "Mon, 06 Nov 2023 22:42:04 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
       },
       "RequestBody": null,
@@ -143,10 +143,10 @@
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 23 Oct 2023 18:06:20 GMT",
-        "ETag": "0x8DBD3F2BC63A1DC",
-        "Last-Modified": "Mon, 23 Oct 2023 18:06:09 GMT",
-        "request-id": "8c681ed1-645a-425b-966e-26a857599617",
+        "Date": "Mon, 06 Nov 2023 22:42:01 GMT",
+        "ETag": "0x8DBDF19954A8DC9",
+        "Last-Modified": "Mon, 06 Nov 2023 22:41:57 GMT",
+        "request-id": "896ff695-8382-445c-a23d-e5482dd4758a",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -156,13 +156,13 @@
         "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element",
         "id": "BatchUser-testIaaSpool",
         "url": "REDACTED",
-        "eTag": "0x8DBD3F2BC63A1DC",
-        "lastModified": "2023-10-23T18:06:09.9249628Z",
-        "creationTime": "2023-10-23T18:06:09.9249628Z",
+        "eTag": "0x8DBDF19954A8DC9",
+        "lastModified": "2023-11-06T22:41:57.4924745Z",
+        "creationTime": "2023-11-06T22:41:57.4924745Z",
         "state": "active",
-        "stateTransitionTime": "2023-10-23T18:06:09.9249628Z",
+        "stateTransitionTime": "2023-11-06T22:41:57.4924745Z",
         "allocationState": "resizing",
-        "allocationStateTransitionTime": "2023-10-23T18:06:09.9249628Z",
+        "allocationStateTransitionTime": "2023-11-06T22:41:57.4924745Z",
         "vmSize": "standard_d1_v2",
         "resizeTimeout": "PT15M",
         "currentDedicatedNodes": 0,
@@ -207,9 +207,9 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "326e8b29-94b1-4039-8ad0-6002bf8404fd",
+        "client-request-id": "90f951ae-c3a7-46ef-9243-8bb1e52d84a8",
         "Content-Length": "0",
-        "Date": "Mon, 23 Oct 2023 18:06:50 GMT",
+        "Date": "Mon, 06 Nov 2023 22:42:34 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
       },
       "RequestBody": null,
@@ -217,10 +217,10 @@
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 23 Oct 2023 18:06:49 GMT",
-        "ETag": "0x8DBD3F2BC63A1DC",
-        "Last-Modified": "Mon, 23 Oct 2023 18:06:09 GMT",
-        "request-id": "c8347c1f-2306-4b4d-aea6-d984efcaedb6",
+        "Date": "Mon, 06 Nov 2023 22:42:32 GMT",
+        "ETag": "0x8DBDF19954A8DC9",
+        "Last-Modified": "Mon, 06 Nov 2023 22:41:57 GMT",
+        "request-id": "d588f662-4087-45eb-9cc5-ceb796083af7",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -230,13 +230,13 @@
         "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element",
         "id": "BatchUser-testIaaSpool",
         "url": "REDACTED",
-        "eTag": "0x8DBD3F2BC63A1DC",
-        "lastModified": "2023-10-23T18:06:09.9249628Z",
-        "creationTime": "2023-10-23T18:06:09.9249628Z",
+        "eTag": "0x8DBDF19954A8DC9",
+        "lastModified": "2023-11-06T22:41:57.4924745Z",
+        "creationTime": "2023-11-06T22:41:57.4924745Z",
         "state": "active",
-        "stateTransitionTime": "2023-10-23T18:06:09.9249628Z",
+        "stateTransitionTime": "2023-11-06T22:41:57.4924745Z",
         "allocationState": "resizing",
-        "allocationStateTransitionTime": "2023-10-23T18:06:09.9249628Z",
+        "allocationStateTransitionTime": "2023-11-06T22:41:57.4924745Z",
         "vmSize": "standard_d1_v2",
         "resizeTimeout": "PT15M",
         "currentDedicatedNodes": 0,
@@ -281,9 +281,9 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "cb55a9f4-15e1-4543-b1f8-4dff65408ec3",
+        "client-request-id": "ba04a0ab-2195-46cc-b767-a8eb153d8aae",
         "Content-Length": "0",
-        "Date": "Mon, 23 Oct 2023 18:07:20 GMT",
+        "Date": "Mon, 06 Nov 2023 22:43:04 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
       },
       "RequestBody": null,
@@ -291,10 +291,10 @@
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 23 Oct 2023 18:07:19 GMT",
-        "ETag": "0x8DBD3F2BC63A1DC",
-        "Last-Modified": "Mon, 23 Oct 2023 18:06:09 GMT",
-        "request-id": "4f30b54f-5583-4dce-82ff-59cdc52c74e6",
+        "Date": "Mon, 06 Nov 2023 22:43:02 GMT",
+        "ETag": "0x8DBDF19BB19D08F",
+        "Last-Modified": "Mon, 06 Nov 2023 22:43:00 GMT",
+        "request-id": "6c9205b1-c393-49fa-98a8-df0a3a848e1d",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -304,13 +304,13 @@
         "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element",
         "id": "BatchUser-testIaaSpool",
         "url": "REDACTED",
-        "eTag": "0x8DBD3F2BC63A1DC",
-        "lastModified": "2023-10-23T18:06:09.9249628Z",
-        "creationTime": "2023-10-23T18:06:09.9249628Z",
-        "state": "active",
-        "stateTransitionTime": "2023-10-23T18:06:09.9249628Z",
+        "eTag": "0x8DBDF19BB19D08F",
+        "lastModified": "2023-11-06T22:43:00.9264783Z",
+        "creationTime": "2023-11-06T22:41:57.4924745Z",
+        "state": "deleting",
+        "stateTransitionTime": "2023-11-06T22:43:00.9264783Z",
         "allocationState": "resizing",
-        "allocationStateTransitionTime": "2023-10-23T18:06:09.9249628Z",
+        "allocationStateTransitionTime": "2023-11-06T22:43:00.9264783Z",
         "vmSize": "standard_d1_v2",
         "resizeTimeout": "PT15M",
         "currentDedicatedNodes": 0,
@@ -355,9 +355,9 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "1840dc11-bde3-4cdf-8ba2-08814ce3ade8",
+        "client-request-id": "8c6b5d0a-b48d-4ea1-9e92-f8b8d5e93132",
         "Content-Length": "0",
-        "Date": "Mon, 23 Oct 2023 18:07:50 GMT",
+        "Date": "Mon, 06 Nov 2023 22:43:34 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
       },
       "RequestBody": null,
@@ -365,10 +365,10 @@
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 23 Oct 2023 18:07:50 GMT",
-        "ETag": "0x8DBD3F2BC63A1DC",
-        "Last-Modified": "Mon, 23 Oct 2023 18:06:09 GMT",
-        "request-id": "03cf2137-bf6d-418b-90e1-9acd0068ac8e",
+        "Date": "Mon, 06 Nov 2023 22:43:32 GMT",
+        "ETag": "0x8DBDF19BB19D08F",
+        "Last-Modified": "Mon, 06 Nov 2023 22:43:00 GMT",
+        "request-id": "07612ba7-52c4-4178-8822-d8b2af353ead",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -378,13 +378,13 @@
         "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element",
         "id": "BatchUser-testIaaSpool",
         "url": "REDACTED",
-        "eTag": "0x8DBD3F2BC63A1DC",
-        "lastModified": "2023-10-23T18:06:09.9249628Z",
-        "creationTime": "2023-10-23T18:06:09.9249628Z",
-        "state": "active",
-        "stateTransitionTime": "2023-10-23T18:06:09.9249628Z",
+        "eTag": "0x8DBDF19BB19D08F",
+        "lastModified": "2023-11-06T22:43:00.9264783Z",
+        "creationTime": "2023-11-06T22:41:57.4924745Z",
+        "state": "deleting",
+        "stateTransitionTime": "2023-11-06T22:43:00.9264783Z",
         "allocationState": "resizing",
-        "allocationStateTransitionTime": "2023-10-23T18:06:09.9249628Z",
+        "allocationStateTransitionTime": "2023-11-06T22:43:00.9264783Z",
         "vmSize": "standard_d1_v2",
         "resizeTimeout": "PT15M",
         "currentDedicatedNodes": 0,
@@ -429,9 +429,9 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "f5f1b5a7-461d-4fdc-bdb2-e34bae233b73",
+        "client-request-id": "742cb2eb-e18f-463d-9838-83447350c018",
         "Content-Length": "0",
-        "Date": "Mon, 23 Oct 2023 18:08:20 GMT",
+        "Date": "Mon, 06 Nov 2023 22:44:04 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
       },
       "RequestBody": null,
@@ -439,10 +439,10 @@
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 23 Oct 2023 18:08:20 GMT",
-        "ETag": "0x8DBD3F2BC63A1DC",
-        "Last-Modified": "Mon, 23 Oct 2023 18:06:09 GMT",
-        "request-id": "06b59e3b-0500-4aa3-bc2c-fdd484cc9bb2",
+        "Date": "Mon, 06 Nov 2023 22:44:03 GMT",
+        "ETag": "0x8DBDF19BB19D08F",
+        "Last-Modified": "Mon, 06 Nov 2023 22:43:00 GMT",
+        "request-id": "62e07d6d-ec9a-4753-a714-109f0ae34244",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -452,13 +452,13 @@
         "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element",
         "id": "BatchUser-testIaaSpool",
         "url": "REDACTED",
-        "eTag": "0x8DBD3F2BC63A1DC",
-        "lastModified": "2023-10-23T18:06:09.9249628Z",
-        "creationTime": "2023-10-23T18:06:09.9249628Z",
-        "state": "active",
-        "stateTransitionTime": "2023-10-23T18:06:09.9249628Z",
+        "eTag": "0x8DBDF19BB19D08F",
+        "lastModified": "2023-11-06T22:43:00.9264783Z",
+        "creationTime": "2023-11-06T22:41:57.4924745Z",
+        "state": "deleting",
+        "stateTransitionTime": "2023-11-06T22:43:00.9264783Z",
         "allocationState": "resizing",
-        "allocationStateTransitionTime": "2023-10-23T18:06:09.9249628Z",
+        "allocationStateTransitionTime": "2023-11-06T22:43:00.9264783Z",
         "vmSize": "standard_d1_v2",
         "resizeTimeout": "PT15M",
         "currentDedicatedNodes": 0,
@@ -503,9 +503,9 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "ad11589e-cdfd-4a64-9a96-01f1071e14c9",
+        "client-request-id": "70ff4394-e797-42f9-8f01-16641d6dfb0d",
         "Content-Length": "0",
-        "Date": "Mon, 23 Oct 2023 18:08:50 GMT",
+        "Date": "Mon, 06 Nov 2023 22:44:34 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
       },
       "RequestBody": null,
@@ -513,10 +513,10 @@
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 23 Oct 2023 18:08:50 GMT",
-        "ETag": "0x8DBD3F2BC63A1DC",
-        "Last-Modified": "Mon, 23 Oct 2023 18:06:09 GMT",
-        "request-id": "cc254b70-f569-427a-9c21-d111f125d1a7",
+        "Date": "Mon, 06 Nov 2023 22:44:32 GMT",
+        "ETag": "0x8DBDF19BB19D08F",
+        "Last-Modified": "Mon, 06 Nov 2023 22:43:00 GMT",
+        "request-id": "d41f6095-1a35-4cf6-8791-6ce9d6322605",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -526,17 +526,17 @@
         "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element",
         "id": "BatchUser-testIaaSpool",
         "url": "REDACTED",
-        "eTag": "0x8DBD3F2BC63A1DC",
-        "lastModified": "2023-10-23T18:06:09.9249628Z",
-        "creationTime": "2023-10-23T18:06:09.9249628Z",
-        "state": "active",
-        "stateTransitionTime": "2023-10-23T18:06:09.9249628Z",
-        "allocationState": "steady",
-        "allocationStateTransitionTime": "2023-10-23T18:08:34.2269558Z",
+        "eTag": "0x8DBDF19BB19D08F",
+        "lastModified": "2023-11-06T22:43:00.9264783Z",
+        "creationTime": "2023-11-06T22:41:57.4924745Z",
+        "state": "deleting",
+        "stateTransitionTime": "2023-11-06T22:43:00.9264783Z",
+        "allocationState": "resizing",
+        "allocationStateTransitionTime": "2023-11-06T22:44:05.6105072Z",
         "vmSize": "standard_d1_v2",
-        "resizeTimeout": "PT15M",
+        "resizeTimeout": "PT7M9.497S",
         "currentDedicatedNodes": 1,
-        "targetDedicatedNodes": 1,
+        "targetDedicatedNodes": 0,
         "currentLowPriorityNodes": 0,
         "targetLowPriorityNodes": 0,
         "enableAutoScale": false,
@@ -573,15 +573,272 @@
       }
     },
     {
+      "RequestUri": "https://REDACTED/pools/BatchUser-testIaaSpool?api-version=2023-05-01.17.0",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "client-request-id": "77ccafa6-baa7-4d42-8f71-86a095ea8000",
+        "Content-Length": "0",
+        "Date": "Mon, 06 Nov 2023 22:45:04 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Mon, 06 Nov 2023 22:45:02 GMT",
+        "ETag": "0x8DBDF19BB19D08F",
+        "Last-Modified": "Mon, 06 Nov 2023 22:43:00 GMT",
+        "request-id": "b2f112a6-a638-40e2-89f1-82657db1a569",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element",
+        "id": "BatchUser-testIaaSpool",
+        "url": "REDACTED",
+        "eTag": "0x8DBDF19BB19D08F",
+        "lastModified": "2023-11-06T22:43:00.9264783Z",
+        "creationTime": "2023-11-06T22:41:57.4924745Z",
+        "state": "deleting",
+        "stateTransitionTime": "2023-11-06T22:43:00.9264783Z",
+        "allocationState": "resizing",
+        "allocationStateTransitionTime": "2023-11-06T22:44:05.6105072Z",
+        "vmSize": "standard_d1_v2",
+        "resizeTimeout": "PT7M9.497S",
+        "currentDedicatedNodes": 1,
+        "targetDedicatedNodes": 0,
+        "currentLowPriorityNodes": 0,
+        "targetLowPriorityNodes": 0,
+        "enableAutoScale": false,
+        "enableInterNodeCommunication": false,
+        "userAccounts": [
+          {
+            "name": "test-user",
+            "elevationLevel": "admin",
+            "linuxUserConfiguration": {
+              "uid": 5,
+              "gid": 5
+            }
+          }
+        ],
+        "taskSlotsPerNode": 1,
+        "taskSchedulingPolicy": {
+          "nodeFillType": "Spread"
+        },
+        "virtualMachineConfiguration": {
+          "imageReference": {
+            "publisher": "Canonical",
+            "offer": "UbuntuServer",
+            "sku": "18.04-LTS",
+            "version": "latest"
+          },
+          "nodeAgentSKUId": "batch.node.ubuntu 18.04"
+        },
+        "networkConfiguration": {
+          "subnetId": "/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default",
+          "dynamicVNetAssignmentScope": "none",
+          "enableAcceleratedNetworking": false
+        },
+        "currentNodeCommunicationMode": "classic"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/pools/BatchUser-testIaaSpool?api-version=2023-05-01.17.0",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "client-request-id": "15f6cb3a-8b9d-4706-8812-4e102f645036",
+        "Content-Length": "0",
+        "Date": "Mon, 06 Nov 2023 22:45:34 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Mon, 06 Nov 2023 22:45:33 GMT",
+        "ETag": "0x8DBDF19BB19D08F",
+        "Last-Modified": "Mon, 06 Nov 2023 22:43:00 GMT",
+        "request-id": "44fe5783-037d-4341-8a5e-a6096b11712b",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element",
+        "id": "BatchUser-testIaaSpool",
+        "url": "REDACTED",
+        "eTag": "0x8DBDF19BB19D08F",
+        "lastModified": "2023-11-06T22:43:00.9264783Z",
+        "creationTime": "2023-11-06T22:41:57.4924745Z",
+        "state": "deleting",
+        "stateTransitionTime": "2023-11-06T22:43:00.9264783Z",
+        "allocationState": "resizing",
+        "allocationStateTransitionTime": "2023-11-06T22:44:05.6105072Z",
+        "vmSize": "standard_d1_v2",
+        "resizeTimeout": "PT7M9.497S",
+        "currentDedicatedNodes": 1,
+        "targetDedicatedNodes": 0,
+        "currentLowPriorityNodes": 0,
+        "targetLowPriorityNodes": 0,
+        "enableAutoScale": false,
+        "enableInterNodeCommunication": false,
+        "userAccounts": [
+          {
+            "name": "test-user",
+            "elevationLevel": "admin",
+            "linuxUserConfiguration": {
+              "uid": 5,
+              "gid": 5
+            }
+          }
+        ],
+        "taskSlotsPerNode": 1,
+        "taskSchedulingPolicy": {
+          "nodeFillType": "Spread"
+        },
+        "virtualMachineConfiguration": {
+          "imageReference": {
+            "publisher": "Canonical",
+            "offer": "UbuntuServer",
+            "sku": "18.04-LTS",
+            "version": "latest"
+          },
+          "nodeAgentSKUId": "batch.node.ubuntu 18.04"
+        },
+        "networkConfiguration": {
+          "subnetId": "/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default",
+          "dynamicVNetAssignmentScope": "none",
+          "enableAcceleratedNetworking": false
+        },
+        "currentNodeCommunicationMode": "classic"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/pools/BatchUser-testIaaSpool?api-version=2023-05-01.17.0",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "client-request-id": "1f7800e4-682f-42b1-a7be-6ef715baece0",
+        "Content-Length": "0",
+        "Date": "Mon, 06 Nov 2023 22:46:04 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Mon, 06 Nov 2023 22:46:03 GMT",
+        "ETag": "0x8DBDF19BB19D08F",
+        "Last-Modified": "Mon, 06 Nov 2023 22:43:00 GMT",
+        "request-id": "aac2c5af-7f95-463f-ac11-291ad9e0da5c",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element",
+        "id": "BatchUser-testIaaSpool",
+        "url": "REDACTED",
+        "eTag": "0x8DBDF19BB19D08F",
+        "lastModified": "2023-11-06T22:43:00.9264783Z",
+        "creationTime": "2023-11-06T22:41:57.4924745Z",
+        "state": "deleting",
+        "stateTransitionTime": "2023-11-06T22:43:00.9264783Z",
+        "allocationState": "resizing",
+        "allocationStateTransitionTime": "2023-11-06T22:44:05.6105072Z",
+        "vmSize": "standard_d1_v2",
+        "resizeTimeout": "PT7M9.497S",
+        "currentDedicatedNodes": 1,
+        "targetDedicatedNodes": 0,
+        "currentLowPriorityNodes": 0,
+        "targetLowPriorityNodes": 0,
+        "enableAutoScale": false,
+        "enableInterNodeCommunication": false,
+        "userAccounts": [
+          {
+            "name": "test-user",
+            "elevationLevel": "admin",
+            "linuxUserConfiguration": {
+              "uid": 5,
+              "gid": 5
+            }
+          }
+        ],
+        "taskSlotsPerNode": 1,
+        "taskSchedulingPolicy": {
+          "nodeFillType": "Spread"
+        },
+        "virtualMachineConfiguration": {
+          "imageReference": {
+            "publisher": "Canonical",
+            "offer": "UbuntuServer",
+            "sku": "18.04-LTS",
+            "version": "latest"
+          },
+          "nodeAgentSKUId": "batch.node.ubuntu 18.04"
+        },
+        "networkConfiguration": {
+          "subnetId": "/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default",
+          "dynamicVNetAssignmentScope": "none",
+          "enableAcceleratedNetworking": false
+        },
+        "currentNodeCommunicationMode": "classic"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/pools/BatchUser-testIaaSpool?api-version=2023-05-01.17.0",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "client-request-id": "76d8e608-6291-4e81-811b-bc9f8b1918af",
+        "Content-Length": "0",
+        "Date": "Mon, 06 Nov 2023 22:46:35 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Content-Length": "330",
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Mon, 06 Nov 2023 22:46:32 GMT",
+        "request-id": "15b07750-be28-42eb-9113-c1a8caac7ab6",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element",
+        "code": "PoolNotFound",
+        "message": {
+          "lang": "en-US",
+          "value": "The specified pool does not exist.\nRequestId:15b07750-be28-42eb-9113-c1a8caac7ab6\nTime:2023-11-06T22:46:33.6139062Z"
+        }
+      }
+    },
+    {
       "RequestUri": "https://REDACTED/jobs/BatchUser-testAddMultiTasksWithError/addtaskcollection?api-version=2023-05-01.17.0",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "de03ddc1-4080-4159-93cd-eb2c7a290197",
+        "client-request-id": "a6439d90-560a-4c84-9385-b3fb9a232e74",
         "Content-Length": "5491",
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 23 Oct 2023 18:08:50 GMT",
+        "Date": "Mon, 06 Nov 2023 22:46:35 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
       },
       "RequestBody": {
@@ -993,8 +1250,8 @@
         "Content-Length": "328",
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 23 Oct 2023 18:08:50 GMT",
-        "request-id": "debf32f3-9aa4-4a8d-8c24-2f58d40b7349",
+        "Date": "Mon, 06 Nov 2023 22:46:32 GMT",
+        "request-id": "c9026d12-79a3-4a1f-a328-8628f5ef2e0e",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff"
@@ -1004,7 +1261,7 @@
         "code": "JobNotFound",
         "message": {
           "lang": "en-US",
-          "value": "The specified job does not exist.\nRequestId:debf32f3-9aa4-4a8d-8c24-2f58d40b7349\nTime:2023-10-23T18:08:51.0214034Z"
+          "value": "The specified job does not exist.\nRequestId:c9026d12-79a3-4a1f-a328-8628f5ef2e0e\nTime:2023-11-06T22:46:33.7249076Z"
         }
       }
     },
@@ -1014,10 +1271,10 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "24525091-6d33-4963-b796-04897426f028",
+        "client-request-id": "5eab1a5d-bf5a-48e9-9cfc-63a660f38eb5",
         "Content-Length": "5711",
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 23 Oct 2023 18:08:50 GMT",
+        "Date": "Mon, 06 Nov 2023 22:46:35 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
       },
       "RequestBody": {
@@ -1429,8 +1686,8 @@
         "Content-Length": "328",
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 23 Oct 2023 18:08:50 GMT",
-        "request-id": "23afd6a4-b856-4c0d-81dc-b4654e53b61d",
+        "Date": "Mon, 06 Nov 2023 22:46:33 GMT",
+        "request-id": "fe43ba08-48de-4c96-b84a-452b9c598122",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff"
@@ -1440,7 +1697,7 @@
         "code": "JobNotFound",
         "message": {
           "lang": "en-US",
-          "value": "The specified job does not exist.\nRequestId:23afd6a4-b856-4c0d-81dc-b4654e53b61d\nTime:2023-10-23T18:08:51.0242589Z"
+          "value": "The specified job does not exist.\nRequestId:fe43ba08-48de-4c96-b84a-452b9c598122\nTime:2023-11-06T22:46:33.7250313Z"
         }
       }
     },
@@ -1450,446 +1707,10 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "f39970e9-0a59-485d-967a-b3b883860724",
+        "client-request-id": "acfb7d0c-67fc-4bd3-97a4-77e35ae757bb",
         "Content-Length": "5711",
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 23 Oct 2023 18:08:50 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
-      },
-      "RequestBody": {
-        "value": [
-          {
-            "id": "mytask700",
-            "commandLine": "cmd /c echo hello 700"
-          },
-          {
-            "id": "mytask701",
-            "commandLine": "cmd /c echo hello 701"
-          },
-          {
-            "id": "mytask702",
-            "commandLine": "cmd /c echo hello 702"
-          },
-          {
-            "id": "mytask703",
-            "commandLine": "cmd /c echo hello 703"
-          },
-          {
-            "id": "mytask704",
-            "commandLine": "cmd /c echo hello 704"
-          },
-          {
-            "id": "mytask705",
-            "commandLine": "cmd /c echo hello 705"
-          },
-          {
-            "id": "mytask706",
-            "commandLine": "cmd /c echo hello 706"
-          },
-          {
-            "id": "mytask707",
-            "commandLine": "cmd /c echo hello 707"
-          },
-          {
-            "id": "mytask708",
-            "commandLine": "cmd /c echo hello 708"
-          },
-          {
-            "id": "mytask709",
-            "commandLine": "cmd /c echo hello 709"
-          },
-          {
-            "id": "mytask710",
-            "commandLine": "cmd /c echo hello 710"
-          },
-          {
-            "id": "mytask711",
-            "commandLine": "cmd /c echo hello 711"
-          },
-          {
-            "id": "mytask712",
-            "commandLine": "cmd /c echo hello 712"
-          },
-          {
-            "id": "mytask713",
-            "commandLine": "cmd /c echo hello 713"
-          },
-          {
-            "id": "mytask714",
-            "commandLine": "cmd /c echo hello 714"
-          },
-          {
-            "id": "mytask715",
-            "commandLine": "cmd /c echo hello 715"
-          },
-          {
-            "id": "mytask716",
-            "commandLine": "cmd /c echo hello 716"
-          },
-          {
-            "id": "mytask717",
-            "commandLine": "cmd /c echo hello 717"
-          },
-          {
-            "id": "mytask718",
-            "commandLine": "cmd /c echo hello 718"
-          },
-          {
-            "id": "mytask719",
-            "commandLine": "cmd /c echo hello 719"
-          },
-          {
-            "id": "mytask720",
-            "commandLine": "cmd /c echo hello 720"
-          },
-          {
-            "id": "mytask721",
-            "commandLine": "cmd /c echo hello 721"
-          },
-          {
-            "id": "mytask722",
-            "commandLine": "cmd /c echo hello 722"
-          },
-          {
-            "id": "mytask723",
-            "commandLine": "cmd /c echo hello 723"
-          },
-          {
-            "id": "mytask724",
-            "commandLine": "cmd /c echo hello 724"
-          },
-          {
-            "id": "mytask725",
-            "commandLine": "cmd /c echo hello 725"
-          },
-          {
-            "id": "mytask726",
-            "commandLine": "cmd /c echo hello 726"
-          },
-          {
-            "id": "mytask727",
-            "commandLine": "cmd /c echo hello 727"
-          },
-          {
-            "id": "mytask728",
-            "commandLine": "cmd /c echo hello 728"
-          },
-          {
-            "id": "mytask729",
-            "commandLine": "cmd /c echo hello 729"
-          },
-          {
-            "id": "mytask730",
-            "commandLine": "cmd /c echo hello 730"
-          },
-          {
-            "id": "mytask731",
-            "commandLine": "cmd /c echo hello 731"
-          },
-          {
-            "id": "mytask732",
-            "commandLine": "cmd /c echo hello 732"
-          },
-          {
-            "id": "mytask733",
-            "commandLine": "cmd /c echo hello 733"
-          },
-          {
-            "id": "mytask734",
-            "commandLine": "cmd /c echo hello 734"
-          },
-          {
-            "id": "mytask735",
-            "commandLine": "cmd /c echo hello 735"
-          },
-          {
-            "id": "mytask736",
-            "commandLine": "cmd /c echo hello 736"
-          },
-          {
-            "id": "mytask737",
-            "commandLine": "cmd /c echo hello 737"
-          },
-          {
-            "id": "mytask738",
-            "commandLine": "cmd /c echo hello 738"
-          },
-          {
-            "id": "mytask739",
-            "commandLine": "cmd /c echo hello 739"
-          },
-          {
-            "id": "mytask740",
-            "commandLine": "cmd /c echo hello 740"
-          },
-          {
-            "id": "mytask741",
-            "commandLine": "cmd /c echo hello 741"
-          },
-          {
-            "id": "mytask742",
-            "commandLine": "cmd /c echo hello 742"
-          },
-          {
-            "id": "mytask743",
-            "commandLine": "cmd /c echo hello 743"
-          },
-          {
-            "id": "mytask744",
-            "commandLine": "cmd /c echo hello 744"
-          },
-          {
-            "id": "mytask745",
-            "commandLine": "cmd /c echo hello 745"
-          },
-          {
-            "id": "mytask746",
-            "commandLine": "cmd /c echo hello 746"
-          },
-          {
-            "id": "mytask747",
-            "commandLine": "cmd /c echo hello 747"
-          },
-          {
-            "id": "mytask748",
-            "commandLine": "cmd /c echo hello 748"
-          },
-          {
-            "id": "mytask749",
-            "commandLine": "cmd /c echo hello 749"
-          },
-          {
-            "id": "mytask750",
-            "commandLine": "cmd /c echo hello 750"
-          },
-          {
-            "id": "mytask751",
-            "commandLine": "cmd /c echo hello 751"
-          },
-          {
-            "id": "mytask752",
-            "commandLine": "cmd /c echo hello 752"
-          },
-          {
-            "id": "mytask753",
-            "commandLine": "cmd /c echo hello 753"
-          },
-          {
-            "id": "mytask754",
-            "commandLine": "cmd /c echo hello 754"
-          },
-          {
-            "id": "mytask755",
-            "commandLine": "cmd /c echo hello 755"
-          },
-          {
-            "id": "mytask756",
-            "commandLine": "cmd /c echo hello 756"
-          },
-          {
-            "id": "mytask757",
-            "commandLine": "cmd /c echo hello 757"
-          },
-          {
-            "id": "mytask758",
-            "commandLine": "cmd /c echo hello 758"
-          },
-          {
-            "id": "mytask759",
-            "commandLine": "cmd /c echo hello 759"
-          },
-          {
-            "id": "mytask760",
-            "commandLine": "cmd /c echo hello 760"
-          },
-          {
-            "id": "mytask761",
-            "commandLine": "cmd /c echo hello 761"
-          },
-          {
-            "id": "mytask762",
-            "commandLine": "cmd /c echo hello 762"
-          },
-          {
-            "id": "mytask763",
-            "commandLine": "cmd /c echo hello 763"
-          },
-          {
-            "id": "mytask764",
-            "commandLine": "cmd /c echo hello 764"
-          },
-          {
-            "id": "mytask765",
-            "commandLine": "cmd /c echo hello 765"
-          },
-          {
-            "id": "mytask766",
-            "commandLine": "cmd /c echo hello 766"
-          },
-          {
-            "id": "mytask767",
-            "commandLine": "cmd /c echo hello 767"
-          },
-          {
-            "id": "mytask768",
-            "commandLine": "cmd /c echo hello 768"
-          },
-          {
-            "id": "mytask769",
-            "commandLine": "cmd /c echo hello 769"
-          },
-          {
-            "id": "mytask770",
-            "commandLine": "cmd /c echo hello 770"
-          },
-          {
-            "id": "mytask771",
-            "commandLine": "cmd /c echo hello 771"
-          },
-          {
-            "id": "mytask772",
-            "commandLine": "cmd /c echo hello 772"
-          },
-          {
-            "id": "mytask773",
-            "commandLine": "cmd /c echo hello 773"
-          },
-          {
-            "id": "mytask774",
-            "commandLine": "cmd /c echo hello 774"
-          },
-          {
-            "id": "mytask775",
-            "commandLine": "cmd /c echo hello 775"
-          },
-          {
-            "id": "mytask776",
-            "commandLine": "cmd /c echo hello 776"
-          },
-          {
-            "id": "mytask777",
-            "commandLine": "cmd /c echo hello 777"
-          },
-          {
-            "id": "mytask778",
-            "commandLine": "cmd /c echo hello 778"
-          },
-          {
-            "id": "mytask779",
-            "commandLine": "cmd /c echo hello 779"
-          },
-          {
-            "id": "mytask780",
-            "commandLine": "cmd /c echo hello 780"
-          },
-          {
-            "id": "mytask781",
-            "commandLine": "cmd /c echo hello 781"
-          },
-          {
-            "id": "mytask782",
-            "commandLine": "cmd /c echo hello 782"
-          },
-          {
-            "id": "mytask783",
-            "commandLine": "cmd /c echo hello 783"
-          },
-          {
-            "id": "mytask784",
-            "commandLine": "cmd /c echo hello 784"
-          },
-          {
-            "id": "mytask785",
-            "commandLine": "cmd /c echo hello 785"
-          },
-          {
-            "id": "mytask786",
-            "commandLine": "cmd /c echo hello 786"
-          },
-          {
-            "id": "mytask787",
-            "commandLine": "cmd /c echo hello 787"
-          },
-          {
-            "id": "mytask788",
-            "commandLine": "cmd /c echo hello 788"
-          },
-          {
-            "id": "mytask789",
-            "commandLine": "cmd /c echo hello 789"
-          },
-          {
-            "id": "mytask790",
-            "commandLine": "cmd /c echo hello 790"
-          },
-          {
-            "id": "mytask791",
-            "commandLine": "cmd /c echo hello 791"
-          },
-          {
-            "id": "mytask792",
-            "commandLine": "cmd /c echo hello 792"
-          },
-          {
-            "id": "mytask793",
-            "commandLine": "cmd /c echo hello 793"
-          },
-          {
-            "id": "mytask794",
-            "commandLine": "cmd /c echo hello 794"
-          },
-          {
-            "id": "mytask795",
-            "commandLine": "cmd /c echo hello 795"
-          },
-          {
-            "id": "mytask796",
-            "commandLine": "cmd /c echo hello 796"
-          },
-          {
-            "id": "mytask797",
-            "commandLine": "cmd /c echo hello 797"
-          },
-          {
-            "id": "mytask798",
-            "commandLine": "cmd /c echo hello 798"
-          },
-          {
-            "id": "mytask799",
-            "commandLine": "cmd /c echo hello 799"
-          }
-        ]
-      },
-      "StatusCode": 404,
-      "ResponseHeaders": {
-        "Content-Length": "328",
-        "Content-Type": "application/json; odata=minimalmetadata",
-        "DataServiceVersion": "3.0",
-        "Date": "Mon, 23 Oct 2023 18:08:50 GMT",
-        "request-id": "c58ea489-bb60-4f73-abed-bb2670040423",
-        "Server": "Microsoft-HTTPAPI/2.0",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "X-Content-Type-Options": "nosniff"
-      },
-      "ResponseBody": {
-        "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element",
-        "code": "JobNotFound",
-        "message": {
-          "lang": "en-US",
-          "value": "The specified job does not exist.\nRequestId:c58ea489-bb60-4f73-abed-bb2670040423\nTime:2023-10-23T18:08:51.0134424Z"
-        }
-      }
-    },
-    {
-      "RequestUri": "https://REDACTED/jobs/BatchUser-testAddMultiTasksWithError/addtaskcollection?api-version=2023-05-01.17.0",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "client-request-id": "edd068c9-3d4b-4339-a827-a798cb552d7b",
-        "Content-Length": "5711",
-        "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 23 Oct 2023 18:08:50 GMT",
+        "Date": "Mon, 06 Nov 2023 22:46:35 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
       },
       "RequestBody": {
@@ -2301,8 +2122,8 @@
         "Content-Length": "328",
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 23 Oct 2023 18:08:50 GMT",
-        "request-id": "ebaf0940-e0d5-4339-a5cc-be42fb07cb2d",
+        "Date": "Mon, 06 Nov 2023 22:46:32 GMT",
+        "request-id": "0005fcbb-eada-4baf-ad06-bc4c3886349a",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff"
@@ -2312,7 +2133,7 @@
         "code": "JobNotFound",
         "message": {
           "lang": "en-US",
-          "value": "The specified job does not exist.\nRequestId:ebaf0940-e0d5-4339-a5cc-be42fb07cb2d\nTime:2023-10-23T18:08:51.0277492Z"
+          "value": "The specified job does not exist.\nRequestId:0005fcbb-eada-4baf-ad06-bc4c3886349a\nTime:2023-11-06T22:46:33.7269058Z"
         }
       }
     },
@@ -2322,446 +2143,10 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "07bf4576-af30-457b-87f9-abd8253d70ae",
+        "client-request-id": "4a64c5d8-ad28-4cc4-a7d3-ce43f0482281",
         "Content-Length": "5711",
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 23 Oct 2023 18:08:50 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
-      },
-      "RequestBody": {
-        "value": [
-          {
-            "id": "mytask400",
-            "commandLine": "cmd /c echo hello 400"
-          },
-          {
-            "id": "mytask401",
-            "commandLine": "cmd /c echo hello 401"
-          },
-          {
-            "id": "mytask402",
-            "commandLine": "cmd /c echo hello 402"
-          },
-          {
-            "id": "mytask403",
-            "commandLine": "cmd /c echo hello 403"
-          },
-          {
-            "id": "mytask404",
-            "commandLine": "cmd /c echo hello 404"
-          },
-          {
-            "id": "mytask405",
-            "commandLine": "cmd /c echo hello 405"
-          },
-          {
-            "id": "mytask406",
-            "commandLine": "cmd /c echo hello 406"
-          },
-          {
-            "id": "mytask407",
-            "commandLine": "cmd /c echo hello 407"
-          },
-          {
-            "id": "mytask408",
-            "commandLine": "cmd /c echo hello 408"
-          },
-          {
-            "id": "mytask409",
-            "commandLine": "cmd /c echo hello 409"
-          },
-          {
-            "id": "mytask410",
-            "commandLine": "cmd /c echo hello 410"
-          },
-          {
-            "id": "mytask411",
-            "commandLine": "cmd /c echo hello 411"
-          },
-          {
-            "id": "mytask412",
-            "commandLine": "cmd /c echo hello 412"
-          },
-          {
-            "id": "mytask413",
-            "commandLine": "cmd /c echo hello 413"
-          },
-          {
-            "id": "mytask414",
-            "commandLine": "cmd /c echo hello 414"
-          },
-          {
-            "id": "mytask415",
-            "commandLine": "cmd /c echo hello 415"
-          },
-          {
-            "id": "mytask416",
-            "commandLine": "cmd /c echo hello 416"
-          },
-          {
-            "id": "mytask417",
-            "commandLine": "cmd /c echo hello 417"
-          },
-          {
-            "id": "mytask418",
-            "commandLine": "cmd /c echo hello 418"
-          },
-          {
-            "id": "mytask419",
-            "commandLine": "cmd /c echo hello 419"
-          },
-          {
-            "id": "mytask420",
-            "commandLine": "cmd /c echo hello 420"
-          },
-          {
-            "id": "mytask421",
-            "commandLine": "cmd /c echo hello 421"
-          },
-          {
-            "id": "mytask422",
-            "commandLine": "cmd /c echo hello 422"
-          },
-          {
-            "id": "mytask423",
-            "commandLine": "cmd /c echo hello 423"
-          },
-          {
-            "id": "mytask424",
-            "commandLine": "cmd /c echo hello 424"
-          },
-          {
-            "id": "mytask425",
-            "commandLine": "cmd /c echo hello 425"
-          },
-          {
-            "id": "mytask426",
-            "commandLine": "cmd /c echo hello 426"
-          },
-          {
-            "id": "mytask427",
-            "commandLine": "cmd /c echo hello 427"
-          },
-          {
-            "id": "mytask428",
-            "commandLine": "cmd /c echo hello 428"
-          },
-          {
-            "id": "mytask429",
-            "commandLine": "cmd /c echo hello 429"
-          },
-          {
-            "id": "mytask430",
-            "commandLine": "cmd /c echo hello 430"
-          },
-          {
-            "id": "mytask431",
-            "commandLine": "cmd /c echo hello 431"
-          },
-          {
-            "id": "mytask432",
-            "commandLine": "cmd /c echo hello 432"
-          },
-          {
-            "id": "mytask433",
-            "commandLine": "cmd /c echo hello 433"
-          },
-          {
-            "id": "mytask434",
-            "commandLine": "cmd /c echo hello 434"
-          },
-          {
-            "id": "mytask435",
-            "commandLine": "cmd /c echo hello 435"
-          },
-          {
-            "id": "mytask436",
-            "commandLine": "cmd /c echo hello 436"
-          },
-          {
-            "id": "mytask437",
-            "commandLine": "cmd /c echo hello 437"
-          },
-          {
-            "id": "mytask438",
-            "commandLine": "cmd /c echo hello 438"
-          },
-          {
-            "id": "mytask439",
-            "commandLine": "cmd /c echo hello 439"
-          },
-          {
-            "id": "mytask440",
-            "commandLine": "cmd /c echo hello 440"
-          },
-          {
-            "id": "mytask441",
-            "commandLine": "cmd /c echo hello 441"
-          },
-          {
-            "id": "mytask442",
-            "commandLine": "cmd /c echo hello 442"
-          },
-          {
-            "id": "mytask443",
-            "commandLine": "cmd /c echo hello 443"
-          },
-          {
-            "id": "mytask444",
-            "commandLine": "cmd /c echo hello 444"
-          },
-          {
-            "id": "mytask445",
-            "commandLine": "cmd /c echo hello 445"
-          },
-          {
-            "id": "mytask446",
-            "commandLine": "cmd /c echo hello 446"
-          },
-          {
-            "id": "mytask447",
-            "commandLine": "cmd /c echo hello 447"
-          },
-          {
-            "id": "mytask448",
-            "commandLine": "cmd /c echo hello 448"
-          },
-          {
-            "id": "mytask449",
-            "commandLine": "cmd /c echo hello 449"
-          },
-          {
-            "id": "mytask450",
-            "commandLine": "cmd /c echo hello 450"
-          },
-          {
-            "id": "mytask451",
-            "commandLine": "cmd /c echo hello 451"
-          },
-          {
-            "id": "mytask452",
-            "commandLine": "cmd /c echo hello 452"
-          },
-          {
-            "id": "mytask453",
-            "commandLine": "cmd /c echo hello 453"
-          },
-          {
-            "id": "mytask454",
-            "commandLine": "cmd /c echo hello 454"
-          },
-          {
-            "id": "mytask455",
-            "commandLine": "cmd /c echo hello 455"
-          },
-          {
-            "id": "mytask456",
-            "commandLine": "cmd /c echo hello 456"
-          },
-          {
-            "id": "mytask457",
-            "commandLine": "cmd /c echo hello 457"
-          },
-          {
-            "id": "mytask458",
-            "commandLine": "cmd /c echo hello 458"
-          },
-          {
-            "id": "mytask459",
-            "commandLine": "cmd /c echo hello 459"
-          },
-          {
-            "id": "mytask460",
-            "commandLine": "cmd /c echo hello 460"
-          },
-          {
-            "id": "mytask461",
-            "commandLine": "cmd /c echo hello 461"
-          },
-          {
-            "id": "mytask462",
-            "commandLine": "cmd /c echo hello 462"
-          },
-          {
-            "id": "mytask463",
-            "commandLine": "cmd /c echo hello 463"
-          },
-          {
-            "id": "mytask464",
-            "commandLine": "cmd /c echo hello 464"
-          },
-          {
-            "id": "mytask465",
-            "commandLine": "cmd /c echo hello 465"
-          },
-          {
-            "id": "mytask466",
-            "commandLine": "cmd /c echo hello 466"
-          },
-          {
-            "id": "mytask467",
-            "commandLine": "cmd /c echo hello 467"
-          },
-          {
-            "id": "mytask468",
-            "commandLine": "cmd /c echo hello 468"
-          },
-          {
-            "id": "mytask469",
-            "commandLine": "cmd /c echo hello 469"
-          },
-          {
-            "id": "mytask470",
-            "commandLine": "cmd /c echo hello 470"
-          },
-          {
-            "id": "mytask471",
-            "commandLine": "cmd /c echo hello 471"
-          },
-          {
-            "id": "mytask472",
-            "commandLine": "cmd /c echo hello 472"
-          },
-          {
-            "id": "mytask473",
-            "commandLine": "cmd /c echo hello 473"
-          },
-          {
-            "id": "mytask474",
-            "commandLine": "cmd /c echo hello 474"
-          },
-          {
-            "id": "mytask475",
-            "commandLine": "cmd /c echo hello 475"
-          },
-          {
-            "id": "mytask476",
-            "commandLine": "cmd /c echo hello 476"
-          },
-          {
-            "id": "mytask477",
-            "commandLine": "cmd /c echo hello 477"
-          },
-          {
-            "id": "mytask478",
-            "commandLine": "cmd /c echo hello 478"
-          },
-          {
-            "id": "mytask479",
-            "commandLine": "cmd /c echo hello 479"
-          },
-          {
-            "id": "mytask480",
-            "commandLine": "cmd /c echo hello 480"
-          },
-          {
-            "id": "mytask481",
-            "commandLine": "cmd /c echo hello 481"
-          },
-          {
-            "id": "mytask482",
-            "commandLine": "cmd /c echo hello 482"
-          },
-          {
-            "id": "mytask483",
-            "commandLine": "cmd /c echo hello 483"
-          },
-          {
-            "id": "mytask484",
-            "commandLine": "cmd /c echo hello 484"
-          },
-          {
-            "id": "mytask485",
-            "commandLine": "cmd /c echo hello 485"
-          },
-          {
-            "id": "mytask486",
-            "commandLine": "cmd /c echo hello 486"
-          },
-          {
-            "id": "mytask487",
-            "commandLine": "cmd /c echo hello 487"
-          },
-          {
-            "id": "mytask488",
-            "commandLine": "cmd /c echo hello 488"
-          },
-          {
-            "id": "mytask489",
-            "commandLine": "cmd /c echo hello 489"
-          },
-          {
-            "id": "mytask490",
-            "commandLine": "cmd /c echo hello 490"
-          },
-          {
-            "id": "mytask491",
-            "commandLine": "cmd /c echo hello 491"
-          },
-          {
-            "id": "mytask492",
-            "commandLine": "cmd /c echo hello 492"
-          },
-          {
-            "id": "mytask493",
-            "commandLine": "cmd /c echo hello 493"
-          },
-          {
-            "id": "mytask494",
-            "commandLine": "cmd /c echo hello 494"
-          },
-          {
-            "id": "mytask495",
-            "commandLine": "cmd /c echo hello 495"
-          },
-          {
-            "id": "mytask496",
-            "commandLine": "cmd /c echo hello 496"
-          },
-          {
-            "id": "mytask497",
-            "commandLine": "cmd /c echo hello 497"
-          },
-          {
-            "id": "mytask498",
-            "commandLine": "cmd /c echo hello 498"
-          },
-          {
-            "id": "mytask499",
-            "commandLine": "cmd /c echo hello 499"
-          }
-        ]
-      },
-      "StatusCode": 404,
-      "ResponseHeaders": {
-        "Content-Length": "328",
-        "Content-Type": "application/json; odata=minimalmetadata",
-        "DataServiceVersion": "3.0",
-        "Date": "Mon, 23 Oct 2023 18:08:50 GMT",
-        "request-id": "9090b0cb-64d0-47c0-9b37-4b424302093b",
-        "Server": "Microsoft-HTTPAPI/2.0",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "X-Content-Type-Options": "nosniff"
-      },
-      "ResponseBody": {
-        "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element",
-        "code": "JobNotFound",
-        "message": {
-          "lang": "en-US",
-          "value": "The specified job does not exist.\nRequestId:9090b0cb-64d0-47c0-9b37-4b424302093b\nTime:2023-10-23T18:08:51.0283819Z"
-        }
-      }
-    },
-    {
-      "RequestUri": "https://REDACTED/jobs/BatchUser-testAddMultiTasksWithError/addtaskcollection?api-version=2023-05-01.17.0",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "client-request-id": "5271c04b-9eb6-48c6-b2c3-2de77a372e52",
-        "Content-Length": "5711",
-        "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 23 Oct 2023 18:08:50 GMT",
+        "Date": "Mon, 06 Nov 2023 22:46:35 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
       },
       "RequestBody": {
@@ -3173,8 +2558,8 @@
         "Content-Length": "328",
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 23 Oct 2023 18:08:50 GMT",
-        "request-id": "468671f2-56fa-44ac-bcdd-26e33880c4c3",
+        "Date": "Mon, 06 Nov 2023 22:46:33 GMT",
+        "request-id": "767a1f24-5e04-4eef-aa5e-f2ed4f0fd2a3",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff"
@@ -3184,7 +2569,7 @@
         "code": "JobNotFound",
         "message": {
           "lang": "en-US",
-          "value": "The specified job does not exist.\nRequestId:468671f2-56fa-44ac-bcdd-26e33880c4c3\nTime:2023-10-23T18:08:51.0282755Z"
+          "value": "The specified job does not exist.\nRequestId:767a1f24-5e04-4eef-aa5e-f2ed4f0fd2a3\nTime:2023-11-06T22:46:33.7240450Z"
         }
       }
     },
@@ -3194,10 +2579,10 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "e54af3fa-0644-412c-a52b-e2795fff8353",
+        "client-request-id": "0dfde208-3847-48e7-8347-d271d1e7371e",
         "Content-Length": "5711",
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 23 Oct 2023 18:08:50 GMT",
+        "Date": "Mon, 06 Nov 2023 22:46:35 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
       },
       "RequestBody": {
@@ -3609,8 +2994,8 @@
         "Content-Length": "328",
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 23 Oct 2023 18:08:50 GMT",
-        "request-id": "f11442b6-3389-4f2d-9652-e49b478a11f6",
+        "Date": "Mon, 06 Nov 2023 22:46:33 GMT",
+        "request-id": "335f321f-5952-4e56-b23c-a45de6cb0ea1",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff"
@@ -3620,7 +3005,7 @@
         "code": "JobNotFound",
         "message": {
           "lang": "en-US",
-          "value": "The specified job does not exist.\nRequestId:f11442b6-3389-4f2d-9652-e49b478a11f6\nTime:2023-10-23T18:08:51.0262957Z"
+          "value": "The specified job does not exist.\nRequestId:335f321f-5952-4e56-b23c-a45de6cb0ea1\nTime:2023-11-06T22:46:33.7315598Z"
         }
       }
     },
@@ -3630,10 +3015,446 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "9ec03292-2b03-4147-adec-6042051e9159",
+        "client-request-id": "c0ebe82c-ac0f-49c5-b7d5-067ad5fd7f37",
         "Content-Length": "5711",
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 23 Oct 2023 18:08:50 GMT",
+        "Date": "Mon, 06 Nov 2023 22:46:35 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
+      },
+      "RequestBody": {
+        "value": [
+          {
+            "id": "mytask400",
+            "commandLine": "cmd /c echo hello 400"
+          },
+          {
+            "id": "mytask401",
+            "commandLine": "cmd /c echo hello 401"
+          },
+          {
+            "id": "mytask402",
+            "commandLine": "cmd /c echo hello 402"
+          },
+          {
+            "id": "mytask403",
+            "commandLine": "cmd /c echo hello 403"
+          },
+          {
+            "id": "mytask404",
+            "commandLine": "cmd /c echo hello 404"
+          },
+          {
+            "id": "mytask405",
+            "commandLine": "cmd /c echo hello 405"
+          },
+          {
+            "id": "mytask406",
+            "commandLine": "cmd /c echo hello 406"
+          },
+          {
+            "id": "mytask407",
+            "commandLine": "cmd /c echo hello 407"
+          },
+          {
+            "id": "mytask408",
+            "commandLine": "cmd /c echo hello 408"
+          },
+          {
+            "id": "mytask409",
+            "commandLine": "cmd /c echo hello 409"
+          },
+          {
+            "id": "mytask410",
+            "commandLine": "cmd /c echo hello 410"
+          },
+          {
+            "id": "mytask411",
+            "commandLine": "cmd /c echo hello 411"
+          },
+          {
+            "id": "mytask412",
+            "commandLine": "cmd /c echo hello 412"
+          },
+          {
+            "id": "mytask413",
+            "commandLine": "cmd /c echo hello 413"
+          },
+          {
+            "id": "mytask414",
+            "commandLine": "cmd /c echo hello 414"
+          },
+          {
+            "id": "mytask415",
+            "commandLine": "cmd /c echo hello 415"
+          },
+          {
+            "id": "mytask416",
+            "commandLine": "cmd /c echo hello 416"
+          },
+          {
+            "id": "mytask417",
+            "commandLine": "cmd /c echo hello 417"
+          },
+          {
+            "id": "mytask418",
+            "commandLine": "cmd /c echo hello 418"
+          },
+          {
+            "id": "mytask419",
+            "commandLine": "cmd /c echo hello 419"
+          },
+          {
+            "id": "mytask420",
+            "commandLine": "cmd /c echo hello 420"
+          },
+          {
+            "id": "mytask421",
+            "commandLine": "cmd /c echo hello 421"
+          },
+          {
+            "id": "mytask422",
+            "commandLine": "cmd /c echo hello 422"
+          },
+          {
+            "id": "mytask423",
+            "commandLine": "cmd /c echo hello 423"
+          },
+          {
+            "id": "mytask424",
+            "commandLine": "cmd /c echo hello 424"
+          },
+          {
+            "id": "mytask425",
+            "commandLine": "cmd /c echo hello 425"
+          },
+          {
+            "id": "mytask426",
+            "commandLine": "cmd /c echo hello 426"
+          },
+          {
+            "id": "mytask427",
+            "commandLine": "cmd /c echo hello 427"
+          },
+          {
+            "id": "mytask428",
+            "commandLine": "cmd /c echo hello 428"
+          },
+          {
+            "id": "mytask429",
+            "commandLine": "cmd /c echo hello 429"
+          },
+          {
+            "id": "mytask430",
+            "commandLine": "cmd /c echo hello 430"
+          },
+          {
+            "id": "mytask431",
+            "commandLine": "cmd /c echo hello 431"
+          },
+          {
+            "id": "mytask432",
+            "commandLine": "cmd /c echo hello 432"
+          },
+          {
+            "id": "mytask433",
+            "commandLine": "cmd /c echo hello 433"
+          },
+          {
+            "id": "mytask434",
+            "commandLine": "cmd /c echo hello 434"
+          },
+          {
+            "id": "mytask435",
+            "commandLine": "cmd /c echo hello 435"
+          },
+          {
+            "id": "mytask436",
+            "commandLine": "cmd /c echo hello 436"
+          },
+          {
+            "id": "mytask437",
+            "commandLine": "cmd /c echo hello 437"
+          },
+          {
+            "id": "mytask438",
+            "commandLine": "cmd /c echo hello 438"
+          },
+          {
+            "id": "mytask439",
+            "commandLine": "cmd /c echo hello 439"
+          },
+          {
+            "id": "mytask440",
+            "commandLine": "cmd /c echo hello 440"
+          },
+          {
+            "id": "mytask441",
+            "commandLine": "cmd /c echo hello 441"
+          },
+          {
+            "id": "mytask442",
+            "commandLine": "cmd /c echo hello 442"
+          },
+          {
+            "id": "mytask443",
+            "commandLine": "cmd /c echo hello 443"
+          },
+          {
+            "id": "mytask444",
+            "commandLine": "cmd /c echo hello 444"
+          },
+          {
+            "id": "mytask445",
+            "commandLine": "cmd /c echo hello 445"
+          },
+          {
+            "id": "mytask446",
+            "commandLine": "cmd /c echo hello 446"
+          },
+          {
+            "id": "mytask447",
+            "commandLine": "cmd /c echo hello 447"
+          },
+          {
+            "id": "mytask448",
+            "commandLine": "cmd /c echo hello 448"
+          },
+          {
+            "id": "mytask449",
+            "commandLine": "cmd /c echo hello 449"
+          },
+          {
+            "id": "mytask450",
+            "commandLine": "cmd /c echo hello 450"
+          },
+          {
+            "id": "mytask451",
+            "commandLine": "cmd /c echo hello 451"
+          },
+          {
+            "id": "mytask452",
+            "commandLine": "cmd /c echo hello 452"
+          },
+          {
+            "id": "mytask453",
+            "commandLine": "cmd /c echo hello 453"
+          },
+          {
+            "id": "mytask454",
+            "commandLine": "cmd /c echo hello 454"
+          },
+          {
+            "id": "mytask455",
+            "commandLine": "cmd /c echo hello 455"
+          },
+          {
+            "id": "mytask456",
+            "commandLine": "cmd /c echo hello 456"
+          },
+          {
+            "id": "mytask457",
+            "commandLine": "cmd /c echo hello 457"
+          },
+          {
+            "id": "mytask458",
+            "commandLine": "cmd /c echo hello 458"
+          },
+          {
+            "id": "mytask459",
+            "commandLine": "cmd /c echo hello 459"
+          },
+          {
+            "id": "mytask460",
+            "commandLine": "cmd /c echo hello 460"
+          },
+          {
+            "id": "mytask461",
+            "commandLine": "cmd /c echo hello 461"
+          },
+          {
+            "id": "mytask462",
+            "commandLine": "cmd /c echo hello 462"
+          },
+          {
+            "id": "mytask463",
+            "commandLine": "cmd /c echo hello 463"
+          },
+          {
+            "id": "mytask464",
+            "commandLine": "cmd /c echo hello 464"
+          },
+          {
+            "id": "mytask465",
+            "commandLine": "cmd /c echo hello 465"
+          },
+          {
+            "id": "mytask466",
+            "commandLine": "cmd /c echo hello 466"
+          },
+          {
+            "id": "mytask467",
+            "commandLine": "cmd /c echo hello 467"
+          },
+          {
+            "id": "mytask468",
+            "commandLine": "cmd /c echo hello 468"
+          },
+          {
+            "id": "mytask469",
+            "commandLine": "cmd /c echo hello 469"
+          },
+          {
+            "id": "mytask470",
+            "commandLine": "cmd /c echo hello 470"
+          },
+          {
+            "id": "mytask471",
+            "commandLine": "cmd /c echo hello 471"
+          },
+          {
+            "id": "mytask472",
+            "commandLine": "cmd /c echo hello 472"
+          },
+          {
+            "id": "mytask473",
+            "commandLine": "cmd /c echo hello 473"
+          },
+          {
+            "id": "mytask474",
+            "commandLine": "cmd /c echo hello 474"
+          },
+          {
+            "id": "mytask475",
+            "commandLine": "cmd /c echo hello 475"
+          },
+          {
+            "id": "mytask476",
+            "commandLine": "cmd /c echo hello 476"
+          },
+          {
+            "id": "mytask477",
+            "commandLine": "cmd /c echo hello 477"
+          },
+          {
+            "id": "mytask478",
+            "commandLine": "cmd /c echo hello 478"
+          },
+          {
+            "id": "mytask479",
+            "commandLine": "cmd /c echo hello 479"
+          },
+          {
+            "id": "mytask480",
+            "commandLine": "cmd /c echo hello 480"
+          },
+          {
+            "id": "mytask481",
+            "commandLine": "cmd /c echo hello 481"
+          },
+          {
+            "id": "mytask482",
+            "commandLine": "cmd /c echo hello 482"
+          },
+          {
+            "id": "mytask483",
+            "commandLine": "cmd /c echo hello 483"
+          },
+          {
+            "id": "mytask484",
+            "commandLine": "cmd /c echo hello 484"
+          },
+          {
+            "id": "mytask485",
+            "commandLine": "cmd /c echo hello 485"
+          },
+          {
+            "id": "mytask486",
+            "commandLine": "cmd /c echo hello 486"
+          },
+          {
+            "id": "mytask487",
+            "commandLine": "cmd /c echo hello 487"
+          },
+          {
+            "id": "mytask488",
+            "commandLine": "cmd /c echo hello 488"
+          },
+          {
+            "id": "mytask489",
+            "commandLine": "cmd /c echo hello 489"
+          },
+          {
+            "id": "mytask490",
+            "commandLine": "cmd /c echo hello 490"
+          },
+          {
+            "id": "mytask491",
+            "commandLine": "cmd /c echo hello 491"
+          },
+          {
+            "id": "mytask492",
+            "commandLine": "cmd /c echo hello 492"
+          },
+          {
+            "id": "mytask493",
+            "commandLine": "cmd /c echo hello 493"
+          },
+          {
+            "id": "mytask494",
+            "commandLine": "cmd /c echo hello 494"
+          },
+          {
+            "id": "mytask495",
+            "commandLine": "cmd /c echo hello 495"
+          },
+          {
+            "id": "mytask496",
+            "commandLine": "cmd /c echo hello 496"
+          },
+          {
+            "id": "mytask497",
+            "commandLine": "cmd /c echo hello 497"
+          },
+          {
+            "id": "mytask498",
+            "commandLine": "cmd /c echo hello 498"
+          },
+          {
+            "id": "mytask499",
+            "commandLine": "cmd /c echo hello 499"
+          }
+        ]
+      },
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Content-Length": "328",
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Mon, 06 Nov 2023 22:46:33 GMT",
+        "request-id": "d1d2853b-48b1-4fe1-a923-a58912b9b85c",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element",
+        "code": "JobNotFound",
+        "message": {
+          "lang": "en-US",
+          "value": "The specified job does not exist.\nRequestId:d1d2853b-48b1-4fe1-a923-a58912b9b85c\nTime:2023-11-06T22:46:33.7341417Z"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/jobs/BatchUser-testAddMultiTasksWithError/addtaskcollection?api-version=2023-05-01.17.0",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "client-request-id": "d1935f05-f083-4b28-ac39-174566b56dd8",
+        "Content-Length": "5711",
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "Date": "Mon, 06 Nov 2023 22:46:35 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
       },
       "RequestBody": {
@@ -4045,8 +3866,8 @@
         "Content-Length": "328",
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 23 Oct 2023 18:08:50 GMT",
-        "request-id": "e558c967-f1bb-4d9e-8678-f13182249c50",
+        "Date": "Mon, 06 Nov 2023 22:46:33 GMT",
+        "request-id": "b7d5254a-0a7c-4ace-9c4b-dff8f82ad899",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff"
@@ -4056,7 +3877,7 @@
         "code": "JobNotFound",
         "message": {
           "lang": "en-US",
-          "value": "The specified job does not exist.\nRequestId:e558c967-f1bb-4d9e-8678-f13182249c50\nTime:2023-10-23T18:08:51.0339554Z"
+          "value": "The specified job does not exist.\nRequestId:b7d5254a-0a7c-4ace-9c4b-dff8f82ad899\nTime:2023-11-06T22:46:33.7275778Z"
         }
       }
     },
@@ -4066,10 +3887,10 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "0b236fb9-6e81-4c05-8367-001d310a70b2",
+        "client-request-id": "9c675637-2a75-4521-af4d-051df447f230",
         "Content-Length": "5711",
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 23 Oct 2023 18:08:50 GMT",
+        "Date": "Mon, 06 Nov 2023 22:46:35 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
       },
       "RequestBody": {
@@ -4481,8 +4302,8 @@
         "Content-Length": "328",
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 23 Oct 2023 18:08:51 GMT",
-        "request-id": "c26dfe5a-6599-4229-8cb1-e7a0b4f63f7c",
+        "Date": "Mon, 06 Nov 2023 22:46:33 GMT",
+        "request-id": "9c943460-9f16-4e45-8e78-852e22325781",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff"
@@ -4492,7 +4313,7 @@
         "code": "JobNotFound",
         "message": {
           "lang": "en-US",
-          "value": "The specified job does not exist.\nRequestId:c26dfe5a-6599-4229-8cb1-e7a0b4f63f7c\nTime:2023-10-23T18:08:51.1034756Z"
+          "value": "The specified job does not exist.\nRequestId:9c943460-9f16-4e45-8e78-852e22325781\nTime:2023-11-06T22:46:33.7341417Z"
         }
       }
     },
@@ -4502,10 +4323,10 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "e43bdd43-6e98-4b9a-9f72-d09b45253861",
+        "client-request-id": "6b562e8b-4d1a-4aa3-8362-cb7ea04ce6fe",
         "Content-Length": "5711",
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 23 Oct 2023 18:08:50 GMT",
+        "Date": "Mon, 06 Nov 2023 22:46:35 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
       },
       "RequestBody": {
@@ -4917,8 +4738,8 @@
         "Content-Length": "328",
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 23 Oct 2023 18:08:50 GMT",
-        "request-id": "d7ebdace-5454-4387-9937-2343d51a3432",
+        "Date": "Mon, 06 Nov 2023 22:46:33 GMT",
+        "request-id": "16fe219a-fa9b-438d-864a-59cff02bd668",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff"
@@ -4928,7 +4749,443 @@
         "code": "JobNotFound",
         "message": {
           "lang": "en-US",
-          "value": "The specified job does not exist.\nRequestId:d7ebdace-5454-4387-9937-2343d51a3432\nTime:2023-10-23T18:08:51.1064027Z"
+          "value": "The specified job does not exist.\nRequestId:16fe219a-fa9b-438d-864a-59cff02bd668\nTime:2023-11-06T22:46:33.7353428Z"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/jobs/BatchUser-testAddMultiTasksWithError/addtaskcollection?api-version=2023-05-01.17.0",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "client-request-id": "351f4cf2-292b-4f26-8ea5-ec95ff81f63b",
+        "Content-Length": "5711",
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "Date": "Mon, 06 Nov 2023 22:46:35 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
+      },
+      "RequestBody": {
+        "value": [
+          {
+            "id": "mytask700",
+            "commandLine": "cmd /c echo hello 700"
+          },
+          {
+            "id": "mytask701",
+            "commandLine": "cmd /c echo hello 701"
+          },
+          {
+            "id": "mytask702",
+            "commandLine": "cmd /c echo hello 702"
+          },
+          {
+            "id": "mytask703",
+            "commandLine": "cmd /c echo hello 703"
+          },
+          {
+            "id": "mytask704",
+            "commandLine": "cmd /c echo hello 704"
+          },
+          {
+            "id": "mytask705",
+            "commandLine": "cmd /c echo hello 705"
+          },
+          {
+            "id": "mytask706",
+            "commandLine": "cmd /c echo hello 706"
+          },
+          {
+            "id": "mytask707",
+            "commandLine": "cmd /c echo hello 707"
+          },
+          {
+            "id": "mytask708",
+            "commandLine": "cmd /c echo hello 708"
+          },
+          {
+            "id": "mytask709",
+            "commandLine": "cmd /c echo hello 709"
+          },
+          {
+            "id": "mytask710",
+            "commandLine": "cmd /c echo hello 710"
+          },
+          {
+            "id": "mytask711",
+            "commandLine": "cmd /c echo hello 711"
+          },
+          {
+            "id": "mytask712",
+            "commandLine": "cmd /c echo hello 712"
+          },
+          {
+            "id": "mytask713",
+            "commandLine": "cmd /c echo hello 713"
+          },
+          {
+            "id": "mytask714",
+            "commandLine": "cmd /c echo hello 714"
+          },
+          {
+            "id": "mytask715",
+            "commandLine": "cmd /c echo hello 715"
+          },
+          {
+            "id": "mytask716",
+            "commandLine": "cmd /c echo hello 716"
+          },
+          {
+            "id": "mytask717",
+            "commandLine": "cmd /c echo hello 717"
+          },
+          {
+            "id": "mytask718",
+            "commandLine": "cmd /c echo hello 718"
+          },
+          {
+            "id": "mytask719",
+            "commandLine": "cmd /c echo hello 719"
+          },
+          {
+            "id": "mytask720",
+            "commandLine": "cmd /c echo hello 720"
+          },
+          {
+            "id": "mytask721",
+            "commandLine": "cmd /c echo hello 721"
+          },
+          {
+            "id": "mytask722",
+            "commandLine": "cmd /c echo hello 722"
+          },
+          {
+            "id": "mytask723",
+            "commandLine": "cmd /c echo hello 723"
+          },
+          {
+            "id": "mytask724",
+            "commandLine": "cmd /c echo hello 724"
+          },
+          {
+            "id": "mytask725",
+            "commandLine": "cmd /c echo hello 725"
+          },
+          {
+            "id": "mytask726",
+            "commandLine": "cmd /c echo hello 726"
+          },
+          {
+            "id": "mytask727",
+            "commandLine": "cmd /c echo hello 727"
+          },
+          {
+            "id": "mytask728",
+            "commandLine": "cmd /c echo hello 728"
+          },
+          {
+            "id": "mytask729",
+            "commandLine": "cmd /c echo hello 729"
+          },
+          {
+            "id": "mytask730",
+            "commandLine": "cmd /c echo hello 730"
+          },
+          {
+            "id": "mytask731",
+            "commandLine": "cmd /c echo hello 731"
+          },
+          {
+            "id": "mytask732",
+            "commandLine": "cmd /c echo hello 732"
+          },
+          {
+            "id": "mytask733",
+            "commandLine": "cmd /c echo hello 733"
+          },
+          {
+            "id": "mytask734",
+            "commandLine": "cmd /c echo hello 734"
+          },
+          {
+            "id": "mytask735",
+            "commandLine": "cmd /c echo hello 735"
+          },
+          {
+            "id": "mytask736",
+            "commandLine": "cmd /c echo hello 736"
+          },
+          {
+            "id": "mytask737",
+            "commandLine": "cmd /c echo hello 737"
+          },
+          {
+            "id": "mytask738",
+            "commandLine": "cmd /c echo hello 738"
+          },
+          {
+            "id": "mytask739",
+            "commandLine": "cmd /c echo hello 739"
+          },
+          {
+            "id": "mytask740",
+            "commandLine": "cmd /c echo hello 740"
+          },
+          {
+            "id": "mytask741",
+            "commandLine": "cmd /c echo hello 741"
+          },
+          {
+            "id": "mytask742",
+            "commandLine": "cmd /c echo hello 742"
+          },
+          {
+            "id": "mytask743",
+            "commandLine": "cmd /c echo hello 743"
+          },
+          {
+            "id": "mytask744",
+            "commandLine": "cmd /c echo hello 744"
+          },
+          {
+            "id": "mytask745",
+            "commandLine": "cmd /c echo hello 745"
+          },
+          {
+            "id": "mytask746",
+            "commandLine": "cmd /c echo hello 746"
+          },
+          {
+            "id": "mytask747",
+            "commandLine": "cmd /c echo hello 747"
+          },
+          {
+            "id": "mytask748",
+            "commandLine": "cmd /c echo hello 748"
+          },
+          {
+            "id": "mytask749",
+            "commandLine": "cmd /c echo hello 749"
+          },
+          {
+            "id": "mytask750",
+            "commandLine": "cmd /c echo hello 750"
+          },
+          {
+            "id": "mytask751",
+            "commandLine": "cmd /c echo hello 751"
+          },
+          {
+            "id": "mytask752",
+            "commandLine": "cmd /c echo hello 752"
+          },
+          {
+            "id": "mytask753",
+            "commandLine": "cmd /c echo hello 753"
+          },
+          {
+            "id": "mytask754",
+            "commandLine": "cmd /c echo hello 754"
+          },
+          {
+            "id": "mytask755",
+            "commandLine": "cmd /c echo hello 755"
+          },
+          {
+            "id": "mytask756",
+            "commandLine": "cmd /c echo hello 756"
+          },
+          {
+            "id": "mytask757",
+            "commandLine": "cmd /c echo hello 757"
+          },
+          {
+            "id": "mytask758",
+            "commandLine": "cmd /c echo hello 758"
+          },
+          {
+            "id": "mytask759",
+            "commandLine": "cmd /c echo hello 759"
+          },
+          {
+            "id": "mytask760",
+            "commandLine": "cmd /c echo hello 760"
+          },
+          {
+            "id": "mytask761",
+            "commandLine": "cmd /c echo hello 761"
+          },
+          {
+            "id": "mytask762",
+            "commandLine": "cmd /c echo hello 762"
+          },
+          {
+            "id": "mytask763",
+            "commandLine": "cmd /c echo hello 763"
+          },
+          {
+            "id": "mytask764",
+            "commandLine": "cmd /c echo hello 764"
+          },
+          {
+            "id": "mytask765",
+            "commandLine": "cmd /c echo hello 765"
+          },
+          {
+            "id": "mytask766",
+            "commandLine": "cmd /c echo hello 766"
+          },
+          {
+            "id": "mytask767",
+            "commandLine": "cmd /c echo hello 767"
+          },
+          {
+            "id": "mytask768",
+            "commandLine": "cmd /c echo hello 768"
+          },
+          {
+            "id": "mytask769",
+            "commandLine": "cmd /c echo hello 769"
+          },
+          {
+            "id": "mytask770",
+            "commandLine": "cmd /c echo hello 770"
+          },
+          {
+            "id": "mytask771",
+            "commandLine": "cmd /c echo hello 771"
+          },
+          {
+            "id": "mytask772",
+            "commandLine": "cmd /c echo hello 772"
+          },
+          {
+            "id": "mytask773",
+            "commandLine": "cmd /c echo hello 773"
+          },
+          {
+            "id": "mytask774",
+            "commandLine": "cmd /c echo hello 774"
+          },
+          {
+            "id": "mytask775",
+            "commandLine": "cmd /c echo hello 775"
+          },
+          {
+            "id": "mytask776",
+            "commandLine": "cmd /c echo hello 776"
+          },
+          {
+            "id": "mytask777",
+            "commandLine": "cmd /c echo hello 777"
+          },
+          {
+            "id": "mytask778",
+            "commandLine": "cmd /c echo hello 778"
+          },
+          {
+            "id": "mytask779",
+            "commandLine": "cmd /c echo hello 779"
+          },
+          {
+            "id": "mytask780",
+            "commandLine": "cmd /c echo hello 780"
+          },
+          {
+            "id": "mytask781",
+            "commandLine": "cmd /c echo hello 781"
+          },
+          {
+            "id": "mytask782",
+            "commandLine": "cmd /c echo hello 782"
+          },
+          {
+            "id": "mytask783",
+            "commandLine": "cmd /c echo hello 783"
+          },
+          {
+            "id": "mytask784",
+            "commandLine": "cmd /c echo hello 784"
+          },
+          {
+            "id": "mytask785",
+            "commandLine": "cmd /c echo hello 785"
+          },
+          {
+            "id": "mytask786",
+            "commandLine": "cmd /c echo hello 786"
+          },
+          {
+            "id": "mytask787",
+            "commandLine": "cmd /c echo hello 787"
+          },
+          {
+            "id": "mytask788",
+            "commandLine": "cmd /c echo hello 788"
+          },
+          {
+            "id": "mytask789",
+            "commandLine": "cmd /c echo hello 789"
+          },
+          {
+            "id": "mytask790",
+            "commandLine": "cmd /c echo hello 790"
+          },
+          {
+            "id": "mytask791",
+            "commandLine": "cmd /c echo hello 791"
+          },
+          {
+            "id": "mytask792",
+            "commandLine": "cmd /c echo hello 792"
+          },
+          {
+            "id": "mytask793",
+            "commandLine": "cmd /c echo hello 793"
+          },
+          {
+            "id": "mytask794",
+            "commandLine": "cmd /c echo hello 794"
+          },
+          {
+            "id": "mytask795",
+            "commandLine": "cmd /c echo hello 795"
+          },
+          {
+            "id": "mytask796",
+            "commandLine": "cmd /c echo hello 796"
+          },
+          {
+            "id": "mytask797",
+            "commandLine": "cmd /c echo hello 797"
+          },
+          {
+            "id": "mytask798",
+            "commandLine": "cmd /c echo hello 798"
+          },
+          {
+            "id": "mytask799",
+            "commandLine": "cmd /c echo hello 799"
+          }
+        ]
+      },
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Content-Length": "328",
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Mon, 06 Nov 2023 22:46:32 GMT",
+        "request-id": "ac8cfc0c-7624-4897-9408-36fc31564e29",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element",
+        "code": "JobNotFound",
+        "message": {
+          "lang": "en-US",
+          "value": "The specified job does not exist.\nRequestId:ac8cfc0c-7624-4897-9408-36fc31564e29\nTime:2023-11-06T22:46:33.8357340Z"
         }
       }
     }
