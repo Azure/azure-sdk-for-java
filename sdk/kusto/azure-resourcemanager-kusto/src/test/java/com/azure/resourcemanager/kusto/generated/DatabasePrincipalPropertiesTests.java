@@ -16,11 +16,11 @@ public final class DatabasePrincipalPropertiesTests {
         DatabasePrincipalProperties model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"zhxgktrmgucn\",\"role\":\"UnrestrictedViewer\",\"tenantId\":\"t\",\"principalType\":\"App\",\"tenantName\":\"llwptfdy\",\"principalName\":\"fqbuaceopzf\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"uaopppcqeq\"}")
+                    "{\"principalId\":\"opcjwvnhd\",\"role\":\"Ingestor\",\"tenantId\":\"mgxcxrslpm\",\"principalType\":\"App\",\"tenantName\":\"uoegrpkhjwniyqs\",\"principalName\":\"i\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"gk\"}")
                 .toObject(DatabasePrincipalProperties.class);
-        Assertions.assertEquals("zhxgktrmgucn", model.principalId());
-        Assertions.assertEquals(DatabasePrincipalRole.UNRESTRICTED_VIEWER, model.role());
-        Assertions.assertEquals("t", model.tenantId());
+        Assertions.assertEquals("opcjwvnhd", model.principalId());
+        Assertions.assertEquals(DatabasePrincipalRole.INGESTOR, model.role());
+        Assertions.assertEquals("mgxcxrslpm", model.tenantId());
         Assertions.assertEquals(PrincipalType.APP, model.principalType());
     }
 
@@ -28,14 +28,14 @@ public final class DatabasePrincipalPropertiesTests {
     public void testSerialize() throws Exception {
         DatabasePrincipalProperties model =
             new DatabasePrincipalProperties()
-                .withPrincipalId("zhxgktrmgucn")
-                .withRole(DatabasePrincipalRole.UNRESTRICTED_VIEWER)
-                .withTenantId("t")
+                .withPrincipalId("opcjwvnhd")
+                .withRole(DatabasePrincipalRole.INGESTOR)
+                .withTenantId("mgxcxrslpm")
                 .withPrincipalType(PrincipalType.APP);
         model = BinaryData.fromObject(model).toObject(DatabasePrincipalProperties.class);
-        Assertions.assertEquals("zhxgktrmgucn", model.principalId());
-        Assertions.assertEquals(DatabasePrincipalRole.UNRESTRICTED_VIEWER, model.role());
-        Assertions.assertEquals("t", model.tenantId());
+        Assertions.assertEquals("opcjwvnhd", model.principalId());
+        Assertions.assertEquals(DatabasePrincipalRole.INGESTOR, model.role());
+        Assertions.assertEquals("mgxcxrslpm", model.tenantId());
         Assertions.assertEquals(PrincipalType.APP, model.principalType());
     }
 }

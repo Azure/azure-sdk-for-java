@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
@@ -94,4 +95,32 @@ public class ReactiveRoleRepositoryIT {
             .expectNext(TEST_ROLE_4)
             .verifyComplete();
     }
+
+    @Test
+    public void testSaveAllWithPublisher() {
+        final Mono<Void> deleteAll = repository.deleteAll();
+        StepVerifier.create(deleteAll).verifyComplete();
+        Flux<Role> itemsToSave = Flux.fromIterable(Arrays.asList(TEST_ROLE_1, TEST_ROLE_2, TEST_ROLE_3, TEST_ROLE_4));
+        final Flux<Role> savedFlux = repository.saveAll(itemsToSave);
+        StepVerifier.create(savedFlux).thenConsumeWhile(role -> true).expectComplete().verify();
+    }
+
+    @Test
+    public void testDeleteAllWithIterable() {
+        final Mono<Void> deleteFlux = repository.deleteAll(Arrays.asList(TEST_ROLE_1, TEST_ROLE_2, TEST_ROLE_3, TEST_ROLE_4));
+        StepVerifier.create(deleteFlux).verifyComplete();
+        final Flux<Role> results = repository.findAll();
+        StepVerifier.create(results).expectNextCount(0).verifyComplete();
+
+    }
+    @Test
+    public void testDeleteAllWithPublisher() {
+        Flux<Role> itemsToDelete = Flux.fromIterable(Arrays.asList(TEST_ROLE_1, TEST_ROLE_2, TEST_ROLE_3, TEST_ROLE_4));
+        final Mono<Void> deleteFlux = repository.deleteAll(itemsToDelete);
+        StepVerifier.create(deleteFlux).verifyComplete();
+        final Flux<Role> results = repository.findAll();
+        StepVerifier.create(results).expectNextCount(0).verifyComplete();
+
+    }
+
 }

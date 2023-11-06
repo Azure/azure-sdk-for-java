@@ -31,7 +31,7 @@ public final class CommunicationsCheckNameAvailabilityWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"nameAvailable\":false,\"reason\":\"lxkvu\",\"message\":\"hzovawjvzunlut\"}";
+        String responseStr = "{\"nameAvailable\":true,\"reason\":\"dxpgpqchiszepnnb\",\"message\":\"rxgibbd\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,10 +63,10 @@ public final class CommunicationsCheckNameAvailabilityWithResponseMockTests {
             manager
                 .communications()
                 .checkNameAvailabilityWithResponse(
-                    "mefqsgzvahapjyzh",
+                    "pjuohminyfl",
                     new CheckNameAvailabilityInput()
-                        .withName("vgqzcjrvxd")
-                        .withType(Type.MICROSOFT_SUPPORT_COMMUNICATIONS),
+                        .withName("orwmduvwpklv")
+                        .withType(Type.MICROSOFT_SUPPORT_SUPPORT_TICKETS),
                     com.azure.core.util.Context.NONE)
                 .getValue();
     }

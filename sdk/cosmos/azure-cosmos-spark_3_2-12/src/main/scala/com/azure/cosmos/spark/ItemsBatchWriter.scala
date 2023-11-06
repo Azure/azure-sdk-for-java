@@ -13,7 +13,8 @@ private class ItemsBatchWriter
   userConfig: Map[String, String],
   inputSchema: StructType,
   cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
-  diagnosticsConfig: DiagnosticsConfig
+  diagnosticsConfig: DiagnosticsConfig,
+  sparkEnvironmentInfo: String
 )
   extends BatchWrite
     with StreamingWrite {
@@ -22,11 +23,21 @@ private class ItemsBatchWriter
   log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def createBatchWriterFactory(physicalWriteInfo: PhysicalWriteInfo): DataWriterFactory = {
-    new ItemsDataWriteFactory(userConfig, inputSchema, cosmosClientStateHandles, diagnosticsConfig)
+    new ItemsDataWriteFactory(
+      userConfig,
+      inputSchema,
+      cosmosClientStateHandles,
+      diagnosticsConfig,
+      sparkEnvironmentInfo)
   }
 
   override def createStreamingWriterFactory(physicalWriteInfo: PhysicalWriteInfo): StreamingDataWriterFactory = {
-    new ItemsDataWriteFactory(userConfig, inputSchema, cosmosClientStateHandles, diagnosticsConfig)
+    new ItemsDataWriteFactory(
+      userConfig,
+      inputSchema,
+      cosmosClientStateHandles,
+      diagnosticsConfig,
+      sparkEnvironmentInfo)
   }
 
   override def commit(writerCommitMessages: Array[WriterCommitMessage]): Unit = {

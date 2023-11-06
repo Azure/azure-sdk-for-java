@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleResponseHeaderAction;
 import com.azure.resourcemanager.cdn.models.HeaderAction;
 import com.azure.resourcemanager.cdn.models.HeaderActionParameters;
@@ -14,7 +13,7 @@ import java.util.Arrays;
 /** Samples for Rules Update. */
 public final class RulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Rules_Update.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Rules_Update.json
      */
     /**
      * Sample code: Rules_Update.
@@ -43,6 +42,6 @@ public final class RulesUpdateSamples {
                                             .withHeaderAction(HeaderAction.OVERWRITE)
                                             .withHeaderName("X-CDN")
                                             .withValue("MSFT")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

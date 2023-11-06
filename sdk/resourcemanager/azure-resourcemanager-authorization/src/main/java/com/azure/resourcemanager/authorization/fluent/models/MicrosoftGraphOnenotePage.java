@@ -19,6 +19,8 @@ import java.util.Map;
 /** onenotePage. */
 @Fluent
 public final class MicrosoftGraphOnenotePage extends MicrosoftGraphOnenoteEntitySchemaObjectModel {
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+
     /*
      * The page's HTML content.
      */
@@ -103,7 +105,7 @@ public final class MicrosoftGraphOnenotePage extends MicrosoftGraphOnenoteEntity
      */
     public byte[] content() {
         if (this.content == null) {
-            return new byte[0];
+            return EMPTY_BYTE_ARRAY;
         }
         return this.content.decodedBytes();
     }

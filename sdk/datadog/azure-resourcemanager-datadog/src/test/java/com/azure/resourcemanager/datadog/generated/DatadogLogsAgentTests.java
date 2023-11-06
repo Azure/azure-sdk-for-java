@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class DatadogLogsAgentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatadogLogsAgent model =
-            BinaryData.fromString("{\"transport\":\"ukjfkgiawxklr\"}").toObject(DatadogLogsAgent.class);
-        Assertions.assertEquals("ukjfkgiawxklr", model.transport());
+        DatadogLogsAgent model = BinaryData.fromString("{\"transport\":\"sszdnru\"}").toObject(DatadogLogsAgent.class);
+        Assertions.assertEquals("sszdnru", model.transport());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatadogLogsAgent model = new DatadogLogsAgent().withTransport("ukjfkgiawxklr");
+        DatadogLogsAgent model = new DatadogLogsAgent().withTransport("sszdnru");
         model = BinaryData.fromObject(model).toObject(DatadogLogsAgent.class);
-        Assertions.assertEquals("ukjfkgiawxklr", model.transport());
+        Assertions.assertEquals("sszdnru", model.transport());
     }
 }

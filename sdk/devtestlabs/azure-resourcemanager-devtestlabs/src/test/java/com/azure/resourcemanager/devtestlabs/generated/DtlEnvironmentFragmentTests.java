@@ -15,19 +15,31 @@ public final class DtlEnvironmentFragmentTests {
     public void testDeserialize() throws Exception {
         DtlEnvironmentFragment model =
             BinaryData
-                .fromString("{\"tags\":{\"mf\":\"igdivbkbxg\",\"jsqzhzbezk\":\"juwasqvdaeyyguxa\"}}")
+                .fromString(
+                    "{\"tags\":{\"jumvqqolihrraio\":\"cgegydcwbo\",\"fuojrngif\":\"aubrjtloq\",\"dfqwmkyoq\":\"rzpasccbiuimzdly\",\"lzo\":\"fdvruz\"}}")
                 .toObject(DtlEnvironmentFragment.class);
-        Assertions.assertEquals("igdivbkbxg", model.tags().get("mf"));
+        Assertions.assertEquals("cgegydcwbo", model.tags().get("jumvqqolihrraio"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DtlEnvironmentFragment model =
-            new DtlEnvironmentFragment().withTags(mapOf("mf", "igdivbkbxg", "jsqzhzbezk", "juwasqvdaeyyguxa"));
+            new DtlEnvironmentFragment()
+                .withTags(
+                    mapOf(
+                        "jumvqqolihrraio",
+                        "cgegydcwbo",
+                        "fuojrngif",
+                        "aubrjtloq",
+                        "dfqwmkyoq",
+                        "rzpasccbiuimzdly",
+                        "lzo",
+                        "fdvruz"));
         model = BinaryData.fromObject(model).toObject(DtlEnvironmentFragment.class);
-        Assertions.assertEquals("igdivbkbxg", model.tags().get("mf"));
+        Assertions.assertEquals("cgegydcwbo", model.tags().get("jumvqqolihrraio"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

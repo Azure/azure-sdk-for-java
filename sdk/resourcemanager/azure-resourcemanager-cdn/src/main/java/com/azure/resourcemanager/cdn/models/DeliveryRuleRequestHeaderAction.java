@@ -21,6 +21,10 @@ public final class DeliveryRuleRequestHeaderAction extends DeliveryRuleAction {
     @JsonProperty(value = "parameters", required = true)
     private HeaderActionParameters parameters;
 
+    /** Creates an instance of DeliveryRuleRequestHeaderAction class. */
+    public DeliveryRuleRequestHeaderAction() {
+    }
+
     /**
      * Get the parameters property: Defines the parameters for the action.
      *

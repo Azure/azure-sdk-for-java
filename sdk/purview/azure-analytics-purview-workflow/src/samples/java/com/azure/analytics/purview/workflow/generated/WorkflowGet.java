@@ -4,8 +4,8 @@
 
 package com.azure.analytics.purview.workflow.generated;
 
-import com.azure.analytics.purview.workflow.PurviewWorkflowClient;
-import com.azure.analytics.purview.workflow.PurviewWorkflowClientBuilder;
+import com.azure.analytics.purview.workflow.WorkflowClient;
+import com.azure.analytics.purview.workflow.WorkflowClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -14,15 +14,15 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class WorkflowGet {
     public static void main(String[] args) {
-        PurviewWorkflowClient purviewWorkflowClient =
-                new PurviewWorkflowClientBuilder()
+        WorkflowClient workflowClient =
+                new WorkflowClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                         .buildClient();
-        // BEGIN:com.azure.analytics.purview.workflow.generated.getworkflow.workflowget
+        // BEGIN:com.azure.analytics.purview.workflow.generated.workflowget.workflowget
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                purviewWorkflowClient.getWorkflowWithResponse("d503b2d2-84da-4a85-9e85-6e82e39d59a0", requestOptions);
-        // END:com.azure.analytics.purview.workflow.generated.getworkflow.workflowget
+                workflowClient.getWithResponse("d503b2d2-84da-4a85-9e85-6e82e39d59a0", requestOptions);
+        // END:com.azure.analytics.purview.workflow.generated.workflowget.workflowget
     }
 }

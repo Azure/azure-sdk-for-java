@@ -60,6 +60,10 @@ public final class EndpointProperties extends EndpointPropertiesUpdateParameters
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private EndpointProvisioningState provisioningState;
 
+    /** Creates an instance of EndpointProperties class. */
+    public EndpointProperties() {
+    }
+
     /**
      * Get the hostname property: The host name of the endpoint structured as {endpointName}.{DNSZone}, e.g.
      * contoso.azureedge.net.

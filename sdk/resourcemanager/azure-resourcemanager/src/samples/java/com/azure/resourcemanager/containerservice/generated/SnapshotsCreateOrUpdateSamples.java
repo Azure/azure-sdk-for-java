@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for Snapshots CreateOrUpdate. */
 public final class SnapshotsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/SnapshotsCreate.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/SnapshotsCreate.json
      */
     /**
      * Sample code: Create/Update Snapshot.
@@ -34,7 +34,7 @@ public final class SnapshotsCreateOrUpdateSamples {
                     .withCreationData(
                         new CreationData()
                             .withSourceResourceId(
-                                "/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0")),
+                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0")),
                 com.azure.core.util.Context.NONE);
     }
 

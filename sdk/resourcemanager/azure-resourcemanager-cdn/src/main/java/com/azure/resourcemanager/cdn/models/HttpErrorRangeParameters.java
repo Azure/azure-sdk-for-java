@@ -22,6 +22,10 @@ public final class HttpErrorRangeParameters {
     @JsonProperty(value = "end")
     private Integer end;
 
+    /** Creates an instance of HttpErrorRangeParameters class. */
+    public HttpErrorRangeParameters() {
+    }
+
     /**
      * Get the begin property: The inclusive start of the http status code range.
      *

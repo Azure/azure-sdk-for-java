@@ -196,11 +196,13 @@ public interface ScalingPlan {
             DefinitionStages.WithTimeZone,
             DefinitionStages.WithCreate {
     }
+
     /** The ScalingPlan definition stages. */
     interface DefinitionStages {
         /** The first stage of the ScalingPlan definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ScalingPlan definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -219,6 +221,7 @@ public interface ScalingPlan {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the ScalingPlan definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -229,6 +232,7 @@ public interface ScalingPlan {
              */
             WithTimeZone withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the ScalingPlan definition allowing to specify timeZone. */
         interface WithTimeZone {
             /**
@@ -239,6 +243,7 @@ public interface ScalingPlan {
              */
             WithCreate withTimeZone(String timeZone);
         }
+
         /**
          * The stage of the ScalingPlan definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -271,6 +276,7 @@ public interface ScalingPlan {
              */
             ScalingPlan create(Context context);
         }
+
         /** The stage of the ScalingPlan definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -281,6 +287,7 @@ public interface ScalingPlan {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ScalingPlan definition allowing to specify managedBy. */
         interface WithManagedBy {
             /**
@@ -296,6 +303,7 @@ public interface ScalingPlan {
              */
             WithCreate withManagedBy(String managedBy);
         }
+
         /** The stage of the ScalingPlan definition allowing to specify kind. */
         interface WithKind {
             /**
@@ -310,6 +318,7 @@ public interface ScalingPlan {
              */
             WithCreate withKind(String kind);
         }
+
         /** The stage of the ScalingPlan definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -320,6 +329,7 @@ public interface ScalingPlan {
              */
             WithCreate withIdentity(ResourceModelWithAllowedPropertySetIdentity identity);
         }
+
         /** The stage of the ScalingPlan definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -330,6 +340,7 @@ public interface ScalingPlan {
              */
             WithCreate withSku(ResourceModelWithAllowedPropertySetSku sku);
         }
+
         /** The stage of the ScalingPlan definition allowing to specify plan. */
         interface WithPlan {
             /**
@@ -340,6 +351,7 @@ public interface ScalingPlan {
              */
             WithCreate withPlan(ResourceModelWithAllowedPropertySetPlan plan);
         }
+
         /** The stage of the ScalingPlan definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -350,6 +362,7 @@ public interface ScalingPlan {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the ScalingPlan definition allowing to specify friendlyName. */
         interface WithFriendlyName {
             /**
@@ -360,6 +373,7 @@ public interface ScalingPlan {
              */
             WithCreate withFriendlyName(String friendlyName);
         }
+
         /** The stage of the ScalingPlan definition allowing to specify hostPoolType. */
         interface WithHostPoolType {
             /**
@@ -370,6 +384,7 @@ public interface ScalingPlan {
              */
             WithCreate withHostPoolType(ScalingHostPoolType hostPoolType);
         }
+
         /** The stage of the ScalingPlan definition allowing to specify exclusionTag. */
         interface WithExclusionTag {
             /**
@@ -380,6 +395,7 @@ public interface ScalingPlan {
              */
             WithCreate withExclusionTag(String exclusionTag);
         }
+
         /** The stage of the ScalingPlan definition allowing to specify schedules. */
         interface WithSchedules {
             /**
@@ -390,6 +406,7 @@ public interface ScalingPlan {
              */
             WithCreate withSchedules(List<ScalingSchedule> schedules);
         }
+
         /** The stage of the ScalingPlan definition allowing to specify hostPoolReferences. */
         interface WithHostPoolReferences {
             /**
@@ -401,6 +418,7 @@ public interface ScalingPlan {
             WithCreate withHostPoolReferences(List<ScalingHostPoolReference> hostPoolReferences);
         }
     }
+
     /**
      * Begins update for the ScalingPlan resource.
      *
@@ -432,6 +450,7 @@ public interface ScalingPlan {
          */
         ScalingPlan apply(Context context);
     }
+
     /** The ScalingPlan update stages. */
     interface UpdateStages {
         /** The stage of the ScalingPlan update allowing to specify tags. */
@@ -444,6 +463,7 @@ public interface ScalingPlan {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the ScalingPlan update allowing to specify description. */
         interface WithDescription {
             /**
@@ -454,6 +474,7 @@ public interface ScalingPlan {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the ScalingPlan update allowing to specify friendlyName. */
         interface WithFriendlyName {
             /**
@@ -464,6 +485,7 @@ public interface ScalingPlan {
              */
             Update withFriendlyName(String friendlyName);
         }
+
         /** The stage of the ScalingPlan update allowing to specify timeZone. */
         interface WithTimeZone {
             /**
@@ -474,6 +496,7 @@ public interface ScalingPlan {
              */
             Update withTimeZone(String timeZone);
         }
+
         /** The stage of the ScalingPlan update allowing to specify exclusionTag. */
         interface WithExclusionTag {
             /**
@@ -484,6 +507,7 @@ public interface ScalingPlan {
              */
             Update withExclusionTag(String exclusionTag);
         }
+
         /** The stage of the ScalingPlan update allowing to specify schedules. */
         interface WithSchedules {
             /**
@@ -494,6 +518,7 @@ public interface ScalingPlan {
              */
             Update withSchedules(List<ScalingSchedule> schedules);
         }
+
         /** The stage of the ScalingPlan update allowing to specify hostPoolReferences. */
         interface WithHostPoolReferences {
             /**
@@ -505,6 +530,7 @@ public interface ScalingPlan {
             Update withHostPoolReferences(List<ScalingHostPoolReference> hostPoolReferences);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

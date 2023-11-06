@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.search.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.search.fluent.models.SharedPrivateLinkResourceInner;
 import com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProperties;
 
 /** Samples for SharedPrivateLinkResources CreateOrUpdate. */
 public final class SharedPrivateLinkResourcesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/CreateOrUpdateSharedPrivateLinkResource.json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/CreateOrUpdateSharedPrivateLinkResource.json
      */
     /**
      * Sample code: SharedPrivateLinkResourceCreateOrUpdate.
@@ -36,6 +35,6 @@ public final class SharedPrivateLinkResourcesCreateOrUpdateSamples {
                             .withGroupId("blob")
                             .withRequestMessage("please approve")),
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

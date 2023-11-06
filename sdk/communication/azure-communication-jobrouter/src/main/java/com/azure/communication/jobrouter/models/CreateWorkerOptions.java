@@ -3,6 +3,7 @@
 
 package com.azure.communication.jobrouter.models;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,30 +19,30 @@ public final class CreateWorkerOptions {
     /**
      * The queue(s) that this worker can receive work from.
      */
-    private Map<String, RouterQueueAssignment> queueAssignments;
+    private List<String> queues;
 
     /**
      * The total capacity score this worker has to manage multiple concurrent
      * jobs.
      */
-    private final Integer totalCapacity;
+    private final Integer capacity;
 
     /**
      * A set of key/value pairs that are identifying attributes used by the
      * rules engines to make decisions.
      */
-    private Map<String, LabelValue> labels;
+    private Map<String, RouterValue> labels;
 
     /**
      * A set of non-identifying attributes attached to this worker.
      */
-    private Map<String, LabelValue> tags;
+    private Map<String, RouterValue> tags;
 
     /**
      * The channel(s) this worker can handle and their impact on the workers
      * capacity.
      */
-    private Map<String, ChannelConfiguration> channelConfigurations;
+    private List<RouterChannel> channels;
 
     /**
      * A flag indicating this worker is open to receive offers or not.
@@ -51,21 +52,21 @@ public final class CreateWorkerOptions {
     /**
      * Constructor for CreateWorkerOptions.
      * @param workerId The id property.
-     * @param totalCapacity The total capacity score this worker has to manage multiple concurrent jobs.
+     * @param capacity The total capacity score this worker has to manage multiple concurrent jobs.
      */
-    public CreateWorkerOptions(String workerId, Integer totalCapacity) {
+    public CreateWorkerOptions(String workerId, Integer capacity) {
         this.workerId = workerId;
-        this.totalCapacity = totalCapacity;
+        this.capacity = capacity;
     }
 
     /**
-     * Set the queueAssignments property: The queue(s) that this worker can receive work from.
+     * Set the queues property: The queue(s) that this worker can receive work from.
      *
-     * @param queueAssignments the queueAssignments value to set.
+     * @param queues the queues value to set.
      * @return this
      */
-    public CreateWorkerOptions setQueueAssignments(Map<String, RouterQueueAssignment> queueAssignments) {
-        this.queueAssignments = queueAssignments;
+    public CreateWorkerOptions setQueues(List<String> queues) {
+        this.queues = queues;
         return this;
     }
 
@@ -76,7 +77,7 @@ public final class CreateWorkerOptions {
      * @param labels the labels value to set.
      * @return this
      */
-    public CreateWorkerOptions setLabels(Map<String, LabelValue> labels) {
+    public CreateWorkerOptions setLabels(Map<String, RouterValue> labels) {
         this.labels = labels;
         return this;
     }
@@ -87,20 +88,20 @@ public final class CreateWorkerOptions {
      * @param tags the tags value to set.
      * @return this
      */
-    public CreateWorkerOptions setTags(Map<String, LabelValue> tags) {
+    public CreateWorkerOptions setTags(Map<String, RouterValue> tags) {
         this.tags = tags;
         return this;
     }
 
     /**
-     * Set the channelConfigurations property: The channel(s) this worker can handle and their impact on the workers
+     * Set the channels property: The channel(s) this worker can handle and their impact on the workers
      * capacity.
      *
-     * @param channelConfigurations the channelConfigurations value to set.
+     * @param channels the channels value to set.
      * @return this
      */
-    public CreateWorkerOptions setChannelConfigurations(Map<String, ChannelConfiguration> channelConfigurations) {
-        this.channelConfigurations = channelConfigurations;
+    public CreateWorkerOptions setChannels(List<RouterChannel> channels) {
+        this.channels = channels;
         return this;
     }
 
@@ -124,26 +125,26 @@ public final class CreateWorkerOptions {
     }
 
     /**
-     * Returns queue assignments.
-     * @return queueAssignments
+     * Returns queues.
+     * @return queues.
      */
-    public Map<String, RouterQueueAssignment> getQueueAssignments() {
-        return this.queueAssignments;
+    public List<String> getQueues() {
+        return this.queues;
     }
 
     /**
-     * Returns totalCapacity.
-     * @return totalCapacity
+     * Returns capacity.
+     * @return capacity
      */
-    public Integer getTotalCapacity() {
-        return this.totalCapacity;
+    public Integer getCapacity() {
+        return this.capacity;
     }
 
     /**
      * Returns labels.
      * @return labels
      */
-    public Map<String, LabelValue> getLabels() {
+    public Map<String, RouterValue> getLabels() {
         return this.labels;
     }
 
@@ -151,16 +152,16 @@ public final class CreateWorkerOptions {
      * Returns tags.
      * @return tags
      */
-    public Map<String, LabelValue> getTags() {
+    public Map<String, RouterValue> getTags() {
         return this.tags;
     }
 
     /**
-     * Returns channelConfigurations.
-     * @return channelConfigurations
+     * Returns channels.
+     * @return channels
      */
-    public Map<String, ChannelConfiguration> getChannelConfigurations() {
-        return this.channelConfigurations;
+    public List<RouterChannel> getChannels() {
+        return this.channels;
     }
 
     /**

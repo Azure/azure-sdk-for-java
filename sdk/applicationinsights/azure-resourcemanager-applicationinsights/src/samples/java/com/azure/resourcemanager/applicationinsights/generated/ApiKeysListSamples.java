@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiKeys List. */
 public final class ApiKeysListSamples {
     /*
@@ -17,6 +15,6 @@ public final class ApiKeysListSamples {
      * @param manager Entry point to ApplicationInsightsManager.
      */
     public static void aPIKeysList(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.apiKeys().list("my-resource-group", "my-component", Context.NONE);
+        manager.apiKeys().list("my-resource-group", "my-component", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Secrets Get. */
 public final class SecretsGetSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Secrets_Get.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Secrets_Get.json
      */
     /**
      * Sample code: Secrets_Get.
@@ -22,6 +20,6 @@ public final class SecretsGetSamples {
             .manager()
             .serviceClient()
             .getSecrets()
-            .getWithResponse("RG", "profile1", "secret1", Context.NONE);
+            .getWithResponse("RG", "profile1", "secret1", com.azure.core.util.Context.NONE);
     }
 }

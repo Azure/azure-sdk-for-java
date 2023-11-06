@@ -1,6 +1,6 @@
 # Release History
 
-## 4.12.0-beta.1 (Unreleased)
+## 4.13.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -11,6 +11,10 @@
 * Fixed Event Hook validation
 
 ### Other Changes
+
+## 4.12.0 (2023-10-23)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#4120-2023-10-23) for more details.
 
 ## 4.11.0 (2023-08-25)
 
