@@ -106,6 +106,12 @@ public class ClientConfigDiagnosticsTest {
             .regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED)
             .build();
 
+        SessionRetryOptions sessionRetryOptionsWithNoDefaults = new SessionRetryOptionsBuilder()
+            .regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED)
+            .minTimeoutPerRegion(Duration.ofSeconds(2))
+            .maxRetriesPerRegion(7)
+            .build();
+
         return new Object[][] {
             {
                 sessionRetryOptionsWithLocalRegionPreferred,
@@ -120,6 +126,13 @@ public class ClientConfigDiagnosticsTest {
                     sessionRetryOptionsAccessor.getRegionSwitchHint(sessionRetryOptionsWithRemoteRegionPreferred),
                     sessionRetryOptionsAccessor.getMinInRegionRetryTime(sessionRetryOptionsWithRemoteRegionPreferred),
                     sessionRetryOptionsAccessor.getMaxInRegionRetryCount(sessionRetryOptionsWithRemoteRegionPreferred))
+            },
+            {
+                sessionRetryOptionsWithNoDefaults,
+                reconstructSessionRetryOptionsAsString(
+                    sessionRetryOptionsAccessor.getRegionSwitchHint(sessionRetryOptionsWithNoDefaults),
+                    sessionRetryOptionsAccessor.getMinInRegionRetryTime(sessionRetryOptionsWithNoDefaults),
+                    sessionRetryOptionsAccessor.getMaxInRegionRetryCount(sessionRetryOptionsWithNoDefaults))
             }
         };
     }
