@@ -22,7 +22,7 @@ This troubleshooting guide covers failure investigation techniques, common error
 - [Troubleshoot AzureDeveloperCliCredential authentication issues](#troubleshoot-azuredeveloperclicredential-authentication-issues)
 - [Troubleshoot AzurePowerShellCredential authentication issues](#troubleshoot-azurepowershellcredential-authentication-issues)
 - [Troubleshoot WorkloadIdentityCredential authentication issues](#troubleshoot-workloadidentitycredential-authentication-issues)
-- [Troubleshoot IntelliJCredential authentication issues](#troubleshoot-intellij-authentication-issues)
+- [Troubleshoot IntelliJCredential authentication issues](#troubleshoot-intellijcredential-authentication-issues)
 - [Troubleshoot authentication timeout issues](#troubleshoot-authentication-timeout-issues)
 - [Get additional help](#get-additional-help)
 
