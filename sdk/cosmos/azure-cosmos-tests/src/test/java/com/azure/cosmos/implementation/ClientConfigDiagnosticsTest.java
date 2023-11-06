@@ -24,7 +24,6 @@ import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.time.Duration;
 import java.util.Arrays;
@@ -293,7 +292,7 @@ public class ClientConfigDiagnosticsTest {
     }
 
     @Test(groups = {"unit"}, dataProvider = "sessionRetryOptionsConfigProvider")
-    public void sessionRetryOptionsInDiagnostics(SessionRetryOptions sessionRetryOptions, String expectedSessionRetryOptionsAsString) throws IOException {
+    public void sessionRetryOptionsInDiagnostics(SessionRetryOptions sessionRetryOptions, String expectedSessionRetryOptionsAsString) throws Exception {
         DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
 
         DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig = new DiagnosticsClientContext.DiagnosticsClientConfig();
