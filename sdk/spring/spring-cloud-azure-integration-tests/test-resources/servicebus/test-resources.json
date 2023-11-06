@@ -44,7 +44,7 @@
       }
     },
     {
-      "type": "Microsoft.ServiceBus/namespaces/Authorizationrules",
+      "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
       "apiVersion": "2022-01-01-preview",
       "name": "[concat(variables('azureServiceBusNamespaceName'), '/RootManageSharedAccessKey')]",
       "location": "[variables('location')]",
