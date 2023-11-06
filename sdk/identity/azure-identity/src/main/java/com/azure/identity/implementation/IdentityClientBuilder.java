@@ -5,7 +5,6 @@ package com.azure.identity.implementation;
 
 import com.azure.identity.SharedTokenCacheCredential;
 
-import java.io.InputStream;
 import java.time.Duration;
 import java.util.function.Supplier;
 

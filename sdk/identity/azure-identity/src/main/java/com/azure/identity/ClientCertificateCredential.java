@@ -16,7 +16,6 @@ import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.Objects;
 
 /**
