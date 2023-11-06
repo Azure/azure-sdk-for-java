@@ -8,8 +8,8 @@ import com.azure.communication.jobrouter.implementation.accesshelpers.RouterValu
 import com.azure.communication.jobrouter.implementation.models.RouterQueueInternal;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Map;
 import java.util.stream.Collectors;
 

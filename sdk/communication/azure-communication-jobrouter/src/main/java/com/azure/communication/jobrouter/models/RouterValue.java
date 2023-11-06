@@ -69,7 +69,7 @@ public final class RouterValue {
 
     /**
      * Package-protected constructor.
-     * @param objectValue
+     * @param objectValue objectValue.
      */
     RouterValue(Object objectValue) {
         if (objectValue.getClass() == String.class) {
@@ -83,7 +83,7 @@ public final class RouterValue {
         }
         if (objectValue.getClass() == Boolean.class) {
             this.boolValue = (Boolean) objectValue;
-         }
+        }
     }
 
     /**
