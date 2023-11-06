@@ -59,6 +59,7 @@ public interface DiagnosticsClientContext {
                 generator.writeStringField("machineId", ClientTelemetry.getMachineId(clientConfig));
                 generator.writeStringField("connectionMode", clientConfig.getConnectionMode().toString());
                 generator.writeNumberField("numberOfClients", clientConfig.getActiveClientsCount());
+                generator.writeStringField("excrgns", clientConfig.excludedRegionsRelatedConfig());
                 generator.writeObjectFieldStart("clientEndpoints");
                 for (Map.Entry<String, Integer> entry: clientConfig.clientMap.entrySet()) {
                     try {
@@ -78,9 +79,9 @@ public interface DiagnosticsClientContext {
                 }
                 generator.writeEndObject();
                 generator.writeStringField("consistencyCfg", clientConfig.consistencyRelatedConfig());
-                generator.writeStringField("proactiveInit", clientConfig.proactivelyInitializedContainersAsString);
+                generator.writeStringField("proactiveInitCfg", clientConfig.proactivelyInitializedContainersAsString);
                 generator.writeStringField("e2ePolicyCfg", clientConfig.endToEndOperationLatencyPolicyConfigAsString);
-                generator.writeStringField("sessionRetryOps", clientConfig.sessionRetryOptionsAsString);
+                generator.writeStringField("sessionRetryCfg", clientConfig.sessionRetryOptionsAsString);
             } catch (Exception e) {
                 logger.debug("unexpected failure", e);
             }
@@ -110,6 +111,7 @@ public interface DiagnosticsClientContext {
         private ConnectionMode connectionMode;
         private String machineId;
         private boolean replicaValidationEnabled = Configs.isReplicaAddressValidationEnabled();
+        private ConnectionPolicy connectionPolicy;
         private String sessionRetryOptionsAsString;
 
         public DiagnosticsClientConfig withMachineId(String machineId) {

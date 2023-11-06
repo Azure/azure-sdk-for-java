@@ -3,7 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 
 import java.time.Duration;
@@ -17,8 +16,8 @@ public final class SessionRetryOptions {
 
     private final CosmosRegionSwitchHint regionSwitchHint;
     private final Duration minInRegionRetryTime;
-
     private final int maxInRegionRetryCount;
+    private final String sessionRetryOptionsAsString;
 
     /**
      * Instantiates {@link SessionRetryOptions}
@@ -29,33 +28,42 @@ public final class SessionRetryOptions {
         this.regionSwitchHint = regionSwitchHint;
         this.minInRegionRetryTime = minInRegionRetryTime ;
         this.maxInRegionRetryCount = maxInRegionRetryCount;
+        this.sessionRetryOptionsAsString = sessionRetryOptionsAsString(this.regionSwitchHint, this.minInRegionRetryTime, this.maxInRegionRetryCount);
     }
 
     @Override
     public String toString() {
-        return String.format(
-            "(rsh:%s)",
-            this.stringifyRegionSwitchHint()
-        );
+        return this.sessionRetryOptionsAsString;
     }
 
-    private String stringifyRegionSwitchHint() {
+    private static String regionSwitchHintToString(CosmosRegionSwitchHint regionSwitchHint) {
 
         String regionSwitchHintAsString = "";
 
-        if (this.regionSwitchHint == null) {
+        if (regionSwitchHint == null) {
             return regionSwitchHintAsString;
         }
 
-        if (this.regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED) {
+        if (regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED) {
             regionSwitchHintAsString = "REMOTE_REGION_PREFERRED";
         }
 
-        if (this.regionSwitchHint == CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED) {
+        if (regionSwitchHint == CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED) {
             regionSwitchHintAsString = "LOCAL_REGION_PREFERRED";
         }
 
         return regionSwitchHintAsString;
+    }
+
+    private static String sessionRetryOptionsAsString(CosmosRegionSwitchHint regionSwitchHint,
+                                                      Duration minInRegionRetryTime,
+                                                      int maxInRegionRetryCount) {
+        return String.format(
+            "(rsh:%s, minrrt:%s, maxrrc:%s)",
+            regionSwitchHintToString(regionSwitchHint),
+            minInRegionRetryTime.toString(),
+            maxInRegionRetryCount
+        );
     }
 
     static void initialize() {

@@ -44,6 +44,9 @@ public class ClientConfigDiagnosticsTest {
     private static final ImplementationBridgeHelpers.CosmosContainerIdentityHelper.CosmosContainerIdentityAccessor containerIdentityAccessor = ImplementationBridgeHelpers
         .CosmosContainerIdentityHelper
         .getCosmosContainerIdentityAccessor();
+    private static final ImplementationBridgeHelpers.CosmosSessionRetryOptionsHelper.CosmosSessionRetryOptionsAccessor sessionRetryOptionsAccessor = ImplementationBridgeHelpers
+        .CosmosSessionRetryOptionsHelper
+        .getCosmosSessionRetryOptionsAccessor();
 
     @DataProvider(name = "proactiveContainerInitConfigProvider")
     public Object[][] proactiveContainerInitConfigProvider() {
@@ -103,16 +106,20 @@ public class ClientConfigDiagnosticsTest {
             .regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED)
             .build();
 
-       SessionRetryOptions sessionRetryOptionsWithNull = new SessionRetryOptionsBuilder().build();
-
         return new Object[][] {
             {
                 sessionRetryOptionsWithLocalRegionPreferred,
-                "(rsh:LOCAL_REGION_PREFERRED)"
+                reconstructSessionRetryOptionsAsString(
+                    sessionRetryOptionsAccessor.getRegionSwitchHint(sessionRetryOptionsWithLocalRegionPreferred),
+                    sessionRetryOptionsAccessor.getMinInRegionRetryTime(sessionRetryOptionsWithLocalRegionPreferred),
+                    sessionRetryOptionsAccessor.getMaxInRegionRetryCount(sessionRetryOptionsWithLocalRegionPreferred))
             },
             {
                 sessionRetryOptionsWithRemoteRegionPreferred,
-                "(rsh:REMOTE_REGION_PREFERRED)"
+                reconstructSessionRetryOptionsAsString(
+                    sessionRetryOptionsAccessor.getRegionSwitchHint(sessionRetryOptionsWithRemoteRegionPreferred),
+                    sessionRetryOptionsAccessor.getMinInRegionRetryTime(sessionRetryOptionsWithRemoteRegionPreferred),
+                    sessionRetryOptionsAccessor.getMaxInRegionRetryCount(sessionRetryOptionsWithRemoteRegionPreferred))
             }
         };
     }
@@ -273,7 +280,7 @@ public class ClientConfigDiagnosticsTest {
     }
 
     @Test(groups = {"unit"}, dataProvider = "sessionRetryOptionsConfigProvider")
-    public void testSessionRetryOptions(SessionRetryOptions sessionRetryOptions, String expectedSessionRetryOptionsAsString) throws IOException {
+    public void sessionRetryOptionsInDiagnostics(SessionRetryOptions sessionRetryOptions, String expectedSessionRetryOptionsAsString) throws IOException {
         DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
 
         DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig = new DiagnosticsClientContext.DiagnosticsClientConfig();
@@ -301,7 +308,7 @@ public class ClientConfigDiagnosticsTest {
         assertThat(objectNode.get("connCfg").get("rntbd").asText()).isEqualTo("null");
         assertThat(objectNode.get("connCfg").get("gw").asText()).isEqualTo("null");
         assertThat(objectNode.get("connCfg").get("other").asText()).isEqualTo("(ed: false, cs: false, rv: true)");
-        assertThat(objectNode.get("sessionRetryOps").asText()).isEqualTo(expectedSessionRetryOptionsAsString);
+        assertThat(objectNode.get("sessionRetryCfg").asText()).isEqualTo(expectedSessionRetryOptionsAsString);
     }
 
     private static String reconstructProactiveInitConfigString(
@@ -319,5 +326,14 @@ public class ClientConfigDiagnosticsTest {
                 .collect(Collectors.joining(";")),
             proactiveConnectionRegionCount,
             aggressiveWarmupDuration);
+    }
+
+    private static String reconstructSessionRetryOptionsAsString(CosmosRegionSwitchHint regionSwitchHint, Duration minInRegionRetryTime, int maxInRegionRetryCount) {
+        return String.format(
+            "(rsh:%s, minrrt:%s, maxrrc:%s)",
+            regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED ? "REMOTE_REGION_PREFERRED" : "LOCAL_REGION_PREFERRED",
+            minInRegionRetryTime.toString(),
+            maxInRegionRetryCount
+        );
     }
 }
