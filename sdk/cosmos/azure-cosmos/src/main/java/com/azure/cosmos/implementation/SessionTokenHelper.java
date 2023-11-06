@@ -110,6 +110,15 @@ public class SessionTokenHelper {
         return highestSessionToken;
     }
 
+    static ISessionToken resolvePartitionKeyScopedSessionToken(String partitionKey,
+                                                               ConcurrentHashMap<String, ISessionToken> partitionKeyToTokenMap) {
+        if (partitionKeyToTokenMap != null) {
+            return partitionKeyToTokenMap.get(partitionKey);
+        }
+
+        return null;
+    }
+
     static ISessionToken resolvePartitionLocalSessionToken(RxDocumentServiceRequest request,
                                                            String partitionKeyRangeId,
                                                            ConcurrentHashMap<String, ISessionToken> rangeIdToTokenMap) {
