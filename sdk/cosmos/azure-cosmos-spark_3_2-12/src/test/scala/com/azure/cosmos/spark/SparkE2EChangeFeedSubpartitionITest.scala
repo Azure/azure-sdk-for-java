@@ -4,7 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.spark.udf.{GetFeedRangeForPartitionKeyValues}
+import com.azure.cosmos.spark.udf.{GetFeedRangeForHierarchicalPartitionKeyValues}
 import org.apache.spark.sql.types._
 
 import java.util.UUID
@@ -44,7 +44,7 @@ class SparkE2EChangeFeedSubpartitionITest
             container.createItem(objectNode).block()
         }
 
-        spark.udf.register("GetFeedRangeForPartitionKey", new GetFeedRangeForPartitionKeyValues(), StringType)
+        spark.udf.register("GetFeedRangeForPartitionKey", new GetFeedRangeForHierarchicalPartitionKeyValues(), StringType)
         val pkDefinition = "{\"paths\":[\"/tenantId\",\"/userId\",\"/sessionId\"],\"kind\":\"MultiHash\"}"
         val pkValues = "[\"" + lastId + "\"]"
         val dummyDf = spark.sql(s"SELECT GetFeedRangeForPartitionKey('$pkDefinition', '$pkValues')")
@@ -94,7 +94,7 @@ class SparkE2EChangeFeedSubpartitionITest
             container.createItem(objectNode).block()
         }
 
-        spark.udf.register("GetFeedRangeForPartitionKey", new GetFeedRangeForPartitionKeyValues(), StringType)
+        spark.udf.register("GetFeedRangeForPartitionKey", new GetFeedRangeForHierarchicalPartitionKeyValues(), StringType)
         val pkDefinition = "{\"paths\":[\"/tenantId\",\"/userId\",\"/sessionId\"],\"kind\":\"MultiHash\"}"
         val pkValues = "[\"" + lastId + "\", \"userId1\"]"
         val dummyDf = spark.sql(s"SELECT GetFeedRangeForPartitionKey('$pkDefinition', '$pkValues')")
@@ -144,7 +144,7 @@ class SparkE2EChangeFeedSubpartitionITest
             container.createItem(objectNode).block()
         }
 
-        spark.udf.register("GetFeedRangeForPartitionKey", new GetFeedRangeForPartitionKeyValues(), StringType)
+        spark.udf.register("GetFeedRangeForPartitionKey", new GetFeedRangeForHierarchicalPartitionKeyValues(), StringType)
         val pkDefinition = "{\"paths\":[\"/tenantId\",\"/userId\",\"/sessionId\"],\"kind\":\"MultiHash\"}"
         val pkValues = "[\"" + lastId + "\", \"userId1\", \"sessionId1\"]"
         val dummyDf = spark.sql(s"SELECT GetFeedRangeForPartitionKey('$pkDefinition', '$pkValues')")

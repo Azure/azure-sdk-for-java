@@ -195,15 +195,15 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
     rangeToNormalizedRange(effectiveRange)
   }
 
-  private[cosmos] def partitionKeyValuesToNormalizedRange
+  private[cosmos] def hierarchicalPartitionKeyValuesToNormalizedRange
   (
-      partitionKeyValue: String,
+      partitionKeyValueJsonArray: Object,
       partitionKeyDefinitionJson: String
   ): NormalizedRange = {
 
       val partitionKey = new PartitionKeyBuilder()
       val objectMapper = new ObjectMapper()
-      val json = partitionKeyValue
+      val json = partitionKeyValueJsonArray.toString
       try {
           val partitionKeyValues = objectMapper.readValue(json, classOf[Array[String]])
           for (value <- partitionKeyValues) {

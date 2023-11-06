@@ -25,17 +25,15 @@ object CosmosPatchTestHelper {
   getPatchItemWithSchema(id, partitionKeyPath, getPatchFullTestSchema())
  }
 
-def getPatchItemWithFullSchemaSubpartitions(id: String, partitionKeyPath: String): ObjectNode = {
-  getPatchItemWithSchema(id, partitionKeyPath, getPatchFullTestSchemaWithSubpartitions())
+def getPatchItemWithFullSchemaSubpartitions(id: String): ObjectNode = {
+  getPatchItemWithSchema(id, null, getPatchFullTestSchemaWithSubpartitions())
 }
 
  def getPatchItemWithSchema(id: String, partitionKeyPath: String, schema: StructType): ObjectNode = {
   val objectNode = objectMapper.createObjectNode()
   objectNode.put(IdAttributeName, id)
-  if (partitionKeyPath != IdAttributeName) {
-      if (!partitionKeyPath.contains("tenantId")) {
-          objectNode.put(partitionKeyPath, UUID.randomUUID().toString)
-      }
+  if (partitionKeyPath != null && partitionKeyPath != IdAttributeName) {
+      objectNode.put(partitionKeyPath, UUID.randomUUID().toString)
   }
   val guid = UUID.randomUUID().toString
 
@@ -126,6 +124,9 @@ def getPatchItemWithFullSchemaSubpartitions(id: String, partitionKeyPath: String
      throw new IllegalArgumentException(s"${field.dataType} is not supported")
    }
   }
+
+
+
 
   // add id and partitionKey
   objectNode.put(IdAttributeName, baseObjectNode.get(IdAttributeName).textValue())
@@ -271,7 +272,6 @@ def getPatchFullTestSchemaWithSubpartitions(): StructType = {
   *
   * @return the partition key path without
   */
-  //  TODO: Reexamine the logic here when hierarchical partitioning being supported
   // for hierarchical partitioning this is not used/circumvented, see logic in getPatchItemWithSchema()
  def getStrippedPartitionKeyPath(partitionKeyDefinition: PartitionKeyDefinition): String = {
   StringUtils.join(partitionKeyDefinition.getPaths, "").substring(1)
