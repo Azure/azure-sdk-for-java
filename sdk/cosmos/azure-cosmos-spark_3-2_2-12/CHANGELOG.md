@@ -3,6 +3,7 @@
 ### 4.23.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added hierarchical partition key support. See [PR 37184](https://github.com/Azure/azure-sdk-for-java/pull/37184)
 
 #### Breaking Changes
 
