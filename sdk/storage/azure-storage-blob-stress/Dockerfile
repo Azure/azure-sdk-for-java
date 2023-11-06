@@ -24,9 +24,8 @@ WORKDIR /app
 COPY --from=builder /stress/sdk/storage/azure-storage-blob-stress/target .
 
 # Configure monitoring
-#commenting these two lines temporarily
-#ARG AGENT_URL=https://github.com/microsoft/ApplicationInsights-Java/releases/download/3.4.17/applicationinsights-agent-3.4.17.jar
-#ADD ${AGENT_URL} ./BOOT-INF/classes/
+ARG AGENT_URL=https://github.com/microsoft/ApplicationInsights-Java/releases/download/3.4.17/applicationinsights-agent-3.4.17.jar
+ADD ${AGENT_URL} ./BOOT-INF/classes/
 
 # This is never executed (since job yaml overrides it)
 ENTRYPOINT ["bash"]
