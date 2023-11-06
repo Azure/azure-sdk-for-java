@@ -72,7 +72,7 @@ public final class BatchJob {
      */
     @Generated
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
-    private JobState state;
+    private BatchJobState state;
 
     /*
      * The time at which the Job entered its current state.
@@ -86,7 +86,7 @@ public final class BatchJob {
      */
     @Generated
     @JsonProperty(value = "previousState", access = JsonProperty.Access.WRITE_ONLY)
-    private JobState previousState;
+    private BatchJobState previousState;
 
     /*
      * The time at which the Job entered its previous state. This property is not set if the Job is in its initial
@@ -128,14 +128,14 @@ public final class BatchJob {
      */
     @Generated
     @JsonProperty(value = "constraints")
-    private JobConstraints constraints;
+    private BatchJobConstraints constraints;
 
     /*
      * Details of a Job Manager Task to be launched when the Job is started.
      */
     @Generated
     @JsonProperty(value = "jobManagerTask", access = JsonProperty.Access.WRITE_ONLY)
-    private JobManagerTask jobManagerTask;
+    private BatchJobManagerTask jobManagerTask;
 
     /*
      * The Job Preparation Task. The Job Preparation Task is a special Task run on each Compute Node before any other
@@ -143,7 +143,7 @@ public final class BatchJob {
      */
     @Generated
     @JsonProperty(value = "jobPreparationTask", access = JsonProperty.Access.WRITE_ONLY)
-    private JobPreparationTask jobPreparationTask;
+    private BatchJobPreparationTask jobPreparationTask;
 
     /*
      * The Job Release Task. The Job Release Task is a special Task run at the end of the Job on each Compute Node that
@@ -151,7 +151,7 @@ public final class BatchJob {
      */
     @Generated
     @JsonProperty(value = "jobReleaseTask", access = JsonProperty.Access.WRITE_ONLY)
-    private JobReleaseTask jobReleaseTask;
+    private BatchJobReleaseTask jobReleaseTask;
 
     /*
      * The list of common environment variable settings. These environment variables are set for all Tasks in the Job
@@ -167,7 +167,7 @@ public final class BatchJob {
      */
     @Generated
     @JsonProperty(value = "poolInfo")
-    private PoolInformation poolInfo;
+    private BatchPoolInfo poolInfo;
 
     /*
      * The action the Batch service should take when all Tasks in the Job are in the completed state. The default is
@@ -175,7 +175,7 @@ public final class BatchJob {
      */
     @Generated
     @JsonProperty(value = "onAllTasksComplete")
-    private OnAllTasksComplete onAllTasksComplete;
+    private OnAllBatchTasksComplete onAllTasksComplete;
 
     /*
      * The action the Batch service should take when any Task in the Job fails. A Task is considered to have failed if
@@ -185,14 +185,14 @@ public final class BatchJob {
      */
     @Generated
     @JsonProperty(value = "onTaskFailure", access = JsonProperty.Access.WRITE_ONLY)
-    private OnTaskFailure onTaskFailure;
+    private OnBatchTaskFailure onTaskFailure;
 
     /*
      * The network configuration for the Job.
      */
     @Generated
     @JsonProperty(value = "networkConfiguration", access = JsonProperty.Access.WRITE_ONLY)
-    private JobNetworkConfiguration networkConfiguration;
+    private BatchJobNetworkConfiguration networkConfiguration;
 
     /*
      * A list of name-value pairs associated with the Job as metadata. The Batch service does not assign any meaning to
@@ -207,7 +207,7 @@ public final class BatchJob {
      */
     @Generated
     @JsonProperty(value = "executionInfo", access = JsonProperty.Access.WRITE_ONLY)
-    private JobExecutionInformation executionInfo;
+    private BatchJobExecutionInfo executionInfo;
 
     /*
      * Resource usage statistics for the entire lifetime of the Job. This property is populated only if the CloudJob
@@ -217,7 +217,7 @@ public final class BatchJob {
      */
     @Generated
     @JsonProperty(value = "stats", access = JsonProperty.Access.WRITE_ONLY)
-    private JobStatistics stats;
+    private BatchJobStatistics stats;
 
     /**
      * Creates an instance of BatchJob class.
@@ -226,7 +226,7 @@ public final class BatchJob {
      */
     @Generated
     @JsonCreator
-    public BatchJob(@JsonProperty(value = "poolInfo") PoolInformation poolInfo) {
+    public BatchJob(@JsonProperty(value = "poolInfo") BatchPoolInfo poolInfo) {
         this.poolInfo = poolInfo;
     }
 
@@ -312,7 +312,7 @@ public final class BatchJob {
      * @return the state value.
      */
     @Generated
-    public JobState getState() {
+    public BatchJobState getState() {
         return this.state;
     }
 
@@ -333,7 +333,7 @@ public final class BatchJob {
      * @return the previousState value.
      */
     @Generated
-    public JobState getPreviousState() {
+    public BatchJobState getPreviousState() {
         return this.previousState;
     }
 
@@ -434,7 +434,7 @@ public final class BatchJob {
      * @return the constraints value.
      */
     @Generated
-    public JobConstraints getConstraints() {
+    public BatchJobConstraints getConstraints() {
         return this.constraints;
     }
 
@@ -445,7 +445,7 @@ public final class BatchJob {
      * @return the BatchJob object itself.
      */
     @Generated
-    public BatchJob setConstraints(JobConstraints constraints) {
+    public BatchJob setConstraints(BatchJobConstraints constraints) {
         this.constraints = constraints;
         return this;
     }
@@ -456,7 +456,7 @@ public final class BatchJob {
      * @return the jobManagerTask value.
      */
     @Generated
-    public JobManagerTask getJobManagerTask() {
+    public BatchJobManagerTask getJobManagerTask() {
         return this.jobManagerTask;
     }
 
@@ -467,7 +467,7 @@ public final class BatchJob {
      * @return the jobPreparationTask value.
      */
     @Generated
-    public JobPreparationTask getJobPreparationTask() {
+    public BatchJobPreparationTask getJobPreparationTask() {
         return this.jobPreparationTask;
     }
 
@@ -478,7 +478,7 @@ public final class BatchJob {
      * @return the jobReleaseTask value.
      */
     @Generated
-    public JobReleaseTask getJobReleaseTask() {
+    public BatchJobReleaseTask getJobReleaseTask() {
         return this.jobReleaseTask;
     }
 
@@ -501,7 +501,7 @@ public final class BatchJob {
      * @return the poolInfo value.
      */
     @Generated
-    public PoolInformation getPoolInfo() {
+    public BatchPoolInfo getPoolInfo() {
         return this.poolInfo;
     }
 
@@ -511,7 +511,7 @@ public final class BatchJob {
      * @param poolInfo the poolInfo value to set.
      * @return the BatchJob object itself.
      */
-    public BatchJob setPoolInfo(PoolInformation poolInfo) {
+    public BatchJob setPoolInfo(BatchPoolInfo poolInfo) {
         this.poolInfo = poolInfo;
         return this;
     }
@@ -523,7 +523,7 @@ public final class BatchJob {
      * @return the onAllTasksComplete value.
      */
     @Generated
-    public OnAllTasksComplete getOnAllTasksComplete() {
+    public OnAllBatchTasksComplete getOnAllTasksComplete() {
         return this.onAllTasksComplete;
     }
 
@@ -535,7 +535,7 @@ public final class BatchJob {
      * @return the BatchJob object itself.
      */
     @Generated
-    public BatchJob setOnAllTasksComplete(OnAllTasksComplete onAllTasksComplete) {
+    public BatchJob setOnAllTasksComplete(OnAllBatchTasksComplete onAllTasksComplete) {
         this.onAllTasksComplete = onAllTasksComplete;
         return this;
     }
@@ -549,7 +549,7 @@ public final class BatchJob {
      * @return the onTaskFailure value.
      */
     @Generated
-    public OnTaskFailure getOnTaskFailure() {
+    public OnBatchTaskFailure getOnTaskFailure() {
         return this.onTaskFailure;
     }
 
@@ -559,7 +559,7 @@ public final class BatchJob {
      * @return the networkConfiguration value.
      */
     @Generated
-    public JobNetworkConfiguration getNetworkConfiguration() {
+    public BatchJobNetworkConfiguration getNetworkConfiguration() {
         return this.networkConfiguration;
     }
 
@@ -593,7 +593,7 @@ public final class BatchJob {
      * @return the executionInfo value.
      */
     @Generated
-    public JobExecutionInformation getExecutionInfo() {
+    public BatchJobExecutionInfo getExecutionInfo() {
         return this.executionInfo;
     }
 
@@ -606,7 +606,7 @@ public final class BatchJob {
      * @return the stats value.
      */
     @Generated
-    public JobStatistics getStats() {
+    public BatchJobStatistics getStats() {
         return this.stats;
     }
 }

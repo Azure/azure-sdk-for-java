@@ -20,7 +20,7 @@ public final class BatchPoolIdentity {
      */
     @Generated
     @JsonProperty(value = "type")
-    private PoolIdentityType type;
+    private BatchPoolIdentityType type;
 
     /*
      * The list of user identities associated with the Batch account. The user identity dictionary key references will
@@ -38,7 +38,7 @@ public final class BatchPoolIdentity {
      */
     @Generated
     @JsonCreator
-    private BatchPoolIdentity(@JsonProperty(value = "type") PoolIdentityType type) {
+    private BatchPoolIdentity(@JsonProperty(value = "type") BatchPoolIdentityType type) {
         this.type = type;
     }
 
@@ -50,7 +50,7 @@ public final class BatchPoolIdentity {
      * @return the type value.
      */
     @Generated
-    public PoolIdentityType getType() {
+    public BatchPoolIdentityType getType() {
         return this.type;
     }
 

@@ -40,7 +40,7 @@ public final class BatchCertificate {
      */
     @Generated
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
-    private CertificateState state;
+    private BatchCertificateState state;
 
     /*
      * The time at which the Certificate entered its current state.
@@ -55,7 +55,7 @@ public final class BatchCertificate {
      */
     @Generated
     @JsonProperty(value = "previousState", access = JsonProperty.Access.WRITE_ONLY)
-    private CertificateState previousState;
+    private BatchCertificateState previousState;
 
     /*
      * The time at which the Certificate entered its previous state. This property is not set if the Certificate is in
@@ -78,7 +78,7 @@ public final class BatchCertificate {
      */
     @Generated
     @JsonProperty(value = "deleteCertificateError", access = JsonProperty.Access.WRITE_ONLY)
-    private DeleteCertificateError deleteCertificateError;
+    private DeleteBatchCertificateError deleteCertificateError;
 
     /*
      * The base64-encoded contents of the Certificate. The maximum size is 10KB.
@@ -92,7 +92,7 @@ public final class BatchCertificate {
      */
     @Generated
     @JsonProperty(value = "certificateFormat")
-    private CertificateFormat certificateFormat;
+    private BatchCertificateFormat certificateFormat;
 
     /*
      * The password to access the Certificate's private key. This must be omitted if the Certificate format is cer.
@@ -156,7 +156,7 @@ public final class BatchCertificate {
      * @return the state value.
      */
     @Generated
-    public CertificateState getState() {
+    public BatchCertificateState getState() {
         return this.state;
     }
 
@@ -177,7 +177,7 @@ public final class BatchCertificate {
      * @return the previousState value.
      */
     @Generated
-    public CertificateState getPreviousState() {
+    public BatchCertificateState getPreviousState() {
         return this.previousState;
     }
 
@@ -209,7 +209,7 @@ public final class BatchCertificate {
      * @return the deleteCertificateError value.
      */
     @Generated
-    public DeleteCertificateError getDeleteCertificateError() {
+    public DeleteBatchCertificateError getDeleteCertificateError() {
         return this.deleteCertificateError;
     }
 
@@ -229,7 +229,7 @@ public final class BatchCertificate {
      * @return the certificateFormat value.
      */
     @Generated
-    public CertificateFormat getCertificateFormat() {
+    public BatchCertificateFormat getCertificateFormat() {
         return this.certificateFormat;
     }
 
@@ -240,7 +240,7 @@ public final class BatchCertificate {
      * @return the BatchCertificate object itself.
      */
     @Generated
-    public BatchCertificate setCertificateFormat(CertificateFormat certificateFormat) {
+    public BatchCertificate setCertificateFormat(BatchCertificateFormat certificateFormat) {
         this.certificateFormat = certificateFormat;
         return this;
     }

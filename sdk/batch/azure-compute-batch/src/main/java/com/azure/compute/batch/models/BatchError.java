@@ -25,7 +25,7 @@ public final class BatchError {
      */
     @Generated
     @JsonProperty(value = "message")
-    private ErrorMessage message;
+    private BatchErrorMessage message;
 
     /*
      * A collection of key-value pairs containing additional details about the error.
@@ -63,7 +63,7 @@ public final class BatchError {
      * @return the message value.
      */
     @Generated
-    public ErrorMessage getMessage() {
+    public BatchErrorMessage getMessage() {
         return this.message;
     }
 

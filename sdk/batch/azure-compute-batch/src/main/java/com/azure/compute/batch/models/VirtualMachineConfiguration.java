@@ -93,7 +93,7 @@ public final class VirtualMachineConfiguration {
      */
     @Generated
     @JsonProperty(value = "nodePlacementConfiguration")
-    private NodePlacementConfiguration nodePlacementConfiguration;
+    private BatchNodePlacementConfiguration nodePlacementConfiguration;
 
     /*
      * The virtual machine extension for the pool. If specified, the extensions mentioned in this configuration will be
@@ -303,7 +303,7 @@ public final class VirtualMachineConfiguration {
      * @return the nodePlacementConfiguration value.
      */
     @Generated
-    public NodePlacementConfiguration getNodePlacementConfiguration() {
+    public BatchNodePlacementConfiguration getNodePlacementConfiguration() {
         return this.nodePlacementConfiguration;
     }
 
@@ -316,7 +316,7 @@ public final class VirtualMachineConfiguration {
      */
     @Generated
     public VirtualMachineConfiguration setNodePlacementConfiguration(
-            NodePlacementConfiguration nodePlacementConfiguration) {
+            BatchNodePlacementConfiguration nodePlacementConfiguration) {
         this.nodePlacementConfiguration = nodePlacementConfiguration;
         return this;
     }

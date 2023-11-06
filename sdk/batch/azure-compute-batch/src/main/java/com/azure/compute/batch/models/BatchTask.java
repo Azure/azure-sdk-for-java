@@ -78,7 +78,7 @@ public final class BatchTask {
      */
     @Generated
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
-    private TaskState state;
+    private BatchTaskState state;
 
     /*
      * The time at which the Task entered its current state.
@@ -92,7 +92,7 @@ public final class BatchTask {
      */
     @Generated
     @JsonProperty(value = "previousState", access = JsonProperty.Access.WRITE_ONLY)
-    private TaskState previousState;
+    private BatchTaskState previousState;
 
     /*
      * The time at which the Task entered its previous state. This property is not set if the Task is in its initial
@@ -126,7 +126,7 @@ public final class BatchTask {
      */
     @Generated
     @JsonProperty(value = "containerSettings", access = JsonProperty.Access.WRITE_ONLY)
-    private TaskContainerSettings containerSettings;
+    private BatchTaskContainerSettings containerSettings;
 
     /*
      * A list of files that the Batch service will download to the Compute Node before running the command line. For
@@ -161,14 +161,14 @@ public final class BatchTask {
      */
     @Generated
     @JsonProperty(value = "affinityInfo", access = JsonProperty.Access.WRITE_ONLY)
-    private AffinityInformation affinityInfo;
+    private AffinityInfo affinityInfo;
 
     /*
      * The execution constraints that apply to this Task.
      */
     @Generated
     @JsonProperty(value = "constraints")
-    private TaskConstraints constraints;
+    private BatchTaskConstraints constraints;
 
     /*
      * The number of scheduling slots that the Task requires to run. The default is 1. A Task can only be scheduled to
@@ -192,14 +192,14 @@ public final class BatchTask {
      */
     @Generated
     @JsonProperty(value = "executionInfo", access = JsonProperty.Access.WRITE_ONLY)
-    private TaskExecutionInformation executionInfo;
+    private BatchTaskExecutionInfo executionInfo;
 
     /*
      * Information about the Compute Node on which the Task ran.
      */
     @Generated
     @JsonProperty(value = "nodeInfo", access = JsonProperty.Access.WRITE_ONLY)
-    private BatchNodeInformation nodeInfo;
+    private BatchNodeInfo nodeInfo;
 
     /*
      * An object that indicates that the Task is a multi-instance Task, and contains information about how to run the
@@ -214,7 +214,7 @@ public final class BatchTask {
      */
     @Generated
     @JsonProperty(value = "stats", access = JsonProperty.Access.WRITE_ONLY)
-    private TaskStatistics stats;
+    private BatchTaskStatistics stats;
 
     /*
      * The Tasks that this Task depends on. This Task will not be scheduled until all Tasks that it depends on have
@@ -223,7 +223,7 @@ public final class BatchTask {
      */
     @Generated
     @JsonProperty(value = "dependsOn", access = JsonProperty.Access.WRITE_ONLY)
-    private TaskDependencies dependsOn;
+    private BatchTaskDependencies dependsOn;
 
     /*
      * A list of Packages that the Batch service will deploy to the Compute Node before running the command line.
@@ -234,7 +234,7 @@ public final class BatchTask {
      */
     @Generated
     @JsonProperty(value = "applicationPackageReferences", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ApplicationPackageReference> applicationPackageReferences;
+    private List<BatchApplicationPackageReference> applicationPackageReferences;
 
     /*
      * The settings for an authentication token that the Task can use to perform Batch service operations. If this
@@ -333,7 +333,7 @@ public final class BatchTask {
      * @return the state value.
      */
     @Generated
-    public TaskState getState() {
+    public BatchTaskState getState() {
         return this.state;
     }
 
@@ -354,7 +354,7 @@ public final class BatchTask {
      * @return the previousState value.
      */
     @Generated
-    public TaskState getPreviousState() {
+    public BatchTaskState getPreviousState() {
         return this.previousState;
     }
 
@@ -398,7 +398,7 @@ public final class BatchTask {
      * @return the containerSettings value.
      */
     @Generated
-    public TaskContainerSettings getContainerSettings() {
+    public BatchTaskContainerSettings getContainerSettings() {
         return this.containerSettings;
     }
 
@@ -446,7 +446,7 @@ public final class BatchTask {
      * @return the affinityInfo value.
      */
     @Generated
-    public AffinityInformation getAffinityInfo() {
+    public AffinityInfo getAffinityInfo() {
         return this.affinityInfo;
     }
 
@@ -456,7 +456,7 @@ public final class BatchTask {
      * @return the constraints value.
      */
     @Generated
-    public TaskConstraints getConstraints() {
+    public BatchTaskConstraints getConstraints() {
         return this.constraints;
     }
 
@@ -467,7 +467,7 @@ public final class BatchTask {
      * @return the BatchTask object itself.
      */
     @Generated
-    public BatchTask setConstraints(TaskConstraints constraints) {
+    public BatchTask setConstraints(BatchTaskConstraints constraints) {
         this.constraints = constraints;
         return this;
     }
@@ -501,7 +501,7 @@ public final class BatchTask {
      * @return the executionInfo value.
      */
     @Generated
-    public TaskExecutionInformation getExecutionInfo() {
+    public BatchTaskExecutionInfo getExecutionInfo() {
         return this.executionInfo;
     }
 
@@ -511,7 +511,7 @@ public final class BatchTask {
      * @return the nodeInfo value.
      */
     @Generated
-    public BatchNodeInformation getNodeInfo() {
+    public BatchNodeInfo getNodeInfo() {
         return this.nodeInfo;
     }
 
@@ -532,7 +532,7 @@ public final class BatchTask {
      * @return the stats value.
      */
     @Generated
-    public TaskStatistics getStats() {
+    public BatchTaskStatistics getStats() {
         return this.stats;
     }
 
@@ -544,7 +544,7 @@ public final class BatchTask {
      * @return the dependsOn value.
      */
     @Generated
-    public TaskDependencies getDependsOn() {
+    public BatchTaskDependencies getDependsOn() {
         return this.dependsOn;
     }
 
@@ -558,7 +558,7 @@ public final class BatchTask {
      * @return the applicationPackageReferences value.
      */
     @Generated
-    public List<ApplicationPackageReference> getApplicationPackageReferences() {
+    public List<BatchApplicationPackageReference> getApplicationPackageReferences() {
         return this.applicationPackageReferences;
     }
 
