@@ -17,6 +17,8 @@ import com.generic.core.util.logging.LogLevel;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.time.OffsetDateTime;
@@ -53,22 +55,31 @@ public final class HttpResponseBodyDecoder {
         // Check for HEAD HTTP method first as it's possible for the underlying HttpClient to treat a non-existent
         // response body as an empty byte array.
         if (httpResponse.getRequest().getHttpMethod() == HttpMethod.HEAD) {
-            // RFC: A response to a HEAD method should not have a body. If so, it must be ignored
+            // RFC: A response to a HEAD method should not have a body. If so, it must be ignored.
             return null;
         } else if (isErrorStatus(httpResponse.getStatusCode(), decodeData)) {
             try {
                 return deserializeBody(body, decodeData.getUnexpectedException(
-                    httpResponse.getStatusCode()).getExceptionBodyType(),null, serializer);
-            } catch (RuntimeException | ClassNotFoundException ex) {
-                // ClassNotFoundException is thrown when we cannot find a Type for the given Class to deserialize to.
-                //
-                // There has been an issue deserializing the error response body. This may be an error in the service
-                // return.
-                //
-                // Return the exception as the body type, RestProxyBase will handle this later.
-                LOGGER.log(LogLevel.WARNING, () -> "Failed to deserialize the error entity.", ex);
+                    httpResponse.getStatusCode()).getExceptionBodyType(), null, serializer);
+            } catch (RuntimeException e) {
+                Throwable cause = e.getCause();
 
-                return ex;
+                if (cause instanceof InvocationTargetException || cause instanceof IllegalAccessException
+                    || cause instanceof NoSuchMethodException || cause instanceof IOException) {
+                    // - InvocationTargetException is thrown by the deserializer when the fromJson() method in the
+                    // type to deserialize to throws an exception.
+                    // - IllegalAccessException is thrown when the deserializer cannot access said fromJson() method in
+                    // the type to deserialize the body to.
+                    // - NoSuchMethodException is thrown when said fromJson() method cannot be found.
+                    // - IOException is thrown when the deserializer cannot read the response body.
+                    //
+                    // Return the exception as the body type, RestProxyBase will handle this later.
+                    LOGGER.log(LogLevel.WARNING, () -> "Failed to deserialize the error entity.", e);
+
+                    return e;
+                } else {
+                    throw e;
+                }
             }
         } else {
             if (!decodeData.isReturnTypeDecodeable()) {
@@ -82,8 +93,8 @@ public final class HttpResponseBodyDecoder {
                     decodeData.getReturnValueWireType(), serializer);
             } catch (MalformedValueException e) {
                 throw new HttpResponseException("HTTP response has a malformed body.", httpResponse, e);
-            } catch (ClassNotFoundException e) {
-                throw new HttpResponseException("Deserialization Failed.", httpResponse, e);
+            } catch (UncheckedIOException e) {
+                throw new HttpResponseException("Deserialization failed.", httpResponse, e);
             }
         }
     }
@@ -126,12 +137,9 @@ public final class HttpResponseBodyDecoder {
      * @param wireType value of optional {@link ReturnValueWireType} annotation present in java proxy method indicating
      * 'entity type' (wireType) of REST API wire response body.
      *
-     * @return Deserialized object
-     *
-     * @throws ClassNotFoundException When the class of the {@code resultType} or {@code wireType} cannot be found.
+     * @return Deserialized object.
      */
-    private static Object deserializeBody(byte[] value, Type resultType, Type wireType, ObjectSerializer serializer)
-        throws ClassNotFoundException {
+    private static Object deserializeBody(byte[] value, Type resultType, Type wireType, ObjectSerializer serializer) {
 
         if (wireType == null) {
             return deserialize(value, resultType, serializer);
@@ -143,10 +151,9 @@ public final class HttpResponseBodyDecoder {
         }
     }
 
-    private static Object deserialize(byte[] value, Type type, ObjectSerializer serializer)
-        throws ClassNotFoundException {
-
-        return serializer.deserializeFromBytes(value, TypeReference.createInstance(Class.forName(type.getTypeName())));
+    private static Object deserialize(byte[] value, Type type, ObjectSerializer serializer) {
+        return serializer.deserializeFromBytes(value == null ? new byte[0] : value,
+            TypeReference.createInstance(TypeUtil.getRawClass(type)));
     }
 
     /**
@@ -202,14 +209,15 @@ public final class HttpResponseBodyDecoder {
      * @return The converted object.
      */
     private static Object convertToResultType(final Object wireResponse, final Type resultType, final Type wireType) {
-
         if (resultType == byte[].class) {
             if (wireType == Base64Url.class) {
-                return ((Base64Url) wireResponse).decodedBytes();
+                return (new Base64Url(wireResponse.toString())).decodedBytes();
             }
         } else if (resultType == OffsetDateTime.class) {
             if (wireType == DateTimeRfc1123.class) {
-                return ((DateTimeRfc1123) wireResponse).getDateTime();
+                return new DateTimeRfc1123(wireResponse.toString()).getDateTime();
+            } else {
+                return OffsetDateTime.parse(wireResponse.toString());
             }
         } else if (TypeUtil.isTypeOrSubTypeOf(resultType, List.class)) {
             final Type resultElementType = TypeUtil.getTypeArgument(resultType);

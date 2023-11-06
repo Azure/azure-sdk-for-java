@@ -24,7 +24,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.InputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
@@ -80,7 +81,7 @@ public class HttpResponseBodyDecoderTests {
         HttpResponseBodyDecoder.decodeByteArray(body.toBytes(), httpResponse, SERIALIZER, decodeData);
 
         if (!isEmpty) {
-            assertEquals(expected, body);
+            assertEquals(expected.toString(), body.toString());
         }
     }
 
@@ -98,26 +99,29 @@ public class HttpResponseBodyDecoderTests {
         return Stream.of(
             Arguments.of(emptyResponse, noExpectedStatusCodes, true, null),
             Arguments.of(emptyResponse, expectedStatusCodes, true, null),
-            Arguments.of(response, noExpectedStatusCodes, false, "expected"),
-            Arguments.of(response, expectedStatusCodes, false, "expected"),
-            Arguments.of(wrongGoodResponse, expectedStatusCodes, false, "good response"),
-
-            // Improperly formatted JSON string causes MalformedValueException.
-            Arguments.of(emptyResponse, noExpectedStatusCodes, true, null)
+            Arguments.of(response, noExpectedStatusCodes, false, "\"expected\""),
+            Arguments.of(response, expectedStatusCodes, false, "\"expected\""),
+            Arguments.of(wrongGoodResponse, expectedStatusCodes, false, "\"good response\"")
         );
     }
 
     @Test
-    public void ioExceptionInErrorDeserializationIsThrown() {
-        ObjectSerializer ioExceptionThrower = new DefaultJsonSerializer();
+    public void exceptionInErrorDeserializationThrows() {
+        ObjectSerializer ioExceptionThrower = new DefaultJsonSerializer() {
+            @Override
+            public <T> T deserializeFromBytes(byte[] bytes, TypeReference<T> typeReference) {
+                throw new UncheckedIOException(new IOException());
+            }
+        };
 
         HttpResponseDecodeData noExpectedStatusCodes = new MockHttpResponseDecodeData(
             new UnexpectedExceptionInformation(HttpResponseException.class));
 
         HttpResponse response = new MockHttpResponse(GET_REQUEST, 300);
+        Object deserializedResponse =
+            HttpResponseBodyDecoder.decodeByteArray(null, response, ioExceptionThrower, noExpectedStatusCodes);
 
-        assertThrows(NullPointerException.class, () ->
-            HttpResponseBodyDecoder.decodeByteArray(null, response, ioExceptionThrower, noExpectedStatusCodes));
+        assertTrue(deserializedResponse instanceof UncheckedIOException);
     }
 
     @Test
@@ -156,7 +160,7 @@ public class HttpResponseBodyDecoderTests {
     }
 
     @Test
-    public void emptyResponseReturnsMonoEmpty() {
+    public void emptyResponseReturnsNull() {
         HttpResponse response = new MockHttpResponse(GET_REQUEST, 200, (Object) null);
 
         HttpResponseDecodeData decodeData = new MockHttpResponseDecodeData(200, String.class, true);
