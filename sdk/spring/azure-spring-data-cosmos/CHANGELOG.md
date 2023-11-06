@@ -1,15 +1,13 @@
 ## Release History
 
-### 5.7.0-beta.1 (Unreleased)
+### 5.7.0 (2023-11-07)
 
 #### Features Added
-* Updated Spring and Reactive Spring repository `saveAll` and `deleteAll` APIs to use bulk functionality implementation. NOTE: `azure-spring-data-cosmos` is currently unable to set throughput control limits at the request level, which will need to be achieved by creating multiple clients. - See [PR 36611](https://github.com/Azure/azure-sdk-for-java/pull/36611).
-
-#### Breaking Changes
-
-#### Bugs Fixed
+* Updated Spring and Reactive Spring repository `saveAll` and `deleteAll` APIs to use bulk functionality implementation. NOTE: `azure-spring-data-cosmos` is currently unable to set throughput control limits at the request level, which will need to be achieved by creating multiple clients. - See [PR 37475](https://github.com/Azure/azure-sdk-for-java/pull/37475).
 
 #### Other Changes
+* Updated `azure-cosmos` to version `4.52.0`.
+* Updated `Spring Data Commons` to version `3.1.5`.
 
 ### 5.6.0 (2023-10-24)
 
