@@ -4,8 +4,20 @@ matrix:
       testTarget: downloadToFile
       async: false
       blobSizeBytes: 1024
-      parallel: 500
+      parallel: 100
+      faultInjection: true
+      testTime: 18000
       imageBuildDir: "../../.."
+
+    download-small-file-no-fi:
+      testTarget: downloadToFile
+      async: false
+      blobSizeBytes: 1024
+      parallel: 100
+      faultInjection: false
+      testTime: 18000
+      imageBuildDir: "../../.."
+
 #    we can add new test cases here - will run in parallel
 #    download-large-file-test:
 #      testTarget: downloadToFile

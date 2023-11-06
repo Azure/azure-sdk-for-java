@@ -34,7 +34,15 @@ public class BlobStorageStressRunner {
 
         DownloadToFileScenarioBuilder builder = new DownloadToFileScenarioBuilder();
         builder.setBlobPrefix("foo");
-        builder.setBlobSize(10 * 1024 * 1024);
+        int size = Integer.parseInt(System.getProperty("blobSizeBytes"));
+        //int size = 1024;
+        builder.setBlobSize(size);
+        boolean useFaultInjection = Boolean.parseBoolean(System.getProperty("faultInjection"));
+        //boolean useFaultInjection = true;
+        int parallel = Integer.parseInt(System.getProperty("parallel"));
+        //int parallel = 100;
+
+
         try {
             Path tmpdir = Files.createTempDirectory("tmpDirPrefix");
             builder.setDirectoryPath(Paths.get(tmpdir.toString()));
@@ -43,10 +51,15 @@ public class BlobStorageStressRunner {
             e.printStackTrace();
         }
 
-        builder.setParallel(100);
-        builder.setTestTimeSeconds(30);
-        builder.setFaultInjectingClient(new HttpFaultInjectingHttpClient(
-            HttpClient.createDefault(), false, probabilities));
+        builder.setParallel(parallel);
+        int seconds = Integer.parseInt(System.getProperty("testTime"));
+        //int seconds = 90;
+        builder.setTestTimeSeconds(seconds);
+        if (useFaultInjection) {
+            System.out.println("Using fault injection");
+            builder.setFaultInjectingClient(new HttpFaultInjectingHttpClient(
+                HttpClient.createDefault(), false, probabilities));
+        }
 
         try {
             run(builder, true);
@@ -110,6 +123,7 @@ public class BlobStorageStressRunner {
         return scenarios;
     }
 
+    // randomly creating network failures
     private static FaultInjectionProbabilities getDefaultFaultProbabilities() {
         return new FaultInjectionProbabilities()
             .setNoResponseIndefinite(0.003D)
