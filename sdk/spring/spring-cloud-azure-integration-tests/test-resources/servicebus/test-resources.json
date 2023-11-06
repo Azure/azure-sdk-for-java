@@ -29,7 +29,7 @@
   "resources": [
     {
       "type": "Microsoft.ServiceBus/namespaces",
-      "apiVersion": "2022-01-01-preview",
+      "apiVersion": "2022-10-01-preview",
       "name": "[variables('azureServiceBusNamespaceName')]",
       "location": "[variables('location')]",
       "sku": {
@@ -37,6 +37,7 @@
         "tier": "Standard"
       },
       "properties": {
+        "premiumMessagingPartitions": 0,
         "minimumTlsVersion": "1.2",
         "publicNetworkAccess": "Enabled",
         "disableLocalAuth": false,
@@ -44,8 +45,8 @@
       }
     },
     {
-      "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
-      "apiVersion": "2022-01-01-preview",
+      "type": "Microsoft.ServiceBus/namespaces/authorizationrules",
+      "apiVersion": "2022-10-01-preview",
       "name": "[concat(variables('azureServiceBusNamespaceName'), '/RootManageSharedAccessKey')]",
       "location": "[variables('location')]",
       "dependsOn": [
@@ -60,8 +61,24 @@
       }
     },
     {
+      "type": "Microsoft.ServiceBus/namespaces/networkrulesets",
+      "apiVersion": "2022-10-01-preview",
+      "name": "[concat(variables('azureServiceBusNamespaceName'), '/default')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName'))]"
+      ],
+      "properties": {
+        "publicNetworkAccess": "Enabled",
+        "defaultAction": "Allow",
+        "virtualNetworkRules": [],
+        "ipRules": [],
+        "trustedServiceAccessEnabled": false
+      }
+    },
+    {
       "type": "Microsoft.ServiceBus/namespaces/queues",
-      "apiVersion": "2022-01-01-preview",
+      "apiVersion": "2022-10-01-preview",
       "name": "[concat(variables('azureServiceBusNamespaceName'), '/que001')]",
       "location": "[variables('location')]",
       "dependsOn": [
@@ -69,7 +86,7 @@
       ],
       "properties": {
         "maxMessageSizeInKilobytes": 256,
-        "lockDuration": "PT30S",
+        "lockDuration": "PT1M",
         "maxSizeInMegabytes": 1024,
         "requiresDuplicateDetection": false,
         "requiresSession": false,
@@ -86,7 +103,7 @@
     },
     {
       "type": "Microsoft.ServiceBus/namespaces/queues",
-      "apiVersion": "2022-01-01-preview",
+      "apiVersion": "2022-10-01-preview",
       "name": "[concat(variables('azureServiceBusNamespaceName'), '/passwordless_que001')]",
       "location": "[variables('location')]",
       "dependsOn": [
@@ -94,7 +111,7 @@
       ],
       "properties": {
         "maxMessageSizeInKilobytes": 256,
-        "lockDuration": "PT30S",
+        "lockDuration": "PT1M",
         "maxSizeInMegabytes": 1024,
         "requiresDuplicateDetection": false,
         "requiresSession": false,
