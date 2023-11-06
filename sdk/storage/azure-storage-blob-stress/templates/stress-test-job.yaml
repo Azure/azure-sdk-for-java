@@ -21,12 +21,17 @@ spec:
           export AZURE_LOG_LEVEL="INFO";
           export APPLICATIONINSIGHTS_INSTRUMENTATION_LOGGING_LEVEL="DEBUG";
           export APPLICATIONINSIGHTS_ROLE_NAME=storage-{{ .Stress.BaseName }};
-          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.17.jar \
+          java \
+          -Dasync={{ default false .Stress.async }} \
+          -DfaultInjection={{ default false .Stress.faultInjection }} \
+          -DblobSizeBytes={{ .Stress.blobSizeBytes }} \
+          -DtestTime={{ .Stress.testTime }} \
+          -Dparallel={{ .Stress.parallel }} \
           -jar /app/azure-storage-blob-stress-1.0.0-beta.1-jar-with-dependencies.jar \
           {{ .Stress.testTarget }} \
-          -async {{ default false .Stress.async }} \
-          -size {{ .Stress.blobSizeBytes }} \
-          -parallel {{ .Stress.parallel }} 2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.Scenario }}-`date +%s`.log";
+          2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.Scenario }}-`date +%s`.log";
+
+      # add this line back after line 24: -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.17.jar \
       # Pulls the image on pod start, always. We tend to push to the same image and tag over and over again
       # when iterating, so this is a must.
       imagePullPolicy: Always
@@ -37,7 +42,7 @@ spec:
       # just uses 'limits' for both.
       resources:
         limits:
-          memory: 500Mi
-          cpu: "0.5"
+          memory: 4000Mi
+          cpu: "2.0"
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 {{- end -}}
