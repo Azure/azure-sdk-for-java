@@ -76,9 +76,9 @@ public class ServiceBusJmsConnectionFactoryFactory {
                 JmsConnectionFactory jmsFactory = (JmsConnectionFactory) ReflectionUtils.getField(ServiceBusJmsConnectionFactory.class, "factory", factory);
                 jmsFactory.setExtension(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES.toString(),
                     (connection, uri) -> {
-                        Map<String, Object> sbproperties = new HashMap<>();
-                        sbproperties.put("com.microsoft:is-client-provider", false);
-                        return sbproperties;
+                        Map<String, Object> properties = new HashMap<>();
+                        properties.put("com.microsoft:is-client-provider", false);
+                        return properties;
                     });
             }
             return factory;
