@@ -5,14 +5,13 @@ package com.azure.cosmos.spark.utils
 import com.azure.cosmos.CosmosDiagnosticsContext
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers
 import com.azure.cosmos.spark.OutputMetricsPublisherTrait
-import com.google.common.util.concurrent.AtomicDouble
 
 import java.util.concurrent.atomic.AtomicLong
 
 private[spark] class TestOutputMetricsPublisher extends OutputMetricsPublisherTrait {
   private val recordsWritten = new AtomicLong(0)
   private val bytesWritten = new AtomicLong(0)
-  private val totalRequestCharge = new AtomicDouble()
+  private val totalRequestCharge = new AtomicLong()
 
 
   override def trackWriteOperation(recordCount: Long, diagnostics: Option[CosmosDiagnosticsContext]): Unit = {
@@ -22,7 +21,7 @@ private[spark] class TestOutputMetricsPublisher extends OutputMetricsPublisherTr
 
     diagnostics match {
       case Some(ctx) => {
-        totalRequestCharge.addAndGet(ctx.getTotalRequestCharge)
+        totalRequestCharge.addAndGet((ctx.getTotalRequestCharge * 100L).toLong)
         bytesWritten.addAndGet(
           if (ImplementationBridgeHelpers
             .CosmosDiagnosticsContextHelper
@@ -44,5 +43,5 @@ private[spark] class TestOutputMetricsPublisher extends OutputMetricsPublisherTr
 
   def getBytesWrittenSnapshot(): Long = bytesWritten.get()
 
-  def getTotalRequestChargeSnapshot(): Long = totalRequestCharge.get().toLong
+  def getTotalRequestChargeSnapshot(): Long = totalRequestCharge.get() / 100
 }

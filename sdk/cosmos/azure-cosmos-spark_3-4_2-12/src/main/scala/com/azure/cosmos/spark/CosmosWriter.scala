@@ -5,7 +5,6 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosDiagnosticsContext
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers
-import com.google.common.util.concurrent.AtomicDouble
 import org.apache.spark.SparkInternalsBridge
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.metric.CustomTaskMetric
@@ -37,7 +36,7 @@ private class CosmosWriter(
 
   private val recordsWritten = new AtomicLong(0)
   private val bytesWritten = new AtomicLong(0)
-  private val totalRequestCharge = new AtomicDouble()
+  private val totalRequestCharge = new AtomicLong()
 
   private val  recordsWrittenMetric = new CustomTaskMetric {
     override def name(): String = CosmosConstants.MetricNames.RecordsWritten
@@ -53,7 +52,7 @@ private class CosmosWriter(
   private val totalRequestChargeMetric = new CustomTaskMetric {
     override def name(): String = CosmosConstants.MetricNames.TotalRequestCharge
 
-    override def value(): Long = totalRequestCharge.get().toLong
+    override def value(): Long = totalRequestCharge.get() / 100L
   }
 
   private val metrics = Array(recordsWrittenMetric, bytesWrittenMetric, totalRequestChargeMetric)
@@ -71,7 +70,7 @@ private class CosmosWriter(
 
     diagnostics match {
       case Some(ctx) =>
-        totalRequestCharge.addAndGet(ctx.getTotalRequestCharge)
+        totalRequestCharge.addAndGet((ctx.getTotalRequestCharge * 100L).toLong)
         bytesWritten.addAndGet(
           if (ImplementationBridgeHelpers
             .CosmosDiagnosticsContextHelper
