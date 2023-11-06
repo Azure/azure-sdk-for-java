@@ -461,7 +461,7 @@ String snapshotName = "{snapshotName}";
 List<ConfigurationSettingsFilter> filters = new ArrayList<>();
 // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
 filters.add(new ConfigurationSettingsFilter("Test*"));
-SyncPoller<PollResult, ConfigurationSnapshot> poller =
+SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
     configurationClient.beginCreateSnapshot(snapshotName, new ConfigurationSnapshot(filters), Context.NONE);
 poller.setPollInterval(Duration.ofSeconds(10));
 poller.waitForCompletion();
