@@ -16,6 +16,16 @@
     "serviceBusEndpointSuffix": {
       "type": "String",
       "defaultValue": ".servicebus.windows.net"
+    },
+    "testApplicationId": {
+      "type": "string"
+    },
+    "testApplicationSecret": {
+      "type": "string"
+    },
+    "tenantId": {
+      "defaultValue": "[subscription().tenantId]",
+      "type": "string"
     }
   },
   "variables": {
@@ -451,6 +461,18 @@
     "AZURE_SERVICE_BUS_DOMAIN_NAME": {
       "type": "string",
       "value": "[substring(parameters('serviceBusEndpointSuffix'), 1)]"
+    },
+    "AZURE_SPRING_CLIENT_ID": {
+      "type": "string",
+      "value": "[parameters('testApplicationID')]"
+    },
+    "AZURE_SPRING_CLIENT_SECRET": {
+      "type": "string",
+      "value": "[parameters('testApplicationSecret')]"
+    },
+    "AZURE_SPRING_TENANT_ID": {
+      "type": "string",
+      "value": "[parameters('tenantId')]"
     }
   }
 }
