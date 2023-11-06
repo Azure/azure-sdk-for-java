@@ -19,6 +19,10 @@ public final class SemanticSearchResultsAccessHelper {
     }
 
     public static void setAccessor(final SemanticSearchResultsAccessor newAccessor) {
+        accessor = newAccessor;
+    }
+
+    public static SemanticSearchResults create(SearchPagedResponse pagedResponse) {
         if (accessor == null) {
             try {
                 Class.forName(SemanticSearchResults.class.getName(), true,
@@ -29,10 +33,6 @@ public final class SemanticSearchResultsAccessHelper {
         }
 
         assert accessor != null;
-        accessor = newAccessor;
-    }
-
-    public static SemanticSearchResults create(SearchPagedResponse pagedResponse) {
         return accessor.create(pagedResponse);
     }
 }
