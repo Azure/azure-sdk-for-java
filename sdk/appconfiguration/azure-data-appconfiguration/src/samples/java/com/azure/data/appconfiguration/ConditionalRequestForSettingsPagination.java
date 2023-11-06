@@ -3,7 +3,9 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.MatchConditions;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
@@ -29,7 +31,6 @@ public class ConditionalRequestForSettingsPagination {
         // If the Etag in the request header is matched with the ETag in the service, the service will return the status code "304"
         // If not matched, the service will return status code 200 with the settings in the response body
         // If the pre-condition fails, the service will return status code 412
-        boolean isSettingsOutdated = true;
         List<PagedResponse<ConfigurationSetting>> pagedResponses = client.listConfigurationSettings(null)
             .streamByPage()
             .collect(Collectors.toList());
@@ -41,23 +42,18 @@ public class ConditionalRequestForSettingsPagination {
         // If the settings are changed, we will re-request the settings with the conditional request.
         // If the settings are not changed, we will stop the while loop and process the latest settings in the response.
         // It is still possible the setting is changed after the while loop. It is up to the user how to handle their monitoring logic.
-        while (isSettingsOutdated) {
+        while (true) {
             // Reload settings with conditional request
             matchConditionsCollected = collectMatchConditions(pagedResponses);
-            pagedResponses =
-                client.listConfigurationSettings(null, matchConditionsCollected, Context.NONE)
-                    .streamByPage()
-                    .collect(Collectors.toList());
 
-            for (int i = 0; i < pagedResponses.size(); i++) {
-                final PagedResponse<ConfigurationSetting> pagedResponse = pagedResponses.get(i);
-                final int statusCode = pagedResponse.getStatusCode();
+            try {
+                pagedResponses = client.listConfigurationSettings(null, matchConditionsCollected, Context.NONE)
+                        .streamByPage()
+                        .collect(Collectors.toList());
+            } catch (HttpResponseException exception) {
+                int statusCode = exception.getResponse().getStatusCode();
                 if (statusCode == 304) {
                     System.out.println("The settings are not changed since last time.");
-                    isSettingsOutdated = false;
-                } else if (statusCode == 200) {
-                    System.out.println("The settings are changed since last time.");
-                    isSettingsOutdated = true;
                     break;
                 } else if (statusCode == 412) {
                     throw new RuntimeException("Pre-condition failed.");
