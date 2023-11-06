@@ -29,7 +29,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -117,11 +116,10 @@ public class HttpResponseBodyDecoderTests {
     }
 
     @Test
-    public void ioExceptionInErrorDeserializationReturnsEmpty() {
+    public void ioExceptionInErrorDeserializationReturnsException() {
         JacksonAdapter ioExceptionThrower = new JacksonAdapter() {
             @Override
-            public <T> T deserialize(InputStream inputStream, Type type, SerializerEncoding encoding)
-                throws IOException {
+            public <T> T deserialize(byte[] bytes, Type type, SerializerEncoding encoding) throws IOException {
                 throw new IOException();
             }
         };
@@ -130,8 +128,10 @@ public class HttpResponseBodyDecoderTests {
             new UnexpectedExceptionInformation(HttpResponseException.class));
 
         HttpResponse response = new MockHttpResponse(GET_REQUEST, 300);
+        Object deserializedResponse =
+            HttpResponseBodyDecoder.decodeByteArray(null, response, ioExceptionThrower, noExpectedStatusCodes);
 
-        assertNull(HttpResponseBodyDecoder.decodeByteArray(null, response, ioExceptionThrower, noExpectedStatusCodes));
+        assertTrue(deserializedResponse instanceof IOException);
     }
 
     @Test
