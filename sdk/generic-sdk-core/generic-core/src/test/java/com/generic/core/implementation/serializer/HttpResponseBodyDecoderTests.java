@@ -39,6 +39,7 @@ import java.util.stream.Stream;
 
 import static com.generic.core.CoreTestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -106,7 +107,7 @@ public class HttpResponseBodyDecoderTests {
     }
 
     @Test
-    public void exceptionInErrorDeserializationThrows() {
+    public void exceptionInErrorDeserializationReturnsException() {
         ObjectSerializer ioExceptionThrower = new DefaultJsonSerializer() {
             @Override
             public <T> T deserializeFromBytes(byte[] bytes, TypeReference<T> typeReference) {
@@ -118,10 +119,9 @@ public class HttpResponseBodyDecoderTests {
             new UnexpectedExceptionInformation(HttpResponseException.class));
 
         HttpResponse response = new MockHttpResponse(GET_REQUEST, 300);
-        Object deserializedResponse =
-            HttpResponseBodyDecoder.decodeByteArray(null, response, ioExceptionThrower, noExpectedStatusCodes);
 
-        assertTrue(deserializedResponse instanceof UncheckedIOException);
+        assertInstanceOf(UncheckedIOException.class,
+            HttpResponseBodyDecoder.decodeByteArray(null, response, ioExceptionThrower, noExpectedStatusCodes));
     }
 
     @Test
