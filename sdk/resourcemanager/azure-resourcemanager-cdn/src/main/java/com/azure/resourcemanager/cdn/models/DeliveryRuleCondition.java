@@ -39,6 +39,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class DeliveryRuleCondition {
+    /** Creates an instance of DeliveryRuleCondition class. */
+    public DeliveryRuleCondition() {
+    }
+
     /**
      * Validates the instance.
      *

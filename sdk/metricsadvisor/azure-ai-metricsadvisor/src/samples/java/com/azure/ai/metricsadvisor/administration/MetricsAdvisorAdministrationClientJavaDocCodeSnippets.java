@@ -211,8 +211,8 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
      */
     public void updateDataFeed() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDataFeed#DataFeed
-
-        DataFeed existingDataFeed = new DataFeed();
+        final String dataFeedId = "r47053f1-9080-09lo-bacf-8dccf2e86f";
+        DataFeed existingDataFeed = metricsAdvisorAdminClient.getDataFeed(dataFeedId);
         final DataFeed updatedDataFeed = metricsAdvisorAdminClient.updateDataFeed(
             existingDataFeed.setOptions(new DataFeedOptions().setDescription("set updated description")));
 

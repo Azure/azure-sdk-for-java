@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.devcenter.models.CatalogSyncType;
 import com.azure.resourcemanager.devcenter.models.GitCatalog;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -22,6 +23,12 @@ public class CatalogUpdateProperties {
      */
     @JsonProperty(value = "adoGit")
     private GitCatalog adoGit;
+
+    /*
+     * Indicates the type of sync that is configured for the catalog.
+     */
+    @JsonProperty(value = "syncType")
+    private CatalogSyncType syncType;
 
     /** Creates an instance of CatalogUpdateProperties class. */
     public CatalogUpdateProperties() {
@@ -64,6 +71,26 @@ public class CatalogUpdateProperties {
      */
     public CatalogUpdateProperties withAdoGit(GitCatalog adoGit) {
         this.adoGit = adoGit;
+        return this;
+    }
+
+    /**
+     * Get the syncType property: Indicates the type of sync that is configured for the catalog.
+     *
+     * @return the syncType value.
+     */
+    public CatalogSyncType syncType() {
+        return this.syncType;
+    }
+
+    /**
+     * Set the syncType property: Indicates the type of sync that is configured for the catalog.
+     *
+     * @param syncType the syncType value to set.
+     * @return the CatalogUpdateProperties object itself.
+     */
+    public CatalogUpdateProperties withSyncType(CatalogSyncType syncType) {
+        this.syncType = syncType;
         return this;
     }
 

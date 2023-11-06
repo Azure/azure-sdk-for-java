@@ -6,12 +6,21 @@ package com.azure.resourcemanager.managedapplications.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.managedapplications.models.ApplicationArtifact;
+import com.azure.resourcemanager.managedapplications.models.ApplicationAuthorization;
+import com.azure.resourcemanager.managedapplications.models.ApplicationBillingDetailsDefinition;
+import com.azure.resourcemanager.managedapplications.models.ApplicationClientDetails;
+import com.azure.resourcemanager.managedapplications.models.ApplicationJitAccessPolicy;
+import com.azure.resourcemanager.managedapplications.models.ApplicationManagementMode;
+import com.azure.resourcemanager.managedapplications.models.ApplicationPackageContact;
+import com.azure.resourcemanager.managedapplications.models.ApplicationPackageSupportUrls;
 import com.azure.resourcemanager.managedapplications.models.GenericResource;
 import com.azure.resourcemanager.managedapplications.models.Identity;
 import com.azure.resourcemanager.managedapplications.models.Plan;
 import com.azure.resourcemanager.managedapplications.models.ProvisioningState;
 import com.azure.resourcemanager.managedapplications.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** Information about managed application. */
@@ -34,6 +43,12 @@ public final class ApplicationInner extends GenericResource {
      */
     @JsonProperty(value = "kind", required = true)
     private String kind;
+
+    /*
+     * The identity of the resource.
+     */
+    @JsonProperty(value = "identity")
+    private Identity identity;
 
     /** Creates an instance of ApplicationInner class. */
     public ApplicationInner() {
@@ -88,6 +103,26 @@ public final class ApplicationInner extends GenericResource {
         return this;
     }
 
+    /**
+     * Get the identity property: The identity of the resource.
+     *
+     * @return the identity value.
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the resource.
+     *
+     * @param identity the identity value to set.
+     * @return the ApplicationInner object itself.
+     */
+    public ApplicationInner withIdentity(Identity identity) {
+        this.identity = identity;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public ApplicationInner withManagedBy(String managedBy) {
@@ -99,13 +134,6 @@ public final class ApplicationInner extends GenericResource {
     @Override
     public ApplicationInner withSku(Sku sku) {
         super.withSku(sku);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationInner withIdentity(Identity identity) {
-        super.withIdentity(identity);
         return this;
     }
 
@@ -213,6 +241,112 @@ public final class ApplicationInner extends GenericResource {
     }
 
     /**
+     * Get the billingDetails property: The managed application billing details.
+     *
+     * @return the billingDetails value.
+     */
+    public ApplicationBillingDetailsDefinition billingDetails() {
+        return this.innerProperties() == null ? null : this.innerProperties().billingDetails();
+    }
+
+    /**
+     * Get the jitAccessPolicy property: The managed application Jit access policy.
+     *
+     * @return the jitAccessPolicy value.
+     */
+    public ApplicationJitAccessPolicy jitAccessPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().jitAccessPolicy();
+    }
+
+    /**
+     * Set the jitAccessPolicy property: The managed application Jit access policy.
+     *
+     * @param jitAccessPolicy the jitAccessPolicy value to set.
+     * @return the ApplicationInner object itself.
+     */
+    public ApplicationInner withJitAccessPolicy(ApplicationJitAccessPolicy jitAccessPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationProperties();
+        }
+        this.innerProperties().withJitAccessPolicy(jitAccessPolicy);
+        return this;
+    }
+
+    /**
+     * Get the publisherTenantId property: The publisher tenant Id.
+     *
+     * @return the publisherTenantId value.
+     */
+    public String publisherTenantId() {
+        return this.innerProperties() == null ? null : this.innerProperties().publisherTenantId();
+    }
+
+    /**
+     * Get the authorizations property: The read-only authorizations property that is retrieved from the application
+     * package.
+     *
+     * @return the authorizations value.
+     */
+    public List<ApplicationAuthorization> authorizations() {
+        return this.innerProperties() == null ? null : this.innerProperties().authorizations();
+    }
+
+    /**
+     * Get the managementMode property: The managed application management mode.
+     *
+     * @return the managementMode value.
+     */
+    public ApplicationManagementMode managementMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().managementMode();
+    }
+
+    /**
+     * Get the customerSupport property: The read-only customer support property that is retrieved from the application
+     * package.
+     *
+     * @return the customerSupport value.
+     */
+    public ApplicationPackageContact customerSupport() {
+        return this.innerProperties() == null ? null : this.innerProperties().customerSupport();
+    }
+
+    /**
+     * Get the supportUrls property: The read-only support URLs property that is retrieved from the application package.
+     *
+     * @return the supportUrls value.
+     */
+    public ApplicationPackageSupportUrls supportUrls() {
+        return this.innerProperties() == null ? null : this.innerProperties().supportUrls();
+    }
+
+    /**
+     * Get the artifacts property: The collection of managed application artifacts.
+     *
+     * @return the artifacts value.
+     */
+    public List<ApplicationArtifact> artifacts() {
+        return this.innerProperties() == null ? null : this.innerProperties().artifacts();
+    }
+
+    /**
+     * Get the createdBy property: The client entity that created the JIT request.
+     *
+     * @return the createdBy value.
+     */
+    public ApplicationClientDetails createdBy() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdBy();
+    }
+
+    /**
+     * Get the updatedBy property: The client entity that last updated the JIT request.
+     *
+     * @return the updatedBy value.
+     */
+    public ApplicationClientDetails updatedBy() {
+        return this.innerProperties() == null ? null : this.innerProperties().updatedBy();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -235,6 +369,9 @@ public final class ApplicationInner extends GenericResource {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property kind in model ApplicationInner"));
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 

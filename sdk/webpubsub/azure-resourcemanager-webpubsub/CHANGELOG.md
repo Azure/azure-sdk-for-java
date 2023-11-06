@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,69 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.2 (2023-10-26)
+
+- Azure Resource Manager WebPubSub client library for Java. This package contains Microsoft Azure SDK for WebPubSub Management SDK. REST API for Azure WebPubSub Service. Package tag package-2023-08-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.IpRule` was added
+
+#### `models.CustomCertificate` was modified
+
+* `systemData()` was added
+
+#### `models.Replica` was modified
+
+* `regionEndpointEnabled()` was added
+* `resourceStopped()` was added
+
+#### `models.WebPubSubResource` was modified
+
+* `regionEndpointEnabled()` was added
+* `resourceStopped()` was added
+
+#### `models.WebPubSubHub` was modified
+
+* `systemData()` was added
+
+#### `models.WebPubSubResource$Definition` was modified
+
+* `withResourceStopped(java.lang.String)` was added
+* `withRegionEndpointEnabled(java.lang.String)` was added
+
+#### `models.CustomDomain` was modified
+
+* `systemData()` was added
+
+#### `models.Replica$Update` was modified
+
+* `withResourceStopped(java.lang.String)` was added
+* `withRegionEndpointEnabled(java.lang.String)` was added
+
+#### `models.SharedPrivateLinkResource` was modified
+
+* `systemData()` was added
+
+#### `models.WebPubSubNetworkACLs` was modified
+
+* `withIpRules(java.util.List)` was added
+* `ipRules()` was added
+
+#### `models.WebPubSubResource$Update` was modified
+
+* `withRegionEndpointEnabled(java.lang.String)` was added
+* `withResourceStopped(java.lang.String)` was added
+
+#### `models.Replica$Definition` was modified
+
+* `withResourceStopped(java.lang.String)` was added
+* `withRegionEndpointEnabled(java.lang.String)` was added
+
+#### `models.PrivateLinkResource` was modified
+
+* `systemData()` was added
 
 ## 1.1.0-beta.1 (2023-07-21)
 

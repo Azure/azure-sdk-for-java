@@ -13,7 +13,7 @@ public final class UpdateGroupStatusTests {
         UpdateGroupStatus model =
             BinaryData
                 .fromString(
-                    "{\"status\":{\"startTime\":\"2021-08-17T01:01:15Z\",\"completedTime\":\"2021-05-08T18:49:34Z\",\"state\":\"Completed\"},\"name\":\"aierhhb\",\"members\":[{\"status\":{\"startTime\":\"2021-07-20T05:11Z\",\"completedTime\":\"2021-01-08T14:04:30Z\",\"state\":\"Stopped\"},\"name\":\"odxobnbdxkqpxok\",\"clusterResourceId\":\"ionpimexg\",\"operationId\":\"xgcp\"}]}")
+                    "{\"status\":{\"startTime\":\"2021-07-28T01:41:30Z\",\"completedTime\":\"2021-02-08T16:35:38Z\",\"state\":\"NotStarted\"},\"name\":\"alpbuxwgipwhon\",\"members\":[{\"status\":{\"startTime\":\"2021-09-21T08:55:02Z\",\"completedTime\":\"2021-05-17T00:15:40Z\",\"state\":\"Completed\"},\"name\":\"zbinjeputtm\",\"clusterResourceId\":\"wnuzoqftiyqzrnkc\",\"operationId\":\"yx\",\"message\":\"hzls\"},{\"status\":{\"startTime\":\"2021-12-09T22:32:32Z\",\"completedTime\":\"2021-07-18T20:53:58Z\",\"state\":\"Completed\"},\"name\":\"lryav\",\"clusterResourceId\":\"heun\",\"operationId\":\"qhgyxzkonocukok\",\"message\":\"axuconuq\"}]}")
                 .toObject(UpdateGroupStatus.class);
     }
 

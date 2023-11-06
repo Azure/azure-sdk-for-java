@@ -14,29 +14,29 @@ public final class StartMenuItemPropertiesTests {
         StartMenuItemProperties model =
             BinaryData
                 .fromString(
-                    "{\"appAlias\":\"crgvxpvgom\",\"filePath\":\"fmisg\",\"commandLineArguments\":\"nbbelda\",\"iconPath\":\"zbaliourqha\",\"iconIndex\":30531984}")
+                    "{\"appAlias\":\"cnqxwbpokulpi\",\"filePath\":\"waasip\",\"commandLineArguments\":\"iobyu\",\"iconPath\":\"rpqlp\",\"iconIndex\":1285990077}")
                 .toObject(StartMenuItemProperties.class);
-        Assertions.assertEquals("crgvxpvgom", model.appAlias());
-        Assertions.assertEquals("fmisg", model.filePath());
-        Assertions.assertEquals("nbbelda", model.commandLineArguments());
-        Assertions.assertEquals("zbaliourqha", model.iconPath());
-        Assertions.assertEquals(30531984, model.iconIndex());
+        Assertions.assertEquals("cnqxwbpokulpi", model.appAlias());
+        Assertions.assertEquals("waasip", model.filePath());
+        Assertions.assertEquals("iobyu", model.commandLineArguments());
+        Assertions.assertEquals("rpqlp", model.iconPath());
+        Assertions.assertEquals(1285990077, model.iconIndex());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StartMenuItemProperties model =
             new StartMenuItemProperties()
-                .withAppAlias("crgvxpvgom")
-                .withFilePath("fmisg")
-                .withCommandLineArguments("nbbelda")
-                .withIconPath("zbaliourqha")
-                .withIconIndex(30531984);
+                .withAppAlias("cnqxwbpokulpi")
+                .withFilePath("waasip")
+                .withCommandLineArguments("iobyu")
+                .withIconPath("rpqlp")
+                .withIconIndex(1285990077);
         model = BinaryData.fromObject(model).toObject(StartMenuItemProperties.class);
-        Assertions.assertEquals("crgvxpvgom", model.appAlias());
-        Assertions.assertEquals("fmisg", model.filePath());
-        Assertions.assertEquals("nbbelda", model.commandLineArguments());
-        Assertions.assertEquals("zbaliourqha", model.iconPath());
-        Assertions.assertEquals(30531984, model.iconIndex());
+        Assertions.assertEquals("cnqxwbpokulpi", model.appAlias());
+        Assertions.assertEquals("waasip", model.filePath());
+        Assertions.assertEquals("iobyu", model.commandLineArguments());
+        Assertions.assertEquals("rpqlp", model.iconPath());
+        Assertions.assertEquals(1285990077, model.iconIndex());
     }
 }

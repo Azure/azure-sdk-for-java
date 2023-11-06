@@ -17,6 +17,15 @@ public final class ManagedRuleEnabledState extends ExpandableStringEnum<ManagedR
     public static final ManagedRuleEnabledState ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of ManagedRuleEnabledState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedRuleEnabledState() {
+    }
+
+    /**
      * Creates or finds a ManagedRuleEnabledState from its string representation.
      *
      * @param name a name to look for.

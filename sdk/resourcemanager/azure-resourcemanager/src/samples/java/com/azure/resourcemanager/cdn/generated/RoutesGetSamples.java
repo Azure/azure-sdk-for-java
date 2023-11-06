@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Routes Get. */
 public final class RoutesGetSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Routes_Get.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Routes_Get.json
      */
     /**
      * Sample code: Routes_Get.
@@ -22,6 +20,6 @@ public final class RoutesGetSamples {
             .manager()
             .serviceClient()
             .getRoutes()
-            .getWithResponse("RG", "profile1", "endpoint1", "route1", Context.NONE);
+            .getWithResponse("RG", "profile1", "endpoint1", "route1", com.azure.core.util.Context.NONE);
     }
 }

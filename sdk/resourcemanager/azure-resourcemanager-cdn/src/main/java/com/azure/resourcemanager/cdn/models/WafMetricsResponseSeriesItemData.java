@@ -23,6 +23,10 @@ public final class WafMetricsResponseSeriesItemData {
     @JsonProperty(value = "value")
     private Float value;
 
+    /** Creates an instance of WafMetricsResponseSeriesItemData class. */
+    public WafMetricsResponseSeriesItemData() {
+    }
+
     /**
      * Get the dateTime property: The dateTime property.
      *

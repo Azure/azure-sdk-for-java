@@ -17,21 +17,22 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.developer.devcenter.implementation.DevBoxesImpl;
 import java.time.OffsetDateTime;
 
 /** Initializes a new instance of the synchronous DevCenterClient type. */
 @ServiceClient(builder = DevBoxesClientBuilder.class)
 public final class DevBoxesClient {
-    @Generated private final DevBoxesAsyncClient client;
+    @Generated private final DevBoxesImpl serviceClient;
 
     /**
      * Initializes an instance of DevBoxesClient class.
      *
-     * @param client the async client.
+     * @param serviceClient the service client implementation.
      */
     @Generated
-    DevBoxesClient(DevBoxesAsyncClient client) {
-        this.client = client;
+    DevBoxesClient(DevBoxesImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
@@ -88,7 +89,7 @@ public final class DevBoxesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listPools(String projectName, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listPools(projectName, requestOptions));
+        return this.serviceClient.listPools(projectName, requestOptions);
     }
 
     /**
@@ -136,7 +137,7 @@ public final class DevBoxesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getPoolWithResponse(
             String poolName, String projectName, RequestOptions requestOptions) {
-        return this.client.getPoolWithResponse(poolName, projectName, requestOptions).block();
+        return this.serviceClient.getPoolWithResponse(poolName, projectName, requestOptions);
     }
 
     /**
@@ -178,7 +179,7 @@ public final class DevBoxesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listSchedulesByPool(
             String projectName, String poolName, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listSchedulesByPool(projectName, poolName, requestOptions));
+        return this.serviceClient.listSchedulesByPool(projectName, poolName, requestOptions);
     }
 
     /**
@@ -210,7 +211,7 @@ public final class DevBoxesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getScheduleByPoolWithResponse(
             String projectName, String poolName, String scheduleName, RequestOptions requestOptions) {
-        return this.client.getScheduleByPoolWithResponse(projectName, poolName, scheduleName, requestOptions).block();
+        return this.serviceClient.getScheduleByPoolWithResponse(projectName, poolName, scheduleName, requestOptions);
     }
 
     /**
@@ -282,7 +283,7 @@ public final class DevBoxesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDevBoxesByUser(
             String projectName, String userId, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listDevBoxesByUser(projectName, userId, requestOptions));
+        return this.serviceClient.listDevBoxesByUser(projectName, userId, requestOptions);
     }
 
     /**
@@ -344,7 +345,7 @@ public final class DevBoxesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDevBoxByUserWithResponse(
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
-        return this.client.getDevBoxByUserWithResponse(projectName, userId, devBoxName, requestOptions).block();
+        return this.serviceClient.getDevBoxByUserWithResponse(projectName, userId, devBoxName, requestOptions);
     }
 
     /**
@@ -448,7 +449,7 @@ public final class DevBoxesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginCreateDevBox(
             String projectName, String userId, String devBoxName, BinaryData body, RequestOptions requestOptions) {
-        return this.client.beginCreateDevBox(projectName, userId, devBoxName, body, requestOptions).getSyncPoller();
+        return this.serviceClient.beginCreateDevBox(projectName, userId, devBoxName, body, requestOptions);
     }
 
     /**
@@ -469,7 +470,7 @@ public final class DevBoxesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, Void> beginDeleteDevBox(
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
-        return this.client.beginDeleteDevBox(projectName, userId, devBoxName, requestOptions).getSyncPoller();
+        return this.serviceClient.beginDeleteDevBox(projectName, userId, devBoxName, requestOptions);
     }
 
     /**
@@ -490,7 +491,7 @@ public final class DevBoxesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginStartDevBox(
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
-        return this.client.beginStartDevBox(projectName, userId, devBoxName, requestOptions).getSyncPoller();
+        return this.serviceClient.beginStartDevBox(projectName, userId, devBoxName, requestOptions);
     }
 
     /**
@@ -521,7 +522,7 @@ public final class DevBoxesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginStopDevBox(
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
-        return this.client.beginStopDevBox(projectName, userId, devBoxName, requestOptions).getSyncPoller();
+        return this.serviceClient.beginStopDevBox(projectName, userId, devBoxName, requestOptions);
     }
 
     /**
@@ -551,7 +552,7 @@ public final class DevBoxesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getRemoteConnectionWithResponse(
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
-        return this.client.getRemoteConnectionWithResponse(projectName, userId, devBoxName, requestOptions).block();
+        return this.serviceClient.getRemoteConnectionWithResponse(projectName, userId, devBoxName, requestOptions);
     }
 
     /**
@@ -585,7 +586,7 @@ public final class DevBoxesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listUpcomingActions(
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listUpcomingActions(projectName, userId, devBoxName, requestOptions));
+        return this.serviceClient.listUpcomingActions(projectName, userId, devBoxName, requestOptions);
     }
 
     /**
@@ -624,9 +625,8 @@ public final class DevBoxesClient {
             String devBoxName,
             String upcomingActionId,
             RequestOptions requestOptions) {
-        return this.client
-                .getUpcomingActionWithResponse(projectName, userId, devBoxName, upcomingActionId, requestOptions)
-                .block();
+        return this.serviceClient.getUpcomingActionWithResponse(
+                projectName, userId, devBoxName, upcomingActionId, requestOptions);
     }
 
     /**
@@ -652,9 +652,8 @@ public final class DevBoxesClient {
             String devBoxName,
             String upcomingActionId,
             RequestOptions requestOptions) {
-        return this.client
-                .skipUpcomingActionWithResponse(projectName, userId, devBoxName, upcomingActionId, requestOptions)
-                .block();
+        return this.serviceClient.skipUpcomingActionWithResponse(
+                projectName, userId, devBoxName, upcomingActionId, requestOptions);
     }
 
     /**
@@ -695,9 +694,7 @@ public final class DevBoxesClient {
             String upcomingActionId,
             OffsetDateTime delayUntil,
             RequestOptions requestOptions) {
-        return this.client
-                .delayUpcomingActionWithResponse(
-                        projectName, userId, devBoxName, upcomingActionId, delayUntil, requestOptions)
-                .block();
+        return this.serviceClient.delayUpcomingActionWithResponse(
+                projectName, userId, devBoxName, upcomingActionId, delayUntil, requestOptions);
     }
 }

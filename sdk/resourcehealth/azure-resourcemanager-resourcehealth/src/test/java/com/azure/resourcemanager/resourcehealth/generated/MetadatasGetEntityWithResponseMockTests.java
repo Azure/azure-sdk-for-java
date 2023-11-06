@@ -32,7 +32,7 @@ public final class MetadatasGetEntityWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"swsrms\",\"dependsOn\":[\"rpzbchckqqzqi\",\"xiy\"],\"applicableScenarios\":[\"Alerts\",\"Alerts\",\"Alerts\",\"Alerts\"],\"supportedValues\":[]},\"id\":\"yatrwy\",\"name\":\"q\",\"type\":\"ibzyhwitsmyp\"}";
+            "{\"properties\":{\"displayName\":\"huzqgn\",\"dependsOn\":[\"kynscliqhzv\",\"xnkomtkubo\",\"ppnvdxz\"],\"applicableScenarios\":[\"Alerts\",\"Alerts\",\"Alerts\"],\"supportedValues\":[{\"id\":\"evqagtl\",\"displayName\":\"hlfkqojpy\",\"resourceTypes\":[\"trdcnifmzzs\"]}]},\"id\":\"m\",\"name\":\"rnysux\",\"type\":\"prafwgckhoc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,10 +61,13 @@ public final class MetadatasGetEntityWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         MetadataEntity response =
-            manager.metadatas().getEntityWithResponse("iyntorzihle", com.azure.core.util.Context.NONE).getValue();
+            manager.metadatas().getEntityWithResponse("ekrsgs", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("swsrms", response.displayName());
-        Assertions.assertEquals("rpzbchckqqzqi", response.dependsOn().get(0));
+        Assertions.assertEquals("huzqgn", response.displayName());
+        Assertions.assertEquals("kynscliqhzv", response.dependsOn().get(0));
         Assertions.assertEquals(Scenario.ALERTS, response.applicableScenarios().get(0));
+        Assertions.assertEquals("evqagtl", response.supportedValues().get(0).id());
+        Assertions.assertEquals("hlfkqojpy", response.supportedValues().get(0).displayName());
+        Assertions.assertEquals("trdcnifmzzs", response.supportedValues().get(0).resourceTypes().get(0));
     }
 }

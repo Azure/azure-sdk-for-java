@@ -7,12 +7,11 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -20,7 +19,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A concurrent cache of {@link Response} {@link MethodHandle} constructors.
+ * A concurrent cache of {@link Response} {@link ReflectiveInvoker} constructors.
  */
 public final class ResponseConstructorsCache {
     private static final String THREE_PARAM_ERROR = "Failed to deserialize 3-parameter response.";
@@ -28,23 +27,23 @@ public final class ResponseConstructorsCache {
     private static final String FIVE_PARAM_ERROR = "Failed to deserialize 5-parameter response.";
     private static final String INVALID_PARAM_COUNT = "Response constructor with expected parameters not found.";
 
-    private static final Map<Class<?>, MethodHandle> CACHE = new ConcurrentHashMap<>();
+    private static final Map<Class<?>, ReflectiveInvoker> CACHE = new ConcurrentHashMap<>();
 
     private static final ClientLogger LOGGER = new ClientLogger(ResponseConstructorsCache.class);
 
     /**
-     * Identify the suitable {@link MethodHandle} to construct the given response class.
+     * Identify the suitable {@link ReflectiveInvoker} to construct the given response class.
      *
      * @param responseClass The response class.
-     * @return The {@link MethodHandle} that is capable of constructing an instance of the class or null if no handle is
+     * @return The {@link ReflectiveInvoker} that is capable of constructing an instance of the class or null if no handle is
      * found.
      */
-    public MethodHandle get(Class<? extends Response<?>> responseClass) {
+    public ReflectiveInvoker get(Class<? extends Response<?>> responseClass) {
         return CACHE.computeIfAbsent(responseClass, ResponseConstructorsCache::locateResponseConstructor);
     }
 
     /**
-     * Identify the most specific {@link MethodHandle} to construct the given response class.
+     * Identify the most specific {@link ReflectiveInvoker} to construct the given response class.
      * <p>
      * Lookup is the following order:
      * <ol>
@@ -58,26 +57,10 @@ public final class ResponseConstructorsCache {
      * amount of resources.
      *
      * @param responseClass The response class.
-     * @return The {@link MethodHandle} that is capable of constructing an instance of the class or null if no handle is
+     * @return The {@link ReflectiveInvoker} that is capable of constructing an instance of the class or null if no handle is
      * found.
      */
-    private static MethodHandle locateResponseConstructor(Class<?> responseClass) {
-        MethodHandles.Lookup lookupToUse;
-        try {
-            lookupToUse = ReflectionUtils.getLookupToUse(responseClass);
-        } catch (Exception ex) {
-            if (ex instanceof RuntimeException) {
-                throw LOGGER.logExceptionAsError((RuntimeException) ex);
-            }
-
-            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
-        }
-
-        /*
-         * Now that the MethodHandles.Lookup has been found to create the MethodHandle instance begin searching for
-         * the most specific MethodHandle that can be used to create the response class (as mentioned in the method
-         * Javadocs).
-         */
+    private static ReflectiveInvoker locateResponseConstructor(Class<?> responseClass) {
         Constructor<?>[] constructors = responseClass.getDeclaredConstructors();
         // Sort constructors in the "descending order" of parameter count.
         Arrays.sort(constructors, Comparator.comparing(Constructor::getParameterCount, (a, b) -> b - a));
@@ -94,8 +77,12 @@ public final class ResponseConstructorsCache {
                      * 3) SDK libraries create an accessible MethodHandles.Lookup which com.azure.core can use to spoof
                      * as the SDK library.
                      */
-                    return lookupToUse.unreflectConstructor(constructor);
-                } catch (IllegalAccessException ex) {
+                    return ReflectionUtils.getConstructorInvoker(responseClass, constructor);
+                } catch (Exception ex) {
+                    if (ex instanceof RuntimeException) {
+                        throw LOGGER.logExceptionAsError((RuntimeException) ex);
+                    }
+
                     throw LOGGER.logExceptionAsError(new RuntimeException(ex));
                 }
             }
@@ -109,49 +96,45 @@ public final class ResponseConstructorsCache {
     }
 
     /**
-     * Invoke the {@link MethodHandle} to construct and instance of the response class.
+     * Invoke the {@link ReflectiveInvoker} to construct and instance of the response class.
      *
-     * @param handle The {@link MethodHandle} capable of constructing an instance of the response class.
+     * @param reflectiveInvoker The {@link ReflectiveInvoker} capable of constructing an instance of the response class.
      * @param decodedResponse The decoded HTTP response.
      * @param bodyAsObject The HTTP response body.
      * @return An instance of the {@link Response} implementation.
      */
-    public Response<?> invoke(final MethodHandle handle,
-        final HttpResponseDecoder.HttpDecodedResponse decodedResponse, final Object bodyAsObject) {
+    public Response<?> invoke(ReflectiveInvoker reflectiveInvoker, HttpResponseDecoder.HttpDecodedResponse decodedResponse,
+        Object bodyAsObject) {
         final HttpResponse httpResponse = decodedResponse.getSourceResponse();
         final HttpRequest httpRequest = httpResponse.getRequest();
         final int responseStatusCode = httpResponse.getStatusCode();
         final HttpHeaders responseHeaders = httpResponse.getHeaders();
 
-        final int paramCount = handle.type().parameterCount();
+        final int paramCount = reflectiveInvoker.getParameterCount();
         switch (paramCount) {
             case 3:
-                return constructResponse(handle, THREE_PARAM_ERROR, httpRequest, responseStatusCode,
+                return constructResponse(reflectiveInvoker, THREE_PARAM_ERROR, httpRequest, responseStatusCode,
                     responseHeaders);
             case 4:
-                return constructResponse(handle, FOUR_PARAM_ERROR, httpRequest, responseStatusCode,
+                return constructResponse(reflectiveInvoker, FOUR_PARAM_ERROR, httpRequest, responseStatusCode,
                     responseHeaders, bodyAsObject);
             case 5:
-                return constructResponse(handle, FIVE_PARAM_ERROR, httpRequest, responseStatusCode,
+                return constructResponse(reflectiveInvoker, FIVE_PARAM_ERROR, httpRequest, responseStatusCode,
                     responseHeaders, bodyAsObject, decodedResponse.getDecodedHeaders());
             default:
                 throw LOGGER.logExceptionAsError(new IllegalStateException(INVALID_PARAM_COUNT));
         }
     }
 
-    private static Response<?> constructResponse(MethodHandle handle, String exceptionMessage, Object... params) {
+    private static Response<?> constructResponse(ReflectiveInvoker reflectiveInvoker, String exceptionMessage, Object... params) {
         try {
-            return (Response<?>) handle.invokeWithArguments(params);
-        } catch (Throwable throwable) {
-            if (throwable instanceof Error) {
-                throw (Error) throwable;
+            return (Response<?>) reflectiveInvoker.invokeStatic(params);
+        } catch (Exception exception) {
+            if (exception instanceof RuntimeException) {
+                throw LOGGER.logExceptionAsError((RuntimeException) exception);
             }
 
-            if (throwable instanceof RuntimeException) {
-                throw LOGGER.logExceptionAsError((RuntimeException) throwable);
-            }
-
-            throw LOGGER.logExceptionAsError(new IllegalStateException(exceptionMessage, throwable));
+            throw LOGGER.logExceptionAsError(new IllegalStateException(exceptionMessage, exception));
         }
     }
 }

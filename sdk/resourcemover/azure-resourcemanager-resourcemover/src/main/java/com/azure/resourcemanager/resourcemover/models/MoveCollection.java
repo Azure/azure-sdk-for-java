@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.resourcemover.fluent.models.MoveCollectionInner;
 import java.util.Map;
@@ -68,6 +69,13 @@ public interface MoveCollection {
     MoveCollectionProperties properties();
 
     /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -102,11 +110,13 @@ public interface MoveCollection {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The MoveCollection definition stages. */
     interface DefinitionStages {
         /** The first stage of the MoveCollection definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the MoveCollection definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -125,6 +135,7 @@ public interface MoveCollection {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the MoveCollection definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -135,6 +146,7 @@ public interface MoveCollection {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the MoveCollection definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -156,6 +168,7 @@ public interface MoveCollection {
              */
             MoveCollection create(Context context);
         }
+
         /** The stage of the MoveCollection definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -166,6 +179,7 @@ public interface MoveCollection {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the MoveCollection definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -176,6 +190,7 @@ public interface MoveCollection {
              */
             WithCreate withIdentity(Identity identity);
         }
+
         /** The stage of the MoveCollection definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -187,6 +202,7 @@ public interface MoveCollection {
             WithCreate withProperties(MoveCollectionProperties properties);
         }
     }
+
     /**
      * Begins update for the MoveCollection resource.
      *
@@ -211,6 +227,7 @@ public interface MoveCollection {
          */
         MoveCollection apply(Context context);
     }
+
     /** The MoveCollection update stages. */
     interface UpdateStages {
         /** The stage of the MoveCollection update allowing to specify tags. */
@@ -223,6 +240,7 @@ public interface MoveCollection {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the MoveCollection update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -234,6 +252,7 @@ public interface MoveCollection {
             Update withIdentity(Identity identity);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

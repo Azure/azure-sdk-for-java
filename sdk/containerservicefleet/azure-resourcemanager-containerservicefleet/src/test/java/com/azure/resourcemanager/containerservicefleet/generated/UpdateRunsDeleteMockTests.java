@@ -58,6 +58,6 @@ public final class UpdateRunsDeleteMockTests {
 
         manager
             .updateRuns()
-            .delete("jky", "xjvuujqgidokg", "ljyoxgvcltb", "sncghkjeszz", com.azure.core.util.Context.NONE);
+            .delete("mquxvypo", "gkopkwhojvpajqgx", "smocmbq", "qvmkcxo", com.azure.core.util.Context.NONE);
     }
 }

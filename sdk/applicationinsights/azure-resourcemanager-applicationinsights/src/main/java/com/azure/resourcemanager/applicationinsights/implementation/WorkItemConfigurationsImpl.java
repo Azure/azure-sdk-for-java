@@ -40,17 +40,6 @@ public final class WorkItemConfigurationsImpl implements WorkItemConfigurations 
         return Utils.mapPage(inner, inner1 -> new WorkItemConfigurationImpl(inner1, this.manager()));
     }
 
-    public WorkItemConfiguration create(
-        String resourceGroupName, String resourceName, WorkItemCreateConfiguration workItemConfigurationProperties) {
-        WorkItemConfigurationInner inner =
-            this.serviceClient().create(resourceGroupName, resourceName, workItemConfigurationProperties);
-        if (inner != null) {
-            return new WorkItemConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<WorkItemConfiguration> createWithResponse(
         String resourceGroupName,
         String resourceName,
@@ -71,8 +60,10 @@ public final class WorkItemConfigurationsImpl implements WorkItemConfigurations 
         }
     }
 
-    public WorkItemConfiguration getDefault(String resourceGroupName, String resourceName) {
-        WorkItemConfigurationInner inner = this.serviceClient().getDefault(resourceGroupName, resourceName);
+    public WorkItemConfiguration create(
+        String resourceGroupName, String resourceName, WorkItemCreateConfiguration workItemConfigurationProperties) {
+        WorkItemConfigurationInner inner =
+            this.serviceClient().create(resourceGroupName, resourceName, workItemConfigurationProperties);
         if (inner != null) {
             return new WorkItemConfigurationImpl(inner, this.manager());
         } else {
@@ -95,8 +86,13 @@ public final class WorkItemConfigurationsImpl implements WorkItemConfigurations 
         }
     }
 
-    public void delete(String resourceGroupName, String resourceName, String workItemConfigId) {
-        this.serviceClient().delete(resourceGroupName, resourceName, workItemConfigId);
+    public WorkItemConfiguration getDefault(String resourceGroupName, String resourceName) {
+        WorkItemConfigurationInner inner = this.serviceClient().getDefault(resourceGroupName, resourceName);
+        if (inner != null) {
+            return new WorkItemConfigurationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -104,14 +100,8 @@ public final class WorkItemConfigurationsImpl implements WorkItemConfigurations 
         return this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, workItemConfigId, context);
     }
 
-    public WorkItemConfiguration getItem(String resourceGroupName, String resourceName, String workItemConfigId) {
-        WorkItemConfigurationInner inner =
-            this.serviceClient().getItem(resourceGroupName, resourceName, workItemConfigId);
-        if (inner != null) {
-            return new WorkItemConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String resourceName, String workItemConfigId) {
+        this.serviceClient().delete(resourceGroupName, resourceName, workItemConfigId);
     }
 
     public Response<WorkItemConfiguration> getItemWithResponse(
@@ -129,15 +119,9 @@ public final class WorkItemConfigurationsImpl implements WorkItemConfigurations 
         }
     }
 
-    public WorkItemConfiguration updateItem(
-        String resourceGroupName,
-        String resourceName,
-        String workItemConfigId,
-        WorkItemCreateConfiguration workItemConfigurationProperties) {
+    public WorkItemConfiguration getItem(String resourceGroupName, String resourceName, String workItemConfigId) {
         WorkItemConfigurationInner inner =
-            this
-                .serviceClient()
-                .updateItem(resourceGroupName, resourceName, workItemConfigId, workItemConfigurationProperties);
+            this.serviceClient().getItem(resourceGroupName, resourceName, workItemConfigId);
         if (inner != null) {
             return new WorkItemConfigurationImpl(inner, this.manager());
         } else {
@@ -162,6 +146,22 @@ public final class WorkItemConfigurationsImpl implements WorkItemConfigurations 
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new WorkItemConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public WorkItemConfiguration updateItem(
+        String resourceGroupName,
+        String resourceName,
+        String workItemConfigId,
+        WorkItemCreateConfiguration workItemConfigurationProperties) {
+        WorkItemConfigurationInner inner =
+            this
+                .serviceClient()
+                .updateItem(resourceGroupName, resourceName, workItemConfigId, workItemConfigurationProperties);
+        if (inner != null) {
+            return new WorkItemConfigurationImpl(inner, this.manager());
         } else {
             return null;
         }

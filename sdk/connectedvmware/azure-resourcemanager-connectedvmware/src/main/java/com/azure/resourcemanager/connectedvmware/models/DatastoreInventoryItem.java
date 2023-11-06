@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.connectedvmware.fluent.models.InventoryItemProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -26,6 +25,10 @@ public final class DatastoreInventoryItem extends InventoryItemProperties {
      */
     @JsonProperty(value = "freeSpaceGB")
     private Long freeSpaceGB;
+
+    /** Creates an instance of DatastoreInventoryItem class. */
+    public DatastoreInventoryItem() {
+    }
 
     /**
      * Get the capacityGB property: Gets or sets Maximum capacity of this datastore, in GBs.

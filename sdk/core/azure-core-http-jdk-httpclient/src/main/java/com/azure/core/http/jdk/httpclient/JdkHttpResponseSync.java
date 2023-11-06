@@ -47,7 +47,7 @@ final class JdkHttpResponseSync extends JdkHttpResponseBase {
         if (bodyBytes != null) {
             return Mono.fromSupplier(() -> ByteBuffer.wrap(bodyBytes)).flux();
         } else {
-            return FluxUtil.toFluxByteBuffer(bodyStream).doFinally(ignored -> close());
+            return Flux.using(() -> this, ignored -> FluxUtil.toFluxByteBuffer(bodyStream), JdkHttpResponseSync::close);
         }
     }
 

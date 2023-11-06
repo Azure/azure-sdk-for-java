@@ -32,7 +32,7 @@ public final class SignalRSharedPrivateLinkResourcesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"groupId\":\"lmcuvhixb\",\"privateLinkResourceId\":\"xyfwnylrcool\",\"provisioningState\":\"Deleting\",\"requestMessage\":\"kiwkkbnujr\",\"status\":\"Rejected\"},\"id\":\"tylbfpncurdoiw\",\"name\":\"ithtywu\",\"type\":\"xcbihw\"}]}";
+            "{\"value\":[{\"properties\":{\"groupId\":\"hhulrtywikdm\",\"privateLinkResourceId\":\"lakuflgbhgauacd\",\"provisioningState\":\"Creating\",\"requestMessage\":\"ufr\",\"status\":\"Rejected\"},\"id\":\"qg\",\"name\":\"kfnozoeoqbvj\",\"type\":\"vefgwbmqjchntas\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,10 +63,10 @@ public final class SignalRSharedPrivateLinkResourcesListMockTests {
         PagedIterable<SharedPrivateLinkResource> response =
             manager
                 .signalRSharedPrivateLinkResources()
-                .list("dscwxqupevzhf", "totxhojujb", com.azure.core.util.Context.NONE);
+                .list("upeuknijduyye", "pydjfboc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lmcuvhixb", response.iterator().next().groupId());
-        Assertions.assertEquals("xyfwnylrcool", response.iterator().next().privateLinkResourceId());
-        Assertions.assertEquals("kiwkkbnujr", response.iterator().next().requestMessage());
+        Assertions.assertEquals("hhulrtywikdm", response.iterator().next().groupId());
+        Assertions.assertEquals("lakuflgbhgauacd", response.iterator().next().privateLinkResourceId());
+        Assertions.assertEquals("ufr", response.iterator().next().requestMessage());
     }
 }

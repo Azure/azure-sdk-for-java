@@ -20,66 +20,69 @@ public final class WorkloadItemResourceListTests {
         WorkloadItemResourceList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"workloadItemType\":\"WorkloadItem\",\"backupManagementType\":\"l\",\"workloadType\":\"tramxjez\",\"friendlyName\":\"wnwxuqlcvyd\",\"protectionState\":\"Protecting\"},\"eTag\":\"dooaojkniodko\",\"location\":\"ebwnujhe\",\"tags\":{\"wj\":\"bvdkcrodtjin\",\"f\":\"fltkacjv\",\"gaowpulpqblylsyx\":\"dlfoakggkfp\",\"xsdszuempsb\":\"qjnsjervtia\"},\"id\":\"kfzbeyvpnqicvi\",\"name\":\"v\",\"type\":\"jjxd\"},{\"properties\":{\"workloadItemType\":\"WorkloadItem\",\"backupManagementType\":\"uukzclewyhmlw\",\"workloadType\":\"ztzp\",\"friendlyName\":\"ncckw\",\"protectionState\":\"ProtectionFailed\"},\"eTag\":\"whxxbuyqax\",\"location\":\"feqztppriol\",\"tags\":{\"sobqw\":\"jaltolmnc\",\"vglsbjjca\":\"sdbnwdcfhucqdpf\",\"t\":\"vxb\"},\"id\":\"udutnco\",\"name\":\"mr\",\"type\":\"xqtvcofu\"}],\"nextLink\":\"lvkgju\"}")
+                    "{\"value\":[{\"properties\":{\"workloadItemType\":\"WorkloadItem\",\"backupManagementType\":\"rvmnpkukghimdblx\",\"workloadType\":\"imfnjhfjx\",\"friendlyName\":\"szkkfoqre\",\"protectionState\":\"Invalid\"},\"eTag\":\"ikf\",\"location\":\"aw\",\"tags\":{\"czelpcirel\":\"ivx\"},\"id\":\"feaenwab\",\"name\":\"atklddxbjhwuaa\",\"type\":\"oz\"},{\"properties\":{\"workloadItemType\":\"WorkloadItem\",\"backupManagementType\":\"ph\",\"workloadType\":\"ulpjr\",\"friendlyName\":\"ag\",\"protectionState\":\"Protected\"},\"eTag\":\"mjwosytx\",\"location\":\"tcs\",\"tags\":{\"qumiek\":\"k\",\"ikh\":\"ez\",\"hdgqggeb\":\"yf\",\"qfatpxllrxcyjm\":\"unygaeqid\"},\"id\":\"a\",\"name\":\"su\",\"type\":\"arm\"},{\"properties\":{\"workloadItemType\":\"WorkloadItem\",\"backupManagementType\":\"mjsjqb\",\"workloadType\":\"hyxxrwlycoduhpk\",\"friendlyName\":\"gymare\",\"protectionState\":\"Protected\"},\"eTag\":\"xqugjhkycubedd\",\"location\":\"ssofwqmzqa\",\"tags\":{\"byxbaaabjy\":\"mnjijpxacqqudf\",\"zrtuzq\":\"ayffim\"},\"id\":\"gsexne\",\"name\":\"fdnw\",\"type\":\"wmewzsyy\"}],\"nextLink\":\"uzsoi\"}")
                 .toObject(WorkloadItemResourceList.class);
-        Assertions.assertEquals("lvkgju", model.nextLink());
-        Assertions.assertEquals("ebwnujhe", model.value().get(0).location());
-        Assertions.assertEquals("bvdkcrodtjin", model.value().get(0).tags().get("wj"));
-        Assertions.assertEquals("l", model.value().get(0).properties().backupManagementType());
-        Assertions.assertEquals("tramxjez", model.value().get(0).properties().workloadType());
-        Assertions.assertEquals("wnwxuqlcvyd", model.value().get(0).properties().friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTING, model.value().get(0).properties().protectionState());
-        Assertions.assertEquals("dooaojkniodko", model.value().get(0).etag());
+        Assertions.assertEquals("uzsoi", model.nextLink());
+        Assertions.assertEquals("aw", model.value().get(0).location());
+        Assertions.assertEquals("ivx", model.value().get(0).tags().get("czelpcirel"));
+        Assertions.assertEquals("rvmnpkukghimdblx", model.value().get(0).properties().backupManagementType());
+        Assertions.assertEquals("imfnjhfjx", model.value().get(0).properties().workloadType());
+        Assertions.assertEquals("szkkfoqre", model.value().get(0).properties().friendlyName());
+        Assertions.assertEquals(ProtectionStatus.INVALID, model.value().get(0).properties().protectionState());
+        Assertions.assertEquals("ikf", model.value().get(0).etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkloadItemResourceList model =
             new WorkloadItemResourceList()
-                .withNextLink("lvkgju")
+                .withNextLink("uzsoi")
                 .withValue(
                     Arrays
                         .asList(
                             new WorkloadItemResourceInner()
-                                .withLocation("ebwnujhe")
-                                .withTags(
-                                    mapOf(
-                                        "wj",
-                                        "bvdkcrodtjin",
-                                        "f",
-                                        "fltkacjv",
-                                        "gaowpulpqblylsyx",
-                                        "dlfoakggkfp",
-                                        "xsdszuempsb",
-                                        "qjnsjervtia"))
+                                .withLocation("aw")
+                                .withTags(mapOf("czelpcirel", "ivx"))
                                 .withProperties(
                                     new WorkloadItem()
-                                        .withBackupManagementType("l")
-                                        .withWorkloadType("tramxjez")
-                                        .withFriendlyName("wnwxuqlcvyd")
-                                        .withProtectionState(ProtectionStatus.PROTECTING))
-                                .withEtag("dooaojkniodko"),
+                                        .withBackupManagementType("rvmnpkukghimdblx")
+                                        .withWorkloadType("imfnjhfjx")
+                                        .withFriendlyName("szkkfoqre")
+                                        .withProtectionState(ProtectionStatus.INVALID))
+                                .withEtag("ikf"),
                             new WorkloadItemResourceInner()
-                                .withLocation("feqztppriol")
-                                .withTags(mapOf("sobqw", "jaltolmnc", "vglsbjjca", "sdbnwdcfhucqdpf", "t", "vxb"))
+                                .withLocation("tcs")
+                                .withTags(
+                                    mapOf("qumiek", "k", "ikh", "ez", "hdgqggeb", "yf", "qfatpxllrxcyjm", "unygaeqid"))
                                 .withProperties(
                                     new WorkloadItem()
-                                        .withBackupManagementType("uukzclewyhmlw")
-                                        .withWorkloadType("ztzp")
-                                        .withFriendlyName("ncckw")
-                                        .withProtectionState(ProtectionStatus.PROTECTION_FAILED))
-                                .withEtag("whxxbuyqax")));
+                                        .withBackupManagementType("ph")
+                                        .withWorkloadType("ulpjr")
+                                        .withFriendlyName("ag")
+                                        .withProtectionState(ProtectionStatus.PROTECTED))
+                                .withEtag("mjwosytx"),
+                            new WorkloadItemResourceInner()
+                                .withLocation("ssofwqmzqa")
+                                .withTags(mapOf("byxbaaabjy", "mnjijpxacqqudf", "zrtuzq", "ayffim"))
+                                .withProperties(
+                                    new WorkloadItem()
+                                        .withBackupManagementType("mjsjqb")
+                                        .withWorkloadType("hyxxrwlycoduhpk")
+                                        .withFriendlyName("gymare")
+                                        .withProtectionState(ProtectionStatus.PROTECTED))
+                                .withEtag("xqugjhkycubedd")));
         model = BinaryData.fromObject(model).toObject(WorkloadItemResourceList.class);
-        Assertions.assertEquals("lvkgju", model.nextLink());
-        Assertions.assertEquals("ebwnujhe", model.value().get(0).location());
-        Assertions.assertEquals("bvdkcrodtjin", model.value().get(0).tags().get("wj"));
-        Assertions.assertEquals("l", model.value().get(0).properties().backupManagementType());
-        Assertions.assertEquals("tramxjez", model.value().get(0).properties().workloadType());
-        Assertions.assertEquals("wnwxuqlcvyd", model.value().get(0).properties().friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTING, model.value().get(0).properties().protectionState());
-        Assertions.assertEquals("dooaojkniodko", model.value().get(0).etag());
+        Assertions.assertEquals("uzsoi", model.nextLink());
+        Assertions.assertEquals("aw", model.value().get(0).location());
+        Assertions.assertEquals("ivx", model.value().get(0).tags().get("czelpcirel"));
+        Assertions.assertEquals("rvmnpkukghimdblx", model.value().get(0).properties().backupManagementType());
+        Assertions.assertEquals("imfnjhfjx", model.value().get(0).properties().workloadType());
+        Assertions.assertEquals("szkkfoqre", model.value().get(0).properties().friendlyName());
+        Assertions.assertEquals(ProtectionStatus.INVALID, model.value().get(0).properties().protectionState());
+        Assertions.assertEquals("ikf", model.value().get(0).etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

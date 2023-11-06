@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.fluent.models.AfdOriginGroupInner;
 import com.azure.resourcemanager.cdn.models.HealthProbeParameters;
 import com.azure.resourcemanager.cdn.models.HealthProbeRequestType;
@@ -14,7 +13,7 @@ import com.azure.resourcemanager.cdn.models.ProbeProtocol;
 /** Samples for AfdOriginGroups Create. */
 public final class AfdOriginGroupsCreateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDOriginGroups_Create.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/AFDOriginGroups_Create.json
      */
     /**
      * Sample code: AFDOriginGroups_Create.
@@ -44,6 +43,6 @@ public final class AfdOriginGroupsCreateSamples {
                             .withProbeProtocol(ProbeProtocol.NOT_SET)
                             .withProbeIntervalInSeconds(10))
                     .withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(5),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

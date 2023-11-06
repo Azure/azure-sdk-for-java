@@ -23,6 +23,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 public final class CosmosBulkExecutionOptions {
     private int initialMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
     private int maxMicroBatchConcurrency = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_CONCURRENCY;
+
+    private int maxMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
     private double maxMicroBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_RETRY_RATE;
     private double minMicroBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MIN_MICRO_BATCH_RETRY_RATE;
 
@@ -70,11 +72,33 @@ public final class CosmosBulkExecutionOptions {
         this(null, null, null);
     }
 
-    int getInitialMicroBatchSize() {
+    /**
+     * Gets the initial size of micro batches that will be sent to the backend. The size of micro batches will
+     * be dynamically adjusted based on the throttling rate. The default value is 100 - so, it starts with relatively
+     * large micro batches and when the throttling rate is too high, it will reduce the batch size. When the
+     * short spikes of throttling before dynamically reducing the initial batch size results in side effects for other
+     * workloads the initial micro batch size can be reduced - for example set to 1 - at which point it would
+     * start with small micro batches and then increase the batch size over time.
+     * @return the initial micro batch size
+     */
+    public int getInitialMicroBatchSize() {
         return initialMicroBatchSize;
     }
 
-    CosmosBulkExecutionOptions setInitialMicroBatchSize(int initialMicroBatchSize) {
+    /**
+     * Sets the initial size of micro batches that will be sent to the backend. The size of micro batches will
+     * be dynamically adjusted based on the throttling rate. The default value is 100 - so, it starts with relatively
+     * large micro batches and when the throttling rate is too high, it will reduce the batch size. When the
+     * short spikes of throttling before dynamically reducing the initial batch size results in side effects for other
+     * workloads the initial micro batch size can be reduced - for example set to 1 - at which point it would
+     * start with small micro batches and then increase the batch size over time.
+     * @param initialMicroBatchSize the initial micro batch size to be used. Must be a positive integer.
+     * @return the bulk execution options.
+     */
+    public CosmosBulkExecutionOptions setInitialMicroBatchSize(int initialMicroBatchSize) {
+        checkArgument(
+            initialMicroBatchSize > 0,
+            "The argument 'initialMicroBatchSize' must be a positive integer.");
         this.initialMicroBatchSize = initialMicroBatchSize;
         return this;
     }
@@ -98,6 +122,15 @@ public final class CosmosBulkExecutionOptions {
      */
     CosmosBulkExecutionOptions setMaxMicroBatchPayloadSizeInBytes(int maxMicroBatchPayloadSizeInBytes) {
         this.maxMicroBatchPayloadSizeInBytes = maxMicroBatchPayloadSizeInBytes;
+        return this;
+    }
+
+    int getMaxMicroBatchSize() {
+        return maxMicroBatchSize;
+    }
+
+    CosmosBulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
+        this.maxMicroBatchSize = maxMicroBatchSize;
         return this;
     }
 
@@ -370,16 +403,6 @@ public final class CosmosBulkExecutionOptions {
                 }
 
                 @Override
-                public int getInitialMicroBatchSize(CosmosBulkExecutionOptions options) {
-                    return options.getInitialMicroBatchSize();
-                }
-
-                @Override
-                public CosmosBulkExecutionOptions setInitialMicroBatchSize(CosmosBulkExecutionOptions options, int initialMicroBatchSize) {
-                    return options.setInitialMicroBatchSize(initialMicroBatchSize);
-                }
-
-                @Override
                 public CosmosBulkExecutionOptions setHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions,
                                                             String name, String value) {
                     return cosmosBulkExecutionOptions.setHeader(name, value);
@@ -398,6 +421,20 @@ public final class CosmosBulkExecutionOptions {
                 @Override
                 public List<String> getExcludeRegions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
                     return cosmosBulkExecutionOptions.excludeRegions;
+                }
+
+                @Override
+                public int getMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
+                    if (cosmosBulkExecutionOptions == null) {
+                        return BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
+                    }
+
+                    return cosmosBulkExecutionOptions.getMaxMicroBatchSize();
+                }
+
+                @Override
+                public void setMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, int maxMicroBatchSize) {
+                    cosmosBulkExecutionOptions.setMaxMicroBatchSize(maxMicroBatchSize);
                 }
 
             });

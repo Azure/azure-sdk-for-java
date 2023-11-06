@@ -122,6 +122,21 @@ public class SmsAsyncClientTests extends SmsTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendSmsToSingleNumberWithContext(HttpClient httpClient) {
+        // Arrange
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        asyncClient = setupAsyncClient(builder, "sendSmsToSingleNumberWithOptions");
+        SmsSendOptions options = new SmsSendOptions();
+        Context context = new Context("context_key", "context_value");
+
+        // Action & Assert
+        StepVerifier.create(asyncClient.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, options, context))
+            .assertNext(this::assertHappyPath)
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendFromFakeNumber(HttpClient httpClient) {
         // Arrange
         SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);

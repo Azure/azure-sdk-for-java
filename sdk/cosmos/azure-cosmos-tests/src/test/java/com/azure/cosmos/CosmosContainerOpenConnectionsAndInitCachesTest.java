@@ -54,7 +54,7 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
 
     private final static String CONTAINER_ID = "InitializedTestContainer";
 
-    @BeforeClass(groups = {"simple"})
+    @BeforeClass(groups = {"fast"})
     public void beforeClass() {
         directCosmosAsyncClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -95,7 +95,7 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         gatewayCosmosContainer = gatewayCosmosDatabase.getContainer(directCosmosAsyncContainer.getId());
     }
 
-    @AfterClass(groups = {"simple"}, alwaysRun = true)
+    @AfterClass(groups = {"fast"}, alwaysRun = true)
     public void afterClass() {
         if (this.directCosmosAsyncContainer != null) {
             this.directCosmosAsyncContainer.delete().block();
@@ -116,7 +116,7 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         };
     }
 
-    @Test(groups = {"simple"}, dataProvider = "useAsyncParameterProvider")
+    @Test(groups = {"fast"}, dataProvider = "useAsyncParameterProvider")
     public void openConnectionsAndInitCachesForDirectMode(boolean useAsync) {
         CosmosAsyncContainer asyncContainer = useAsync ? directCosmosAsyncContainer : directCosmosContainer.asyncContainer;
         CosmosAsyncClient asyncClient = useAsync ? directCosmosAsyncClient : directCosmosClient.asyncClient();
@@ -194,7 +194,7 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isGreaterThanOrEqualTo(Configs.getMinConnectionPoolSizePerEndpoint()));
     }
 
-    @Test(groups = {"simple"}, dataProvider = "useAsyncParameterProvider")
+    @Test(groups = {"fast"}, dataProvider = "useAsyncParameterProvider")
     public void openConnectionsAndInitCachesForGatewayMode(boolean useAsync) {
 
         CosmosAsyncContainer asyncContainer = useAsync ? gatewayCosmosAsyncContainer : gatewayCosmosContainer.asyncContainer;

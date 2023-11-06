@@ -13,7 +13,9 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager;
 import com.azure.resourcemanager.containerservicefleet.models.Fleet;
-import com.azure.resourcemanager.containerservicefleet.models.FleetHubProfile;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.containerservicefleet.models.UserAssignedIdentity;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -34,7 +36,7 @@ public final class FleetsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"hubProfile\":{\"dnsPrefix\":\"q\",\"fqdn\":\"a\",\"kubernetesVersion\":\"ae\"}},\"eTag\":\"fhyhltrpmopjmcma\",\"location\":\"okth\",\"tags\":{\"xodpuozmyzydagfu\":\"uaodsfcpk\",\"dxwzywqsmbsurexi\":\"xbezyiuokktwh\"},\"id\":\"o\",\"name\":\"yocf\",\"type\":\"fksymddystki\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"eTag\":\"pfqbuaceopzf\",\"identity\":{\"principalId\":\"6f8d4deb-091f-451f-b407-878050c84cbb\",\"tenantId\":\"b2b52fce-bfef-4e32-bbe0-b86ca40c27a9\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"pcqeqx\":{\"principalId\":\"ef0ae4f5-0316-44ab-9890-b6c8a7d67249\",\"clientId\":\"524f821f-a8bd-4386-ac62-e55bf5fa4c4a\"},\"dahzxctobg\":{\"principalId\":\"7bdba28c-f731-4206-8287-7929a6da43c9\",\"clientId\":\"767ffc43-0cf9-4dd6-898c-3fa9fe3c95a0\"}}},\"location\":\"dmoizpostmg\",\"tags\":{\"bpvjymjhx\":\"bunrmfqjhhk\",\"n\":\"j\",\"ivkrtsw\":\"u\"},\"id\":\"xqzvszjfa\",\"name\":\"vjfdx\",\"type\":\"ivetvtcq\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,20 +67,31 @@ public final class FleetsCreateOrUpdateMockTests {
         Fleet response =
             manager
                 .fleets()
-                .define("ndnvo")
-                .withRegion("whybcib")
-                .withExistingResourceGroup("vudwx")
-                .withTags(mapOf("ynnaam", "dcsi", "qsc", "ectehf", "hcjrefovgmk", "eypvhezrkg"))
-                .withHubProfile(new FleetHubProfile().withDnsPrefix("gwdkcglhsl"))
-                .withIfMatch("jh")
-                .withIfNoneMatch("mdajv")
+                .define("luu")
+                .withRegion("lyjpk")
+                .withExistingResourceGroup("ofd")
+                .withTags(mapOf("lixhnrztfol", "zyexzn", "dtpnapnyiropuhp", "bnxknalaulppg", "gqgitxmedjvcsl", "gvpgy"))
+                .withIdentity(
+                    new ManagedServiceIdentity()
+                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                        .withUserAssignedIdentities(
+                            mapOf(
+                                "jsflhhcaalnjix",
+                                new UserAssignedIdentity(),
+                                "yaw",
+                                new UserAssignedIdentity(),
+                                "aq",
+                                new UserAssignedIdentity())))
+                .withIfMatch("t")
+                .withIfNoneMatch("oellwp")
                 .create();
 
-        Assertions.assertEquals("okth", response.location());
-        Assertions.assertEquals("uaodsfcpk", response.tags().get("xodpuozmyzydagfu"));
-        Assertions.assertEquals("q", response.hubProfile().dnsPrefix());
+        Assertions.assertEquals("dmoizpostmg", response.location());
+        Assertions.assertEquals("bunrmfqjhhk", response.tags().get("bpvjymjhx"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

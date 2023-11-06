@@ -7,10 +7,10 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.guava27.Strings;
-import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -78,7 +78,8 @@ public interface DiagnosticsClientContext {
                 }
                 generator.writeEndObject();
                 generator.writeStringField("consistencyCfg", clientConfig.consistencyRelatedConfig());
-                generator.writeStringField("proactiveInitCfg", clientConfig.proactivelyInitializedContainersAsString);
+                generator.writeStringField("proactiveInit", clientConfig.proactivelyInitializedContainersAsString);
+                generator.writeStringField("e2ePolicyCfg", clientConfig.endToEndOperationLatencyPolicyConfigAsString);
                 generator.writeStringField("sessionRetryOps", clientConfig.sessionRetryOptionsAsString);
             } catch (Exception e) {
                 logger.debug("unexpected failure", e);
@@ -101,9 +102,10 @@ public interface DiagnosticsClientContext {
         private String otherCfgAsString;
         private String preferredRegionsAsString;
         private String proactivelyInitializedContainersAsString;
+
+        private String endToEndOperationLatencyPolicyConfigAsString;
         private boolean endpointDiscoveryEnabled;
         private boolean multipleWriteRegionsEnabled;
-
         private String rntbdConfigAsString;
         private ConnectionMode connectionMode;
         private String machineId;
@@ -152,6 +154,11 @@ public interface DiagnosticsClientContext {
             return this;
         }
 
+        public DiagnosticsClientConfig withConnectionPolicy(ConnectionPolicy connectionPolicy) {
+            this.connectionPolicy = connectionPolicy;
+            return this;
+        }
+
         public DiagnosticsClientConfig withProactiveContainerInitConfig(
             CosmosContainerProactiveInitConfig config) {
 
@@ -159,6 +166,18 @@ public interface DiagnosticsClientContext {
                 this.proactivelyInitializedContainersAsString = "";
             } else {
                 this.proactivelyInitializedContainersAsString = config.toString();
+            }
+
+            return this;
+        }
+
+        public DiagnosticsClientConfig withEndToEndOperationLatencyPolicy(
+            CosmosEndToEndOperationLatencyPolicyConfig config) {
+
+            if (config == null) {
+                this.endToEndOperationLatencyPolicyConfigAsString = "";
+            } else {
+                this.endToEndOperationLatencyPolicyConfigAsString = config.toString();
             }
 
             return this;
@@ -244,6 +263,14 @@ public interface DiagnosticsClientContext {
             return Strings.lenientFormat("(consistency: %s, mm: %s, prgns: [%s])", this.consistencyLevel,
                 this.multipleWriteRegionsEnabled,
                 preferredRegionsAsString);
+        }
+
+        private String excludedRegionsRelatedConfig() {
+            if (this.connectionPolicy == null) {
+                return "[]";
+            } else {
+                return this.connectionPolicy.getExcludedRegionsAsString();
+            }
         }
     }
 }

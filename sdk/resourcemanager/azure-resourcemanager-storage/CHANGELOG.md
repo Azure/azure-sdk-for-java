@@ -1,14 +1,26 @@
 # Release History
 
-## 2.31.0-beta.1 (Unreleased)
+## 2.33.0-beta.1 (Unreleased)
 
 ### Features Added
 
-### Breaking Changes
+- Supported `allowCrossTenantReplication` and `defaultToOAuthAuthentication` for `StorageAccount` in create and update.
 
-### Bugs Fixed
+## 2.32.0 (2023-10-27)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.31.0 (2023-09-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.30.0 (2023-08-25)
 

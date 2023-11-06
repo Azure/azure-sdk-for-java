@@ -22,6 +22,12 @@ public final class RecognizeContentOptions {
     private FormReadingOrder readingOrder;
 
     /**
+     * Create a {@code RecognizeContentOptions} object.
+     */
+    public RecognizeContentOptions() {
+    }
+
+    /**
      * Get the type of the form. Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
      * @return the {@code contentType} value.

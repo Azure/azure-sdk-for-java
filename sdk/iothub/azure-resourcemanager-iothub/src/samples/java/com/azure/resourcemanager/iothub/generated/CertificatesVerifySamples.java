@@ -9,7 +9,7 @@ import com.azure.resourcemanager.iothub.models.CertificateVerificationDescriptio
 /** Samples for Certificates Verify. */
 public final class CertificatesVerifySamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_certverify.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_certverify.json
      */
     /**
      * Sample code: Certificates_Verify.

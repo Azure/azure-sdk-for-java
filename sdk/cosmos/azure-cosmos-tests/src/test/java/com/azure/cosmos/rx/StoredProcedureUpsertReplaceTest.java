@@ -35,7 +35,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void replaceStoredProcedure() throws Exception {
 
         // create a stored procedure
@@ -70,7 +70,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
         validateSuccess(replaceObservable, validatorForReplace);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void executeStoredProcedure() throws Exception {
         // create a stored procedure
         CosmosStoredProcedureProperties storedProcedureDef = BridgeInternal
@@ -94,7 +94,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
         assertThat(result).isEqualTo("\"0123456789\"");
     }
 
-    @Test(groups = "simple", timeOut = TIMEOUT)
+    @Test(groups = "fast", timeOut = TIMEOUT)
     public void executeStoredProcedureWithScriptLoggingEnabled() throws Exception {
         // Create a stored procedure
         CosmosStoredProcedureProperties storedProcedure = new CosmosStoredProcedureProperties(
@@ -125,13 +125,13 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
         assertThat(executeResponse.getScriptLog()).isEqualTo(logResult);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
     public void before_StoredProcedureUpsertReplaceTest() {
         client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }

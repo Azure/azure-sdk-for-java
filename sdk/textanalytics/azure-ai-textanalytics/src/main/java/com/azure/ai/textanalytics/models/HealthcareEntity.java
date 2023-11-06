@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link HealthcareEntity} model.
+ * The {@code HealthcareEntity} model.
  */
 @Immutable
 public final class HealthcareEntity {
@@ -70,6 +70,12 @@ public final class HealthcareEntity {
                 healthcareEntity.setAssertion(assertion);
             }
         });
+    }
+
+    /**
+     * Constructs a {@code HealthcareEntity} model.
+     */
+    public HealthcareEntity() {
     }
 
     /**

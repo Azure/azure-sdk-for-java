@@ -13,6 +13,13 @@ import java.util.List;
  */
 @Immutable
 public final class BoundingRegion {
+
+    /**
+     * Creates a new instance of BoundingRegion.
+     */
+    public BoundingRegion() {
+    }
+
     /*
      * 1-based page number of page containing the bounding region.
      */

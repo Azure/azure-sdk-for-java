@@ -160,6 +160,14 @@ public final class WebPubSubResourceImpl
         return this.innerModel().disableAadAuth();
     }
 
+    public String regionEndpointEnabled() {
+        return this.innerModel().regionEndpointEnabled();
+    }
+
+    public String resourceStopped() {
+        return this.innerModel().resourceStopped();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -349,6 +357,16 @@ public final class WebPubSubResourceImpl
 
     public WebPubSubResourceImpl withDisableAadAuth(Boolean disableAadAuth) {
         this.innerModel().withDisableAadAuth(disableAadAuth);
+        return this;
+    }
+
+    public WebPubSubResourceImpl withRegionEndpointEnabled(String regionEndpointEnabled) {
+        this.innerModel().withRegionEndpointEnabled(regionEndpointEnabled);
+        return this;
+    }
+
+    public WebPubSubResourceImpl withResourceStopped(String resourceStopped) {
+        this.innerModel().withResourceStopped(resourceStopped);
         return this;
     }
 }

@@ -4,17 +4,31 @@
 
 package com.azure.resourcemanager.managedapplications.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managedapplications.fluent.models.ApplicationInner;
+import com.azure.resourcemanager.managedapplications.fluent.models.UpdateAccessDefinitionInner;
+import com.azure.resourcemanager.managedapplications.models.AllowedUpgradePlansResult;
 import com.azure.resourcemanager.managedapplications.models.Application;
-import com.azure.resourcemanager.managedapplications.models.ApplicationPatchable;
+import com.azure.resourcemanager.managedapplications.models.ApplicationArtifact;
+import com.azure.resourcemanager.managedapplications.models.ApplicationAuthorization;
+import com.azure.resourcemanager.managedapplications.models.ApplicationBillingDetailsDefinition;
+import com.azure.resourcemanager.managedapplications.models.ApplicationClientDetails;
+import com.azure.resourcemanager.managedapplications.models.ApplicationJitAccessPolicy;
+import com.azure.resourcemanager.managedapplications.models.ApplicationManagementMode;
+import com.azure.resourcemanager.managedapplications.models.ApplicationPackageContact;
+import com.azure.resourcemanager.managedapplications.models.ApplicationPackageSupportUrls;
 import com.azure.resourcemanager.managedapplications.models.Identity;
+import com.azure.resourcemanager.managedapplications.models.ListTokenRequest;
+import com.azure.resourcemanager.managedapplications.models.ManagedIdentityTokenResult;
 import com.azure.resourcemanager.managedapplications.models.Plan;
-import com.azure.resourcemanager.managedapplications.models.PlanPatchable;
 import com.azure.resourcemanager.managedapplications.models.ProvisioningState;
 import com.azure.resourcemanager.managedapplications.models.Sku;
+import com.azure.resourcemanager.managedapplications.models.UpdateAccessDefinition;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public final class ApplicationImpl implements Application, Application.Definition, Application.Update {
@@ -55,8 +69,8 @@ public final class ApplicationImpl implements Application, Application.Definitio
         return this.innerModel().sku();
     }
 
-    public Identity identity() {
-        return this.innerModel().identity();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public Plan plan() {
@@ -65,6 +79,10 @@ public final class ApplicationImpl implements Application, Application.Definitio
 
     public String kind() {
         return this.innerModel().kind();
+    }
+
+    public Identity identity() {
+        return this.innerModel().identity();
     }
 
     public String managedResourceGroupId() {
@@ -85,6 +103,56 @@ public final class ApplicationImpl implements Application, Application.Definitio
 
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public ApplicationBillingDetailsDefinition billingDetails() {
+        return this.innerModel().billingDetails();
+    }
+
+    public ApplicationJitAccessPolicy jitAccessPolicy() {
+        return this.innerModel().jitAccessPolicy();
+    }
+
+    public String publisherTenantId() {
+        return this.innerModel().publisherTenantId();
+    }
+
+    public List<ApplicationAuthorization> authorizations() {
+        List<ApplicationAuthorization> inner = this.innerModel().authorizations();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public ApplicationManagementMode managementMode() {
+        return this.innerModel().managementMode();
+    }
+
+    public ApplicationPackageContact customerSupport() {
+        return this.innerModel().customerSupport();
+    }
+
+    public ApplicationPackageSupportUrls supportUrls() {
+        return this.innerModel().supportUrls();
+    }
+
+    public List<ApplicationArtifact> artifacts() {
+        List<ApplicationArtifact> inner = this.innerModel().artifacts();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public ApplicationClientDetails createdBy() {
+        return this.innerModel().createdBy();
+    }
+
+    public ApplicationClientDetails updatedBy() {
+        return this.innerModel().updatedBy();
     }
 
     public Region region() {
@@ -110,8 +178,6 @@ public final class ApplicationImpl implements Application, Application.Definitio
     private String resourceGroupName;
 
     private String applicationName;
-
-    private ApplicationPatchable updateParameters;
 
     public ApplicationImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
@@ -143,7 +209,6 @@ public final class ApplicationImpl implements Application, Application.Definitio
     }
 
     public ApplicationImpl update() {
-        this.updateParameters = new ApplicationPatchable();
         return this;
     }
 
@@ -152,8 +217,7 @@ public final class ApplicationImpl implements Application, Application.Definitio
             serviceManager
                 .serviceClient()
                 .getApplications()
-                .updateWithResponse(resourceGroupName, applicationName, updateParameters, Context.NONE)
-                .getValue();
+                .createOrUpdate(resourceGroupName, applicationName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -162,8 +226,7 @@ public final class ApplicationImpl implements Application, Application.Definitio
             serviceManager
                 .serviceClient()
                 .getApplications()
-                .updateWithResponse(resourceGroupName, applicationName, updateParameters, context)
-                .getValue();
+                .createOrUpdate(resourceGroupName, applicationName, this.innerModel(), context);
         return this;
     }
 
@@ -195,6 +258,42 @@ public final class ApplicationImpl implements Application, Application.Definitio
         return this;
     }
 
+    public void refreshPermissions() {
+        serviceManager.applications().refreshPermissions(resourceGroupName, applicationName);
+    }
+
+    public void refreshPermissions(Context context) {
+        serviceManager.applications().refreshPermissions(resourceGroupName, applicationName, context);
+    }
+
+    public Response<AllowedUpgradePlansResult> listAllowedUpgradePlansWithResponse(Context context) {
+        return serviceManager
+            .applications()
+            .listAllowedUpgradePlansWithResponse(resourceGroupName, applicationName, context);
+    }
+
+    public AllowedUpgradePlansResult listAllowedUpgradePlans() {
+        return serviceManager.applications().listAllowedUpgradePlans(resourceGroupName, applicationName);
+    }
+
+    public UpdateAccessDefinition updateAccess(UpdateAccessDefinitionInner parameters) {
+        return serviceManager.applications().updateAccess(resourceGroupName, applicationName, parameters);
+    }
+
+    public UpdateAccessDefinition updateAccess(UpdateAccessDefinitionInner parameters, Context context) {
+        return serviceManager.applications().updateAccess(resourceGroupName, applicationName, parameters, context);
+    }
+
+    public Response<ManagedIdentityTokenResult> listTokensWithResponse(ListTokenRequest parameters, Context context) {
+        return serviceManager
+            .applications()
+            .listTokensWithResponse(resourceGroupName, applicationName, parameters, context);
+    }
+
+    public ManagedIdentityTokenResult listTokens(ListTokenRequest parameters) {
+        return serviceManager.applications().listTokens(resourceGroupName, applicationName, parameters);
+    }
+
     public ApplicationImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -206,63 +305,23 @@ public final class ApplicationImpl implements Application, Application.Definitio
     }
 
     public ApplicationImpl withKind(String kind) {
-        if (isInCreateMode()) {
-            this.innerModel().withKind(kind);
-            return this;
-        } else {
-            this.updateParameters.withKind(kind);
-            return this;
-        }
-    }
-
-    public ApplicationImpl withManagedResourceGroupId(String managedResourceGroupId) {
-        if (isInCreateMode()) {
-            this.innerModel().withManagedResourceGroupId(managedResourceGroupId);
-            return this;
-        } else {
-            this.updateParameters.withManagedResourceGroupId(managedResourceGroupId);
-            return this;
-        }
+        this.innerModel().withKind(kind);
+        return this;
     }
 
     public ApplicationImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateParameters.withTags(tags);
-            return this;
-        }
+        this.innerModel().withTags(tags);
+        return this;
     }
 
     public ApplicationImpl withManagedBy(String managedBy) {
-        if (isInCreateMode()) {
-            this.innerModel().withManagedBy(managedBy);
-            return this;
-        } else {
-            this.updateParameters.withManagedBy(managedBy);
-            return this;
-        }
+        this.innerModel().withManagedBy(managedBy);
+        return this;
     }
 
     public ApplicationImpl withSku(Sku sku) {
-        if (isInCreateMode()) {
-            this.innerModel().withSku(sku);
-            return this;
-        } else {
-            this.updateParameters.withSku(sku);
-            return this;
-        }
-    }
-
-    public ApplicationImpl withIdentity(Identity identity) {
-        if (isInCreateMode()) {
-            this.innerModel().withIdentity(identity);
-            return this;
-        } else {
-            this.updateParameters.withIdentity(identity);
-            return this;
-        }
+        this.innerModel().withSku(sku);
+        return this;
     }
 
     public ApplicationImpl withPlan(Plan plan) {
@@ -270,32 +329,28 @@ public final class ApplicationImpl implements Application, Application.Definitio
         return this;
     }
 
-    public ApplicationImpl withApplicationDefinitionId(String applicationDefinitionId) {
-        if (isInCreateMode()) {
-            this.innerModel().withApplicationDefinitionId(applicationDefinitionId);
-            return this;
-        } else {
-            this.updateParameters.withApplicationDefinitionId(applicationDefinitionId);
-            return this;
-        }
-    }
-
-    public ApplicationImpl withParameters(Object parameters) {
-        if (isInCreateMode()) {
-            this.innerModel().withParameters(parameters);
-            return this;
-        } else {
-            this.updateParameters.withParameters(parameters);
-            return this;
-        }
-    }
-
-    public ApplicationImpl withPlan(PlanPatchable plan) {
-        this.updateParameters.withPlan(plan);
+    public ApplicationImpl withIdentity(Identity identity) {
+        this.innerModel().withIdentity(identity);
         return this;
     }
 
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+    public ApplicationImpl withManagedResourceGroupId(String managedResourceGroupId) {
+        this.innerModel().withManagedResourceGroupId(managedResourceGroupId);
+        return this;
+    }
+
+    public ApplicationImpl withApplicationDefinitionId(String applicationDefinitionId) {
+        this.innerModel().withApplicationDefinitionId(applicationDefinitionId);
+        return this;
+    }
+
+    public ApplicationImpl withParameters(Object parameters) {
+        this.innerModel().withParameters(parameters);
+        return this;
+    }
+
+    public ApplicationImpl withJitAccessPolicy(ApplicationJitAccessPolicy jitAccessPolicy) {
+        this.innerModel().withJitAccessPolicy(jitAccessPolicy);
+        return this;
     }
 }

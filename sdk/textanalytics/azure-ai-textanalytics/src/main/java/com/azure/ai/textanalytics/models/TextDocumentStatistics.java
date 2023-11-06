@@ -22,7 +22,7 @@ public final class TextDocumentStatistics {
     private final int transactionCount;
 
     /**
-     * Creates a {@link TextDocumentStatistics} model that describes the statistics of text document.
+     * Creates a {@code TextDocumentStatistics} model that describes the statistics of text document.
      *
      * @param characterCount The number of text elements recognized in the document.
      * @param transactionCount The number of transactions for the document.

@@ -31,7 +31,7 @@ public final class OperationsListWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"eqnovvqfovl\"},{\"name\":\"wsuwsyr\"},{\"name\":\"sytgadgvraea\"}]}";
+            "{\"value\":[{\"name\":\"wk\",\"display\":{\"provider\":\"ycslevufuztcktyh\",\"resource\":\"qedcgzulwm\",\"operation\":\"qzz\",\"description\":\"jvpglydzgk\"}},{\"name\":\"qeevt\",\"display\":{\"provider\":\"r\",\"resource\":\"t\",\"operation\":\"ytp\",\"description\":\"mov\"}},{\"name\":\"fvaawzqa\",\"display\":{\"provider\":\"gzuriglaecxndt\",\"resource\":\"okpvzm\",\"operation\":\"t\",\"description\":\"dgxobfircl\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,6 +62,10 @@ public final class OperationsListWithResponseMockTests {
         OperationListResult response =
             manager.operations().listWithResponse(com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("eqnovvqfovl", response.value().get(0).name());
+        Assertions.assertEquals("wk", response.value().get(0).name());
+        Assertions.assertEquals("ycslevufuztcktyh", response.value().get(0).display().provider());
+        Assertions.assertEquals("qedcgzulwm", response.value().get(0).display().resource());
+        Assertions.assertEquals("qzz", response.value().get(0).display().operation());
+        Assertions.assertEquals("jvpglydzgk", response.value().get(0).display().description());
     }
 }

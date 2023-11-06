@@ -10,18 +10,12 @@ import java.util.List;
 
 /** Flexible server edition capabilities. */
 @Immutable
-public final class FlexibleServerEditionCapability extends CapabilityBase {
+public final class FlexibleServerEditionCapability {
     /*
      * Server edition name
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
-
-    /*
-     * Default sku name for the server edition
-     */
-    @JsonProperty(value = "defaultSkuName", access = JsonProperty.Access.WRITE_ONLY)
-    private String defaultSkuName;
 
     /*
      * The list of editions supported by this server edition.
@@ -30,10 +24,16 @@ public final class FlexibleServerEditionCapability extends CapabilityBase {
     private List<StorageEditionCapability> supportedStorageEditions;
 
     /*
-     * List of supported server SKUs.
+     * The list of server versions supported by this server edition.
      */
-    @JsonProperty(value = "supportedServerSkus", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ServerSkuCapability> supportedServerSkus;
+    @JsonProperty(value = "supportedServerVersions", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ServerVersionCapability> supportedServerVersions;
+
+    /*
+     * The status
+     */
+    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
+    private String status;
 
     /** Creates an instance of FlexibleServerEditionCapability class. */
     public FlexibleServerEditionCapability() {
@@ -49,15 +49,6 @@ public final class FlexibleServerEditionCapability extends CapabilityBase {
     }
 
     /**
-     * Get the defaultSkuName property: Default sku name for the server edition.
-     *
-     * @return the defaultSkuName value.
-     */
-    public String defaultSkuName() {
-        return this.defaultSkuName;
-    }
-
-    /**
      * Get the supportedStorageEditions property: The list of editions supported by this server edition.
      *
      * @return the supportedStorageEditions value.
@@ -67,12 +58,21 @@ public final class FlexibleServerEditionCapability extends CapabilityBase {
     }
 
     /**
-     * Get the supportedServerSkus property: List of supported server SKUs.
+     * Get the supportedServerVersions property: The list of server versions supported by this server edition.
      *
-     * @return the supportedServerSkus value.
+     * @return the supportedServerVersions value.
      */
-    public List<ServerSkuCapability> supportedServerSkus() {
-        return this.supportedServerSkus;
+    public List<ServerVersionCapability> supportedServerVersions() {
+        return this.supportedServerVersions;
+    }
+
+    /**
+     * Get the status property: The status.
+     *
+     * @return the status value.
+     */
+    public String status() {
+        return this.status;
     }
 
     /**
@@ -80,14 +80,12 @@ public final class FlexibleServerEditionCapability extends CapabilityBase {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
         if (supportedStorageEditions() != null) {
             supportedStorageEditions().forEach(e -> e.validate());
         }
-        if (supportedServerSkus() != null) {
-            supportedServerSkus().forEach(e -> e.validate());
+        if (supportedServerVersions() != null) {
+            supportedServerVersions().forEach(e -> e.validate());
         }
     }
 }

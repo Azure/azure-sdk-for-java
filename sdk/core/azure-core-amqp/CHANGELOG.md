@@ -1,5 +1,56 @@
 # Release History
 
+## 2.9.0-beta.7 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.8.12 (2023-11-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to `1.45.0`.
+
+## 2.9.0-beta.6 (2023-11-01)
+
+### Bugs Fixed
+
+- Fixes the ReactorReceiver to probe the monitoring meter only once to see if tracking message sequence number is needed.
+- Fixes the MessageFlux to not use the doOnEach side effect operator for reacting to endpoint active and terminal states.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to `1.44.1`.
+
+## 2.8.11 (2023-10-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.0` to `1.44.1`.
+
+## 2.8.10 (2023-10-06)
+
+### Bugs Fixed
+
+- Fixes the potential NullPointerException in ReactorSession if the thread constructing ReactorSession ever happens to run the disposeWork (cleanup phase) synchronously. ([36916](https://github.com/Azure/azure-sdk-for-java/issues/36916))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to `1.44.0`.
+
 ## 2.8.9 (2023-09-07)
 
 ### Bugs Fixed

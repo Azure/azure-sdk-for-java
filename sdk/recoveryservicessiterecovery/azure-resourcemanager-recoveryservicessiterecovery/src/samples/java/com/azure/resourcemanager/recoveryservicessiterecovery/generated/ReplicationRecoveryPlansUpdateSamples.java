@@ -14,7 +14,7 @@ import java.util.Arrays;
 /** Samples for ReplicationRecoveryPlans Update. */
 public final class ReplicationRecoveryPlansUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_Update.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_Update.json
      */
     /**
      * Sample code: Updates the given recovery plan.

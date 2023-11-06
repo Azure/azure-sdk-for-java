@@ -37,6 +37,15 @@ public final class MicrosoftGraphTeamSpecialization extends ExpandableStringEnum
     public static final MicrosoftGraphTeamSpecialization UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
+     * Creates a new instance of MicrosoftGraphTeamSpecialization value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphTeamSpecialization() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphTeamSpecialization from its string representation.
      *
      * @param name a name to look for.

@@ -55,7 +55,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"simple", "split"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosBulkAsyncTest() {
         assertThat(this.bulkClient).isNull();
         ThrottlingRetryOptions throttlingOptions = new ThrottlingRetryOptions()
@@ -65,17 +65,17 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         bulkAsyncContainer = getSharedMultiPartitionCosmosContainer(this.bulkClient);
     }
 
-    @AfterClass(groups = {"simple", "split"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(this.bulkClient);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT * 2)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT * 2)
     public void createItem_withBulkAndThroughputControlAsDefaultGroup() throws InterruptedException {
         runBulkTest(true);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT * 2)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT * 2)
     public void createItem_withBulkAndThroughputControlAsNonDefaultGroup() throws InterruptedException {
         runBulkTest(false);
     }
@@ -149,7 +149,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void createItem_withBulk() {
         int totalRequest = getTotalRequest();
 
@@ -197,7 +197,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         assertThat(processedDoc.get()).isEqualTo(totalRequest * 2);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void createItem_withBulk_after_collectionRecreate() {
         int totalRequest = getTotalRequest();
 
@@ -263,7 +263,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void createItem_withBulk_and_operationLevelContext() {
         int totalRequest = getTotalRequest();
 
@@ -325,7 +325,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         assertThat(processedDoc.get()).isEqualTo(totalRequest * 2);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void createItemMultipleTimesWithOperationOnFly_withBulk() {
         int totalRequest = getTotalRequest();
 
@@ -406,7 +406,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         assertThat(distinctDocs.size()).isEqualTo(totalRequest * 4);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void runCreateItemMultipleTimesWithFixedOperations_withBulk() {
         int totalRequest = getTotalRequest();
 
@@ -483,7 +483,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         assertThat(distinctDocs.size()).isEqualTo(totalRequest);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void createItemWithError_withBulk() {
         int totalRequest = getTotalRequest();
 
@@ -537,7 +537,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         assertThat(processedDoc.get()).isEqualTo(totalRequest - 3);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void upsertItem_withbulk() {
         int totalRequest = getTotalRequest();
 
@@ -587,7 +587,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         assertThat(processedDoc.get()).isEqualTo(totalRequest);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void deleteItem_withBulk() {
         int totalRequest = Math.min(getTotalRequest(), 20);
 
@@ -635,7 +635,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         assertThat(processedDoc.get()).isEqualTo(totalRequest);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void readItem_withBulk() {
         int totalRequest = getTotalRequest();
 
@@ -688,7 +688,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         assertThat(processedDoc.get()).isEqualTo(totalRequest);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void readItemMultipleTimes_withBulk() {
         int totalRequest = getTotalRequest();
 
@@ -756,7 +756,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         assertThat(distinctDocs.size()).isEqualTo(totalRequest);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void replaceItem_withBulk() {
         int totalRequest = getTotalRequest();
 

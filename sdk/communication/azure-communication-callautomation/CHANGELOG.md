@@ -5,12 +5,31 @@
 ### Features Added
 - Start/Stop continuous DTMF recognition by subscribing/unsubscribing to tones.
 - Send DTMF tones to a participant in the call
+- StartRecording now accepts PauseOnStart.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.5 (2023-10-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+- Upgraded `azure-communication-common` from `1.2.12` to version `1.2.13`.
+
+## 1.0.4 (2023-09-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-communication-common` from `1.2.11` to version `1.2.12`.
 
 ## 1.0.3 (2023-08-18)
 

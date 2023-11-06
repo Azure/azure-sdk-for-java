@@ -13,6 +13,8 @@ import java.util.Map;
 /** Managed cluster Access Profile. */
 @Fluent
 public final class ManagedClusterAccessProfileInner extends Resource {
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+
     /*
      * AccessProfile of a managed cluster.
      */
@@ -67,7 +69,7 @@ public final class ManagedClusterAccessProfileInner extends Resource {
      * @return the kubeConfig value.
      */
     public byte[] kubeConfig() {
-        return this.innerProperties() == null ? new byte[0] : this.innerProperties().kubeConfig();
+        return this.innerProperties() == null ? EMPTY_BYTE_ARRAY : this.innerProperties().kubeConfig();
     }
 
     /**

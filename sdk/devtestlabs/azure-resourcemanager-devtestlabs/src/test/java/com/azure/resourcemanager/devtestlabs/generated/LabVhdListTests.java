@@ -15,26 +15,18 @@ public final class LabVhdListTests {
     public void testDeserialize() throws Exception {
         LabVhdList model =
             BinaryData
-                .fromString(
-                    "{\"value\":[{\"id\":\"kzsz\"},{\"id\":\"iwtglxxhljfpg\"},{\"id\":\"crmnzhrgmqgjs\"}],\"nextLink\":\"pqcbfrmbodthsq\"}")
+                .fromString("{\"value\":[{\"id\":\"x\"}],\"nextLink\":\"akxcptsoqfyiaseq\"}")
                 .toObject(LabVhdList.class);
-        Assertions.assertEquals("kzsz", model.value().get(0).id());
-        Assertions.assertEquals("pqcbfrmbodthsq", model.nextLink());
+        Assertions.assertEquals("x", model.value().get(0).id());
+        Assertions.assertEquals("akxcptsoqfyiaseq", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LabVhdList model =
-            new LabVhdList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new LabVhdInner().withId("kzsz"),
-                            new LabVhdInner().withId("iwtglxxhljfpg"),
-                            new LabVhdInner().withId("crmnzhrgmqgjs")))
-                .withNextLink("pqcbfrmbodthsq");
+            new LabVhdList().withValue(Arrays.asList(new LabVhdInner().withId("x"))).withNextLink("akxcptsoqfyiaseq");
         model = BinaryData.fromObject(model).toObject(LabVhdList.class);
-        Assertions.assertEquals("kzsz", model.value().get(0).id());
-        Assertions.assertEquals("pqcbfrmbodthsq", model.nextLink());
+        Assertions.assertEquals("x", model.value().get(0).id());
+        Assertions.assertEquals("akxcptsoqfyiaseq", model.nextLink());
     }
 }

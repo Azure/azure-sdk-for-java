@@ -13,7 +13,7 @@ public final class StorageTierCapabilityTests {
         StorageTierCapability model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"vfqawrlyxwjkcpr\",\"iops\":1726413859,\"status\":\"Available\",\"reason\":\"jvtbvpyss\"}")
+                    "{\"name\":\"q\",\"tierName\":\"ids\",\"iops\":2625716572119326025,\"isBaseline\":true,\"status\":\"laocqxtccmg\"}")
                 .toObject(StorageTierCapability.class);
     }
 

@@ -14,6 +14,15 @@ public final class WafMetric extends ExpandableStringEnum<WafMetric> {
     public static final WafMetric CLIENT_REQUEST_COUNT = fromString("clientRequestCount");
 
     /**
+     * Creates a new instance of WafMetric value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WafMetric() {
+    }
+
+    /**
      * Creates or finds a WafMetric from its string representation.
      *
      * @param name a name to look for.

@@ -59,6 +59,13 @@ public interface Fleet {
     String etag();
 
     /**
+     * Gets the identity property: Managed identity.
+     *
+     * @return the identity value.
+     */
+    ManagedServiceIdentity identity();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
@@ -71,13 +78,6 @@ public interface Fleet {
      * @return the provisioningState value.
      */
     FleetProvisioningState provisioningState();
-
-    /**
-     * Gets the hubProfile property: The FleetHubProfile configures the Fleet's hub.
-     *
-     * @return the hubProfile value.
-     */
-    FleetHubProfile hubProfile();
 
     /**
      * Gets the region of the resource.
@@ -114,11 +114,13 @@ public interface Fleet {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The Fleet definition stages. */
     interface DefinitionStages {
         /** The first stage of the Fleet definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Fleet definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -137,6 +139,7 @@ public interface Fleet {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Fleet definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -147,13 +150,14 @@ public interface Fleet {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the Fleet definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
-                DefinitionStages.WithHubProfile,
+                DefinitionStages.WithIdentity,
                 DefinitionStages.WithIfMatch,
                 DefinitionStages.WithIfNoneMatch {
             /**
@@ -171,6 +175,7 @@ public interface Fleet {
              */
             Fleet create(Context context);
         }
+
         /** The stage of the Fleet definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -181,16 +186,18 @@ public interface Fleet {
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the Fleet definition allowing to specify hubProfile. */
-        interface WithHubProfile {
+
+        /** The stage of the Fleet definition allowing to specify identity. */
+        interface WithIdentity {
             /**
-             * Specifies the hubProfile property: The FleetHubProfile configures the Fleet's hub..
+             * Specifies the identity property: Managed identity..
              *
-             * @param hubProfile The FleetHubProfile configures the Fleet's hub.
+             * @param identity Managed identity.
              * @return the next definition stage.
              */
-            WithCreate withHubProfile(FleetHubProfile hubProfile);
+            WithCreate withIdentity(ManagedServiceIdentity identity);
         }
+
         /** The stage of the Fleet definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -201,6 +208,7 @@ public interface Fleet {
              */
             WithCreate withIfMatch(String ifMatch);
         }
+
         /** The stage of the Fleet definition allowing to specify ifNoneMatch. */
         interface WithIfNoneMatch {
             /**
@@ -212,6 +220,7 @@ public interface Fleet {
             WithCreate withIfNoneMatch(String ifNoneMatch);
         }
     }
+
     /**
      * Begins update for the Fleet resource.
      *
@@ -220,7 +229,7 @@ public interface Fleet {
     Fleet.Update update();
 
     /** The template for Fleet update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *
@@ -236,6 +245,7 @@ public interface Fleet {
          */
         Fleet apply(Context context);
     }
+
     /** The Fleet update stages. */
     interface UpdateStages {
         /** The stage of the Fleet update allowing to specify tags. */
@@ -248,6 +258,18 @@ public interface Fleet {
              */
             Update withTags(Map<String, String> tags);
         }
+
+        /** The stage of the Fleet update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Managed identity..
+             *
+             * @param identity Managed identity.
+             * @return the next definition stage.
+             */
+            Update withIdentity(ManagedServiceIdentity identity);
+        }
+
         /** The stage of the Fleet update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -259,6 +281,7 @@ public interface Fleet {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

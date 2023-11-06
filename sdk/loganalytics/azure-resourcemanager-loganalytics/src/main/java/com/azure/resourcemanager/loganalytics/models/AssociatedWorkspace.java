@@ -34,6 +34,10 @@ public final class AssociatedWorkspace {
     @JsonProperty(value = "associateDate", access = JsonProperty.Access.WRITE_ONLY)
     private String associateDate;
 
+    /** Creates an instance of AssociatedWorkspace class. */
+    public AssociatedWorkspace() {
+    }
+
     /**
      * Get the workspaceId property: The id of the assigned workspace.
      *

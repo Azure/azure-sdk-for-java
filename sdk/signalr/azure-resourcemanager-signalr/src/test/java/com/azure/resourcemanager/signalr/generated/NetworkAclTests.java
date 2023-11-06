@@ -16,9 +16,9 @@ public final class NetworkAclTests {
         NetworkAcl model =
             BinaryData
                 .fromString(
-                    "{\"allow\":[\"ClientConnection\"],\"deny\":[\"ClientConnection\",\"RESTAPI\",\"ServerConnection\"]}")
+                    "{\"allow\":[\"ServerConnection\"],\"deny\":[\"ClientConnection\",\"Trace\",\"RESTAPI\",\"ServerConnection\"]}")
                 .toObject(NetworkAcl.class);
-        Assertions.assertEquals(SignalRRequestType.CLIENT_CONNECTION, model.allow().get(0));
+        Assertions.assertEquals(SignalRRequestType.SERVER_CONNECTION, model.allow().get(0));
         Assertions.assertEquals(SignalRRequestType.CLIENT_CONNECTION, model.deny().get(0));
     }
 
@@ -26,15 +26,16 @@ public final class NetworkAclTests {
     public void testSerialize() throws Exception {
         NetworkAcl model =
             new NetworkAcl()
-                .withAllow(Arrays.asList(SignalRRequestType.CLIENT_CONNECTION))
+                .withAllow(Arrays.asList(SignalRRequestType.SERVER_CONNECTION))
                 .withDeny(
                     Arrays
                         .asList(
                             SignalRRequestType.CLIENT_CONNECTION,
+                            SignalRRequestType.TRACE,
                             SignalRRequestType.RESTAPI,
                             SignalRRequestType.SERVER_CONNECTION));
         model = BinaryData.fromObject(model).toObject(NetworkAcl.class);
-        Assertions.assertEquals(SignalRRequestType.CLIENT_CONNECTION, model.allow().get(0));
+        Assertions.assertEquals(SignalRRequestType.SERVER_CONNECTION, model.allow().get(0));
         Assertions.assertEquals(SignalRRequestType.CLIENT_CONNECTION, model.deny().get(0));
     }
 }

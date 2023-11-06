@@ -14,6 +14,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager;
 import com.azure.resourcemanager.containerservicefleet.models.Fleet;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedServiceIdentityType;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -32,7 +33,8 @@ public final class FleetsListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"hubProfile\":{\"dnsPrefix\":\"gug\",\"fqdn\":\"krxd\",\"kubernetesVersion\":\"i\"}},\"eTag\":\"thz\",\"location\":\"qdrabhjybigehoqf\",\"tags\":{\"zlcuiywgqywgndrv\":\"skanyk\"},\"id\":\"nhzgpphrcgyn\",\"name\":\"ocpecfvmmco\",\"type\":\"fsxlzevgbmqjqa\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\"},\"eTag\":\"zlfmisgwbnbbeld\",\"identity\":{\"principalId\":\"83f502da-cc13-4c3c-a5f4-64dd46a21f4c\",\"tenantId\":\"383d5bb3-f707-4d72-b03b-c4aebce90071\",\"type\":\"SystemAssigned,"
+                + " UserAssigned\",\"userAssignedIdentities\":{\"urqhaka\":{\"principalId\":\"9a0d63cc-7bed-40d2-bbce-f570c0834930\",\"clientId\":\"ccd9d344-63dd-4c3c-b404-0bd25fb86597\"},\"shsfwxosowzxcu\":{\"principalId\":\"3e149389-ebec-4320-9c72-bf632ad8069c\",\"clientId\":\"0059c334-1340-4c1e-837f-0f54b9ea7748\"},\"jooxdjebw\":{\"principalId\":\"eae88e80-f635-48ee-926a-933f0d9c5fda\",\"clientId\":\"39262479-a2bd-4386-93af-590ba9c88c14\"}}},\"location\":\"cwwfvovbvme\",\"tags\":{\"iotwmcdytdxwit\":\"ivyhzceuojgjrwju\",\"hniskxfbkpyc\":\"nrjawgqwg\",\"l\":\"klwndnhjdauwhv\"},\"id\":\"zbtd\",\"name\":\"xujznbmpowu\",\"type\":\"przqlveu\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,10 +63,12 @@ public final class FleetsListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Fleet> response =
-            manager.fleets().listByResourceGroup("iotkftutqxl", com.azure.core.util.Context.NONE);
+            manager.fleets().listByResourceGroup("rcrgvx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qdrabhjybigehoqf", response.iterator().next().location());
-        Assertions.assertEquals("skanyk", response.iterator().next().tags().get("zlcuiywgqywgndrv"));
-        Assertions.assertEquals("gug", response.iterator().next().hubProfile().dnsPrefix());
+        Assertions.assertEquals("cwwfvovbvme", response.iterator().next().location());
+        Assertions.assertEquals("ivyhzceuojgjrwju", response.iterator().next().tags().get("iotwmcdytdxwit"));
+        Assertions
+            .assertEquals(
+                ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.iterator().next().identity().type());
     }
 }

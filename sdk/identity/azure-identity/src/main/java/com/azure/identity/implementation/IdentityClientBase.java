@@ -6,11 +6,11 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -18,6 +18,7 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UserAgentUtil;
@@ -39,6 +40,7 @@ import com.microsoft.aad.msal4j.ClaimsRequest;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.IBroker;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
 import com.microsoft.aad.msal4j.OnBehalfOfParameters;
@@ -58,6 +60,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
@@ -78,6 +82,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -114,6 +119,7 @@ public abstract class IdentityClientBase {
     private static final String AZURE_IDENTITY_PROPERTIES = "azure-identity.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
+    private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
     private final Map<String, String> properties;
 
 
@@ -129,6 +135,8 @@ public abstract class IdentityClientBase {
     final String certificatePassword;
     HttpPipelineAdapter httpPipelineAdapter;
     String userAgent = UserAgentUtil.DEFAULT_USER_AGENT_HEADER;
+    private Class<?> interactiveBrowserBroker;
+    private Method getMsalRuntimeBroker;
 
     /**
      * Creates an IdentityClient with the given options.
@@ -316,6 +324,37 @@ public abstract class IdentityClientBase {
             builder.clientCapabilities(set);
         }
 
+        if (options.isBrokerEnabled()) {
+            if (interactiveBrowserBroker == null) {
+                try {
+                    interactiveBrowserBroker = Class.forName("com.azure.identity.broker.implementation.InteractiveBrowserBroker");
+                } catch (ClassNotFoundException e) {
+                    throw LOGGER.logExceptionAsError(new IllegalStateException("Could not load the brokered authentication library. "
+                        + "Please ensure that the azure-identity-broker library is on the classpath.", e));
+                }
+                getMsalRuntimeBroker = null;
+                try {
+                    getMsalRuntimeBroker = interactiveBrowserBroker.getMethod("getMsalRuntimeBroker");
+                } catch (NoSuchMethodException e) {
+                    throw LOGGER.logExceptionAsError(new IllegalStateException("Could not obtain the InteractiveBrowserBroker. "
+                        + "Please ensure that the azure-identity-broker library is on the classpath.", e));
+                }
+            }
+
+            try {
+                if (getMsalRuntimeBroker != null) {
+                    builder.broker((IBroker) getMsalRuntimeBroker.invoke(null));
+
+                } else {
+                    throw LOGGER.logExceptionAsError(new IllegalStateException("Could not obtain the MSAL Broker. "
+                        + "Please ensure that the azure-identity-broker library is on the classpath.", null));
+                }
+            } catch (InvocationTargetException | IllegalAccessException e) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException("Could not invoke the MSAL Broker. "
+                    + "Please ensure that the azure-identity-broker library is on the classpath.", e));
+            }
+        }
+
         TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
         PersistentTokenCacheImpl tokenCache = null;
         if (tokenCachePersistenceOptions != null) {
@@ -495,6 +534,15 @@ public abstract class IdentityClientBase {
             builder.systemBrowserOptions(browserOptionsBuilder.build());
         }
 
+        if (options.isBrokerEnabled()) {
+            builder.windowHandle(options.getBrokerWindowHandle());
+            if (options.isMsaPassthroughEnabled()) {
+                Map<String, String> extraQueryParameters = new HashMap<>();
+                extraQueryParameters.put("msal_request_type", "consumer_passthrough");
+                builder.extraQueryParameters(extraQueryParameters);
+            }
+        }
+
         if (loginHint != null) {
             builder.loginHint(loginHint);
         }
@@ -530,6 +578,8 @@ public abstract class IdentityClientBase {
             }
 
             ProcessBuilder builder = new ProcessBuilder(starter, switcher, azCommand.toString());
+            // Redirects stdin to dev null, helps to avoid messages sent in by the cmd process to upgrade etc.
+            builder.redirectInput(ProcessBuilder.Redirect.from(IdentityUtil.NULL_FILE));
 
             String workingDirectory = getSafeWorkingDirectory();
             if (workingDirectory != null) {
@@ -619,6 +669,8 @@ public abstract class IdentityClientBase {
             }
 
             ProcessBuilder builder = new ProcessBuilder(starter, switcher, azdCommand.toString());
+            // Redirects stdin to dev null, helps to avoid messages sent in by the cmd process to upgrade etc.
+            builder.redirectInput(ProcessBuilder.Redirect.from(IdentityUtil.NULL_FILE));
 
             String workingDirectory = getSafeWorkingDirectory();
             if (workingDirectory != null) {
@@ -779,15 +831,16 @@ public abstract class IdentityClientBase {
 
         HttpLogOptions httpLogOptions = (options.getHttpLogOptions() == null) ? new HttpLogOptions() : options.getHttpLogOptions();
 
-        userAgent = UserAgentUtil.toUserAgentString(CoreUtils.getApplicationId(options.getClientOptions(), httpLogOptions), clientName, clientVersion, buildConfiguration);
+        ClientOptions localClientOptions = options.getClientOptions() != null
+            ? options.getClientOptions() : DEFAULT_CLIENT_OPTIONS;
+
+        userAgent = UserAgentUtil.toUserAgentString(CoreUtils.getApplicationId(localClientOptions, httpLogOptions), clientName, clientVersion, buildConfiguration);
         policies.add(new UserAgentPolicy(userAgent));
 
-        if (options.getClientOptions() != null) {
-            List<HttpHeader> httpHeaderList = new ArrayList<>();
-            options.getClientOptions().getHeaders().forEach(header ->
-                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
-        }
+        List<HttpHeader> httpHeaderList = new ArrayList<>();
+        localClientOptions.getHeaders().forEach(header ->
+            httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+        policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
 
         policies.addAll(options.getPerCallPolicies());
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
@@ -797,6 +850,7 @@ public abstract class IdentityClientBase {
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
         return new HttpPipelineBuilder().httpClient(httpClient)
+            .clientOptions(localClientOptions)
             .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
     }
 

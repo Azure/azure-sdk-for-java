@@ -7,8 +7,8 @@ package com.azure.resourcemanager.containerservicefleet.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.containerservicefleet.models.FleetHubProfile;
 import com.azure.resourcemanager.containerservicefleet.models.FleetProvisioningState;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedServiceIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -29,6 +29,12 @@ public final class FleetInner extends Resource {
      */
     @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /*
+     * Managed identity.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -59,6 +65,26 @@ public final class FleetInner extends Resource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Get the identity property: Managed identity.
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed identity.
+     *
+     * @param identity the identity value to set.
+     * @return the FleetInner object itself.
+     */
+    public FleetInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -94,29 +120,6 @@ public final class FleetInner extends Resource {
     }
 
     /**
-     * Get the hubProfile property: The FleetHubProfile configures the Fleet's hub.
-     *
-     * @return the hubProfile value.
-     */
-    public FleetHubProfile hubProfile() {
-        return this.innerProperties() == null ? null : this.innerProperties().hubProfile();
-    }
-
-    /**
-     * Set the hubProfile property: The FleetHubProfile configures the Fleet's hub.
-     *
-     * @param hubProfile the hubProfile value to set.
-     * @return the FleetInner object itself.
-     */
-    public FleetInner withHubProfile(FleetHubProfile hubProfile) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new FleetProperties();
-        }
-        this.innerProperties().withHubProfile(hubProfile);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -124,6 +127,9 @@ public final class FleetInner extends Resource {
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

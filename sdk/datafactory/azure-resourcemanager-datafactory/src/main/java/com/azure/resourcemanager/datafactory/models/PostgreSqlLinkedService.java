@@ -66,7 +66,8 @@ public final class PostgreSqlLinkedService extends LinkedService {
     }
 
     /**
-     * Get the connectionString property: The connection string.
+     * Get the connectionString property: The connection string. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
      *
      * @return the connectionString value.
      */
@@ -75,7 +76,8 @@ public final class PostgreSqlLinkedService extends LinkedService {
     }
 
     /**
-     * Set the connectionString property: The connection string.
+     * Set the connectionString property: The connection string. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
      *
      * @param connectionString the connectionString value to set.
      * @return the PostgreSqlLinkedService object itself.
@@ -113,22 +115,22 @@ public final class PostgreSqlLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the PostgreSqlLinkedService object itself.
      */
-    public PostgreSqlLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public PostgreSqlLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new PostgreSqlLinkedServiceTypeProperties();
         }
