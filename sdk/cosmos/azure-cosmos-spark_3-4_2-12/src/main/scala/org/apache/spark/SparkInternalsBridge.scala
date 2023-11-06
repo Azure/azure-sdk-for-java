@@ -9,7 +9,7 @@ object SparkInternalsBridge {
     Option.apply(TaskContext.get()) match {
       case Some(taskCtx) => taskCtx
         .taskMetrics()
-        .externalAccums
+        .accumulators()
         .filter(accumulable => accumulable.isInstanceOf[SQLMetric]
           && accumulable.name.isDefined
           && knownCosmosMetricNames.contains(accumulable.name.get))
