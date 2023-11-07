@@ -56,8 +56,6 @@ public final class ServiceFabricsStopMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager
-            .serviceFabrics()
-            .stop("nmvceb", "eetqujxcxxq", "dcqjkedwqurc", "ojmrvvxwjongzse", com.azure.core.util.Context.NONE);
+        manager.serviceFabrics().stop("lmcskyk", "fuofixcnpcfykkp", "ycpawm", "jp", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,68 +4,82 @@
 
 package com.azure.communication.jobrouter.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
+
+import java.util.List;
 
 /** A rule that defines actions to execute upon a specific trigger. */
-@Fluent
+@Immutable
 public final class ExceptionRuleInternal {
+    /*
+     * Id of the exception rule.
+     */
+    @Generated
+    @JsonProperty(value = "id")
+    private String id;
+
     /*
      * The trigger for this exception rule
      */
-    @JsonProperty(value = "trigger", required = true)
+    @Generated
+    @JsonProperty(value = "trigger")
     private ExceptionTriggerInternal trigger;
 
     /*
-     * A dictionary collection of actions to perform once the exception is triggered. Key is the Id of each exception
-     * action.
+     * A collection of actions to perform once the exception is triggered.
      */
-    @JsonProperty(value = "actions", required = true)
-    private Map<String, ExceptionActionInternal> actions;
+    @Generated
+    @JsonProperty(value = "actions")
+    private List<ExceptionActionInternal> actions;
 
-    /** Creates an instance of ExceptionRuleInternal class. */
-    public ExceptionRuleInternal() {}
+    /**
+     * Creates an instance of ExceptionRuleInternal class.
+     *
+     * @param id the id value to set.
+     * @param trigger the trigger value to set.
+     * @param actions the actions value to set.
+     */
+    @Generated
+    @JsonCreator
+    public ExceptionRuleInternal(
+            @JsonProperty(value = "id") String id,
+            @JsonProperty(value = "trigger") ExceptionTriggerInternal trigger,
+            @JsonProperty(value = "actions") List<ExceptionActionInternal> actions) {
+        this.id = id;
+        this.trigger = trigger;
+        this.actions = actions;
+    }
+
+    /**
+     * Get the id property: Id of the exception rule.
+     *
+     * @return the id value.
+     */
+    @Generated
+    public String getId() {
+        return this.id;
+    }
 
     /**
      * Get the trigger property: The trigger for this exception rule.
      *
      * @return the trigger value.
      */
+    @Generated
     public ExceptionTriggerInternal getTrigger() {
         return this.trigger;
     }
 
     /**
-     * Set the trigger property: The trigger for this exception rule.
-     *
-     * @param trigger the trigger value to set.
-     * @return the ExceptionRuleInternal object itself.
-     */
-    public ExceptionRuleInternal setTrigger(ExceptionTriggerInternal trigger) {
-        this.trigger = trigger;
-        return this;
-    }
-
-    /**
-     * Get the actions property: A dictionary collection of actions to perform once the exception is triggered. Key is
-     * the Id of each exception action.
+     * Get the actions property: A collection of actions to perform once the exception is triggered.
      *
      * @return the actions value.
      */
-    public Map<String, ExceptionActionInternal> getActions() {
+    @Generated
+    public List<ExceptionActionInternal> getActions() {
         return this.actions;
-    }
-
-    /**
-     * Set the actions property: A dictionary collection of actions to perform once the exception is triggered. Key is
-     * the Id of each exception action.
-     *
-     * @param actions the actions value to set.
-     * @return the ExceptionRuleInternal object itself.
-     */
-    public ExceptionRuleInternal setActions(Map<String, ExceptionActionInternal> actions) {
-        this.actions = actions;
-        return this;
     }
 }

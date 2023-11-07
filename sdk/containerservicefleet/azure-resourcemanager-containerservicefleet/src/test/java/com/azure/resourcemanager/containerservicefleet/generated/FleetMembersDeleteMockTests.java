@@ -56,6 +56,6 @@ public final class FleetMembersDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.fleetMembers().delete("rsc", "ntnev", "iwjmygtdssls", "tmweriofzpyq", com.azure.core.util.Context.NONE);
+        manager.fleetMembers().delete("l", "nayqi", "ynduha", "hqlkthumaqo", com.azure.core.util.Context.NONE);
     }
 }

@@ -28,7 +28,7 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/model
 ``` yaml
 tag: package-2023-01-15-preview
 require:
-    - https://github.com/williamzhao87/azure-rest-api-specs/blob/8f5bd72f81f7fa9020f6834f06f3db54a475ee68/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/williamzhao87/azure-rest-api-specs/blob/5b7321a923a30b83b978e3a30ed1d497e35052fd/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -193,6 +193,9 @@ directive:
 - rename-model:
     from: SendDtmfRequest
     to: SendDtmfRequestInternal
+- rename-model:
+    from: StartDialogRequest
+    to: StartDialogRequestInternal
 
 # Remove models
 - remove-model: AddParticipantFailed
@@ -218,6 +221,15 @@ directive:
 - remove-model: SendDtmfFailed
 - remove-model: AddParticipantCancelled
 - remove-model: CancelAddParticipantFailed
+- remove-model: DialogCompleted
+- remove-model: DialogConsent
+- remove-model: DialogFailed
+- remove-model: DialogHangup
+- remove-model: DialogLanguageChange
+- remove-model: DialogSensitivityUpdate
+- remove-model: DialogStarted
+- remove-model: DialogTransfer
+- remove-model: DialogFailed
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal

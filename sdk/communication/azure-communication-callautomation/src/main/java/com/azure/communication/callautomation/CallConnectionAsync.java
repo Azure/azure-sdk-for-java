@@ -4,6 +4,7 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.CallConnectionsImpl;
+import com.azure.communication.callautomation.implementation.CallDialogsImpl;
 import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.AddParticipantResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
@@ -68,15 +69,20 @@ public final class CallConnectionAsync {
     private final String callConnectionId;
     private final CallConnectionsImpl callConnectionInternal;
     private final CallMediasImpl callMediasInternal;
+    private final CallDialogsImpl callDialogsInternal;
+    private final CallAutomationEventProcessor eventProcessor;
     private final ClientLogger logger;
 
     CallConnectionAsync(
         String callConnectionId,
         CallConnectionsImpl callConnectionInternal,
-        CallMediasImpl contentsInternal) {
+        CallMediasImpl contentsInternal,
+        CallDialogsImpl dialogsInternal, CallAutomationEventProcessor eventProcessor) {
         this.callConnectionId = callConnectionId;
         this.callConnectionInternal = callConnectionInternal;
         this.callMediasInternal = contentsInternal;
+        this.callDialogsInternal = dialogsInternal;
+        this.eventProcessor = eventProcessor;
         this.logger = new ClientLogger(CallConnectionAsync.class);
     }
 
@@ -293,7 +299,12 @@ public final class CallConnectionAsync {
                     request,
                     UUID.randomUUID(),
                     OffsetDateTime.now(),
-                    context).map(response -> new SimpleResponse<>(response, TransferCallResponseConstructorProxy.create(response.getValue())));
+                    context)
+                .map(response -> {
+                    TransferCallResult result = TransferCallResponseConstructorProxy.create(response.getValue());
+                    result.setEventProcessor(eventProcessor, callConnectionId, result.getOperationContext());
+                    return new SimpleResponse<>(response, result);
+                });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -354,7 +365,11 @@ public final class CallConnectionAsync {
                     UUID.randomUUID(),
                     OffsetDateTime.now(),
                     context
-            ).map(response -> new SimpleResponse<>(response, AddParticipantResponseConstructorProxy.create(response.getValue())));
+            ).map(response -> {
+                AddParticipantResult result = AddParticipantResponseConstructorProxy.create(response.getValue());
+                result.setEventProcessor(eventProcessor, callConnectionId, result.getOperationContext());
+                return new SimpleResponse<>(response, result);
+            });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -400,7 +415,11 @@ public final class CallConnectionAsync {
                     request,
                     UUID.randomUUID(),
                     OffsetDateTime.now(),
-                    context).map(response -> new SimpleResponse<>(response, RemoveParticipantResponseConstructorProxy.create(response.getValue())));
+                    context).map(response -> {
+                        RemoveParticipantResult result = RemoveParticipantResponseConstructorProxy.create(response.getValue());
+                        result.setEventProcessor(eventProcessor, callConnectionId, result.getOperationContext());
+                        return new SimpleResponse<>(response, result);
+                    });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -532,7 +551,11 @@ public final class CallConnectionAsync {
                     request,
                     UUID.randomUUID(),
                     OffsetDateTime.now(),
-                    context).map(response -> new SimpleResponse<>(response, CancelAddParticipantResponseConstructorProxy.create(response.getValue())));
+                    context).map(response -> {
+                        CancelAddParticipantResult result = CancelAddParticipantResponseConstructorProxy.create(response.getValue());
+                        result.setEventProcessor(eventProcessor, callConnectionId, result.getOperationContext());
+                        return new SimpleResponse<>(response, result);
+                    });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -547,6 +570,16 @@ public final class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallMediaAsync getCallMediaAsync() {
         return new CallMediaAsync(callConnectionId, callMediasInternal);
+    }
+
+    /***
+     * Returns an object of CallDialogAsync
+     *
+     * @return a CallDialogAsync.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CallDialogAsync getCallDialogAsync() {
+        return new CallDialogAsync(callConnectionId, callDialogsInternal);
     }
     //endregion
 }

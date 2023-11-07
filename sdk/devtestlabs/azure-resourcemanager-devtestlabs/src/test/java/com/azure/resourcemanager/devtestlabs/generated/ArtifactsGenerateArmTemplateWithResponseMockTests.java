@@ -33,7 +33,7 @@ public final class ArtifactsGenerateArmTemplateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"template\":\"databzog\",\"parameters\":\"datat\"}";
+        String responseStr = "{\"template\":\"datatxwaljglzo\",\"parameters\":\"dataqwaafrqulhm\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,15 +65,19 @@ public final class ArtifactsGenerateArmTemplateWithResponseMockTests {
             manager
                 .artifacts()
                 .generateArmTemplateWithResponse(
-                    "rq",
-                    "bzmqkratbn",
-                    "wbjsidbirkf",
-                    "kso",
+                    "cpwzv",
+                    "doksqdtiwlwxlbon",
+                    "qba",
+                    "qicqchygt",
                     new GenerateArmTemplateRequest()
-                        .withVirtualMachineName("gogewijymrh")
-                        .withParameters(Arrays.asList(new ParameterInfo().withName("ozkyewnfnzh").withValue("qo")))
-                        .withLocation("ffjkutycyarnroo")
-                        .withFileUploadOptions(FileUploadOptions.NONE),
+                        .withVirtualMachineName("byjanep")
+                        .withParameters(
+                            Arrays
+                                .asList(
+                                    new ParameterInfo().withName("kxyqvgxiaodetv").withValue("kxdxuwsaifmcwn"),
+                                    new ParameterInfo().withName("bzlehgc").withValue("bcknjolgj")))
+                        .withLocation("xpvelszerqzevxo")
+                        .withFileUploadOptions(FileUploadOptions.UPLOAD_FILES_AND_GENERATE_SAS_TOKENS),
                     com.azure.core.util.Context.NONE)
                 .getValue();
     }

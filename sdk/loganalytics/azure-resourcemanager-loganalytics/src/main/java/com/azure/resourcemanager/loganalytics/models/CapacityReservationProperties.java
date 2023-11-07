@@ -22,6 +22,10 @@ public final class CapacityReservationProperties {
     @JsonProperty(value = "minCapacity", access = JsonProperty.Access.WRITE_ONLY)
     private Long minCapacity;
 
+    /** Creates an instance of CapacityReservationProperties class. */
+    public CapacityReservationProperties() {
+    }
+
     /**
      * Get the lastSkuUpdate property: The last time Sku was updated.
      *

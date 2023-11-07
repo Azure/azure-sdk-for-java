@@ -38,7 +38,8 @@ class CosmosPartitionPlannerITest
     "spark.cosmos.database" -> cosmosDatabase,
     "spark.cosmos.container" -> cosmosContainer
   )
-  private[this] val clientConfig = CosmosClientConfiguration(userConfigTemplate, useEventualConsistency = true)
+  private[this] val clientConfig = CosmosClientConfiguration(
+    userConfigTemplate, useEventualConsistency = true, sparkEnvironmentInfo = "")
   private[this] val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfigTemplate)
   private[this] val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(userConfigTemplate)
   private[this] var feedRanges = List(NormalizedRange("", "FF"))

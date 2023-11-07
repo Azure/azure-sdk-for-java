@@ -4,15 +4,125 @@
 
 package com.azure.resourcemanager.cdn.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** Azure FirstParty Managed Certificate provided by other first party resource providers to enable HTTPS. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureFirstPartyManagedCertificate")
-@Immutable
+@Fluent
 public final class AzureFirstPartyManagedCertificateParameters extends SecretParameters {
+    /*
+     * Resource reference to the Azure Key Vault certificate. Expected to be in format of
+     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
+     */
+    @JsonProperty(value = "secretSource", access = JsonProperty.Access.WRITE_ONLY)
+    private ResourceReference secretSource;
+
+    /*
+     * Subject name in the certificate.
+     */
+    @JsonProperty(value = "subject", access = JsonProperty.Access.WRITE_ONLY)
+    private String subject;
+
+    /*
+     * Certificate expiration date.
+     */
+    @JsonProperty(value = "expirationDate", access = JsonProperty.Access.WRITE_ONLY)
+    private String expirationDate;
+
+    /*
+     * Certificate issuing authority.
+     */
+    @JsonProperty(value = "certificateAuthority", access = JsonProperty.Access.WRITE_ONLY)
+    private String certificateAuthority;
+
+    /*
+     * The list of SANs.
+     */
+    @JsonProperty(value = "subjectAlternativeNames")
+    private List<String> subjectAlternativeNames;
+
+    /*
+     * Certificate thumbprint.
+     */
+    @JsonProperty(value = "thumbprint", access = JsonProperty.Access.WRITE_ONLY)
+    private String thumbprint;
+
+    /** Creates an instance of AzureFirstPartyManagedCertificateParameters class. */
+    public AzureFirstPartyManagedCertificateParameters() {
+    }
+
+    /**
+     * Get the secretSource property: Resource reference to the Azure Key Vault certificate. Expected to be in format of
+     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
+     *
+     * @return the secretSource value.
+     */
+    public ResourceReference secretSource() {
+        return this.secretSource;
+    }
+
+    /**
+     * Get the subject property: Subject name in the certificate.
+     *
+     * @return the subject value.
+     */
+    public String subject() {
+        return this.subject;
+    }
+
+    /**
+     * Get the expirationDate property: Certificate expiration date.
+     *
+     * @return the expirationDate value.
+     */
+    public String expirationDate() {
+        return this.expirationDate;
+    }
+
+    /**
+     * Get the certificateAuthority property: Certificate issuing authority.
+     *
+     * @return the certificateAuthority value.
+     */
+    public String certificateAuthority() {
+        return this.certificateAuthority;
+    }
+
+    /**
+     * Get the subjectAlternativeNames property: The list of SANs.
+     *
+     * @return the subjectAlternativeNames value.
+     */
+    public List<String> subjectAlternativeNames() {
+        return this.subjectAlternativeNames;
+    }
+
+    /**
+     * Set the subjectAlternativeNames property: The list of SANs.
+     *
+     * @param subjectAlternativeNames the subjectAlternativeNames value to set.
+     * @return the AzureFirstPartyManagedCertificateParameters object itself.
+     */
+    public AzureFirstPartyManagedCertificateParameters withSubjectAlternativeNames(
+        List<String> subjectAlternativeNames) {
+        this.subjectAlternativeNames = subjectAlternativeNames;
+        return this;
+    }
+
+    /**
+     * Get the thumbprint property: Certificate thumbprint.
+     *
+     * @return the thumbprint value.
+     */
+    public String thumbprint() {
+        return this.thumbprint;
+    }
+
     /**
      * Validates the instance.
      *
@@ -21,5 +131,8 @@ public final class AzureFirstPartyManagedCertificateParameters extends SecretPar
     @Override
     public void validate() {
         super.validate();
+        if (secretSource() != null) {
+            secretSource().validate();
+        }
     }
 }

@@ -6,6 +6,11 @@
 
 ### Breaking Changes
 
+- Removed methods `getAudioTranscriptionAsResponseObject` and `getAudioTranscriptionAsResponseObjectWithResponse` from `OpenAIClient` and `OpenAIAsyncClient` classes.
+Use `getAudioTranscription` or `getAudioTranscriptionWithResponse` convenience methods from respective classes.
+- Removed methods `getAudioTranslationAsResponseObject` and `getAudioTranslationAsResponseObjectWithResponse` from `OpenAIClient` and `OpenAIAsyncClient` classes.
+Use `getAudioTranslation` or `getAudioTranslationWithResponse` convenience methods from respective classes.
+
 ### Bugs Fixed
 
 ### Other Changes

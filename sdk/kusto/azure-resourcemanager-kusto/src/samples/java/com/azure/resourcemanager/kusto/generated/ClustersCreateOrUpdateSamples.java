@@ -20,7 +20,7 @@ import java.util.Arrays;
 /** Samples for Clusters CreateOrUpdate. */
 public final class ClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoClustersCreateOrUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersCreateOrUpdate.json
      */
     /**
      * Sample code: KustoClustersCreateOrUpdate.
@@ -45,7 +45,9 @@ public final class ClustersCreateOrUpdateSamples {
                             .asList(
                                 new LanguageExtensionInner()
                                     .withLanguageExtensionName(LanguageExtensionName.PYTHON)
-                                    .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_10_8),
+                                    .withLanguageExtensionImageName(
+                                        LanguageExtensionImageName.fromString("Python_Custom_Image"))
+                                    .withLanguageExtensionCustomImageName("customImage8"),
                                 new LanguageExtensionInner()
                                     .withLanguageExtensionName(LanguageExtensionName.R)
                                     .withLanguageExtensionImageName(LanguageExtensionImageName.R))))

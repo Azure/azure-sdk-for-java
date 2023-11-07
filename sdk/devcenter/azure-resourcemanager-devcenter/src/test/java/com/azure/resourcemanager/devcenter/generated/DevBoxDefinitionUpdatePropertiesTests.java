@@ -18,15 +18,15 @@ public final class DevBoxDefinitionUpdatePropertiesTests {
         DevBoxDefinitionUpdateProperties model =
             BinaryData
                 .fromString(
-                    "{\"imageReference\":{\"id\":\"pnapnyiropuh\",\"exactVersion\":\"gvpgy\"},\"sku\":{\"name\":\"qgitxmed\",\"tier\":\"Free\",\"size\":\"lynqwwncwzzh\",\"family\":\"ktrmgucnapkt\",\"capacity\":203480893},\"osStorageType\":\"lwptfdy\",\"hibernateSupport\":\"Enabled\"}")
+                    "{\"imageReference\":{\"id\":\"hhqzonosgg\",\"exactVersion\":\"c\"},\"sku\":{\"name\":\"fwdsj\",\"tier\":\"Standard\",\"size\":\"jutiiswacff\",\"family\":\"k\",\"capacity\":655957615},\"osStorageType\":\"kfvhqcrailvpn\",\"hibernateSupport\":\"Enabled\"}")
                 .toObject(DevBoxDefinitionUpdateProperties.class);
-        Assertions.assertEquals("pnapnyiropuh", model.imageReference().id());
-        Assertions.assertEquals("qgitxmed", model.sku().name());
-        Assertions.assertEquals(SkuTier.FREE, model.sku().tier());
-        Assertions.assertEquals("lynqwwncwzzh", model.sku().size());
-        Assertions.assertEquals("ktrmgucnapkt", model.sku().family());
-        Assertions.assertEquals(203480893, model.sku().capacity());
-        Assertions.assertEquals("lwptfdy", model.osStorageType());
+        Assertions.assertEquals("hhqzonosgg", model.imageReference().id());
+        Assertions.assertEquals("fwdsj", model.sku().name());
+        Assertions.assertEquals(SkuTier.STANDARD, model.sku().tier());
+        Assertions.assertEquals("jutiiswacff", model.sku().size());
+        Assertions.assertEquals("k", model.sku().family());
+        Assertions.assertEquals(655957615, model.sku().capacity());
+        Assertions.assertEquals("kfvhqcrailvpn", model.osStorageType());
         Assertions.assertEquals(HibernateSupport.ENABLED, model.hibernateSupport());
     }
 
@@ -34,24 +34,24 @@ public final class DevBoxDefinitionUpdatePropertiesTests {
     public void testSerialize() throws Exception {
         DevBoxDefinitionUpdateProperties model =
             new DevBoxDefinitionUpdateProperties()
-                .withImageReference(new ImageReference().withId("pnapnyiropuh"))
+                .withImageReference(new ImageReference().withId("hhqzonosgg"))
                 .withSku(
                     new Sku()
-                        .withName("qgitxmed")
-                        .withTier(SkuTier.FREE)
-                        .withSize("lynqwwncwzzh")
-                        .withFamily("ktrmgucnapkt")
-                        .withCapacity(203480893))
-                .withOsStorageType("lwptfdy")
+                        .withName("fwdsj")
+                        .withTier(SkuTier.STANDARD)
+                        .withSize("jutiiswacff")
+                        .withFamily("k")
+                        .withCapacity(655957615))
+                .withOsStorageType("kfvhqcrailvpn")
                 .withHibernateSupport(HibernateSupport.ENABLED);
         model = BinaryData.fromObject(model).toObject(DevBoxDefinitionUpdateProperties.class);
-        Assertions.assertEquals("pnapnyiropuh", model.imageReference().id());
-        Assertions.assertEquals("qgitxmed", model.sku().name());
-        Assertions.assertEquals(SkuTier.FREE, model.sku().tier());
-        Assertions.assertEquals("lynqwwncwzzh", model.sku().size());
-        Assertions.assertEquals("ktrmgucnapkt", model.sku().family());
-        Assertions.assertEquals(203480893, model.sku().capacity());
-        Assertions.assertEquals("lwptfdy", model.osStorageType());
+        Assertions.assertEquals("hhqzonosgg", model.imageReference().id());
+        Assertions.assertEquals("fwdsj", model.sku().name());
+        Assertions.assertEquals(SkuTier.STANDARD, model.sku().tier());
+        Assertions.assertEquals("jutiiswacff", model.sku().size());
+        Assertions.assertEquals("k", model.sku().family());
+        Assertions.assertEquals(655957615, model.sku().capacity());
+        Assertions.assertEquals("kfvhqcrailvpn", model.osStorageType());
         Assertions.assertEquals(HibernateSupport.ENABLED, model.hibernateSupport());
     }
 }

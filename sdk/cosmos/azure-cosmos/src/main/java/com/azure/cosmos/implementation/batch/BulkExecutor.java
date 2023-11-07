@@ -806,6 +806,7 @@ public final class BulkExecutor<TContext> implements Disposable {
     private Mono<CosmosBatchResponse> executeBatchRequest(PartitionKeyRangeServerBatchRequest serverRequest) {
         RequestOptions options = new RequestOptions();
         options.setThroughputControlGroupName(cosmosBulkExecutionOptions.getThroughputControlGroupName());
+        options.setExcludeRegions(cosmosBulkExecutionOptions.getExcludedRegions());
 
         //  This logic is to handle custom bulk options which can be passed through encryption or through some other project
         Map<String, String> customOptions = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper

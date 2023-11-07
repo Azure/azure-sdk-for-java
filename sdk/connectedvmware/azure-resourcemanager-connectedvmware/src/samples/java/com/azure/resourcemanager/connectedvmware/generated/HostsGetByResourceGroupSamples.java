@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.connectedvmware.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Hosts GetByResourceGroup. */
 public final class HostsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/GetHost.json
+     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/GetHost.json
      */
     /**
      * Sample code: GetHost.
@@ -17,6 +15,6 @@ public final class HostsGetByResourceGroupSamples {
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void getHost(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager.hosts().getByResourceGroupWithResponse("testrg", "HRHost", Context.NONE);
+        manager.hosts().getByResourceGroupWithResponse("testrg", "HRHost", com.azure.core.util.Context.NONE);
     }
 }

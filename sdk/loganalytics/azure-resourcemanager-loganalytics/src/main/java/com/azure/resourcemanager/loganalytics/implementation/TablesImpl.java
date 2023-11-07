@@ -38,15 +38,6 @@ public final class TablesImpl implements Tables {
         return Utils.mapPage(inner, inner1 -> new TableImpl(inner1, this.manager()));
     }
 
-    public Table get(String resourceGroupName, String workspaceName, String tableName) {
-        TableInner inner = this.serviceClient().get(resourceGroupName, workspaceName, tableName);
-        if (inner != null) {
-            return new TableImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Table> getWithResponse(
         String resourceGroupName, String workspaceName, String tableName, Context context) {
         Response<TableInner> inner =
@@ -62,6 +53,15 @@ public final class TablesImpl implements Tables {
         }
     }
 
+    public Table get(String resourceGroupName, String workspaceName, String tableName) {
+        TableInner inner = this.serviceClient().get(resourceGroupName, workspaceName, tableName);
+        if (inner != null) {
+            return new TableImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void delete(String resourceGroupName, String workspaceName, String tableName) {
         this.serviceClient().delete(resourceGroupName, workspaceName, tableName);
     }
@@ -70,23 +70,32 @@ public final class TablesImpl implements Tables {
         this.serviceClient().delete(resourceGroupName, workspaceName, tableName, context);
     }
 
-    public void migrate(String resourceGroupName, String workspaceName, String tableName) {
-        this.serviceClient().migrate(resourceGroupName, workspaceName, tableName);
-    }
-
     public Response<Void> migrateWithResponse(
         String resourceGroupName, String workspaceName, String tableName, Context context) {
         return this.serviceClient().migrateWithResponse(resourceGroupName, workspaceName, tableName, context);
     }
 
+    public void migrate(String resourceGroupName, String workspaceName, String tableName) {
+        this.serviceClient().migrate(resourceGroupName, workspaceName, tableName);
+    }
+
+    public Response<Void> cancelSearchWithResponse(
+        String resourceGroupName, String workspaceName, String tableName, Context context) {
+        return this.serviceClient().cancelSearchWithResponse(resourceGroupName, workspaceName, tableName, context);
+    }
+
+    public void cancelSearch(String resourceGroupName, String workspaceName, String tableName) {
+        this.serviceClient().cancelSearch(resourceGroupName, workspaceName, tableName);
+    }
+
     public Table getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
@@ -106,13 +115,13 @@ public final class TablesImpl implements Tables {
     }
 
     public Response<Table> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
@@ -132,13 +141,13 @@ public final class TablesImpl implements Tables {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
@@ -158,13 +167,13 @@ public final class TablesImpl implements Tables {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {

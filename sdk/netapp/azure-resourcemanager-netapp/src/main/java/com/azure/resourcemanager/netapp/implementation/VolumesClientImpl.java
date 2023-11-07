@@ -159,6 +159,22 @@ public final class VolumesClientImpl implements VolumesClient {
             @QueryParam("api-version") String apiVersion,
             Context context);
 
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/populateAvailabilityZone")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> populateAvailabilityZone(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName,
+            @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/revert")
@@ -1882,6 +1898,307 @@ public final class VolumesClientImpl implements VolumesClient {
         Boolean forceDelete,
         Context context) {
         deleteAsync(resourceGroupName, accountName, poolName, volumeName, forceDelete, context).block();
+    }
+
+    /**
+     * Populate Availability Zone
+     *
+     * <p>This operation will populate availability zone information for a volume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> populateAvailabilityZoneWithResponseAsync(
+        String resourceGroupName, String accountName, String poolName, String volumeName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .populateAvailabilityZone(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            poolName,
+                            volumeName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Populate Availability Zone
+     *
+     * <p>This operation will populate availability zone information for a volume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> populateAvailabilityZoneWithResponseAsync(
+        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .populateAvailabilityZone(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                poolName,
+                volumeName,
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Populate Availability Zone
+     *
+     * <p>This operation will populate availability zone information for a volume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of volume resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<VolumeInner>, VolumeInner> beginPopulateAvailabilityZoneAsync(
+        String resourceGroupName, String accountName, String poolName, String volumeName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            populateAvailabilityZoneWithResponseAsync(resourceGroupName, accountName, poolName, volumeName);
+        return this
+            .client
+            .<VolumeInner, VolumeInner>getLroResult(
+                mono, this.client.getHttpPipeline(), VolumeInner.class, VolumeInner.class, this.client.getContext());
+    }
+
+    /**
+     * Populate Availability Zone
+     *
+     * <p>This operation will populate availability zone information for a volume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of volume resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<VolumeInner>, VolumeInner> beginPopulateAvailabilityZoneAsync(
+        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            populateAvailabilityZoneWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, context);
+        return this
+            .client
+            .<VolumeInner, VolumeInner>getLroResult(
+                mono, this.client.getHttpPipeline(), VolumeInner.class, VolumeInner.class, context);
+    }
+
+    /**
+     * Populate Availability Zone
+     *
+     * <p>This operation will populate availability zone information for a volume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of volume resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginPopulateAvailabilityZone(
+        String resourceGroupName, String accountName, String poolName, String volumeName) {
+        return this
+            .beginPopulateAvailabilityZoneAsync(resourceGroupName, accountName, poolName, volumeName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Populate Availability Zone
+     *
+     * <p>This operation will populate availability zone information for a volume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of volume resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginPopulateAvailabilityZone(
+        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+        return this
+            .beginPopulateAvailabilityZoneAsync(resourceGroupName, accountName, poolName, volumeName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Populate Availability Zone
+     *
+     * <p>This operation will populate availability zone information for a volume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<VolumeInner> populateAvailabilityZoneAsync(
+        String resourceGroupName, String accountName, String poolName, String volumeName) {
+        return beginPopulateAvailabilityZoneAsync(resourceGroupName, accountName, poolName, volumeName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Populate Availability Zone
+     *
+     * <p>This operation will populate availability zone information for a volume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<VolumeInner> populateAvailabilityZoneAsync(
+        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+        return beginPopulateAvailabilityZoneAsync(resourceGroupName, accountName, poolName, volumeName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Populate Availability Zone
+     *
+     * <p>This operation will populate availability zone information for a volume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VolumeInner populateAvailabilityZone(
+        String resourceGroupName, String accountName, String poolName, String volumeName) {
+        return populateAvailabilityZoneAsync(resourceGroupName, accountName, poolName, volumeName).block();
+    }
+
+    /**
+     * Populate Availability Zone
+     *
+     * <p>This operation will populate availability zone information for a volume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VolumeInner populateAvailabilityZone(
+        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+        return populateAvailabilityZoneAsync(resourceGroupName, accountName, poolName, volumeName, context).block();
     }
 
     /**

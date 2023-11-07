@@ -12,6 +12,7 @@ import com.azure.resourcemanager.connectedvmware.models.ExtendedLocation;
 import com.azure.resourcemanager.connectedvmware.models.FirmwareType;
 import com.azure.resourcemanager.connectedvmware.models.NetworkInterface;
 import com.azure.resourcemanager.connectedvmware.models.OsType;
+import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourcePatch;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
 import com.azure.resourcemanager.connectedvmware.models.VirtualDisk;
@@ -150,7 +151,7 @@ public final class VirtualMachineTemplateImpl
         }
     }
 
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 

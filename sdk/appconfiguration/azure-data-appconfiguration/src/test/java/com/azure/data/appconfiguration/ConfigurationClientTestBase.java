@@ -11,16 +11,16 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingHelper;
-import com.azure.data.appconfiguration.models.CompositionType;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
-import com.azure.data.appconfiguration.models.SnapshotStatus;
+import com.azure.data.appconfiguration.models.SnapshotComposition;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -196,7 +196,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
             String.format(
                 "{\"id\":\"%s\",\"k1\":\"v1\",\"description\":\"%s\",\"display_name\":\"%s\",\"enabled\":%s,"
                 + "\"conditions\":{\"requirement_type\":\"All\",\"client_filters\":"
-                + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]"
+                + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":30}}]"
                 + "},\"additional_field\":\"additional_value\"}", featureFlagX.getFeatureId(),
                 featureFlagX.getDescription(), featureFlagX.getDisplayName(), featureFlagX.isEnabled());
         featureFlagX.setValue(valueWithAdditionalFieldAtFirstLayer);
@@ -223,7 +223,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
         String key = getKey();
         String valueWithAdditionalFields =
             "{\"uri\":\"uriValue\",\"objectFiledName\":{\"unknown\":\"unknown\",\"unknown2\":\"unknown2\"},"
-                + "\"arrayFieldName\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]}";
+                + "\"arrayFieldName\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":30}}]}";
 
         testRunner.accept(new SecretReferenceConfigurationSetting(key, valueWithAdditionalFields));
     }
@@ -581,10 +581,10 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     @Test
     public abstract void createSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
-    void createSnapshotRunner(BiConsumer<String, List<SnapshotSettingFilter>> testRunner) {
+    void createSnapshotRunner(BiConsumer<String, List<ConfigurationSettingsFilter>> testRunner) {
         String snapshotName = getKey();
-        List<SnapshotSettingFilter> filters = new ArrayList<>();
-        filters.add(new SnapshotSettingFilter(snapshotName + "-*"));
+        List<ConfigurationSettingsFilter> filters = new ArrayList<>();
+        filters.add(new ConfigurationSettingsFilter(snapshotName + "-*"));
         testRunner.accept(snapshotName, filters);
     }
 
@@ -841,12 +841,12 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     private String getFeatureFlagConfigurationSettingValue(String key) {
         return "{\"id\":\"" + key + "\",\"description\":null,\"display_name\":\"Feature Flag X\""
                    + ",\"enabled\":false,\"conditions\":{\"client_filters\":[{\"name\":"
-                   + "\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]}}";
+                   + "\"Microsoft.Percentage\",\"parameters\":{\"Value\":30}}]}}";
     }
 
     private FeatureFlagConfigurationSetting getFeatureFlagConfigurationSetting(String key, String displayName) {
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("Value", "30");
+        parameters.put("Value", 30);
         final List<FeatureFlagFilter> filters = new ArrayList<>();
         filters.add(new FeatureFlagFilter("Microsoft.Percentage")
                         .setParameters(parameters));
@@ -857,24 +857,25 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
                 .setValue(getFeatureFlagConfigurationSettingValue(key));
     }
 
-    void assertConfigurationSettingsSnapshotWithResponse(int expectedStatusCode, String name,
-        SnapshotStatus snapshotStatus, List<SnapshotSettingFilter> filters, CompositionType compositionType,
+    void assertConfigurationSnapshotWithResponse(int expectedStatusCode, String name,
+        ConfigurationSnapshotStatus snapshotStatus, List<ConfigurationSettingsFilter> filters,
+        SnapshotComposition snapshotComposition,
         Duration retentionPeriod, Long size, Long itemCount, Map<String, String> tags,
-        Response<ConfigurationSettingsSnapshot> response) {
+        Response<ConfigurationSnapshot> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
 
-        assertEqualsConfigurationSettingsSnapshot(name, snapshotStatus, filters, compositionType, retentionPeriod,
+        assertEqualsConfigurationSnapshot(name, snapshotStatus, filters, snapshotComposition, retentionPeriod,
             size, itemCount, tags, response.getValue());
     }
 
-    void assertEqualsConfigurationSettingsSnapshot(String name, SnapshotStatus snapshotStatus,
-        List<SnapshotSettingFilter> filters, CompositionType compositionType, Duration retentionPeriod, Long size,
-        Long itemCount, Map<String, String> tags, ConfigurationSettingsSnapshot actualSnapshot) {
+    void assertEqualsConfigurationSnapshot(String name, ConfigurationSnapshotStatus snapshotStatus,
+        List<ConfigurationSettingsFilter> filters, SnapshotComposition snapshotComposition, Duration retentionPeriod, Long size,
+        Long itemCount, Map<String, String> tags, ConfigurationSnapshot actualSnapshot) {
         assertEquals(name, actualSnapshot.getName());
         assertEquals(snapshotStatus, actualSnapshot.getStatus());
         assertEqualsSnapshotFilters(filters, actualSnapshot.getFilters());
-        assertEquals(compositionType, actualSnapshot.getCompositionType());
+        assertEquals(snapshotComposition, actualSnapshot.getSnapshotComposition());
         assertEquals(retentionPeriod, actualSnapshot.getRetentionPeriod());
         assertNotNull(actualSnapshot.getCreatedAt());
         assertEquals(itemCount, actualSnapshot.getItemCount());
@@ -886,14 +887,14 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
         }
     }
 
-    void assertEqualsSnapshotFilters(List<SnapshotSettingFilter> o1, List<SnapshotSettingFilter> o2) {
+    void assertEqualsSnapshotFilters(List<ConfigurationSettingsFilter> o1, List<ConfigurationSettingsFilter> o2) {
         if (o1 == o2) {
             return;
         }
         assertEquals(o1.size(), o2.size());
         for (int i = 0; i < o1.size(); i++) {
-            SnapshotSettingFilter expectedFilter = o1.get(i);
-            SnapshotSettingFilter actualFilter = o2.get(i);
+            ConfigurationSettingsFilter expectedFilter = o1.get(i);
+            ConfigurationSettingsFilter actualFilter = o2.get(i);
             assertEquals(expectedFilter.getKey(), actualFilter.getKey());
             assertEquals(expectedFilter.getLabel(), actualFilter.getLabel());
         }

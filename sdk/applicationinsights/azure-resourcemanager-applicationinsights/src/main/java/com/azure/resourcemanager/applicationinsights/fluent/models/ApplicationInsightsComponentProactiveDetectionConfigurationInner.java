@@ -25,8 +25,7 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationIn
     private Boolean enabled;
 
     /*
-     * A flag that indicated whether notifications on this rule should be sent
-     * to subscription owners
+     * A flag that indicated whether notifications on this rule should be sent to subscription owners
      */
     @JsonProperty(value = "SendEmailsToSubscriptionOwners")
     private Boolean sendEmailsToSubscriptionOwners;
@@ -44,11 +43,14 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationIn
     private String lastUpdatedTime;
 
     /*
-     * Static definitions of the ProactiveDetection configuration rule (same
-     * values for all components).
+     * Static definitions of the ProactiveDetection configuration rule (same values for all components).
      */
     @JsonProperty(value = "RuleDefinitions")
     private ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions ruleDefinitions;
+
+    /** Creates an instance of ApplicationInsightsComponentProactiveDetectionConfigurationInner class. */
+    public ApplicationInsightsComponentProactiveDetectionConfigurationInner() {
+    }
 
     /**
      * Get the name property: The rule name.

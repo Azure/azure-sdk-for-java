@@ -16,8 +16,8 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
   name: baseName
   location: location
   sku: {
-    name: 'Standard'
-    tier: 'Standard'
+    name: 'Premium'
+    tier: 'Premium'
   }
   properties: {}
 }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentAnalyticsItemInner;
 import com.azure.resourcemanager.applicationinsights.models.ItemScope;
 import com.azure.resourcemanager.applicationinsights.models.ItemScopePath;
@@ -47,6 +46,6 @@ public final class AnalyticsItemsPutSamples {
                     .withScope(ItemScope.SHARED)
                     .withType(ItemType.QUERY),
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

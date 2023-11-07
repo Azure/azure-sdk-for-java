@@ -8,7 +8,19 @@
 
 ### Bugs Fixed
 
+- Fixed the issue with `MetricsQueryClient` and `MetricsQueryAsyncClient` where the `listMetricDefinitions` method was returning 
+`MetricsDefinition` objects with null values for `supportedAggregationTypes`.[(#36698)](https://github.com/Azure/azure-sdk-for-java/issues/36698)
+
 ### Other Changes
+
+## 1.2.6 (2023-10-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
 
 ## 1.2.5 (2023-09-22)
 

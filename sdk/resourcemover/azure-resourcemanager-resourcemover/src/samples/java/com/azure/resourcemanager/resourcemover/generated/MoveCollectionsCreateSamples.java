@@ -6,12 +6,13 @@ package com.azure.resourcemanager.resourcemover.generated;
 
 import com.azure.resourcemanager.resourcemover.models.Identity;
 import com.azure.resourcemanager.resourcemover.models.MoveCollectionProperties;
+import com.azure.resourcemanager.resourcemover.models.MoveType;
 import com.azure.resourcemanager.resourcemover.models.ResourceIdentityType;
 
 /** Samples for MoveCollections Create. */
 public final class MoveCollectionsCreateSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/MoveCollections_Create.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2023-08-01/examples/MoveCollections_Create.json
      */
     /**
      * Sample code: MoveCollections_Create.
@@ -25,7 +26,11 @@ public final class MoveCollectionsCreateSamples {
             .withRegion("eastus2")
             .withExistingResourceGroup("rg1")
             .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
-            .withProperties(new MoveCollectionProperties().withSourceRegion("eastus").withTargetRegion("westus"))
+            .withProperties(
+                new MoveCollectionProperties()
+                    .withSourceRegion("eastus")
+                    .withTargetRegion("westus")
+                    .withMoveType(MoveType.REGION_TO_REGION))
             .create();
     }
 }

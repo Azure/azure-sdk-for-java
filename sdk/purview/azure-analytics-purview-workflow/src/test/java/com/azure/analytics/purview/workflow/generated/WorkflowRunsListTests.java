@@ -20,7 +20,7 @@ public final class WorkflowRunsListTests extends PurviewWorkflowClientTestBase {
                         .addQueryParam("maxpagesize", "1000")
                         .addQueryParam("orderby", "startTime desc")
                         .addQueryParam("timeWindow", "30d");
-        PagedIterable<BinaryData> response = purviewWorkflowClient.listWorkflowRuns(requestOptions);
+        PagedIterable<BinaryData> response = workflowRunsClient.list(requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertEquals(
                 BinaryData.fromString(

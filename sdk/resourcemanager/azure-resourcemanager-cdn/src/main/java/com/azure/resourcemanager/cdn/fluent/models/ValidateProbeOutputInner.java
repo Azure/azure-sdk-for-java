@@ -28,6 +28,10 @@ public final class ValidateProbeOutputInner {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
+    /** Creates an instance of ValidateProbeOutputInner class. */
+    public ValidateProbeOutputInner() {
+    }
+
     /**
      * Get the isValid property: Indicates whether the probe URL is accepted or not.
      *

@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SearchSortEnum. */
+/** The sort order of the search. */
 public final class SearchSortEnum extends ExpandableStringEnum<SearchSortEnum> {
     /** Static value asc for SearchSortEnum. */
     public static final SearchSortEnum ASC = fromString("asc");
 
     /** Static value desc for SearchSortEnum. */
     public static final SearchSortEnum DESC = fromString("desc");
+
+    /**
+     * Creates a new instance of SearchSortEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SearchSortEnum() {
+    }
 
     /**
      * Creates or finds a SearchSortEnum from its string representation.

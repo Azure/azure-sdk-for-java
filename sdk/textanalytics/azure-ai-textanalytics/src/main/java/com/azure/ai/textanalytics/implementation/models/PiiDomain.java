@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** The PII domain used for PII Entity Recognition. */
@@ -30,7 +29,6 @@ public final class PiiDomain extends ExpandableStringEnum<PiiDomain> {
      * @param name a name to look for.
      * @return the corresponding PiiDomain.
      */
-    @JsonCreator
     public static PiiDomain fromString(String name) {
         return fromString(name, PiiDomain.class);
     }

@@ -64,7 +64,9 @@ public class CallAutomationLiveTestBase extends TestBase {
         .add("value")
         .add("rawId")
         .add("id")
-        .add("callbackUri");
+        .add("callbackUri")
+        .add("botAppId")
+        .add("ivrContext");
     protected static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
         Pattern.CASE_INSENSITIVE);

@@ -33,7 +33,7 @@ public final class EnvironmentTypesCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"tags\":{\"ajlyjtlvofqzhv\":\"ogtqxepnylbf\",\"fmo\":\"cib\",\"dwxf\":\"uxrkjp\",\"rkambt\":\"wiivwzjbhyzsx\"},\"id\":\"egv\",\"name\":\"nvuqeqvldspa\",\"type\":\"tjb\"}";
+            "{\"properties\":{\"provisioningState\":\"Creating\",\"displayName\":\"njjrcgegydcwbox\"},\"tags\":{\"raiouaubrjtl\":\"vqqolih\",\"rzpasccbiuimzdly\":\"qxfuojrngif\"},\"id\":\"fqwmkyoquf\",\"name\":\"vruzslzojhpctfnm\",\"type\":\"xotngfdguge\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,14 +64,17 @@ public final class EnvironmentTypesCreateOrUpdateWithResponseMockTests {
         EnvironmentType response =
             manager
                 .environmentTypes()
-                .define("g")
-                .withExistingDevcenter("qbmfpjbabwidf", "xsspuunnoxyhk")
-                .withTags(mapOf("djvlpj", "pfhoqcaaewdao"))
+                .define("xkjibnxmy")
+                .withExistingDevcenter("tybbwwpgda", "chzyvlixqnrk")
+                .withTags(mapOf("pwcyyufmhr", "jpsttexoq", "wmqs", "nc"))
+                .withDisplayName("qrntv")
                 .create();
 
-        Assertions.assertEquals("ogtqxepnylbf", response.tags().get("ajlyjtlvofqzhv"));
+        Assertions.assertEquals("vqqolih", response.tags().get("raiouaubrjtl"));
+        Assertions.assertEquals("njjrcgegydcwbox", response.displayName());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
