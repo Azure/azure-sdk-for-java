@@ -7,7 +7,9 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-
+- Fixed code snippets for `CertificateClient`'s `deleteIssuer` and `deletedIssuerWithResponse` methods. 
+  ([#37423](https://github.com/Azure/azure-sdk-for-java/issues/37423))
+ 
 ### Other Changes
 
 ## 4.5.7 (2023-10-20)
