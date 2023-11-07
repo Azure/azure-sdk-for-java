@@ -302,7 +302,8 @@ public final class BulkExecutor<TContext> implements Disposable {
                         logger.error("Skipping an error operation while processing {}. Cause: {}, Context: {}",
                             o,
                             throwable.getMessage(),
-                            this.operationContextText))
+                            this.operationContextText,
+                            throwable))
                     .doOnNext((CosmosItemOperation cosmosItemOperation) -> {
 
                         // Set the retry policy before starting execution. Should only happens once.
