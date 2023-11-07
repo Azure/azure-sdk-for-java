@@ -19,9 +19,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.util.Base64;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.zip.CRC32;
@@ -30,19 +32,17 @@ public class DownloadToFileStressScenario extends BlobStressScenario<DownloadToF
 
     private static final ClientLogger LOGGER = new ClientLogger(DownloadToFileScenarioBuilder.class);
     private static final Tracer TRACER = GlobalOpenTelemetry.getTracer("DownloadToFileStressScenario");
+    // TODO: move setUp and originalDataChecksum to DownloadToFileScenarioBuilder
+    private static long originalDataChecksum;
+    private static byte[] originalContentHead = new byte[1024];
 
     private final Path originalDataPath;
-
-    private long originalDataChecksum;
-
     private final Path directoryPath;
-    private final long originalDataLength;
 
     public DownloadToFileStressScenario(DownloadToFileScenarioBuilder builder) {
         super(builder, /*singletonBlob*/true, /*initializeBlob*/true);
         this.directoryPath = builder.getDirectoryPath();
         this.originalDataPath = directoryPath.resolve("original-data-" + UUID.randomUUID());
-        this.originalDataLength = builder.getBlobSize();
     }
 
     @Override
@@ -96,12 +96,18 @@ public class DownloadToFileStressScenario extends BlobStressScenario<DownloadToF
         // If there's a mismatch, the original data can be streamed to check where the fault occurred
         // Data is streamed in the first place to avoid holding potentially gigs in memory
         int length = 0;
+        byte[] contentHead = new byte[1024];
         CRC32 dataCrc = new CRC32();
         try (InputStream file = Files.newInputStream(downloadPath)) {
             byte[] buf = new byte[4 * 1024 * 1024];
             int read;
+            boolean first = true;
             while ((read = file.read(buf)) != -1) {
                 dataCrc.update(buf, 0, read);
+                if (first) {
+                    System.arraycopy(buf, 0, contentHead, 0, Math.min(read, contentHead.length));
+                    first = false;
+                }
                 length += read;
             }
         }
@@ -111,7 +117,7 @@ public class DownloadToFileStressScenario extends BlobStressScenario<DownloadToF
 
         long crc = dataCrc.getValue();
         if (crc != originalDataChecksum) {
-            reportMismatch(crc, length);
+            reportMismatch(crc, length, contentHead);
         }
     }
 
@@ -129,19 +135,21 @@ public class DownloadToFileStressScenario extends BlobStressScenario<DownloadToF
             .doFinally(i -> {
                 long crc = dataCrc.getValue();
                 if (crc != originalDataChecksum) {
-                    reportMismatch(crc, length.get());
+                    reportMismatch(crc, length.get(), new byte[0]);
                 }
             })
             .then();
     }
 
-    private void reportMismatch(long actualCrc, long actualLength) {
+    private void reportMismatch(long actualCrc, long actualLength, byte[] contentHead) {
         // future: if mismatch, compare against original file
         throw LOGGER.atError()
             .addKeyValue("expectedCrc", originalDataChecksum)
             .addKeyValue("actualCrc", actualCrc)
-            .addKeyValue("expectedLength", originalDataLength)
+            .addKeyValue("expectedLength", getBlobSize())
             .addKeyValue("actualLength", actualLength)
+            .addKeyValue("originalContentHead", () -> Base64.getEncoder().encodeToString(originalContentHead))
+            .addKeyValue("actualContentHead", () -> Base64.getEncoder().encodeToString(contentHead))
             .log(new RuntimeException("mismatched crc"));
     }
 
@@ -155,10 +163,15 @@ public class DownloadToFileStressScenario extends BlobStressScenario<DownloadToF
 
             byte[] buf = new byte[4 * 1024 * 1024];
             int read;
+            boolean first = true;
             while ((read = data.read(buf)) != -1) {
                 file.write(buf, 0, read);
                 blob.write(buf, 0, read);
                 dataCrc.update(buf, 0, read);
+                if (first) {
+                    System.arraycopy(buf, 0, originalContentHead, 0, Math.min(read, originalContentHead.length));
+                    first = false;
+                }
             }
             file.flush();
             blob.flush();
