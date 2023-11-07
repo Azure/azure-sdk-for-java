@@ -32,19 +32,21 @@ public class DevCenterClientTestBase extends TestProxyTestBase {
 
     protected DeploymentEnvironmentsClient deploymentEnvironmentsClient;
 
-     protected String devEnvironmentName = "envName".toLowerCase();
+    protected String devEnvironmentName = "envName".toLowerCase();
 
     protected String devBoxName = "myDevBox".toLowerCase();
 
-    protected String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "sdk-project-x2z4o4ohvwcbi");
+    protected String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "proj-sdk-tests");
 
     protected String catalogName = Configuration.getGlobalConfiguration().get("DEFAULT_CATALOG_NAME", "sdk-default-catalog");
 
-    protected String envTypeName = Configuration.getGlobalConfiguration().get("DEFAULT_ENVIRONMENT_TYPE_NAME", "sdk-environment-type-xmfrmxvisxmbu");
+    protected String envTypeName = Configuration.getGlobalConfiguration().get("DEFAULT_ENVIRONMENT_TYPE_NAME", "sdk-default-environment-type");
 
-    protected String poolName = Configuration.getGlobalConfiguration().get("DEFAULT_POOL_NAME", "sdk-pool-6ieikn5v2nfnu");
+    protected String envDefinitionName = Configuration.getGlobalConfiguration().get("DEFAULT_ENVIRONMENT_DEFINITION_NAME", "Sandbox");
 
-    protected String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT", "https://8ab2df1c-ed88-4946-a8a9-e1bbb3e4d1fd-sdk-dc-fmzegocvsahko.eastus.devcenter.azure.com/");
+    protected String poolName = Configuration.getGlobalConfiguration().get("DEFAULT_POOL_NAME", "sdk-default-pool");
+
+    protected String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT", "https://8ab2df1c-ed88-4946-a8a9-e1bbb3e4d1fd-dc-sdk-tests.centraluseuap.devcenter.azure.com/");
 
     @Override
     protected void beforeTest() {
@@ -68,7 +70,7 @@ public class DevCenterClientTestBase extends TestProxyTestBase {
 
         DevBoxesClientBuilder devBoxesClientbuilder =
                 new DevBoxesClientBuilder()
-                        .endpoint("https://8ab2df1c-ed88-4946-a8a9-e1bbb3e4d1fd-sdk-dc-fmzegocvsahko.eastus.devcenter.azure.com/")
+                        .endpoint(endpoint)
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
