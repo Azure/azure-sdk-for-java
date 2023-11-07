@@ -337,7 +337,7 @@ public final class BulkExecutor<TContext> implements Disposable {
                             // So complete the sink here also if count is 0, if source has completed and count isn't zero,
                             // then the last element in the doOnNext will close it. Sink doesn't mind in case of a double close.
 
-                            completeAllSinks(); 
+                            completeAllSinks();
                         } else {
                             this.cancelFlushTask();
 
