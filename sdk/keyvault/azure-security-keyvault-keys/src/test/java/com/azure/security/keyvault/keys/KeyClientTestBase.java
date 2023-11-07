@@ -21,7 +21,6 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.models.CustomMatcher;
