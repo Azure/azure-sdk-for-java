@@ -59,7 +59,7 @@ public final class KeyOperationResult implements JsonSerializable<KeyOperationRe
      */
     public byte[] getResult() {
         if (this.result == null) {
-            return new byte[0];
+            return null;
         }
         return this.result.decodedBytes();
     }
@@ -71,7 +71,7 @@ public final class KeyOperationResult implements JsonSerializable<KeyOperationRe
      */
     public byte[] getIv() {
         if (this.iv == null) {
-            return new byte[0];
+            return null;
         }
         return this.iv.decodedBytes();
     }
@@ -83,7 +83,7 @@ public final class KeyOperationResult implements JsonSerializable<KeyOperationRe
      */
     public byte[] getAuthenticationTag() {
         if (this.authenticationTag == null) {
-            return new byte[0];
+            return null;
         }
         return this.authenticationTag.decodedBytes();
     }
@@ -95,7 +95,7 @@ public final class KeyOperationResult implements JsonSerializable<KeyOperationRe
      */
     public byte[] getAdditionalAuthenticatedData() {
         if (this.additionalAuthenticatedData == null) {
-            return new byte[0];
+            return null;
         }
         return this.additionalAuthenticatedData.decodedBytes();
     }

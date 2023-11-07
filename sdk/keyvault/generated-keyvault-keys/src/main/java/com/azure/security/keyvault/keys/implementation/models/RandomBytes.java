@@ -32,7 +32,7 @@ public final class RandomBytes implements JsonSerializable<RandomBytes> {
      */
     public byte[] getValue() {
         if (this.value == null) {
-            return new byte[0];
+            return null;
         }
         return this.value.decodedBytes();
     }

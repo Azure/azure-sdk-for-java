@@ -60,7 +60,7 @@ public final class KeySignParameters implements JsonSerializable<KeySignParamete
      */
     public byte[] getValue() {
         if (this.value == null) {
-            return new byte[0];
+            return null;
         }
         return this.value.decodedBytes();
     }

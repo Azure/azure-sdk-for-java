@@ -170,7 +170,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      */
     public byte[] getN() {
         if (this.n == null) {
-            return new byte[0];
+            return null;
         }
         return this.n.decodedBytes();
     }
@@ -197,7 +197,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      */
     public byte[] getE() {
         if (this.e == null) {
-            return new byte[0];
+            return null;
         }
         return this.e.decodedBytes();
     }
@@ -224,7 +224,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      */
     public byte[] getD() {
         if (this.d == null) {
-            return new byte[0];
+            return null;
         }
         return this.d.decodedBytes();
     }
@@ -251,7 +251,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      */
     public byte[] getDp() {
         if (this.dp == null) {
-            return new byte[0];
+            return null;
         }
         return this.dp.decodedBytes();
     }
@@ -278,7 +278,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      */
     public byte[] getDq() {
         if (this.dq == null) {
-            return new byte[0];
+            return null;
         }
         return this.dq.decodedBytes();
     }
@@ -305,7 +305,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      */
     public byte[] getQi() {
         if (this.qi == null) {
-            return new byte[0];
+            return null;
         }
         return this.qi.decodedBytes();
     }
@@ -332,7 +332,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      */
     public byte[] getP() {
         if (this.p == null) {
-            return new byte[0];
+            return null;
         }
         return this.p.decodedBytes();
     }
@@ -359,7 +359,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      */
     public byte[] getQ() {
         if (this.q == null) {
-            return new byte[0];
+            return null;
         }
         return this.q.decodedBytes();
     }
@@ -386,7 +386,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      */
     public byte[] getK() {
         if (this.k == null) {
-            return new byte[0];
+            return null;
         }
         return this.k.decodedBytes();
     }
@@ -413,7 +413,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      */
     public byte[] getT() {
         if (this.t == null) {
-            return new byte[0];
+            return null;
         }
         return this.t.decodedBytes();
     }
@@ -460,7 +460,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      */
     public byte[] getX() {
         if (this.x == null) {
-            return new byte[0];
+            return null;
         }
         return this.x.decodedBytes();
     }
@@ -487,7 +487,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      */
     public byte[] getY() {
         if (this.y == null) {
-            return new byte[0];
+            return null;
         }
         return this.y.decodedBytes();
     }

@@ -86,7 +86,7 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
      */
     public byte[] getEncodedPolicy() {
         if (this.encodedPolicy == null) {
-            return new byte[0];
+            return null;
         }
         return this.encodedPolicy.decodedBytes();
     }
