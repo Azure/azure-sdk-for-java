@@ -34,6 +34,11 @@ public class SimpleClass implements JsonSerializable<SimpleClass> {
     }
 
     @Override
+    public int hashCode() {
+        return field1.hashCode();
+    }
+
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("field1", this.field1);

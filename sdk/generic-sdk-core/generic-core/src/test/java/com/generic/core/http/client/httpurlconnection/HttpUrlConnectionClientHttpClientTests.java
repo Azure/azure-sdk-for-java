@@ -4,11 +4,12 @@
 package com.generic.core.http.client.httpurlconnection;
 
 import com.generic.core.http.client.HttpClient;
+import com.generic.core.http.client.HttpClientTests;
 import com.generic.core.http.client.HttpClientTestsServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
-public class HttpUrlConnectionClientHttpClientTests {
+public class HttpUrlConnectionClientHttpClientTests extends HttpClientTests {
 
     private static LocalTestServer server;
     @BeforeAll
@@ -23,14 +24,12 @@ public class HttpUrlConnectionClientHttpClientTests {
             server.stop();
         }
     }
+    @Override
     protected HttpClient createHttpClient() {
-        return new HttpUrlConnectionClientBuilder().build();
+        return new HttpUrlConnectionClientProvider().createInstance();
     }
 
-    protected int getPort() {
-        return server.getHttpPort();
-    }
-
+    @Override
     protected String getServerUri(boolean secure) {
         return secure ? server.getHttpsUri() : server.getHttpUri();
     }

@@ -21,6 +21,7 @@ import com.generic.core.http.pipeline.HttpPipelineBuilder;
 import com.generic.core.implementation.http.ContentType;
 import com.generic.core.implementation.http.rest.RequestOptions;
 import com.generic.core.implementation.http.rest.RestProxyUtils;
+import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.util.BinaryDataContent;
 import com.generic.core.implementation.util.BinaryDataHelper;
 import com.generic.core.models.BinaryData;
@@ -102,7 +103,7 @@ public class RestProxyTests {
             .httpClient(client)
             .build();
 
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
         byte[] bytes = "hello".getBytes();
         Response<Void> response = testInterface.testMethod(ByteBuffer.wrap(bytes),
                 "application/json", (long) bytes.length);
@@ -116,7 +117,7 @@ public class RestProxyTests {
             .httpClient(client)
             .build();
 
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
         StreamResponse streamResponse = testInterface.testDownload();
         streamResponse.close();
         // This indirectly tests that StreamResponse has HttpResponse reference
@@ -131,7 +132,7 @@ public class RestProxyTests {
             .httpClient(client)
             .build();
 
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
         Response<Void> response = testInterface.testMethod(data, "application/json", contentLength);
         assertEquals(200, response.getStatusCode());
         assertSame(data, client.getLastHttpRequest().getBody());
@@ -162,7 +163,7 @@ public class RestProxyTests {
         Class<? extends BinaryDataContent> expectedContentClazz = BinaryDataHelper.getContent(data).getClass();
 
 
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
         Response<Void> response = testInterface.testMethod(data,
             ContentType.APPLICATION_JSON, contentLength);
         assertEquals(200, response.getStatusCode());
@@ -179,7 +180,7 @@ public class RestProxyTests {
             .httpClient(client)
             .build();
 
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
         testInterface.testMethodReturnsMonoVoid();
 
         assertTrue(client.closeCalledOnResponse);
@@ -192,7 +193,7 @@ public class RestProxyTests {
             .httpClient(client)
             .build();
 
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
 
         testInterface.testVoidMethod();
 
@@ -206,7 +207,7 @@ public class RestProxyTests {
             .httpClient(client)
             .build();
 
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
 
         testInterface.testVoidMethod();
 
@@ -222,7 +223,7 @@ public class RestProxyTests {
             .httpClient(client)
             .build();
 
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
         testInterface.testMethodReturnsMonoVoid();
 
         assertFalse(client.lastContext.getData("eagerly-read-response").isPresent());
@@ -237,7 +238,7 @@ public class RestProxyTests {
             .httpClient(client)
             .build();
 
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
         testInterface.testMethodReturnsMonoResponseVoid();
 
         assertFalse(client.lastContext.getData("eagerly-read-response").isPresent());
@@ -252,7 +253,7 @@ public class RestProxyTests {
             .httpClient(client)
             .build();
 
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
         testInterface.testMethodReturnsResponseVoid();
 
         assertFalse(client.lastContext.getData("eagerly-read-response").isPresent());
@@ -268,7 +269,7 @@ public class RestProxyTests {
             .build();
 
 
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
         testInterface.testDownload();
 
         assertFalse(client.lastContext.getData("eagerly-read-response").isPresent());
@@ -372,7 +373,7 @@ public class RestProxyTests {
             })
             .build();
 
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
 
         testInterface.testListNext(nextLinkUrl);
     }

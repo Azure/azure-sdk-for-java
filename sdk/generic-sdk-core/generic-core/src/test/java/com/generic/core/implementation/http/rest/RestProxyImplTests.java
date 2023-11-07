@@ -20,6 +20,7 @@ import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
+import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
 import org.junit.jupiter.api.Test;
@@ -63,7 +64,7 @@ public class RestProxyImplTests {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
             .build();
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
 
         testInterface.testVoidMethod(Context.NONE);
 
@@ -76,7 +77,7 @@ public class RestProxyImplTests {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
             .build();
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
         byte[] bytes = "hello".getBytes();
         Response<Void> response = testInterface.testMethod(BinaryData.fromStream(new ByteArrayInputStream(bytes),
             (long) bytes.length), "application/json", (long) bytes.length, Context.NONE);

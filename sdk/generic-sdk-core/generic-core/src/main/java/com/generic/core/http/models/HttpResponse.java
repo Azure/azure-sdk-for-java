@@ -92,4 +92,5 @@ public abstract class HttpResponse implements Closeable {
     @Override
     public void close() {
     }
+
 }

@@ -23,4 +23,10 @@ module com.generic.core {
     exports com.generic.core.http.policy.retry;
     exports com.generic.core.util.logging;
     exports com.generic.core.util.serializer;
+
+    // Service Provider Interfaces
+    provides com.generic.core.http.client.HttpClientProvider
+        with com.generic.core.http.client.httpurlconnection.HttpUrlConnectionClientProvider;
+
+    uses com.generic.core.http.client.HttpClientProvider;
 }

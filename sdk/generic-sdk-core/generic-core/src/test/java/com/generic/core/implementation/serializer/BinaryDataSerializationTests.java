@@ -348,6 +348,7 @@ public class BinaryDataSerializationTests {
 
                     if (fieldName.equals("listProperty")) {
                         List<BinaryData> list = new ArrayList<>();
+                        @SuppressWarnings("unchecked")
                         List<Object> objectList = (List<Object>) reader.readUntyped();
 
                         objectList.forEach(object -> {
@@ -474,6 +475,7 @@ public class BinaryDataSerializationTests {
 
                     if (fieldName.equals("mapProperty")) {
                         Map<String, BinaryData> map = new LinkedHashMap<>();
+                        @SuppressWarnings("unchecked")
                         Map<String, Object> objectMap = (Map<String, Object>) reader.readUntyped();
 
                         objectMap.forEach((key, value) -> {
