@@ -258,4 +258,9 @@ public interface BlobPropertiesInternal {
      * @return whether the blob has a legal hold.
      */
     Boolean hasLegalHold();
+
+    /**
+     * @return the x-ms-request-id header value that uniquely identifies the request made against the storage service.
+     */
+    String getRequestId();
 }

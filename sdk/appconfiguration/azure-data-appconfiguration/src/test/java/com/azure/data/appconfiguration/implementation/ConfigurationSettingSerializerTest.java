@@ -23,13 +23,13 @@ public class ConfigurationSettingSerializerTest {
     private static final String FEATURE_FLAG_VALUE_JSON =
         "{\"id\":\"hello\",\"display_name\":\"Feature Flag X\",\"enabled\":false,"
             + "\"conditions\":{\"client_filters\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":"
-            + "{\"Value\":\"30\"}}]}}";
+            + "{\"Value\":30}}]}}";
     private static final String SECRET_REFERENCE_VALUE_JSON = "{\"uri\":\"https://localhost\"}";
 
     @Test
     public void writeFeatureFlagConfigurationSettingTest() throws IOException {
         List<FeatureFlagFilter> filters = Collections.singletonList(new FeatureFlagFilter("Microsoft.Percentage")
-            .setParameters(Collections.singletonMap("Value", "30")));
+            .setParameters(Collections.singletonMap("Value", 30)));
         final FeatureFlagConfigurationSetting setting = new FeatureFlagConfigurationSetting("hello", false)
             .setDisplayName("Feature Flag X")
             .setClientFilters(filters);
