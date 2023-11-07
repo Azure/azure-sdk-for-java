@@ -68,6 +68,35 @@ public class SessionConsistencyTests extends TestSuiteBase {
         }
     }
 
+    @Test
+    public void validatePkScopedSessionTokenMapUsage() {
+        System.setProperty("COSMOS.PARTITION_KEY_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED", "true");
+
+        TestObject testObjectToCreate = TestObject.create();
+
+        try {
+            CosmosItemResponse<TestObject> createResponse = container.createItem(testObjectToCreate).block();
+
+            Assertions.assertThat(createResponse).isNotNull();
+            Assertions.assertThat(createResponse.getSessionToken()).isNotNull();
+
+            logger.info("Session token from creation : {}", createResponse.getSessionToken());
+
+            CosmosItemResponse<TestObject> readResponse = container
+                .readItem(testObjectToCreate.getId(), new PartitionKey(testObjectToCreate.getMypk()), TestObject.class)
+                .block();
+
+            Assertions.assertThat(readResponse).isNotNull();
+            Assertions.assertThat(readResponse.getSessionToken()).isNotNull();
+
+            logger.info("Session token from read : {}", readResponse.getSessionToken());
+        } catch (Exception e) {
+
+        } finally {
+            System.clearProperty("COSMOS.PARTITION_KEY_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
+        }
+    }
+
     @AfterClass
     public void afterClass() {
         client.close();
