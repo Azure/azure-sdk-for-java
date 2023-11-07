@@ -38,11 +38,6 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-netty</artifactId>
-      <version>1.13.10</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
       <version>1.11.0</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
     </dependency>
@@ -57,15 +52,9 @@
       <version>1.0.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j-brokers;external_dependency} -->
     </dependency>
     <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-test</artifactId>
-      <version>1.22.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
