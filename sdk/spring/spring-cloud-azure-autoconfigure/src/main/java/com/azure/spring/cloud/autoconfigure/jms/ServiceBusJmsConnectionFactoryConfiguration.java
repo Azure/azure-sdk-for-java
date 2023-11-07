@@ -3,12 +3,15 @@
 
 package com.azure.spring.cloud.autoconfigure.jms;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.jms.implementation.ServiceBusJmsConnectionFactoryCustomizer2;
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import org.apache.commons.pool2.PooledObject;
 import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -16,23 +19,29 @@ import org.springframework.boot.autoconfigure.jms.JmsPoolConnectionFactoryFactor
 import org.springframework.boot.autoconfigure.jms.JmsProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.jms.connection.CachingConnectionFactory;
 
 import javax.jms.ConnectionFactory;
 import java.util.stream.Collectors;
+
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
 /**
  * An auto-configuration for Service Bus JMS connection factory.
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnMissingBean(ConnectionFactory.class)
+@Import(AzureTokenCredentialAutoConfiguration.class)
 public class ServiceBusJmsConnectionFactoryConfiguration {
 
     private static ServiceBusJmsConnectionFactory createJmsConnectionFactory(AzureServiceBusJmsProperties properties,
-                                                                             ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer2> factoryCustomizers) {
+                                                                             ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer2> factoryCustomizers,
+                                                                             @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential tokenCredential) {
         return new ServiceBusJmsConnectionFactoryFactory(properties,
             factoryCustomizers.orderedStream().collect(Collectors.toList()))
-            .createConnectionFactory(ServiceBusJmsConnectionFactory.class);
+            .createConnectionFactory(ServiceBusJmsConnectionFactory.class,
+                tokenCredential);
     }
 
     @Configuration(proxyBeanMethods = false)
@@ -43,8 +52,9 @@ public class ServiceBusJmsConnectionFactoryConfiguration {
         @Bean
         @ConditionalOnProperty(prefix = "spring.jms.cache", name = "enabled", havingValue = "false")
         ServiceBusJmsConnectionFactory jmsConnectionFactory(AzureServiceBusJmsProperties properties,
-                                                            ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer2> factoryCustomizers) {
-            return createJmsConnectionFactory(properties, factoryCustomizers);
+                                                            ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer2> factoryCustomizers,
+                                                            @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential tokenCredential) {
+            return createJmsConnectionFactory(properties, factoryCustomizers, tokenCredential);
         }
 
         @Configuration(proxyBeanMethods = false)
@@ -56,8 +66,9 @@ public class ServiceBusJmsConnectionFactoryConfiguration {
             @Bean
             CachingConnectionFactory jmsConnectionFactory(JmsProperties jmsProperties,
                                                           AzureServiceBusJmsProperties properties,
-                                                          ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer2> factoryCustomizers) {
-                ServiceBusJmsConnectionFactory factory = createJmsConnectionFactory(properties, factoryCustomizers);
+                                                          ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer2> factoryCustomizers,
+                                                          @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential tokenCredential) {
+                ServiceBusJmsConnectionFactory factory = createJmsConnectionFactory(properties, factoryCustomizers, tokenCredential);
                 CachingConnectionFactory connectionFactory = new CachingConnectionFactory(factory);
                 JmsProperties.Cache cacheProperties = jmsProperties.getCache();
                 connectionFactory.setCacheConsumers(cacheProperties.isConsumers());
@@ -76,8 +87,9 @@ public class ServiceBusJmsConnectionFactoryConfiguration {
         @Bean(destroyMethod = "stop")
         @ConditionalOnProperty(prefix = "spring.jms.servicebus.pool", name = "enabled", havingValue = "true")
         JmsPoolConnectionFactory jmsPoolConnectionFactory(AzureServiceBusJmsProperties properties,
-                                                          ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer2> factoryCustomizers) {
-            ServiceBusJmsConnectionFactory factory = createJmsConnectionFactory(properties, factoryCustomizers);
+                                                          ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer2> factoryCustomizers,
+                                                          @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential tokenCredential) {
+            ServiceBusJmsConnectionFactory factory = createJmsConnectionFactory(properties, factoryCustomizers, tokenCredential);
             return new JmsPoolConnectionFactoryFactory(properties.getPool())
                 .createPooledConnectionFactory(factory);
         }

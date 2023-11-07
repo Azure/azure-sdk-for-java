@@ -36,8 +36,9 @@ public class ServiceBusJmsConnectionFactoryFactory {
 
     }
 
-    <T extends ServiceBusJmsConnectionFactory> T createConnectionFactory(Class<T> factoryClass) {
-        T factory = createConnectionFactoryInstance(factoryClass);
+    <T extends ServiceBusJmsConnectionFactory> T createConnectionFactory(Class<T> factoryClass,
+                                                                         TokenCredential tokenCredential) {
+        T factory = createConnectionFactoryInstance(factoryClass, tokenCredential);
         setClientId(factory);
         setPrefetchPolicy(factory);
         customize(factory);
@@ -58,13 +59,12 @@ public class ServiceBusJmsConnectionFactoryFactory {
         factory.getSettings().getConfigurationOptions().put("jms.prefetchPolicy.topicPrefetch", String.valueOf(prefetchProperties.getTopicPrefetch()));
     }
 
-    private <T extends ServiceBusJmsConnectionFactory> T createConnectionFactoryInstance(Class<T> factoryClass) {
+    private <T extends ServiceBusJmsConnectionFactory> T createConnectionFactoryInstance(Class<T> factoryClass,
+                                                                                         TokenCredential tokenCredential) {
         try {
             T factory;
             if (properties.isPasswordlessEnabled()) {
                 String hostName = properties.getNamespace() + "." + properties.getProfile().getEnvironment().getServiceBusDomainName();
-
-                TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
                 factory = factoryClass.getConstructor(TokenCredential.class, String.class, ServiceBusJmsConnectionFactorySettings.class)
                                       .newInstance(tokenCredential, hostName, new ServiceBusJmsConnectionFactorySettings());
