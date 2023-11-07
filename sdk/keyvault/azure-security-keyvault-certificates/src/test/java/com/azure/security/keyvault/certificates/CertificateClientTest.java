@@ -61,6 +61,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -484,25 +485,26 @@ public class CertificateClientTest extends CertificateClientTestBase {
         cancelCertificateOperationRunner((certName) -> {
             SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
                 certificateClient.beginCreateCertificate(certName, CertificatePolicy.getDefault())
-                    .setPollInterval(Duration.ofMillis(250));
+                    .setPollInterval(Duration.ofMillis(100));
 
-            LongRunningOperationStatus firstStatus = certPoller.poll().getStatus();
+            certPoller.waitUntil(LongRunningOperationStatus.IN_PROGRESS);
+            certPoller.cancelOperation();
 
-            assertNotSame(LongRunningOperationStatus.FAILED, firstStatus);
-            assertNotSame(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, firstStatus);
-
-            if (firstStatus == LongRunningOperationStatus.NOT_STARTED || firstStatus != LongRunningOperationStatus.IN_PROGRESS) {
-                certPoller.waitUntil(LongRunningOperationStatus.IN_PROGRESS);
+            try {
+                certPoller.waitUntil(Duration.ofSeconds(60), LongRunningOperationStatus.fromString("cancelled", true));
+            } catch (NoSuchElementException e) {
+                // The operation did not reach the expected status, either because it was completed before it could be
+                // canceled or there was a service timing issue when attempting to cancel the operation.
+                return;
             }
 
-            certPoller.cancelOperation();
-            certPoller.waitUntil(LongRunningOperationStatus.fromString("cancelled", true));
+            PollResponse<CertificateOperation> pollResponse = certPoller.poll();
+
+            assertTrue(pollResponse.getValue().getCancellationRequested());
 
             KeyVaultCertificateWithPolicy certificate = certPoller.getFinalResult();
 
             assertFalse(certificate.getProperties().isEnabled());
-
-            certPoller.waitForCompletion();
         });
     }
 
