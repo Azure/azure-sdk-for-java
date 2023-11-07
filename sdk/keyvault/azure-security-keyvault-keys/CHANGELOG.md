@@ -1,14 +1,10 @@
 # Release History
 
-## 4.8.0-beta.1 (Unreleased)
+## 4.8.0-beta.1 (2023-11-08)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added support for service version `7.5-preview.1`.
+- Added `KeyProperties.getHsmPlatform()` to get the underlying HSM platform that a key was generated with.
 
 ## 4.7.0 (2023-09-25)
 

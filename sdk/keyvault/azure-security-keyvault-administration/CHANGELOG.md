@@ -1,14 +1,10 @@
 # Release History
 
-## 4.5.0-beta.1 (Unreleased)
+## 4.5.0-beta.1 (2023-11-08)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added support for service version `7.5-preview.1`.
+- Managed Identity can now be used in place of a SAS token to access the blob storage resource when performing backup and restore operations using a `KeyVaultBackupClient` or `KeyVaultBackupAsyncClient`. This is now the default behavior if a `null` SAS token is provided to the `beginBackup()`, `beginRestore()` or `beginSelectiveRestore()` methods.
 
 ## 4.4.0 (2023-09-25)
 
