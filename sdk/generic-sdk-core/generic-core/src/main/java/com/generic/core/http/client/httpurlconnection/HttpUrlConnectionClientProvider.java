@@ -12,8 +12,8 @@ import com.generic.core.util.configuration.Configuration;
  * An {@link HttpClientProvider} that provides an implementation of HttpClient based on native JDK HttpURLConnection.
  */
 public class HttpUrlConnectionClientProvider implements HttpClientProvider {
-    private static final boolean AZURE_ENABLE_HTTP_CLIENT_SHARING =
-        Configuration.getGlobalConfiguration().get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
+    private static final boolean ENABLE_HTTP_CLIENT_SHARING =
+        Configuration.getGlobalConfiguration().get("ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
     private final boolean enableHttpClientSharing;
 
     // Enum Singleton Pattern
@@ -36,11 +36,11 @@ public class HttpUrlConnectionClientProvider implements HttpClientProvider {
      * 'final' modifier.
      */
     public HttpUrlConnectionClientProvider() {
-        enableHttpClientSharing = AZURE_ENABLE_HTTP_CLIENT_SHARING;
+        enableHttpClientSharing = ENABLE_HTTP_CLIENT_SHARING;
     }
 
     HttpUrlConnectionClientProvider(Configuration configuration) {
-        enableHttpClientSharing = configuration.get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
+        enableHttpClientSharing = configuration.get("ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
     }
 
     @Override

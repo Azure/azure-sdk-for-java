@@ -37,7 +37,6 @@ public interface HttpClient {
      * @return A new {@link HttpClient} instance.
      */
     static HttpClient createDefault(HttpClientOptions clientOptions) {
-        return null;
-        // return HttpClientProviders.createInstance(clientOptions);
+         return HttpClientProviders.createInstance(clientOptions);
     }
 }

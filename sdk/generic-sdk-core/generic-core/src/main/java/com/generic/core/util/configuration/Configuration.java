@@ -4,6 +4,7 @@
 package com.generic.core.util.configuration;
 
 import com.generic.core.http.client.HttpClient;
+import com.generic.core.http.client.HttpClientProvider;
 import com.generic.core.implementation.util.EnvironmentConfiguration;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.util.logging.ClientLogger;
@@ -81,6 +82,20 @@ public class Configuration implements Cloneable {
      * If the configured value is equal to or less than 0 no timeout will be applied.
      */
     public static final String PROPERTY_REQUEST_READ_TIMEOUT = "REQUEST_READ_TIMEOUT";
+    /**
+     * Sets the name of the {@link HttpClientProvider} implementation that should be used to construct instances of
+     * {@link HttpClient}.
+     * <p>
+     * The name must be the full class name, ex {@code com.azure.core.http.netty.NettyAsyncHttpClientProvider} and not
+     * {@code NettyAsyncHttpClientProvider}, to disambiguate multiple providers with the same name but from different
+     * packages.
+     * <p>
+     * If the value isn't set or is an empty string the first {@link HttpClientProvider} resolved by {@link java.util.ServiceLoader} will be
+     * used to create an instance of {@link HttpClient}. If the value is set and doesn't match any
+     * {@link HttpClientProvider} resolved by {@link java.util.ServiceLoader} an {@link IllegalStateException} will be thrown when
+     * attempting to create an instance of {@link HttpClient}.
+     */
+    public static final String PROPERTY_HTTP_CLIENT_IMPLEMENTATION = "HTTP_CLIENT_IMPLEMENTATION";
 
     /*
      * Gets the global configuration shared by all client libraries.
