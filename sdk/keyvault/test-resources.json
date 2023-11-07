@@ -373,12 +373,13 @@
         "networkAcls": "[variables('networkAcls')]",
         "supportsHttpsTrafficOnly": true,
         "encryption": "[variables('encryption')]",
-        "accessTier": "Hot"
+        "accessTier": "Hot",
+        "minimumTlsVersion": "TLS1_2"
       }
     },
     {
       "type": "Microsoft.Storage/storageAccounts/blobServices",
-      "apiVersion": "2019-06-01",
+      "apiVersion": "2022-05-01",
       "name": "[concat(variables('primaryAccountName'), '/default')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName'))]"
