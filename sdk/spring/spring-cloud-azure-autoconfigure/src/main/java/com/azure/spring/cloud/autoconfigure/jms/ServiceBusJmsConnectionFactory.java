@@ -8,6 +8,8 @@ import org.apache.qpid.jms.JmsConnectionFactory;
 
 /**
  * ServiceBus JmsConnectionFactory implementation.
+ *
+ * @deprecated Use {@link com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory} instead.
  */
 @Deprecated
 public class ServiceBusJmsConnectionFactory extends JmsConnectionFactory {

@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.jms.implementation.ServiceBusJmsConnectionFactoryCustomizer2;
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
@@ -19,7 +18,6 @@ import org.springframework.boot.autoconfigure.jms.JmsPoolConnectionFactoryFactor
 import org.springframework.boot.autoconfigure.jms.JmsProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.jms.connection.CachingConnectionFactory;
 
 import javax.jms.ConnectionFactory;
@@ -32,7 +30,6 @@ import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEF
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnMissingBean(ConnectionFactory.class)
-@Import(AzureTokenCredentialAutoConfiguration.class)
 public class ServiceBusJmsConnectionFactoryConfiguration {
 
     private static ServiceBusJmsConnectionFactory createJmsConnectionFactory(AzureServiceBusJmsProperties properties,
