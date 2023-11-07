@@ -13,7 +13,7 @@
 ## 1.11.0-beta.2 (2023-10-27)
 
 ### Features Added
-- Initial release of WAM support for Azure Identity.
+- Initial release of Web Account Manager (WAM) support for Azure Identity. This is a Windows-only auithentication broker.
 
 ### Other Changes
 - Upgraded 'msal4j' from '1.13.9' to version '1.14.0'.

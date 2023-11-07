@@ -1,6 +1,6 @@
 # Azure Identity Brokered Authentication client library for Java
 
-The Azure Identity Brokered Authentication library extends the Azure Identity library to provide brokdered authentication support. This options class can be used to create an `InteractiveBrowserCredential` capable of using the system authentication broker in lieu of the web browser when available.
+The Azure Identity Brokered Authentication library extends the Azure Identity library to provide brokered authentication support. This options class can be used to create an `InteractiveBrowserCredential` capable of using the system authentication broker in lieu of the web browser when available.
 
 [Source code][source] | [API reference documentation][javadoc] | [Microsoft Entra ID documentation][entra_id_doc]
 
@@ -62,28 +62,23 @@ To take dependency on a particular version of the library that isn't present in 
 
 ### Examples
 
-#### Configuring the `InteractiveBrowserCredential` to use the system authentication broker
+#### Configure the `InteractiveBrowserCredential` to use the system authentication broker for Windows
 
-```java
-long windowHandle = GetWindowHandle() // Samples below
-InteractiveBrowserCredential cred = new InteractiveBrowserCredentialBuilder()
-    .useInteractiveBrowserBroker(windowHandle)
+```java com.azure.identity.broker.interactivebrowserbrokercredentialbuilder.useinteractivebrowserbroker.windows
+long windowHandle = getWindowHandle(); // Samples below
+InteractiveBrowserCredential cred = new InteractiveBrowserBrokerCredentialBuilder()
+    .setWindowHandle(windowHandle)
     .build();
 ```
 
-#### Obtaining a window handle
+#### Obtain a window handle
 
 ##### JavaFX
 
-This code will obtain the window handle for a JavaFX application for use with `InteractiveBrowserCredentialBuilder`
+This code will obtain the window handle for a JavaFX application for use with `InteractiveBrowserCredentialBuilder`:
 
-```java
-
-import com.sun.jna.Pointer;
-import com.sun.jna.platform.win32.User32;
-import com.sun.jna.platform.win32.WinDef;
-
-public static long getWindowHandle(Stage stage) {
+```java com.azure.identity.broker.interactivebrowserbrokercredentialbuilder.getwindowhandle.javafx
+public long getWindowHandle(Stage stage) {
     try {
         WinDef.HWND hwnd = User32.INSTANCE.FindWindow(null, stage.getTitle());
         return Pointer.nativeValue(hwnd.getPointer());
@@ -96,15 +91,15 @@ public static long getWindowHandle(Stage stage) {
 
 ## Troubleshooting
 
-Credentials raise exceptions when they fail to authenticate or can't execute authentication. When credentials fail to authenticate, the`ClientAuthenticationException` is raised. The exception has a `message` attribute, which describes why authentication failed. When this exception is raised by `ChainedTokenCredential`, the chained execution of underlying list of credentials is stopped.
+Credentials raise exceptions when they fail to authenticate or can't execute authentication. When credentials fail to authenticate a `ClientAuthenticationException` is raised. The exception has a `message` attribute, which describes why authentication failed. When this exception is raised by `ChainedTokenCredential`, the chained execution of underlying list of credentials is stopped.
 
-When credentials can't execute authentication due to one of the underlying resources required by the credential being unavailable on the machine, the`CredentialUnavailableException` is raised. The exception has a `message` attribute that describes why the credential is unavailable for authentication execution. When this exception is raised by `ChainedTokenCredential`, the message collects error messages from each credential in the chain.
+When credentials can't execute authentication due to one of the underlying resources required by the credential being unavailable on the machine a `CredentialUnavailableException` is raised. The exception has a `message` attribute that describes why the credential is unavailable for authentication execution. When this exception is raised by `ChainedTokenCredential`, the message collects error messages from each credential in the chain.
 
 See the [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TROUBLESHOOTING.md) for details on how to diagnose various failure scenarios.
 
 ## Next steps
 
-The Java client libraries listed [here](https://azure.github.io/azure-sdk/releases/latest/java.html) support authenticating with `TokenCredential` and the Azure Identity library. You can learn more about their use, and find additional documentation on use of these client libraries along samples with can be found in the links mentioned [here](https://azure.github.io/azure-sdk/releases/latest/java.html).
+[These Java client libraries](https://learn.microsoft.com/azure/developer/java/sdk/azure-sdk-library-package-index#libraries-using-azure-core) support authenticating with `TokenCredential` and the Azure Identity library. To learn more about using these client libraries, see the aforementioned link.
 
 The [microsoft-graph-sdk](https://github.com/microsoftgraph/msgraph-sdk-java) also supports authenticating with `TokenCredential` and the Azure Identity library.
 
@@ -120,10 +115,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 ```
 <!-- LINKS -->
 [azure_core_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core
-[azure_sub]: https://azure.microsoft.com/free/
-[entra_id_doc]: https://learn.microsoft.com/azure/active-directory/
+[azure_sub]: https://azure.microsoft.com/free/java
+[entra_id_doc]: https://learn.microsoft.com/azure/identity/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
-[javadoc]: https://learn.microsoft.com/java/api/com.azure.identity?view=azure-java-stable
+[javadoc]: https://learn.microsoft.com/java/api/com.azure.identity.broker?view=azure-java-stable
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [secrets_client_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-secrets

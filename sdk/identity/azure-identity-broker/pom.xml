@@ -95,6 +95,12 @@
       <version>2.13.5</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-graphics</artifactId>
+      <version>17.0.6</version> <!-- {x-include-update;org.javafx:javafx-graphics;external_dependency} -->
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -114,6 +120,7 @@
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
                 <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+                <include>org.openjfx:javafx-graphics:[17.0.6]</include> <!-- {x-include-update;org.javafx:javafx-graphics;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
