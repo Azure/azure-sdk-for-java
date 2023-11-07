@@ -10,6 +10,9 @@
 - Fix incorrect use of organizations tenant for sync calls on `AzureCliCredential` and `AzureDeveloperCliCredential` [#37457](https://github.com/Azure/azure-sdk-for-java/pull/37457)
 
 ### Other Changes
+
+#### Dependency Updates
+
 - Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
 - Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`
 
