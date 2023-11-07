@@ -5,10 +5,7 @@ package com.azure.identity.broker;
 
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.util.ClientOptions;
-import com.azure.identity.AuthenticationRecord;
 import com.azure.identity.InteractiveBrowserCredential;
-import com.azure.identity.InteractiveBrowserCredentialBuilder;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
