@@ -3,6 +3,7 @@
 ## 12.25.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added BlobProperties.getRequestId() to access the x-ms-request-id header property.
 
 ### Breaking Changes
 

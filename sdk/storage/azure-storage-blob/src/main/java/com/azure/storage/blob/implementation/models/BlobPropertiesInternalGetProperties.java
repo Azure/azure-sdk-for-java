@@ -251,4 +251,9 @@ public final class BlobPropertiesInternalGetProperties implements BlobProperties
     public Boolean hasLegalHold() {
         return headers.isXMsLegalHold();
     }
+
+    @Override
+    public String getRequestId() {
+        return headers.getXMsRequestId();
+    }
 }
