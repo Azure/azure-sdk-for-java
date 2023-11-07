@@ -14,29 +14,29 @@ public final class GalleryImageReferenceTests {
         GalleryImageReference model =
             BinaryData
                 .fromString(
-                    "{\"offer\":\"fgbvfvpdbo\",\"publisher\":\"cizsjqlhkrribdei\",\"sku\":\"ipqkghvxndzwm\",\"osType\":\"efajpj\",\"version\":\"wkqnyhg\"}")
+                    "{\"offer\":\"qufegxuvwzfbn\",\"publisher\":\"mctlpdngitv\",\"sku\":\"mhrixkwmyijejve\",\"osType\":\"hbpnaixexccbd\",\"version\":\"ax\"}")
                 .toObject(GalleryImageReference.class);
-        Assertions.assertEquals("fgbvfvpdbo", model.offer());
-        Assertions.assertEquals("cizsjqlhkrribdei", model.publisher());
-        Assertions.assertEquals("ipqkghvxndzwm", model.sku());
-        Assertions.assertEquals("efajpj", model.osType());
-        Assertions.assertEquals("wkqnyhg", model.version());
+        Assertions.assertEquals("qufegxuvwzfbn", model.offer());
+        Assertions.assertEquals("mctlpdngitv", model.publisher());
+        Assertions.assertEquals("mhrixkwmyijejve", model.sku());
+        Assertions.assertEquals("hbpnaixexccbd", model.osType());
+        Assertions.assertEquals("ax", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GalleryImageReference model =
             new GalleryImageReference()
-                .withOffer("fgbvfvpdbo")
-                .withPublisher("cizsjqlhkrribdei")
-                .withSku("ipqkghvxndzwm")
-                .withOsType("efajpj")
-                .withVersion("wkqnyhg");
+                .withOffer("qufegxuvwzfbn")
+                .withPublisher("mctlpdngitv")
+                .withSku("mhrixkwmyijejve")
+                .withOsType("hbpnaixexccbd")
+                .withVersion("ax");
         model = BinaryData.fromObject(model).toObject(GalleryImageReference.class);
-        Assertions.assertEquals("fgbvfvpdbo", model.offer());
-        Assertions.assertEquals("cizsjqlhkrribdei", model.publisher());
-        Assertions.assertEquals("ipqkghvxndzwm", model.sku());
-        Assertions.assertEquals("efajpj", model.osType());
-        Assertions.assertEquals("wkqnyhg", model.version());
+        Assertions.assertEquals("qufegxuvwzfbn", model.offer());
+        Assertions.assertEquals("mctlpdngitv", model.publisher());
+        Assertions.assertEquals("mhrixkwmyijejve", model.sku());
+        Assertions.assertEquals("hbpnaixexccbd", model.osType());
+        Assertions.assertEquals("ax", model.version());
     }
 }

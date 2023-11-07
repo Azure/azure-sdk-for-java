@@ -153,7 +153,7 @@ public final class JobRouterAdministrationClientImpl {
     @Host("{endpoint}")
     @ServiceInterface(name = "JobRouterAdministrat")
     public interface JobRouterAdministrationClientService {
-        @Patch("/routing/distributionPolicies/{id}")
+        @Patch("/routing/distributionPolicies/{distributionPolicyId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -168,14 +168,14 @@ public final class JobRouterAdministrationClientImpl {
         Mono<Response<BinaryData>> upsertDistributionPolicy(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("distributionPolicyId") String distributionPolicyId,
                 @HeaderParam("Content-Type") String contentType,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/merge-patch+json") BinaryData resource,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Patch("/routing/distributionPolicies/{id}")
+        @Patch("/routing/distributionPolicies/{distributionPolicyId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -190,14 +190,14 @@ public final class JobRouterAdministrationClientImpl {
         Response<BinaryData> upsertDistributionPolicySync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("distributionPolicyId") String distributionPolicyId,
                 @HeaderParam("Content-Type") String contentType,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/merge-patch+json") BinaryData resource,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/routing/distributionPolicies/{id}")
+        @Get("/routing/distributionPolicies/{distributionPolicyId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -212,12 +212,12 @@ public final class JobRouterAdministrationClientImpl {
         Mono<Response<BinaryData>> getDistributionPolicy(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("distributionPolicyId") String distributionPolicyId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/routing/distributionPolicies/{id}")
+        @Get("/routing/distributionPolicies/{distributionPolicyId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -232,7 +232,7 @@ public final class JobRouterAdministrationClientImpl {
         Response<BinaryData> getDistributionPolicySync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("distributionPolicyId") String distributionPolicyId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -275,7 +275,7 @@ public final class JobRouterAdministrationClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/routing/distributionPolicies/{id}")
+        @Delete("/routing/distributionPolicies/{distributionPolicyId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -290,12 +290,12 @@ public final class JobRouterAdministrationClientImpl {
         Mono<Response<Void>> deleteDistributionPolicy(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("distributionPolicyId") String distributionPolicyId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/routing/distributionPolicies/{id}")
+        @Delete("/routing/distributionPolicies/{distributionPolicyId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -310,12 +310,12 @@ public final class JobRouterAdministrationClientImpl {
         Response<Void> deleteDistributionPolicySync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("distributionPolicyId") String distributionPolicyId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Patch("/routing/classificationPolicies/{id}")
+        @Patch("/routing/classificationPolicies/{classificationPolicyId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -330,14 +330,14 @@ public final class JobRouterAdministrationClientImpl {
         Mono<Response<BinaryData>> upsertClassificationPolicy(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("classificationPolicyId") String classificationPolicyId,
                 @HeaderParam("Content-Type") String contentType,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/merge-patch+json") BinaryData resource,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Patch("/routing/classificationPolicies/{id}")
+        @Patch("/routing/classificationPolicies/{classificationPolicyId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -352,14 +352,14 @@ public final class JobRouterAdministrationClientImpl {
         Response<BinaryData> upsertClassificationPolicySync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("classificationPolicyId") String classificationPolicyId,
                 @HeaderParam("Content-Type") String contentType,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/merge-patch+json") BinaryData resource,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/routing/classificationPolicies/{id}")
+        @Get("/routing/classificationPolicies/{classificationPolicyId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -374,12 +374,12 @@ public final class JobRouterAdministrationClientImpl {
         Mono<Response<BinaryData>> getClassificationPolicy(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("classificationPolicyId") String classificationPolicyId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/routing/classificationPolicies/{id}")
+        @Get("/routing/classificationPolicies/{classificationPolicyId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -394,7 +394,7 @@ public final class JobRouterAdministrationClientImpl {
         Response<BinaryData> getClassificationPolicySync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("classificationPolicyId") String classificationPolicyId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -437,7 +437,7 @@ public final class JobRouterAdministrationClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/routing/classificationPolicies/{id}")
+        @Delete("/routing/classificationPolicies/{classificationPolicyId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -452,12 +452,12 @@ public final class JobRouterAdministrationClientImpl {
         Mono<Response<Void>> deleteClassificationPolicy(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("classificationPolicyId") String classificationPolicyId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/routing/classificationPolicies/{id}")
+        @Delete("/routing/classificationPolicies/{classificationPolicyId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -472,12 +472,12 @@ public final class JobRouterAdministrationClientImpl {
         Response<Void> deleteClassificationPolicySync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("classificationPolicyId") String classificationPolicyId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Patch("/routing/exceptionPolicies/{id}")
+        @Patch("/routing/exceptionPolicies/{exceptionPolicyId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -492,14 +492,14 @@ public final class JobRouterAdministrationClientImpl {
         Mono<Response<BinaryData>> upsertExceptionPolicy(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("exceptionPolicyId") String exceptionPolicyId,
                 @HeaderParam("Content-Type") String contentType,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/merge-patch+json") BinaryData resource,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Patch("/routing/exceptionPolicies/{id}")
+        @Patch("/routing/exceptionPolicies/{exceptionPolicyId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -514,14 +514,14 @@ public final class JobRouterAdministrationClientImpl {
         Response<BinaryData> upsertExceptionPolicySync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("exceptionPolicyId") String exceptionPolicyId,
                 @HeaderParam("Content-Type") String contentType,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/merge-patch+json") BinaryData resource,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/routing/exceptionPolicies/{id}")
+        @Get("/routing/exceptionPolicies/{exceptionPolicyId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -536,12 +536,12 @@ public final class JobRouterAdministrationClientImpl {
         Mono<Response<BinaryData>> getExceptionPolicy(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("exceptionPolicyId") String exceptionPolicyId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/routing/exceptionPolicies/{id}")
+        @Get("/routing/exceptionPolicies/{exceptionPolicyId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -556,7 +556,7 @@ public final class JobRouterAdministrationClientImpl {
         Response<BinaryData> getExceptionPolicySync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("exceptionPolicyId") String exceptionPolicyId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -599,7 +599,7 @@ public final class JobRouterAdministrationClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/routing/exceptionPolicies/{id}")
+        @Delete("/routing/exceptionPolicies/{exceptionPolicyId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -614,12 +614,12 @@ public final class JobRouterAdministrationClientImpl {
         Mono<Response<Void>> deleteExceptionPolicy(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("exceptionPolicyId") String exceptionPolicyId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/routing/exceptionPolicies/{id}")
+        @Delete("/routing/exceptionPolicies/{exceptionPolicyId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -634,12 +634,12 @@ public final class JobRouterAdministrationClientImpl {
         Response<Void> deleteExceptionPolicySync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("exceptionPolicyId") String exceptionPolicyId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Patch("/routing/queues/{id}")
+        @Patch("/routing/queues/{queueId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -654,14 +654,14 @@ public final class JobRouterAdministrationClientImpl {
         Mono<Response<BinaryData>> upsertQueue(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("queueId") String queueId,
                 @HeaderParam("Content-Type") String contentType,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/merge-patch+json") BinaryData resource,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Patch("/routing/queues/{id}")
+        @Patch("/routing/queues/{queueId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -676,14 +676,14 @@ public final class JobRouterAdministrationClientImpl {
         Response<BinaryData> upsertQueueSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("queueId") String queueId,
                 @HeaderParam("Content-Type") String contentType,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/merge-patch+json") BinaryData resource,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/routing/queues/{id}")
+        @Get("/routing/queues/{queueId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -698,12 +698,12 @@ public final class JobRouterAdministrationClientImpl {
         Mono<Response<BinaryData>> getQueue(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("queueId") String queueId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/routing/queues/{id}")
+        @Get("/routing/queues/{queueId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -718,7 +718,7 @@ public final class JobRouterAdministrationClientImpl {
         Response<BinaryData> getQueueSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("queueId") String queueId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -761,7 +761,7 @@ public final class JobRouterAdministrationClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/routing/queues/{id}")
+        @Delete("/routing/queues/{queueId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -776,12 +776,12 @@ public final class JobRouterAdministrationClientImpl {
         Mono<Response<Void>> deleteQueue(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("queueId") String queueId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/routing/queues/{id}")
+        @Delete("/routing/queues/{queueId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -796,7 +796,7 @@ public final class JobRouterAdministrationClientImpl {
         Response<Void> deleteQueueSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("queueId") String queueId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -972,6 +972,7 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
@@ -987,6 +988,7 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
@@ -998,7 +1000,7 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * }</pre>
      *
-     * @param id The unique identifier of the policy.
+     * @param distributionPolicyId The unique identifier of the policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1010,7 +1012,7 @@ public final class JobRouterAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> upsertDistributionPolicyWithResponseAsync(
-            String id, BinaryData resource, RequestOptions requestOptions) {
+            String distributionPolicyId, BinaryData resource, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1018,7 +1020,7 @@ public final class JobRouterAdministrationClientImpl {
                         service.upsertDistributionPolicy(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                id,
+                                distributionPolicyId,
                                 contentType,
                                 accept,
                                 resource,
@@ -1044,6 +1046,7 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
@@ -1059,6 +1062,7 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
@@ -1070,7 +1074,7 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * }</pre>
      *
-     * @param id The unique identifier of the policy.
+     * @param distributionPolicyId The unique identifier of the policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1081,13 +1085,13 @@ public final class JobRouterAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> upsertDistributionPolicyWithResponse(
-            String id, BinaryData resource, RequestOptions requestOptions) {
+            String distributionPolicyId, BinaryData resource, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return service.upsertDistributionPolicySync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
-                id,
+                distributionPolicyId,
                 contentType,
                 accept,
                 resource,
@@ -1102,6 +1106,7 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
@@ -1113,7 +1118,7 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * }</pre>
      *
-     * @param id The unique identifier of the policy.
+     * @param distributionPolicyId The unique identifier of the policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1123,14 +1128,15 @@ public final class JobRouterAdministrationClientImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDistributionPolicyWithResponseAsync(String id, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getDistributionPolicyWithResponseAsync(
+            String distributionPolicyId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getDistributionPolicy(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                id,
+                                distributionPolicyId,
                                 accept,
                                 requestOptions,
                                 context));
@@ -1143,6 +1149,7 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
@@ -1154,7 +1161,7 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * }</pre>
      *
-     * @param id The unique identifier of the policy.
+     * @param distributionPolicyId The unique identifier of the policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1163,10 +1170,16 @@ public final class JobRouterAdministrationClientImpl {
      * @return policy governing how jobs are distributed to workers along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDistributionPolicyWithResponse(String id, RequestOptions requestOptions) {
+    public Response<BinaryData> getDistributionPolicyWithResponse(
+            String distributionPolicyId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getDistributionPolicySync(
-                this.getEndpoint(), this.getServiceVersion().getVersion(), id, accept, requestOptions, Context.NONE);
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                distributionPolicyId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1186,17 +1199,15 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
-     *     distributionPolicy (Required): {
-     *         id: String (Required)
-     *         name: String (Optional)
-     *         offerExpiresAfterSeconds: Double (Optional)
-     *         mode (Optional): {
-     *             minConcurrentOffers: Integer (Optional)
-     *             maxConcurrentOffers: Integer (Optional)
-     *             bypassSelectors: Boolean (Optional)
-     *         }
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     offerExpiresAfterSeconds: Double (Optional)
+     *     mode (Optional): {
+     *         minConcurrentOffers: Integer (Optional)
+     *         maxConcurrentOffers: Integer (Optional)
+     *         bypassSelectors: Boolean (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -1205,7 +1216,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of distribution policies along with {@link PagedResponse} on successful completion of
+     * @return paged collection of DistributionPolicy items along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1247,17 +1258,15 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
-     *     distributionPolicy (Required): {
-     *         id: String (Required)
-     *         name: String (Optional)
-     *         offerExpiresAfterSeconds: Double (Optional)
-     *         mode (Optional): {
-     *             minConcurrentOffers: Integer (Optional)
-     *             maxConcurrentOffers: Integer (Optional)
-     *             bypassSelectors: Boolean (Optional)
-     *         }
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     offerExpiresAfterSeconds: Double (Optional)
+     *     mode (Optional): {
+     *         minConcurrentOffers: Integer (Optional)
+     *         maxConcurrentOffers: Integer (Optional)
+     *         bypassSelectors: Boolean (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -1266,7 +1275,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of distribution policies as paginated response with {@link PagedFlux}.
+     * @return paged collection of DistributionPolicy items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDistributionPoliciesAsync(RequestOptions requestOptions) {
@@ -1320,17 +1329,15 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
-     *     distributionPolicy (Required): {
-     *         id: String (Required)
-     *         name: String (Optional)
-     *         offerExpiresAfterSeconds: Double (Optional)
-     *         mode (Optional): {
-     *             minConcurrentOffers: Integer (Optional)
-     *             maxConcurrentOffers: Integer (Optional)
-     *             bypassSelectors: Boolean (Optional)
-     *         }
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     offerExpiresAfterSeconds: Double (Optional)
+     *     mode (Optional): {
+     *         minConcurrentOffers: Integer (Optional)
+     *         maxConcurrentOffers: Integer (Optional)
+     *         bypassSelectors: Boolean (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -1339,7 +1346,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of distribution policies along with {@link PagedResponse}.
+     * @return paged collection of DistributionPolicy items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listDistributionPoliciesSinglePage(RequestOptions requestOptions) {
@@ -1377,17 +1384,15 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
-     *     distributionPolicy (Required): {
-     *         id: String (Required)
-     *         name: String (Optional)
-     *         offerExpiresAfterSeconds: Double (Optional)
-     *         mode (Optional): {
-     *             minConcurrentOffers: Integer (Optional)
-     *             maxConcurrentOffers: Integer (Optional)
-     *             bypassSelectors: Boolean (Optional)
-     *         }
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     offerExpiresAfterSeconds: Double (Optional)
+     *     mode (Optional): {
+     *         minConcurrentOffers: Integer (Optional)
+     *         maxConcurrentOffers: Integer (Optional)
+     *         bypassSelectors: Boolean (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -1396,7 +1401,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of distribution policies as paginated response with {@link PagedIterable}.
+     * @return paged collection of DistributionPolicy items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDistributionPolicies(RequestOptions requestOptions) {
@@ -1436,7 +1441,7 @@ public final class JobRouterAdministrationClientImpl {
     /**
      * Delete a distribution policy by Id.
      *
-     * @param id The unique identifier of the policy.
+     * @param distributionPolicyId The unique identifier of the policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1445,14 +1450,15 @@ public final class JobRouterAdministrationClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteDistributionPolicyWithResponseAsync(String id, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteDistributionPolicyWithResponseAsync(
+            String distributionPolicyId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteDistributionPolicy(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                id,
+                                distributionPolicyId,
                                 accept,
                                 requestOptions,
                                 context));
@@ -1461,7 +1467,7 @@ public final class JobRouterAdministrationClientImpl {
     /**
      * Delete a distribution policy by Id.
      *
-     * @param id The unique identifier of the policy.
+     * @param distributionPolicyId The unique identifier of the policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1470,10 +1476,16 @@ public final class JobRouterAdministrationClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDistributionPolicyWithResponse(String id, RequestOptions requestOptions) {
+    public Response<Void> deleteDistributionPolicyWithResponse(
+            String distributionPolicyId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.deleteDistributionPolicySync(
-                this.getEndpoint(), this.getServiceVersion().getVersion(), id, accept, requestOptions, Context.NONE);
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                distributionPolicyId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1494,16 +1506,17 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     fallbackQueueId: String (Optional)
-     *     queueSelectors (Optional): [
+     *     queueSelectorAttachments (Optional): [
      *          (Optional){
      *         }
      *     ]
      *     prioritizationRule (Optional): {
      *     }
-     *     workerSelectors (Optional): [
+     *     workerSelectorAttachments (Optional): [
      *          (Optional){
      *         }
      *     ]
@@ -1514,23 +1527,24 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     fallbackQueueId: String (Optional)
-     *     queueSelectors (Optional): [
+     *     queueSelectorAttachments (Optional): [
      *          (Optional){
      *         }
      *     ]
      *     prioritizationRule (Optional): {
      *     }
-     *     workerSelectors (Optional): [
+     *     workerSelectorAttachments (Optional): [
      *          (Optional){
      *         }
      *     ]
      * }
      * }</pre>
      *
-     * @param id Unique identifier of this policy.
+     * @param classificationPolicyId Unique identifier of this policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1542,7 +1556,7 @@ public final class JobRouterAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> upsertClassificationPolicyWithResponseAsync(
-            String id, BinaryData resource, RequestOptions requestOptions) {
+            String classificationPolicyId, BinaryData resource, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1550,7 +1564,7 @@ public final class JobRouterAdministrationClientImpl {
                         service.upsertClassificationPolicy(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                id,
+                                classificationPolicyId,
                                 contentType,
                                 accept,
                                 resource,
@@ -1576,16 +1590,17 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     fallbackQueueId: String (Optional)
-     *     queueSelectors (Optional): [
+     *     queueSelectorAttachments (Optional): [
      *          (Optional){
      *         }
      *     ]
      *     prioritizationRule (Optional): {
      *     }
-     *     workerSelectors (Optional): [
+     *     workerSelectorAttachments (Optional): [
      *          (Optional){
      *         }
      *     ]
@@ -1596,23 +1611,24 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     fallbackQueueId: String (Optional)
-     *     queueSelectors (Optional): [
+     *     queueSelectorAttachments (Optional): [
      *          (Optional){
      *         }
      *     ]
      *     prioritizationRule (Optional): {
      *     }
-     *     workerSelectors (Optional): [
+     *     workerSelectorAttachments (Optional): [
      *          (Optional){
      *         }
      *     ]
      * }
      * }</pre>
      *
-     * @param id Unique identifier of this policy.
+     * @param classificationPolicyId Unique identifier of this policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1623,13 +1639,13 @@ public final class JobRouterAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> upsertClassificationPolicyWithResponse(
-            String id, BinaryData resource, RequestOptions requestOptions) {
+            String classificationPolicyId, BinaryData resource, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return service.upsertClassificationPolicySync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
-                id,
+                classificationPolicyId,
                 contentType,
                 accept,
                 resource,
@@ -1644,23 +1660,24 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     fallbackQueueId: String (Optional)
-     *     queueSelectors (Optional): [
+     *     queueSelectorAttachments (Optional): [
      *          (Optional){
      *         }
      *     ]
      *     prioritizationRule (Optional): {
      *     }
-     *     workerSelectors (Optional): [
+     *     workerSelectorAttachments (Optional): [
      *          (Optional){
      *         }
      *     ]
      * }
      * }</pre>
      *
-     * @param id Unique identifier of this policy.
+     * @param classificationPolicyId Unique identifier of this policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1671,14 +1688,14 @@ public final class JobRouterAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationPolicyWithResponseAsync(
-            String id, RequestOptions requestOptions) {
+            String classificationPolicyId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getClassificationPolicy(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                id,
+                                classificationPolicyId,
                                 accept,
                                 requestOptions,
                                 context));
@@ -1691,23 +1708,24 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     fallbackQueueId: String (Optional)
-     *     queueSelectors (Optional): [
+     *     queueSelectorAttachments (Optional): [
      *          (Optional){
      *         }
      *     ]
      *     prioritizationRule (Optional): {
      *     }
-     *     workerSelectors (Optional): [
+     *     workerSelectorAttachments (Optional): [
      *          (Optional){
      *         }
      *     ]
      * }
      * }</pre>
      *
-     * @param id Unique identifier of this policy.
+     * @param classificationPolicyId Unique identifier of this policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1716,10 +1734,16 @@ public final class JobRouterAdministrationClientImpl {
      * @return a container for the rules that govern how jobs are classified along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getClassificationPolicyWithResponse(String id, RequestOptions requestOptions) {
+    public Response<BinaryData> getClassificationPolicyWithResponse(
+            String classificationPolicyId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getClassificationPolicySync(
-                this.getEndpoint(), this.getServiceVersion().getVersion(), id, accept, requestOptions, Context.NONE);
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                classificationPolicyId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1739,22 +1763,20 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
-     *     classificationPolicy (Required): {
-     *         id: String (Required)
-     *         name: String (Optional)
-     *         fallbackQueueId: String (Optional)
-     *         queueSelectors (Optional): [
-     *              (Optional){
-     *             }
-     *         ]
-     *         prioritizationRule (Optional): {
-     *         }
-     *         workerSelectors (Optional): [
-     *              (Optional){
-     *             }
-     *         ]
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     fallbackQueueId: String (Optional)
+     *     queueSelectorAttachments (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     prioritizationRule (Optional): {
+     *     }
+     *     workerSelectorAttachments (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
      * }
      * }</pre>
      *
@@ -1763,7 +1785,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of classification policies along with {@link PagedResponse} on successful completion
+     * @return paged collection of ClassificationPolicy items along with {@link PagedResponse} on successful completion
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1805,22 +1827,20 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
-     *     classificationPolicy (Required): {
-     *         id: String (Required)
-     *         name: String (Optional)
-     *         fallbackQueueId: String (Optional)
-     *         queueSelectors (Optional): [
-     *              (Optional){
-     *             }
-     *         ]
-     *         prioritizationRule (Optional): {
-     *         }
-     *         workerSelectors (Optional): [
-     *              (Optional){
-     *             }
-     *         ]
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     fallbackQueueId: String (Optional)
+     *     queueSelectorAttachments (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     prioritizationRule (Optional): {
+     *     }
+     *     workerSelectorAttachments (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
      * }
      * }</pre>
      *
@@ -1829,7 +1849,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of classification policies as paginated response with {@link PagedFlux}.
+     * @return paged collection of ClassificationPolicy items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listClassificationPoliciesAsync(RequestOptions requestOptions) {
@@ -1883,22 +1903,20 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
-     *     classificationPolicy (Required): {
-     *         id: String (Required)
-     *         name: String (Optional)
-     *         fallbackQueueId: String (Optional)
-     *         queueSelectors (Optional): [
-     *              (Optional){
-     *             }
-     *         ]
-     *         prioritizationRule (Optional): {
-     *         }
-     *         workerSelectors (Optional): [
-     *              (Optional){
-     *             }
-     *         ]
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     fallbackQueueId: String (Optional)
+     *     queueSelectorAttachments (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     prioritizationRule (Optional): {
+     *     }
+     *     workerSelectorAttachments (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
      * }
      * }</pre>
      *
@@ -1907,7 +1925,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of classification policies along with {@link PagedResponse}.
+     * @return paged collection of ClassificationPolicy items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listClassificationPoliciesSinglePage(RequestOptions requestOptions) {
@@ -1945,22 +1963,20 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
-     *     classificationPolicy (Required): {
-     *         id: String (Required)
-     *         name: String (Optional)
-     *         fallbackQueueId: String (Optional)
-     *         queueSelectors (Optional): [
-     *              (Optional){
-     *             }
-     *         ]
-     *         prioritizationRule (Optional): {
-     *         }
-     *         workerSelectors (Optional): [
-     *              (Optional){
-     *             }
-     *         ]
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     fallbackQueueId: String (Optional)
+     *     queueSelectorAttachments (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     prioritizationRule (Optional): {
+     *     }
+     *     workerSelectorAttachments (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
      * }
      * }</pre>
      *
@@ -1969,7 +1985,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of classification policies as paginated response with {@link PagedIterable}.
+     * @return paged collection of ClassificationPolicy items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listClassificationPolicies(RequestOptions requestOptions) {
@@ -2009,7 +2025,7 @@ public final class JobRouterAdministrationClientImpl {
     /**
      * Delete a classification policy by Id.
      *
-     * @param id Unique identifier of this policy.
+     * @param classificationPolicyId Unique identifier of this policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2018,14 +2034,15 @@ public final class JobRouterAdministrationClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteClassificationPolicyWithResponseAsync(String id, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteClassificationPolicyWithResponseAsync(
+            String classificationPolicyId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteClassificationPolicy(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                id,
+                                classificationPolicyId,
                                 accept,
                                 requestOptions,
                                 context));
@@ -2034,7 +2051,7 @@ public final class JobRouterAdministrationClientImpl {
     /**
      * Delete a classification policy by Id.
      *
-     * @param id Unique identifier of this policy.
+     * @param classificationPolicyId Unique identifier of this policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2043,10 +2060,16 @@ public final class JobRouterAdministrationClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteClassificationPolicyWithResponse(String id, RequestOptions requestOptions) {
+    public Response<Void> deleteClassificationPolicyWithResponse(
+            String classificationPolicyId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.deleteClassificationPolicySync(
-                this.getEndpoint(), this.getServiceVersion().getVersion(), id, accept, requestOptions, Context.NONE);
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                classificationPolicyId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -2067,18 +2090,21 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
-     *     exceptionRules (Optional): {
-     *         String (Optional): {
+     *     exceptionRules (Optional): [
+     *          (Optional){
+     *             id: String (Required)
      *             trigger (Required): {
      *             }
-     *             actions (Required): {
-     *                 String (Required): {
+     *             actions (Required): [
+     *                  (Required){
+     *                     id: String (Optional)
      *                 }
-     *             }
+     *             ]
      *         }
-     *     }
+     *     ]
      * }
      * }</pre>
      *
@@ -2086,22 +2112,25 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
-     *     exceptionRules (Optional): {
-     *         String (Optional): {
+     *     exceptionRules (Optional): [
+     *          (Optional){
+     *             id: String (Required)
      *             trigger (Required): {
      *             }
-     *             actions (Required): {
-     *                 String (Required): {
+     *             actions (Required): [
+     *                  (Required){
+     *                     id: String (Optional)
      *                 }
-     *             }
+     *             ]
      *         }
-     *     }
+     *     ]
      * }
      * }</pre>
      *
-     * @param id The Id of the exception policy.
+     * @param exceptionPolicyId The Id of the exception policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2113,7 +2142,7 @@ public final class JobRouterAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> upsertExceptionPolicyWithResponseAsync(
-            String id, BinaryData resource, RequestOptions requestOptions) {
+            String exceptionPolicyId, BinaryData resource, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2121,7 +2150,7 @@ public final class JobRouterAdministrationClientImpl {
                         service.upsertExceptionPolicy(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                id,
+                                exceptionPolicyId,
                                 contentType,
                                 accept,
                                 resource,
@@ -2147,18 +2176,21 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
-     *     exceptionRules (Optional): {
-     *         String (Optional): {
+     *     exceptionRules (Optional): [
+     *          (Optional){
+     *             id: String (Required)
      *             trigger (Required): {
      *             }
-     *             actions (Required): {
-     *                 String (Required): {
+     *             actions (Required): [
+     *                  (Required){
+     *                     id: String (Optional)
      *                 }
-     *             }
+     *             ]
      *         }
-     *     }
+     *     ]
      * }
      * }</pre>
      *
@@ -2166,22 +2198,25 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
-     *     exceptionRules (Optional): {
-     *         String (Optional): {
+     *     exceptionRules (Optional): [
+     *          (Optional){
+     *             id: String (Required)
      *             trigger (Required): {
      *             }
-     *             actions (Required): {
-     *                 String (Required): {
+     *             actions (Required): [
+     *                  (Required){
+     *                     id: String (Optional)
      *                 }
-     *             }
+     *             ]
      *         }
-     *     }
+     *     ]
      * }
      * }</pre>
      *
-     * @param id The Id of the exception policy.
+     * @param exceptionPolicyId The Id of the exception policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2192,13 +2227,13 @@ public final class JobRouterAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> upsertExceptionPolicyWithResponse(
-            String id, BinaryData resource, RequestOptions requestOptions) {
+            String exceptionPolicyId, BinaryData resource, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return service.upsertExceptionPolicySync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
-                id,
+                exceptionPolicyId,
                 contentType,
                 accept,
                 resource,
@@ -2213,22 +2248,25 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
-     *     exceptionRules (Optional): {
-     *         String (Optional): {
+     *     exceptionRules (Optional): [
+     *          (Optional){
+     *             id: String (Required)
      *             trigger (Required): {
      *             }
-     *             actions (Required): {
-     *                 String (Required): {
+     *             actions (Required): [
+     *                  (Required){
+     *                     id: String (Optional)
      *                 }
-     *             }
+     *             ]
      *         }
-     *     }
+     *     ]
      * }
      * }</pre>
      *
-     * @param id The Id of the exception policy.
+     * @param exceptionPolicyId The Id of the exception policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2238,14 +2276,15 @@ public final class JobRouterAdministrationClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getExceptionPolicyWithResponseAsync(String id, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getExceptionPolicyWithResponseAsync(
+            String exceptionPolicyId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getExceptionPolicy(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                id,
+                                exceptionPolicyId,
                                 accept,
                                 requestOptions,
                                 context));
@@ -2258,22 +2297,25 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
-     *     exceptionRules (Optional): {
-     *         String (Optional): {
+     *     exceptionRules (Optional): [
+     *          (Optional){
+     *             id: String (Required)
      *             trigger (Required): {
      *             }
-     *             actions (Required): {
-     *                 String (Required): {
+     *             actions (Required): [
+     *                  (Required){
+     *                     id: String (Optional)
      *                 }
-     *             }
+     *             ]
      *         }
-     *     }
+     *     ]
      * }
      * }</pre>
      *
-     * @param id The Id of the exception policy.
+     * @param exceptionPolicyId The Id of the exception policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2282,10 +2324,16 @@ public final class JobRouterAdministrationClientImpl {
      * @return a policy that defines actions to execute when exception are triggered along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getExceptionPolicyWithResponse(String id, RequestOptions requestOptions) {
+    public Response<BinaryData> getExceptionPolicyWithResponse(
+            String exceptionPolicyId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getExceptionPolicySync(
-                this.getEndpoint(), this.getServiceVersion().getVersion(), id, accept, requestOptions, Context.NONE);
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                exceptionPolicyId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -2305,21 +2353,21 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
-     *     exceptionPolicy (Required): {
-     *         id: String (Required)
-     *         name: String (Optional)
-     *         exceptionRules (Optional): {
-     *             String (Optional): {
-     *                 trigger (Required): {
-     *                 }
-     *                 actions (Required): {
-     *                     String (Required): {
-     *                     }
-     *                 }
-     *             }
-     *         }
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     exceptionRules (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             trigger (Required): {
+     *             }
+     *             actions (Required): [
+     *                  (Required){
+     *                     id: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
      * }
      * }</pre>
      *
@@ -2328,7 +2376,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of exception policies along with {@link PagedResponse} on successful completion of
+     * @return paged collection of ExceptionPolicy items along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2370,21 +2418,21 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
-     *     exceptionPolicy (Required): {
-     *         id: String (Required)
-     *         name: String (Optional)
-     *         exceptionRules (Optional): {
-     *             String (Optional): {
-     *                 trigger (Required): {
-     *                 }
-     *                 actions (Required): {
-     *                     String (Required): {
-     *                     }
-     *                 }
-     *             }
-     *         }
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     exceptionRules (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             trigger (Required): {
+     *             }
+     *             actions (Required): [
+     *                  (Required){
+     *                     id: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
      * }
      * }</pre>
      *
@@ -2393,7 +2441,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of exception policies as paginated response with {@link PagedFlux}.
+     * @return paged collection of ExceptionPolicy items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listExceptionPoliciesAsync(RequestOptions requestOptions) {
@@ -2447,21 +2495,21 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
-     *     exceptionPolicy (Required): {
-     *         id: String (Required)
-     *         name: String (Optional)
-     *         exceptionRules (Optional): {
-     *             String (Optional): {
-     *                 trigger (Required): {
-     *                 }
-     *                 actions (Required): {
-     *                     String (Required): {
-     *                     }
-     *                 }
-     *             }
-     *         }
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     exceptionRules (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             trigger (Required): {
+     *             }
+     *             actions (Required): [
+     *                  (Required){
+     *                     id: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
      * }
      * }</pre>
      *
@@ -2470,7 +2518,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of exception policies along with {@link PagedResponse}.
+     * @return paged collection of ExceptionPolicy items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listExceptionPoliciesSinglePage(RequestOptions requestOptions) {
@@ -2508,21 +2556,21 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
-     *     exceptionPolicy (Required): {
-     *         id: String (Required)
-     *         name: String (Optional)
-     *         exceptionRules (Optional): {
-     *             String (Optional): {
-     *                 trigger (Required): {
-     *                 }
-     *                 actions (Required): {
-     *                     String (Required): {
-     *                     }
-     *                 }
-     *             }
-     *         }
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     exceptionRules (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             trigger (Required): {
+     *             }
+     *             actions (Required): [
+     *                  (Required){
+     *                     id: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
      * }
      * }</pre>
      *
@@ -2531,7 +2579,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of exception policies as paginated response with {@link PagedIterable}.
+     * @return paged collection of ExceptionPolicy items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listExceptionPolicies(RequestOptions requestOptions) {
@@ -2571,7 +2619,7 @@ public final class JobRouterAdministrationClientImpl {
     /**
      * Deletes a exception policy by Id.
      *
-     * @param id The Id of the exception policy.
+     * @param exceptionPolicyId The Id of the exception policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2580,14 +2628,15 @@ public final class JobRouterAdministrationClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteExceptionPolicyWithResponseAsync(String id, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteExceptionPolicyWithResponseAsync(
+            String exceptionPolicyId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteExceptionPolicy(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                id,
+                                exceptionPolicyId,
                                 accept,
                                 requestOptions,
                                 context));
@@ -2596,7 +2645,7 @@ public final class JobRouterAdministrationClientImpl {
     /**
      * Deletes a exception policy by Id.
      *
-     * @param id The Id of the exception policy.
+     * @param exceptionPolicyId The Id of the exception policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2605,10 +2654,15 @@ public final class JobRouterAdministrationClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteExceptionPolicyWithResponse(String id, RequestOptions requestOptions) {
+    public Response<Void> deleteExceptionPolicyWithResponse(String exceptionPolicyId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.deleteExceptionPolicySync(
-                this.getEndpoint(), this.getServiceVersion().getVersion(), id, accept, requestOptions, Context.NONE);
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                exceptionPolicyId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -2629,6 +2683,7 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
@@ -2643,6 +2698,7 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
@@ -2653,7 +2709,7 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * }</pre>
      *
-     * @param id The Id of this queue.
+     * @param queueId The Id of this queue.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2665,7 +2721,7 @@ public final class JobRouterAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> upsertQueueWithResponseAsync(
-            String id, BinaryData resource, RequestOptions requestOptions) {
+            String queueId, BinaryData resource, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2673,7 +2729,7 @@ public final class JobRouterAdministrationClientImpl {
                         service.upsertQueue(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                id,
+                                queueId,
                                 contentType,
                                 accept,
                                 resource,
@@ -2699,6 +2755,7 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
@@ -2713,6 +2770,7 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
@@ -2723,7 +2781,7 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * }</pre>
      *
-     * @param id The Id of this queue.
+     * @param queueId The Id of this queue.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2733,13 +2791,14 @@ public final class JobRouterAdministrationClientImpl {
      * @return a queue that can contain jobs to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> upsertQueueWithResponse(String id, BinaryData resource, RequestOptions requestOptions) {
+    public Response<BinaryData> upsertQueueWithResponse(
+            String queueId, BinaryData resource, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return service.upsertQueueSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
-                id,
+                queueId,
                 contentType,
                 accept,
                 resource,
@@ -2754,6 +2813,7 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
@@ -2764,7 +2824,7 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * }</pre>
      *
-     * @param id The Id of this queue.
+     * @param queueId The Id of this queue.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2774,14 +2834,14 @@ public final class JobRouterAdministrationClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getQueueWithResponseAsync(String id, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getQueueWithResponseAsync(String queueId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getQueue(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                id,
+                                queueId,
                                 accept,
                                 requestOptions,
                                 context));
@@ -2794,6 +2854,7 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
@@ -2804,7 +2865,7 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * }</pre>
      *
-     * @param id The Id of this queue.
+     * @param queueId The Id of this queue.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2813,10 +2874,15 @@ public final class JobRouterAdministrationClientImpl {
      * @return a queue that can contain jobs to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getQueueWithResponse(String id, RequestOptions requestOptions) {
+    public Response<BinaryData> getQueueWithResponse(String queueId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getQueueSync(
-                this.getEndpoint(), this.getServiceVersion().getVersion(), id, accept, requestOptions, Context.NONE);
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                queueId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -2836,16 +2902,14 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
-     *     queue (Required): {
-     *         id: String (Required)
-     *         name: String (Optional)
-     *         distributionPolicyId: String (Optional)
-     *         labels (Optional): {
-     *             String: Object (Optional)
-     *         }
-     *         exceptionPolicyId: String (Optional)
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     distributionPolicyId: String (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
      *
@@ -2854,7 +2918,8 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of queues along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of RouterQueue items along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listQueuesSinglePageAsync(RequestOptions requestOptions) {
@@ -2895,16 +2960,14 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
-     *     queue (Required): {
-     *         id: String (Required)
-     *         name: String (Optional)
-     *         distributionPolicyId: String (Optional)
-     *         labels (Optional): {
-     *             String: Object (Optional)
-     *         }
-     *         exceptionPolicyId: String (Optional)
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     distributionPolicyId: String (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
      *
@@ -2913,7 +2976,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of queues as paginated response with {@link PagedFlux}.
+     * @return paged collection of RouterQueue items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listQueuesAsync(RequestOptions requestOptions) {
@@ -2967,16 +3030,14 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
-     *     queue (Required): {
-     *         id: String (Required)
-     *         name: String (Optional)
-     *         distributionPolicyId: String (Optional)
-     *         labels (Optional): {
-     *             String: Object (Optional)
-     *         }
-     *         exceptionPolicyId: String (Optional)
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     distributionPolicyId: String (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
      *
@@ -2985,7 +3046,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of queues along with {@link PagedResponse}.
+     * @return paged collection of RouterQueue items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listQueuesSinglePage(RequestOptions requestOptions) {
@@ -3023,16 +3084,14 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
-     *     queue (Required): {
-     *         id: String (Required)
-     *         name: String (Optional)
-     *         distributionPolicyId: String (Optional)
-     *         labels (Optional): {
-     *             String: Object (Optional)
-     *         }
-     *         exceptionPolicyId: String (Optional)
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     distributionPolicyId: String (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
      *
@@ -3041,7 +3100,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of queues as paginated response with {@link PagedIterable}.
+     * @return paged collection of RouterQueue items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listQueues(RequestOptions requestOptions) {
@@ -3081,7 +3140,7 @@ public final class JobRouterAdministrationClientImpl {
     /**
      * Deletes a queue by Id.
      *
-     * @param id The Id of this queue.
+     * @param queueId The Id of this queue.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3090,14 +3149,14 @@ public final class JobRouterAdministrationClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteQueueWithResponseAsync(String id, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteQueueWithResponseAsync(String queueId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteQueue(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                id,
+                                queueId,
                                 accept,
                                 requestOptions,
                                 context));
@@ -3106,7 +3165,7 @@ public final class JobRouterAdministrationClientImpl {
     /**
      * Deletes a queue by Id.
      *
-     * @param id The Id of this queue.
+     * @param queueId The Id of this queue.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3115,10 +3174,15 @@ public final class JobRouterAdministrationClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteQueueWithResponse(String id, RequestOptions requestOptions) {
+    public Response<Void> deleteQueueWithResponse(String queueId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.deleteQueueSync(
-                this.getEndpoint(), this.getServiceVersion().getVersion(), id, accept, requestOptions, Context.NONE);
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                queueId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -3130,17 +3194,15 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
-     *     distributionPolicy (Required): {
-     *         id: String (Required)
-     *         name: String (Optional)
-     *         offerExpiresAfterSeconds: Double (Optional)
-     *         mode (Optional): {
-     *             minConcurrentOffers: Integer (Optional)
-     *             maxConcurrentOffers: Integer (Optional)
-     *             bypassSelectors: Boolean (Optional)
-     *         }
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     offerExpiresAfterSeconds: Double (Optional)
+     *     mode (Optional): {
+     *         minConcurrentOffers: Integer (Optional)
+     *         maxConcurrentOffers: Integer (Optional)
+     *         bypassSelectors: Boolean (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -3151,7 +3213,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of distribution policies along with {@link PagedResponse} on successful completion of
+     * @return paged collection of DistributionPolicy items along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3182,17 +3244,15 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
-     *     distributionPolicy (Required): {
-     *         id: String (Required)
-     *         name: String (Optional)
-     *         offerExpiresAfterSeconds: Double (Optional)
-     *         mode (Optional): {
-     *             minConcurrentOffers: Integer (Optional)
-     *             maxConcurrentOffers: Integer (Optional)
-     *             bypassSelectors: Boolean (Optional)
-     *         }
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     offerExpiresAfterSeconds: Double (Optional)
+     *     mode (Optional): {
+     *         minConcurrentOffers: Integer (Optional)
+     *         maxConcurrentOffers: Integer (Optional)
+     *         bypassSelectors: Boolean (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -3203,7 +3263,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of distribution policies along with {@link PagedResponse}.
+     * @return paged collection of DistributionPolicy items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listDistributionPoliciesNextSinglePage(
@@ -3230,22 +3290,20 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
-     *     classificationPolicy (Required): {
-     *         id: String (Required)
-     *         name: String (Optional)
-     *         fallbackQueueId: String (Optional)
-     *         queueSelectors (Optional): [
-     *              (Optional){
-     *             }
-     *         ]
-     *         prioritizationRule (Optional): {
-     *         }
-     *         workerSelectors (Optional): [
-     *              (Optional){
-     *             }
-     *         ]
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     fallbackQueueId: String (Optional)
+     *     queueSelectorAttachments (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     prioritizationRule (Optional): {
+     *     }
+     *     workerSelectorAttachments (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
      * }
      * }</pre>
      *
@@ -3256,7 +3314,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of classification policies along with {@link PagedResponse} on successful completion
+     * @return paged collection of ClassificationPolicy items along with {@link PagedResponse} on successful completion
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3287,22 +3345,20 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
-     *     classificationPolicy (Required): {
-     *         id: String (Required)
-     *         name: String (Optional)
-     *         fallbackQueueId: String (Optional)
-     *         queueSelectors (Optional): [
-     *              (Optional){
-     *             }
-     *         ]
-     *         prioritizationRule (Optional): {
-     *         }
-     *         workerSelectors (Optional): [
-     *              (Optional){
-     *             }
-     *         ]
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     fallbackQueueId: String (Optional)
+     *     queueSelectorAttachments (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     prioritizationRule (Optional): {
+     *     }
+     *     workerSelectorAttachments (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
      * }
      * }</pre>
      *
@@ -3313,7 +3369,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of classification policies along with {@link PagedResponse}.
+     * @return paged collection of ClassificationPolicy items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listClassificationPoliciesNextSinglePage(
@@ -3340,21 +3396,21 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
-     *     exceptionPolicy (Required): {
-     *         id: String (Required)
-     *         name: String (Optional)
-     *         exceptionRules (Optional): {
-     *             String (Optional): {
-     *                 trigger (Required): {
-     *                 }
-     *                 actions (Required): {
-     *                     String (Required): {
-     *                     }
-     *                 }
-     *             }
-     *         }
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     exceptionRules (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             trigger (Required): {
+     *             }
+     *             actions (Required): [
+     *                  (Required){
+     *                     id: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
      * }
      * }</pre>
      *
@@ -3365,7 +3421,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of exception policies along with {@link PagedResponse} on successful completion of
+     * @return paged collection of ExceptionPolicy items along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3396,21 +3452,21 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
-     *     exceptionPolicy (Required): {
-     *         id: String (Required)
-     *         name: String (Optional)
-     *         exceptionRules (Optional): {
-     *             String (Optional): {
-     *                 trigger (Required): {
-     *                 }
-     *                 actions (Required): {
-     *                     String (Required): {
-     *                     }
-     *                 }
-     *             }
-     *         }
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     exceptionRules (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             trigger (Required): {
+     *             }
+     *             actions (Required): [
+     *                  (Required){
+     *                     id: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
      * }
      * }</pre>
      *
@@ -3421,7 +3477,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of exception policies along with {@link PagedResponse}.
+     * @return paged collection of ExceptionPolicy items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listExceptionPoliciesNextSinglePage(
@@ -3448,16 +3504,14 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
-     *     queue (Required): {
-     *         id: String (Required)
-     *         name: String (Optional)
-     *         distributionPolicyId: String (Optional)
-     *         labels (Optional): {
-     *             String: Object (Optional)
-     *         }
-     *         exceptionPolicyId: String (Optional)
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     distributionPolicyId: String (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
      *
@@ -3468,7 +3522,8 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of queues along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of RouterQueue items along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listQueuesNextSinglePageAsync(
@@ -3497,16 +3552,14 @@ public final class JobRouterAdministrationClientImpl {
      *
      * <pre>{@code
      * {
-     *     queue (Required): {
-     *         id: String (Required)
-     *         name: String (Optional)
-     *         distributionPolicyId: String (Optional)
-     *         labels (Optional): {
-     *             String: Object (Optional)
-     *         }
-     *         exceptionPolicyId: String (Optional)
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     name: String (Optional)
+     *     distributionPolicyId: String (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
      *
@@ -3517,7 +3570,7 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a paged collection of queues along with {@link PagedResponse}.
+     * @return paged collection of RouterQueue items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listQueuesNextSinglePage(String nextLink, RequestOptions requestOptions) {
