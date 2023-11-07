@@ -23,7 +23,7 @@ public class InteractiveBrowserBrokerTests {
     @Test
     @EnabledOnOs({OS.MAC, OS.LINUX})
     public void msalRuntimeErrorThrown() {
-        Assertions.assertThrows(IllegalStateException.class, () -> {
+        Assertions.assertThrows(ExceptionInInitializerError.class, () -> {
             IBroker broker = InteractiveBrowserBroker.getMsalRuntimeBroker();
         });
     }
