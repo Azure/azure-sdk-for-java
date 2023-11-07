@@ -16,7 +16,7 @@ public final class ChatAttachment {
     /*
      * The type of attachment.
      */
-    private final AttachmentType attachmentType;
+    private final ChatAttachmentType attachmentType;
 
     /*
      * The file extension of the attachment, if available
@@ -40,10 +40,11 @@ public final class ChatAttachment {
 
     /**
      * Create a new instance of ChatAttachment
+     *
      * @param id the unique id of the chat attachment
-     * @param attachmentType the type of attachment 
+     * @param attachmentType the type of attachment
      */
-    public ChatAttachment(String id, AttachmentType attachmentType) {
+    public ChatAttachment(String id, ChatAttachmentType attachmentType) {
         this.id = id;
         this.attachmentType = attachmentType;
     }
@@ -62,7 +63,7 @@ public final class ChatAttachment {
      *
      * @return the attachmentType value.
      */
-    public AttachmentType getAttachmentType() {
+    public ChatAttachmentType getAttachmentType() {
         return this.attachmentType;
     }
 

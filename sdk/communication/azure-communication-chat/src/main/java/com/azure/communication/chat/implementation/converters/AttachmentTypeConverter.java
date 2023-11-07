@@ -4,12 +4,12 @@ package com.azure.communication.chat.implementation.converters;
 
 import java.util.Objects;
 
-import com.azure.communication.chat.models.AttachmentType;
+import com.azure.communication.chat.models.ChatAttachmentType;
 
 public final class AttachmentTypeConverter {
-    public static AttachmentType convert(
-            com.azure.communication.chat.implementation.models.AttachmentType attachmentType) {
-        Objects.requireNonNull(attachmentType, "'attachmentType' cannot be null.");
-        return AttachmentType.fromString(attachmentType.toString());
+    public static ChatAttachmentType convert(
+            com.azure.communication.chat.implementation.models.ChatAttachmentType chatAttachmentType) {
+        Objects.requireNonNull(chatAttachmentType, "'chatAttachmentType' cannot be null.");
+        return ChatAttachmentType.fromString(chatAttachmentType.toString());
     }
 }

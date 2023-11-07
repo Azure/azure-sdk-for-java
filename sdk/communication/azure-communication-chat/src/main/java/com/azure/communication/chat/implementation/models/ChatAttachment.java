@@ -20,7 +20,7 @@ public final class ChatAttachment {
      * The type of attachment.
      */
     @JsonProperty(value = "attachmentType", required = true)
-    private AttachmentType attachmentType;
+    private ChatAttachmentType attachmentType;
 
     /*
      * The file extension of the attachment, if available
@@ -71,7 +71,7 @@ public final class ChatAttachment {
      *
      * @return the attachmentType value.
      */
-    public AttachmentType getAttachmentType() {
+    public ChatAttachmentType getAttachmentType() {
         return this.attachmentType;
     }
 
@@ -81,7 +81,7 @@ public final class ChatAttachment {
      * @param attachmentType the attachmentType value to set.
      * @return the ChatAttachment object itself.
      */
-    public ChatAttachment setAttachmentType(AttachmentType attachmentType) {
+    public ChatAttachment setAttachmentType(ChatAttachmentType attachmentType) {
         this.attachmentType = attachmentType;
         return this;
     }
