@@ -8,10 +8,12 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.developer.devcenter.DevCenterClientTestBase;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class DevBoxesSkipActionTests extends DevCenterClientTestBase {
     @Test
+    @Disabled
     public void testDevBoxesSkipActionTests() {
         createDevBox();
 

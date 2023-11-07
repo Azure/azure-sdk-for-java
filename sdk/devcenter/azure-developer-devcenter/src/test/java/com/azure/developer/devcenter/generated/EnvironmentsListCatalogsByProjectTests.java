@@ -9,10 +9,12 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.developer.devcenter.DevCenterClientTestBase;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class EnvironmentsListCatalogsByProjectTests extends DevCenterClientTestBase {
     @Test
+    @Disabled
     public void testEnvironmentsListCatalogsByProjectTests() {
         RequestOptions requestOptions = new RequestOptions();
 

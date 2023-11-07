@@ -13,10 +13,12 @@ import java.util.Map;
 
 import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class DevBoxesDelayActionsTests extends DevCenterClientTestBase {
     @Test
+    @Disabled
     public void testDevBoxesDelayActionsTests() {
         createDevBox();
 

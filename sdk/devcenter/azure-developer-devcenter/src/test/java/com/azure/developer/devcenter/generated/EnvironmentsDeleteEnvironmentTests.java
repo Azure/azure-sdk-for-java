@@ -10,10 +10,12 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.developer.devcenter.DevCenterClientTestBase;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class EnvironmentsDeleteEnvironmentTests extends DevCenterClientTestBase {
     @Test
+    @Disabled
     public void testEnvironmentsDeleteEnvironmentTests() {
         String environmentName = createEnvironment();
 

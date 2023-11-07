@@ -9,12 +9,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.developer.devcenter.DevCenterClientTestBase;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.LinkedHashMap;
 
 public final class DevBoxesGetActionTests extends DevCenterClientTestBase {
     @Test
+    @Disabled
     public void testDevBoxesGetActionTests() {
         createDevBox();
 

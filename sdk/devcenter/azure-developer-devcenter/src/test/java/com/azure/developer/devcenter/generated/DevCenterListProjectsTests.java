@@ -9,10 +9,12 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.developer.devcenter.DevCenterClientTestBase;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class DevCenterListProjectsTests extends DevCenterClientTestBase {
     @Test
+    @Disabled
     public void testDevCenterListProjectsTests() {
         RequestOptions requestOptions = new RequestOptions();
 

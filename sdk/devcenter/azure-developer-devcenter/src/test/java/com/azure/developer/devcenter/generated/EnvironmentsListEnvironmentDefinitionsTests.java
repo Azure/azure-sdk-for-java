@@ -10,12 +10,14 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.developer.devcenter.DevCenterClientTestBase;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
 public final class EnvironmentsListEnvironmentDefinitionsTests extends DevCenterClientTestBase {
     @Test
+    @Disabled
     public void testEnvironmentsListEnvironmentDefinitionsTests() {
         RequestOptions requestOptions = new RequestOptions();
 

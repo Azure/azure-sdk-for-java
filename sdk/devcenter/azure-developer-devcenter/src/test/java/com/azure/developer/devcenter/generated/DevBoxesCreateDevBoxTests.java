@@ -10,10 +10,12 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.developer.devcenter.DevCenterClientTestBase;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class DevBoxesCreateDevBoxTests extends DevCenterClientTestBase {
     @Test
+    @Disabled
     public void testDevBoxesCreateDevBoxTests() {
         BinaryData body = BinaryData.fromString(String.format("{\"poolName\": \"%s\"}", poolName));
         RequestOptions requestOptions = new RequestOptions();

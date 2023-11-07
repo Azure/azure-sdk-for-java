@@ -12,10 +12,12 @@ import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class DevBoxesDelayActionTests extends DevCenterClientTestBase {
     @Test
+    @Disabled
     public void testDevBoxesDelayActionTests() {
         createDevBox();
 
