@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.connectedvmware.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ResourcePools ListByResourceGroup. */
 public final class ResourcePoolsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/ListResourcePoolsByResourceGroup.json
+     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/ListResourcePoolsByResourceGroup.json
      */
     /**
      * Sample code: ListResourcePoolsByResourceGroup.
@@ -18,6 +16,6 @@ public final class ResourcePoolsListByResourceGroupSamples {
      */
     public static void listResourcePoolsByResourceGroup(
         com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager.resourcePools().listByResourceGroup("testrg", Context.NONE);
+        manager.resourcePools().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }

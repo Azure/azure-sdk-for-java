@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 4.7.1 (2023-10-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
+
 ## 4.7.0 (2023-09-25)
 
 ### Bugs fixed

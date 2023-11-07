@@ -6,6 +6,7 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elasticsan.fluent.models.ElasticSanUpdateProperties;
+import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
 import org.junit.jupiter.api.Assertions;
 
 public final class ElasticSanUpdatePropertiesTests {
@@ -13,20 +14,24 @@ public final class ElasticSanUpdatePropertiesTests {
     public void testDeserialize() throws Exception {
         ElasticSanUpdateProperties model =
             BinaryData
-                .fromString("{\"baseSizeTiB\":6845758831924711808,\"extendedCapacitySizeTiB\":2937936941611488852}")
+                .fromString(
+                    "{\"baseSizeTiB\":8963352586461588270,\"extendedCapacitySizeTiB\":5681518543466823728,\"publicNetworkAccess\":\"Disabled\"}")
                 .toObject(ElasticSanUpdateProperties.class);
-        Assertions.assertEquals(6845758831924711808L, model.baseSizeTiB());
-        Assertions.assertEquals(2937936941611488852L, model.extendedCapacitySizeTiB());
+        Assertions.assertEquals(8963352586461588270L, model.baseSizeTiB());
+        Assertions.assertEquals(5681518543466823728L, model.extendedCapacitySizeTiB());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ElasticSanUpdateProperties model =
             new ElasticSanUpdateProperties()
-                .withBaseSizeTiB(6845758831924711808L)
-                .withExtendedCapacitySizeTiB(2937936941611488852L);
+                .withBaseSizeTiB(8963352586461588270L)
+                .withExtendedCapacitySizeTiB(5681518543466823728L)
+                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         model = BinaryData.fromObject(model).toObject(ElasticSanUpdateProperties.class);
-        Assertions.assertEquals(6845758831924711808L, model.baseSizeTiB());
-        Assertions.assertEquals(2937936941611488852L, model.extendedCapacitySizeTiB());
+        Assertions.assertEquals(8963352586461588270L, model.baseSizeTiB());
+        Assertions.assertEquals(5681518543466823728L, model.extendedCapacitySizeTiB());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
     }
 }

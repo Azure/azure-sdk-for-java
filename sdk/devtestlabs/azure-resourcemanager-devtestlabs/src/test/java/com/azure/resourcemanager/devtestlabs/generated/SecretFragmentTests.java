@@ -14,19 +14,18 @@ public final class SecretFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecretFragment model =
-            BinaryData
-                .fromString("{\"tags\":{\"uufuz\":\"sylwxdzaumweooh\",\"a\":\"oyjathwtzol\"}}")
-                .toObject(SecretFragment.class);
-        Assertions.assertEquals("sylwxdzaumweooh", model.tags().get("uufuz"));
+            BinaryData.fromString("{\"tags\":{\"qgqqihedsvqwthmk\":\"tpvopvpbdb\"}}").toObject(SecretFragment.class);
+        Assertions.assertEquals("tpvopvpbdb", model.tags().get("qgqqihedsvqwthmk"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecretFragment model = new SecretFragment().withTags(mapOf("uufuz", "sylwxdzaumweooh", "a", "oyjathwtzol"));
+        SecretFragment model = new SecretFragment().withTags(mapOf("qgqqihedsvqwthmk", "tpvopvpbdb"));
         model = BinaryData.fromObject(model).toObject(SecretFragment.class);
-        Assertions.assertEquals("sylwxdzaumweooh", model.tags().get("uufuz"));
+        Assertions.assertEquals("tpvopvpbdb", model.tags().get("qgqqihedsvqwthmk"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

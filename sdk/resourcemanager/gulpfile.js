@@ -61,9 +61,13 @@ async function defaultInfo() {
 
 const maxParallelism = parseInt(args["parallel"], 10) || os.cpus().length;
 var projects = args["projects"];
-var autoRestVersion = "3.9.6"; // default
+var autoRestVersion = "3.9.7"; // default
 if (args["autorest"] !== undefined) {
     autoRestVersion = args["autorest"];
+}
+var autoRestJava = "@autorest/java@latest"; // default
+if (args["autorest-java"] !== undefined) {
+    autoRestJava = args["autorest-java"];
 }
 var debug = args["debugger"];
 var autoRestArgs = args["autorest-args"] || "";
@@ -123,10 +127,10 @@ function codegen(project, cb) {
         generator = "";
     }
 
-    const generatorPath = args["autorest-java"]
-        ? args["autorest-java"].startsWith("@autorest/java")
-            ? `--use=${args["autorest-java"]} `
-            : `--use=${path.resolve(args["autorest-java"])} `
+    const generatorPath = autoRestJava
+        ? autoRestJava.startsWith("@autorest/java")
+            ? `--use=${autoRestJava} `
+            : `--use=${path.resolve(autoRestJava)} `
         : "";
 
     const regenManager = args["regenerate-manager"] ? " --regenerate-manager " : "";

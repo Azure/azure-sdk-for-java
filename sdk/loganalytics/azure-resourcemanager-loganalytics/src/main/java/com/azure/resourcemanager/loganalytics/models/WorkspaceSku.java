@@ -18,8 +18,7 @@ public final class WorkspaceSku {
     private WorkspaceSkuNameEnum name;
 
     /*
-     * The capacity reservation level in GB for this workspace, when
-     * CapacityReservation sku is selected.
+     * The capacity reservation level in GB for this workspace, when CapacityReservation sku is selected.
      */
     @JsonProperty(value = "capacityReservationLevel")
     private CapacityReservationLevel capacityReservationLevel;
@@ -29,6 +28,10 @@ public final class WorkspaceSku {
      */
     @JsonProperty(value = "lastSkuUpdate", access = JsonProperty.Access.WRITE_ONLY)
     private String lastSkuUpdate;
+
+    /** Creates an instance of WorkspaceSku class. */
+    public WorkspaceSku() {
+    }
 
     /**
      * Get the name property: The name of the SKU.

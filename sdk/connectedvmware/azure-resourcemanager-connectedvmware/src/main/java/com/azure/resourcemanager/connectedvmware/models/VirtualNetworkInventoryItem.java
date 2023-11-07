@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.connectedvmware.fluent.models.InventoryItemProperties;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -14,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("VirtualNetwork")
 @Fluent
 public final class VirtualNetworkInventoryItem extends InventoryItemProperties {
+    /** Creates an instance of VirtualNetworkInventoryItem class. */
+    public VirtualNetworkInventoryItem() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public VirtualNetworkInventoryItem withManagedResourceId(String managedResourceId) {

@@ -27,15 +27,6 @@ public final class SharedKeysOperationsImpl implements SharedKeysOperations {
         this.serviceManager = serviceManager;
     }
 
-    public SharedKeys getSharedKeys(String resourceGroupName, String workspaceName) {
-        SharedKeysInner inner = this.serviceClient().getSharedKeys(resourceGroupName, workspaceName);
-        if (inner != null) {
-            return new SharedKeysImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SharedKeys> getSharedKeysWithResponse(
         String resourceGroupName, String workspaceName, Context context) {
         Response<SharedKeysInner> inner =
@@ -51,8 +42,8 @@ public final class SharedKeysOperationsImpl implements SharedKeysOperations {
         }
     }
 
-    public SharedKeys regenerate(String resourceGroupName, String workspaceName) {
-        SharedKeysInner inner = this.serviceClient().regenerate(resourceGroupName, workspaceName);
+    public SharedKeys getSharedKeys(String resourceGroupName, String workspaceName) {
+        SharedKeysInner inner = this.serviceClient().getSharedKeys(resourceGroupName, workspaceName);
         if (inner != null) {
             return new SharedKeysImpl(inner, this.manager());
         } else {
@@ -70,6 +61,15 @@ public final class SharedKeysOperationsImpl implements SharedKeysOperations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SharedKeysImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SharedKeys regenerate(String resourceGroupName, String workspaceName) {
+        SharedKeysInner inner = this.serviceClient().regenerate(resourceGroupName, workspaceName);
+        if (inner != null) {
+            return new SharedKeysImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -1,6 +1,6 @@
 # Azure Monitor OpenTelemetry Distro / Application Insights in Spring native Java application
 
-This Spring Boot starter provides telemetry data to Azure Monitor for Spring Boot applications and GraalVM native images.
+This Spring Boot starter provides telemetry data to Azure Monitor for Spring Boot applications running on GraalVM native image.
 
 For a Spring Boot application running on a JVM (not with a GraalVM native image), we recommend using the [Application Insights Java agent][application_insights_java_agent_spring_boot].
 
@@ -109,7 +109,7 @@ dependencyManagement {
 
 ### Authentication
 
-#### Get the instrumentation key from the portal
+#### Get the connection string from the portal
 
 In order to export telemetry data to Azure Monitor, you will need the connection string to your [Application
  Insights resource][application_insights_resource]. Go to [Azure Portal][azure_portal], 
@@ -207,7 +207,7 @@ You can find additional settings of the OpenTelemetry Logback appender [here](ht
 You can configure additional instrumentations with [OpenTelemetry instrumentations libraries](https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/docs/supported-libraries.md#libraries--frameworks).
     
 ### Build your Spring native application
-At this step, you can build your application as a native image and start the native image:
+At this step, you can build your application as a GraalVM native image and start it:
 
 ```
 mvn -Pnative spring-boot:build-image

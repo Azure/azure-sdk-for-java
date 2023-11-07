@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProvisioningAction. */
+/** Defines the different types of operations for guest agent. */
 public final class ProvisioningAction extends ExpandableStringEnum<ProvisioningAction> {
     /** Static value install for ProvisioningAction. */
     public static final ProvisioningAction INSTALL = fromString("install");
@@ -18,6 +18,15 @@ public final class ProvisioningAction extends ExpandableStringEnum<ProvisioningA
 
     /** Static value repair for ProvisioningAction. */
     public static final ProvisioningAction REPAIR = fromString("repair");
+
+    /**
+     * Creates a new instance of ProvisioningAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProvisioningAction() {
+    }
 
     /**
      * Creates or finds a ProvisioningAction from its string representation.

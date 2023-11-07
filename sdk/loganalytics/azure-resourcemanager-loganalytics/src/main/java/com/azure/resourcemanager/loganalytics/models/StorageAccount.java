@@ -23,6 +23,10 @@ public final class StorageAccount {
     @JsonProperty(value = "key", required = true)
     private String key;
 
+    /** Creates an instance of StorageAccount class. */
+    public StorageAccount() {
+    }
+
     /**
      * Get the id property: The Azure Resource Manager ID of the storage account resource.
      *

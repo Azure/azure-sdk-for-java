@@ -29,6 +29,10 @@ public final class ApiKeyRequest {
     @JsonProperty(value = "linkedWriteProperties")
     private List<String> linkedWriteProperties;
 
+    /** Creates an instance of ApiKeyRequest class. */
+    public ApiKeyRequest() {
+    }
+
     /**
      * Get the name property: The name of the API Key.
      *
