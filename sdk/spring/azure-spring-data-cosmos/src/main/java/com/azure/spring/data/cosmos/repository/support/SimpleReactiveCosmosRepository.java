@@ -130,7 +130,7 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
         Assert.notNull(entities, "The given Iterable of entities must not be null!");
 
         if (entityInformation.getPartitionKeyFieldName() != null) {
-            return cosmosOperations.insertAll(this.entityInformation, entities);
+            return cosmosOperations.insertAll(this.entityInformation, Flux.fromIterable(entities));
         } else {
             return Flux.fromIterable(entities).flatMap(this::save);
         }
@@ -253,7 +253,7 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
         Assert.notNull(entities, "The given Iterable of entities must not be null!");
 
         if (entityInformation.getPartitionKeyFieldName() != null) {
-            return cosmosOperations.deleteEntities(this.entityInformation, entities);
+            return cosmosOperations.deleteEntities(this.entityInformation, Flux.fromIterable(entities));
         } else {
             return Flux.fromIterable(entities).flatMap(this::delete).then();
         }
@@ -267,9 +267,9 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
         if (entityInformation.getPartitionKeyFieldName() != null) {
             return cosmosOperations.deleteEntities(this.entityInformation, Flux.from(entityStream));
         } else {
-            return Flux.from(entityStream)
-                .map(entityInformation::getRequiredId)
-                .flatMap(this::deleteById)
+            return Flux.from(entityStream)//
+                .map(entityInformation::getRequiredId)//
+                .flatMap(this::deleteById)//
                 .then();
         }
     }
