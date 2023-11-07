@@ -52,8 +52,8 @@ public class BlobStorageStressRunner {
         }
 
         builder.setParallel(parallel);
-        //int seconds = Integer.parseInt(System.getProperty("testTime"));
-        int seconds = 90;
+        int seconds = Integer.parseInt(System.getProperty("testTime"));
+        //int seconds = 90;
         builder.setTestTimeSeconds(seconds);
         if (useFaultInjection) {
             System.out.println("Using fault injection");
