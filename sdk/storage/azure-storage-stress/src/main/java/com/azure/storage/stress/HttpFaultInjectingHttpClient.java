@@ -61,8 +61,6 @@ public class HttpFaultInjectingHttpClient implements HttpClient {
         URL originalUrl = request.getUrl();
         request.setHeader(UPSTREAM_URI_HEADER, originalUrl.toString()).setUrl(rewriteUrl(originalUrl));
         String faultType = faultInjectorHandling();
-        ((Queue<String>) context.getData(FAULT_TRACKING_CONTEXT_KEY).get())
-            .add(createMetadata(faultType, request.getHeaders()));
         request.setHeader(HTTP_FAULT_INJECTOR_RESPONSE_HEADER, faultType);
 
         return wrappedHttpClient.send(request, context)
@@ -93,8 +91,6 @@ public class HttpFaultInjectingHttpClient implements HttpClient {
         URL originalUrl = request.getUrl();
         request.setHeader(UPSTREAM_URI_HEADER, originalUrl.toString()).setUrl(rewriteUrl(originalUrl));
         String faultType = faultInjectorHandling();
-        ((Queue<String>) context.getData(FAULT_TRACKING_CONTEXT_KEY).get())
-            .add(createMetadata(faultType, request.getHeaders()));
         request.setHeader(HTTP_FAULT_INJECTOR_RESPONSE_HEADER, faultType);
 
         HttpResponse response = null;
@@ -106,11 +102,6 @@ public class HttpFaultInjectingHttpClient implements HttpClient {
             logResponse(faultType, request, response);
         }
         return response;
-    }
-
-    private static String createMetadata(String faultType, HttpHeaders headers) {
-        return "[faultType: " + faultType + ", range: " + headers.get("x-ms-range")
-            + ", clientRequestId: " + headers.get(HttpHeaderName.X_MS_CLIENT_REQUEST_ID) + "]";
     }
 
     private URL rewriteUrl(URL originalUrl) {
