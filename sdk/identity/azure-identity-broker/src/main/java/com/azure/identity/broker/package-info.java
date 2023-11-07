@@ -3,7 +3,11 @@
 
 /**
  * <p>The Azure Identity Brokered Authentication library offers support for using various support brokers from the
- * MSAL4j library. Current support:</p>
+ * MSAL4j library. Brokered authentication utilizes a secure component for token acquisition and management. This enables
+ * many useful scenarios, such as using hardware authentication keys or accessing resources that require additional security
+ * such as device bound tokens.</p>
+ *
+ * <p>Currently supported brokers:</p>
  * <ul>
  *     <li>Web Application Manager on Windows OS</li>
  * </ul>

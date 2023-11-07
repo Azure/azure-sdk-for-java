@@ -24,8 +24,9 @@ public class JavaDocCodeSnippets {
             WinDef.HWND hwnd = User32.INSTANCE.FindWindow(null, stage.getTitle());
             return Pointer.nativeValue(hwnd.getPointer());
         } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
+            // Handle exceptions in an appropriate manner for your application.
+            // Not being able to retrieve a window handle for Windows is a fatal error.
+            throw e;
         }
     }
     // END: com.azure.identity.broker.interactivebrowserbrokercredentialbuilder.getwindowhandle.javafx
