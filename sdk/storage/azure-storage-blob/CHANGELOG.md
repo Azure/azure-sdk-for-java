@@ -1,9 +1,11 @@
 # Release History
 
-## 12.25.0-beta.2 (Unreleased)
+## 12.25.0 (2023-11-08)
 
 ### Features Added
 - Added BlobProperties.getRequestId() to access the x-ms-request-id header property.
+- Added support for service versions 2023-11-03.
+- Added support for BlobAudience.
 
 ### Breaking Changes
 
