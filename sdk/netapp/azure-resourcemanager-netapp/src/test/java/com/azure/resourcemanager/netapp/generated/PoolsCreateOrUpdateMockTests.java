@@ -36,7 +36,7 @@ public final class PoolsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"etag\":\"coezbrhubskh\",\"properties\":{\"poolId\":\"ygo\",\"size\":3757334132859952072,\"serviceLevel\":\"Premium\",\"provisioningState\":\"Succeeded\",\"totalThroughputMibps\":10.981679,\"utilizedThroughputMibps\":60.957645,\"qosType\":\"Manual\",\"coolAccess\":false,\"encryptionType\":\"Single\"},\"location\":\"vyvnqqyb\",\"tags\":{\"cbhernntiewdj\":\"euayjkqabqgzsles\"},\"id\":\"vbquwr\",\"name\":\"ehwagoh\",\"type\":\"uffkmrqemvvh\"}";
+            "{\"etag\":\"ajlyjtlvofqzhv\",\"properties\":{\"poolId\":\"ibyfmo\",\"size\":6727856303003361360,\"serviceLevel\":\"StandardZRS\",\"provisioningState\":\"Succeeded\",\"totalThroughputMibps\":78.12518,\"utilizedThroughputMibps\":77.284424,\"qosType\":\"Manual\",\"coolAccess\":false,\"encryptionType\":\"Double\"},\"location\":\"hyzsxjrkamb\",\"tags\":{\"nvuqeqvldspa\":\"egv\",\"kdmflvestmjlx\":\"tjb\",\"zapeewchpx\":\"ril\"},\"id\":\"ktwkuziyc\",\"name\":\"levufuztcktyhj\",\"type\":\"qedcgzulwm\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,33 +67,27 @@ public final class PoolsCreateOrUpdateMockTests {
         CapacityPool response =
             manager
                 .pools()
-                .define("ejwcwwqiok")
-                .withRegion("dbsdshm")
-                .withExistingNetAppAccount("jltduceam", "mczuo")
-                .withSize(2032076499039278230L)
-                .withServiceLevel(ServiceLevel.ULTRA)
-                .withTags(
-                    mapOf(
-                        "ltfnhtbaxkgx",
-                        "aehvbbxuri",
-                        "yklyhpluodpvruud",
-                        "wrck",
-                        "xeclzedqbcvhzlhp",
-                        "gzibthostgktstv"))
-                .withQosType(QosType.MANUAL)
-                .withCoolAccess(true)
+                .define("evwrdnhfuk")
+                .withRegion("oqcaaewdaomdj")
+                .withExistingNetAppAccount("chp", "db")
+                .withSize(3770519572473050056L)
+                .withServiceLevel(ServiceLevel.STANDARD)
+                .withTags(mapOf("siykzkdncjdxonbz", "jxxkzbrmsgei", "z", "ggcula"))
+                .withQosType(QosType.AUTO)
+                .withCoolAccess(false)
                 .withEncryptionType(EncryptionType.SINGLE)
                 .create();
 
-        Assertions.assertEquals("vyvnqqyb", response.location());
-        Assertions.assertEquals("euayjkqabqgzsles", response.tags().get("cbhernntiewdj"));
-        Assertions.assertEquals(3757334132859952072L, response.size());
-        Assertions.assertEquals(ServiceLevel.PREMIUM, response.serviceLevel());
+        Assertions.assertEquals("hyzsxjrkamb", response.location());
+        Assertions.assertEquals("egv", response.tags().get("nvuqeqvldspa"));
+        Assertions.assertEquals(6727856303003361360L, response.size());
+        Assertions.assertEquals(ServiceLevel.STANDARD_ZRS, response.serviceLevel());
         Assertions.assertEquals(QosType.MANUAL, response.qosType());
         Assertions.assertEquals(false, response.coolAccess());
-        Assertions.assertEquals(EncryptionType.SINGLE, response.encryptionType());
+        Assertions.assertEquals(EncryptionType.DOUBLE, response.encryptionType());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

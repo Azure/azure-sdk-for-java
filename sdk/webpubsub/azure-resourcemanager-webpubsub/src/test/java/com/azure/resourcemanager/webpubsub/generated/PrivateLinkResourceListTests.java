@@ -7,6 +7,8 @@ package com.azure.resourcemanager.webpubsub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.webpubsub.models.PrivateLinkResourceList;
+import com.azure.resourcemanager.webpubsub.models.ShareablePrivateLinkResourceProperties;
+import com.azure.resourcemanager.webpubsub.models.ShareablePrivateLinkResourceType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -16,10 +18,13 @@ public final class PrivateLinkResourceListTests {
         PrivateLinkResourceList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"groupId\":\"ccymvaolpsslql\",\"requiredMembers\":[],\"requiredZoneNames\":[],\"shareablePrivateLinkResourceTypes\":[]},\"id\":\"n\",\"name\":\"bglzpswi\",\"type\":\"d\"}],\"nextLink\":\"wyhzdx\"}")
+                    "{\"value\":[{\"properties\":{\"groupId\":\"gh\",\"requiredMembers\":[\"dhqxvcx\",\"frpdsofbshrns\",\"buswdvzyy\"],\"requiredZoneNames\":[\"nu\",\"vj\"],\"shareablePrivateLinkResourceTypes\":[{\"name\":\"f\",\"properties\":{}}]},\"id\":\"opqgikyzirtxdyux\",\"name\":\"ejnt\",\"type\":\"sewgioilqukr\"}],\"nextLink\":\"xtqmieoxor\"}")
                 .toObject(PrivateLinkResourceList.class);
-        Assertions.assertEquals("ccymvaolpsslql", model.value().get(0).groupId());
-        Assertions.assertEquals("wyhzdx", model.nextLink());
+        Assertions.assertEquals("gh", model.value().get(0).groupId());
+        Assertions.assertEquals("dhqxvcx", model.value().get(0).requiredMembers().get(0));
+        Assertions.assertEquals("nu", model.value().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("f", model.value().get(0).shareablePrivateLinkResourceTypes().get(0).name());
+        Assertions.assertEquals("xtqmieoxor", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,13 +35,21 @@ public final class PrivateLinkResourceListTests {
                     Arrays
                         .asList(
                             new PrivateLinkResourceInner()
-                                .withGroupId("ccymvaolpsslql")
-                                .withRequiredMembers(Arrays.asList())
-                                .withRequiredZoneNames(Arrays.asList())
-                                .withShareablePrivateLinkResourceTypes(Arrays.asList())))
-                .withNextLink("wyhzdx");
+                                .withGroupId("gh")
+                                .withRequiredMembers(Arrays.asList("dhqxvcx", "frpdsofbshrns", "buswdvzyy"))
+                                .withRequiredZoneNames(Arrays.asList("nu", "vj"))
+                                .withShareablePrivateLinkResourceTypes(
+                                    Arrays
+                                        .asList(
+                                            new ShareablePrivateLinkResourceType()
+                                                .withName("f")
+                                                .withProperties(new ShareablePrivateLinkResourceProperties())))))
+                .withNextLink("xtqmieoxor");
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourceList.class);
-        Assertions.assertEquals("ccymvaolpsslql", model.value().get(0).groupId());
-        Assertions.assertEquals("wyhzdx", model.nextLink());
+        Assertions.assertEquals("gh", model.value().get(0).groupId());
+        Assertions.assertEquals("dhqxvcx", model.value().get(0).requiredMembers().get(0));
+        Assertions.assertEquals("nu", model.value().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("f", model.value().get(0).shareablePrivateLinkResourceTypes().get(0).name());
+        Assertions.assertEquals("xtqmieoxor", model.nextLink());
     }
 }

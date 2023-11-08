@@ -11,24 +11,24 @@ import com.azure.core.util.Context;
 /** Resource collection API of BmcKeySets. */
 public interface BmcKeySets {
     /**
-     * List baseboard management controller key sets of the cluster in the resource group.
+     * List baseboard management controller key sets of the cluster.
      *
-     * <p>Get a list of baseboard management controller key sets of the cluster in the provided resource group.
+     * <p>Get a list of baseboard management controller key sets for the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of baseboard management controller key sets of the cluster in the provided resource group as
-     *     paginated response with {@link PagedIterable}.
+     * @return a list of baseboard management controller key sets for the provided cluster as paginated response with
+     *     {@link PagedIterable}.
      */
-    PagedIterable<BmcKeySet> listByResourceGroup(String resourceGroupName, String clusterName);
+    PagedIterable<BmcKeySet> listByCluster(String resourceGroupName, String clusterName);
 
     /**
-     * List baseboard management controller key sets of the cluster in the resource group.
+     * List baseboard management controller key sets of the cluster.
      *
-     * <p>Get a list of baseboard management controller key sets of the cluster in the provided resource group.
+     * <p>Get a list of baseboard management controller key sets for the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
@@ -36,10 +36,10 @@ public interface BmcKeySets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of baseboard management controller key sets of the cluster in the provided resource group as
-     *     paginated response with {@link PagedIterable}.
+     * @return a list of baseboard management controller key sets for the provided cluster as paginated response with
+     *     {@link PagedIterable}.
      */
-    PagedIterable<BmcKeySet> listByResourceGroup(String resourceGroupName, String clusterName, Context context);
+    PagedIterable<BmcKeySet> listByCluster(String resourceGroupName, String clusterName, Context context);
 
     /**
      * Retrieve the baseboard management controller key set of the cluster.

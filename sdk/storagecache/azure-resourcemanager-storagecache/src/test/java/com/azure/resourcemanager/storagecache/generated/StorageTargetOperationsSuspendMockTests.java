@@ -56,8 +56,6 @@ public final class StorageTargetOperationsSuspendMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager
-            .storageTargetOperations()
-            .suspend("hvxndzwmkrefajpj", "rwkq", "yhgbijtjivfx", com.azure.core.util.Context.NONE);
+        manager.storageTargetOperations().suspend("pqqmted", "tmmjihyeozph", "wau", com.azure.core.util.Context.NONE);
     }
 }

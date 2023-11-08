@@ -56,6 +56,8 @@ public final class WebPubSubCustomDomainsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.webPubSubCustomDomains().delete("pzimejzanlfzxi", "vrmbzono", "i", com.azure.core.util.Context.NONE);
+        manager
+            .webPubSubCustomDomains()
+            .delete("hr", "mqgjsxvpq", "bfrmbodthsqqgvri", com.azure.core.util.Context.NONE);
     }
 }

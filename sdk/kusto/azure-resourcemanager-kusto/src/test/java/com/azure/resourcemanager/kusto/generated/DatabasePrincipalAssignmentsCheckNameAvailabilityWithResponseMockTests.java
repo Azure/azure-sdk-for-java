@@ -33,7 +33,7 @@ public final class DatabasePrincipalAssignmentsCheckNameAvailabilityWithResponse
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"nameAvailable\":false,\"name\":\"wumuaslzk\",\"message\":\"rwoycqucwyh\",\"reason\":\"AlreadyExists\"}";
+            "{\"nameAvailable\":true,\"name\":\"wartspphkixkykxd\",\"message\":\"j\",\"reason\":\"Invalid\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,16 +65,16 @@ public final class DatabasePrincipalAssignmentsCheckNameAvailabilityWithResponse
             manager
                 .databasePrincipalAssignments()
                 .checkNameAvailabilityWithResponse(
-                    "lvizb",
-                    "hfovvacqpbtu",
-                    "dxe",
-                    new DatabasePrincipalAssignmentCheckNameRequest().withName("zab"),
+                    "piudeugfsxzecpa",
+                    "wkufykhvuhxepm",
+                    "utznabaobns",
+                    new DatabasePrincipalAssignmentCheckNameRequest().withName("ujdjltymkmvg"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(false, response.nameAvailable());
-        Assertions.assertEquals("wumuaslzk", response.name());
-        Assertions.assertEquals("rwoycqucwyh", response.message());
-        Assertions.assertEquals(Reason.ALREADY_EXISTS, response.reason());
+        Assertions.assertEquals(true, response.nameAvailable());
+        Assertions.assertEquals("wartspphkixkykxd", response.name());
+        Assertions.assertEquals("j", response.message());
+        Assertions.assertEquals(Reason.INVALID, response.reason());
     }
 }

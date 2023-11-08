@@ -11,8 +11,9 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
+import com.azure.resourcemanager.elasticsan.models.XMsDeleteSnapshots;
+import com.azure.resourcemanager.elasticsan.models.XMsForceDelete;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -57,6 +58,15 @@ public final class VolumesDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.volumes().delete("uscrpabgyepsb", "tazqugxywpmueefj", "wfqkquj", "dsuyonobgla", Context.NONE);
+        manager
+            .volumes()
+            .delete(
+                "obqwcsdbnwdcfh",
+                "cqdpfuv",
+                "lsbjjcanvxbv",
+                "vudutncor",
+                XMsDeleteSnapshots.TRUE,
+                XMsForceDelete.FALSE,
+                com.azure.core.util.Context.NONE);
     }
 }

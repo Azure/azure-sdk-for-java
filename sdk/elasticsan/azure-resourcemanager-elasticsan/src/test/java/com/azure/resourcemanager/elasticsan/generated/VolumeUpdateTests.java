@@ -5,39 +5,30 @@
 package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.elasticsan.models.ManagedByInfo;
 import com.azure.resourcemanager.elasticsan.models.VolumeUpdate;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VolumeUpdateTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VolumeUpdate model =
             BinaryData
-                .fromString("{\"properties\":{\"sizeGiB\":7219276068713621515},\"tags\":{\"ualhbxxhejj\":\"e\"}}")
+                .fromString(
+                    "{\"properties\":{\"sizeGiB\":3797369711995798096,\"managedBy\":{\"resourceId\":\"lhaaxdbabp\"}}}")
                 .toObject(VolumeUpdate.class);
-        Assertions.assertEquals("e", model.tags().get("ualhbxxhejj"));
-        Assertions.assertEquals(7219276068713621515L, model.sizeGiB());
+        Assertions.assertEquals(3797369711995798096L, model.sizeGiB());
+        Assertions.assertEquals("lhaaxdbabp", model.managedBy().resourceId());
     }
 
-    @Test
-    public void testSerialize() {
-        VolumeUpdate model = new VolumeUpdate().withTags(mapOf("ualhbxxhejj", "e")).withSizeGiB(7219276068713621515L);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        VolumeUpdate model =
+            new VolumeUpdate()
+                .withSizeGiB(3797369711995798096L)
+                .withManagedBy(new ManagedByInfo().withResourceId("lhaaxdbabp"));
         model = BinaryData.fromObject(model).toObject(VolumeUpdate.class);
-        Assertions.assertEquals("e", model.tags().get("ualhbxxhejj"));
-        Assertions.assertEquals(7219276068713621515L, model.sizeGiB());
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+        Assertions.assertEquals(3797369711995798096L, model.sizeGiB());
+        Assertions.assertEquals("lhaaxdbabp", model.managedBy().resourceId());
     }
 }

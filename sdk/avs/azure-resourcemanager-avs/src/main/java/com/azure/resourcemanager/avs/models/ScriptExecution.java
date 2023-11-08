@@ -159,11 +159,13 @@ public interface ScriptExecution {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The ScriptExecution definition stages. */
     interface DefinitionStages {
         /** The first stage of the ScriptExecution definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the ScriptExecution definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -175,6 +177,7 @@ public interface ScriptExecution {
              */
             WithCreate withExistingPrivateCloud(String resourceGroupName, String privateCloudName);
         }
+
         /**
          * The stage of the ScriptExecution definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -203,6 +206,7 @@ public interface ScriptExecution {
              */
             ScriptExecution create(Context context);
         }
+
         /** The stage of the ScriptExecution definition allowing to specify scriptCmdletId. */
         interface WithScriptCmdletId {
             /**
@@ -214,6 +218,7 @@ public interface ScriptExecution {
              */
             WithCreate withScriptCmdletId(String scriptCmdletId);
         }
+
         /** The stage of the ScriptExecution definition allowing to specify parameters. */
         interface WithParameters {
             /**
@@ -224,6 +229,7 @@ public interface ScriptExecution {
              */
             WithCreate withParameters(List<ScriptExecutionParameter> parameters);
         }
+
         /** The stage of the ScriptExecution definition allowing to specify hiddenParameters. */
         interface WithHiddenParameters {
             /**
@@ -236,6 +242,7 @@ public interface ScriptExecution {
              */
             WithCreate withHiddenParameters(List<ScriptExecutionParameter> hiddenParameters);
         }
+
         /** The stage of the ScriptExecution definition allowing to specify failureReason. */
         interface WithFailureReason {
             /**
@@ -248,6 +255,7 @@ public interface ScriptExecution {
              */
             WithCreate withFailureReason(String failureReason);
         }
+
         /** The stage of the ScriptExecution definition allowing to specify timeout. */
         interface WithTimeout {
             /**
@@ -258,6 +266,7 @@ public interface ScriptExecution {
              */
             WithCreate withTimeout(String timeout);
         }
+
         /** The stage of the ScriptExecution definition allowing to specify retention. */
         interface WithRetention {
             /**
@@ -269,6 +278,7 @@ public interface ScriptExecution {
              */
             WithCreate withRetention(String retention);
         }
+
         /** The stage of the ScriptExecution definition allowing to specify output. */
         interface WithOutput {
             /**
@@ -279,6 +289,7 @@ public interface ScriptExecution {
              */
             WithCreate withOutput(List<String> output);
         }
+
         /** The stage of the ScriptExecution definition allowing to specify namedOutputs. */
         interface WithNamedOutputs {
             /**
@@ -290,6 +301,7 @@ public interface ScriptExecution {
             WithCreate withNamedOutputs(Map<String, Object> namedOutputs);
         }
     }
+
     /**
      * Begins update for the ScriptExecution resource.
      *
@@ -322,6 +334,7 @@ public interface ScriptExecution {
          */
         ScriptExecution apply(Context context);
     }
+
     /** The ScriptExecution update stages. */
     interface UpdateStages {
         /** The stage of the ScriptExecution update allowing to specify scriptCmdletId. */
@@ -335,6 +348,7 @@ public interface ScriptExecution {
              */
             Update withScriptCmdletId(String scriptCmdletId);
         }
+
         /** The stage of the ScriptExecution update allowing to specify parameters. */
         interface WithParameters {
             /**
@@ -345,6 +359,7 @@ public interface ScriptExecution {
              */
             Update withParameters(List<ScriptExecutionParameter> parameters);
         }
+
         /** The stage of the ScriptExecution update allowing to specify hiddenParameters. */
         interface WithHiddenParameters {
             /**
@@ -357,6 +372,7 @@ public interface ScriptExecution {
              */
             Update withHiddenParameters(List<ScriptExecutionParameter> hiddenParameters);
         }
+
         /** The stage of the ScriptExecution update allowing to specify failureReason. */
         interface WithFailureReason {
             /**
@@ -369,6 +385,7 @@ public interface ScriptExecution {
              */
             Update withFailureReason(String failureReason);
         }
+
         /** The stage of the ScriptExecution update allowing to specify timeout. */
         interface WithTimeout {
             /**
@@ -379,6 +396,7 @@ public interface ScriptExecution {
              */
             Update withTimeout(String timeout);
         }
+
         /** The stage of the ScriptExecution update allowing to specify retention. */
         interface WithRetention {
             /**
@@ -390,6 +408,7 @@ public interface ScriptExecution {
              */
             Update withRetention(String retention);
         }
+
         /** The stage of the ScriptExecution update allowing to specify output. */
         interface WithOutput {
             /**
@@ -400,6 +419,7 @@ public interface ScriptExecution {
              */
             Update withOutput(List<String> output);
         }
+
         /** The stage of the ScriptExecution update allowing to specify namedOutputs. */
         interface WithNamedOutputs {
             /**
@@ -411,6 +431,7 @@ public interface ScriptExecution {
             Update withNamedOutputs(Map<String, Object> namedOutputs);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

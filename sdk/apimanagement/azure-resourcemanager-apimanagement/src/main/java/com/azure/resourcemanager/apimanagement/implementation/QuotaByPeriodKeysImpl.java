@@ -28,17 +28,6 @@ public final class QuotaByPeriodKeysImpl implements QuotaByPeriodKeys {
         this.serviceManager = serviceManager;
     }
 
-    public QuotaCounterContract get(
-        String resourceGroupName, String serviceName, String quotaCounterKey, String quotaPeriodKey) {
-        QuotaCounterContractInner inner =
-            this.serviceClient().get(resourceGroupName, serviceName, quotaCounterKey, quotaPeriodKey);
-        if (inner != null) {
-            return new QuotaCounterContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<QuotaCounterContract> getWithResponse(
         String resourceGroupName, String serviceName, String quotaCounterKey, String quotaPeriodKey, Context context) {
         Response<QuotaCounterContractInner> inner =
@@ -56,14 +45,10 @@ public final class QuotaByPeriodKeysImpl implements QuotaByPeriodKeys {
         }
     }
 
-    public QuotaCounterContract update(
-        String resourceGroupName,
-        String serviceName,
-        String quotaCounterKey,
-        String quotaPeriodKey,
-        QuotaCounterValueUpdateContract parameters) {
+    public QuotaCounterContract get(
+        String resourceGroupName, String serviceName, String quotaCounterKey, String quotaPeriodKey) {
         QuotaCounterContractInner inner =
-            this.serviceClient().update(resourceGroupName, serviceName, quotaCounterKey, quotaPeriodKey, parameters);
+            this.serviceClient().get(resourceGroupName, serviceName, quotaCounterKey, quotaPeriodKey);
         if (inner != null) {
             return new QuotaCounterContractImpl(inner, this.manager());
         } else {
@@ -89,6 +74,21 @@ public final class QuotaByPeriodKeysImpl implements QuotaByPeriodKeys {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new QuotaCounterContractImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public QuotaCounterContract update(
+        String resourceGroupName,
+        String serviceName,
+        String quotaCounterKey,
+        String quotaPeriodKey,
+        QuotaCounterValueUpdateContract parameters) {
+        QuotaCounterContractInner inner =
+            this.serviceClient().update(resourceGroupName, serviceName, quotaCounterKey, quotaPeriodKey, parameters);
+        if (inner != null) {
+            return new QuotaCounterContractImpl(inner, this.manager());
         } else {
             return null;
         }

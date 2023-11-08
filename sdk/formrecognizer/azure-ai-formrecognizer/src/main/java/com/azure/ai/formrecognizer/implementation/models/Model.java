@@ -35,6 +35,9 @@ public final class Model {
     @JsonProperty(value = "composedTrainResults")
     private List<TrainResult> composedTrainResults;
 
+    /** Creates an instance of Model class. */
+    public Model() {}
+
     /**
      * Get the modelInfo property: Basic custom model information.
      *

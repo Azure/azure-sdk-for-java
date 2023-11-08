@@ -16,26 +16,27 @@ public final class PatchTrackedResourceTests {
         PatchTrackedResource model =
             BinaryData
                 .fromString(
-                    "{\"location\":\"xczfcl\",\"tags\":{\"lfktsths\":\"xdbabphlwr\",\"twwrqp\":\"cocmnyyaztt\"},\"etag\":\"dckzywbiexz\",\"id\":\"eyueaxibxujwb\",\"name\":\"qwalmuzyoxaepd\",\"type\":\"zjancuxr\"}")
+                    "{\"location\":\"ie\",\"tags\":{\"jjdhtld\":\"hvpesapskrdqm\",\"cwscwsvlx\":\"kyzxuutk\",\"rupqsxvnmicy\":\"togt\"},\"etag\":\"ceoveilovno\",\"id\":\"yfjfcnjbkcn\",\"name\":\"dhbt\",\"type\":\"kphywpnvjto\"}")
                 .toObject(PatchTrackedResource.class);
-        Assertions.assertEquals("xczfcl", model.location());
-        Assertions.assertEquals("xdbabphlwr", model.tags().get("lfktsths"));
-        Assertions.assertEquals("dckzywbiexz", model.etag());
+        Assertions.assertEquals("ie", model.location());
+        Assertions.assertEquals("hvpesapskrdqm", model.tags().get("jjdhtld"));
+        Assertions.assertEquals("ceoveilovno", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PatchTrackedResource model =
             new PatchTrackedResource()
-                .withLocation("xczfcl")
-                .withTags(mapOf("lfktsths", "xdbabphlwr", "twwrqp", "cocmnyyaztt"))
-                .withEtag("dckzywbiexz");
+                .withLocation("ie")
+                .withTags(mapOf("jjdhtld", "hvpesapskrdqm", "cwscwsvlx", "kyzxuutk", "rupqsxvnmicy", "togt"))
+                .withEtag("ceoveilovno");
         model = BinaryData.fromObject(model).toObject(PatchTrackedResource.class);
-        Assertions.assertEquals("xczfcl", model.location());
-        Assertions.assertEquals("xdbabphlwr", model.tags().get("lfktsths"));
-        Assertions.assertEquals("dckzywbiexz", model.etag());
+        Assertions.assertEquals("ie", model.location());
+        Assertions.assertEquals("hvpesapskrdqm", model.tags().get("jjdhtld"));
+        Assertions.assertEquals("ceoveilovno", model.etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

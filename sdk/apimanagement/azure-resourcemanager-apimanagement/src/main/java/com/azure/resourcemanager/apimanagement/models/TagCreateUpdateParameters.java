@@ -17,6 +17,10 @@ public final class TagCreateUpdateParameters {
     @JsonProperty(value = "properties")
     private TagContractProperties innerProperties;
 
+    /** Creates an instance of TagCreateUpdateParameters class. */
+    public TagCreateUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Properties supplied to Create Tag operation.
      *

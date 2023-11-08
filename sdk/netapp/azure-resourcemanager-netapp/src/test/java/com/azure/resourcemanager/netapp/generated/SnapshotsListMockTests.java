@@ -32,7 +32,7 @@ public final class SnapshotsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"location\":\"dwxf\",\"properties\":{\"snapshotId\":\"ivwzjbhyzs\",\"created\":\"2021-11-17T21:00:17Z\",\"provisioningState\":\"ambtrnegvm\"},\"id\":\"uqeqv\",\"name\":\"dspastjbkkdmfl\",\"type\":\"est\"}]}";
+            "{\"value\":[{\"location\":\"undxgketw\",\"properties\":{\"snapshotId\":\"zjhfjmhvv\",\"created\":\"2021-07-01T02:20:36Z\",\"provisioningState\":\"pmuneqsx\"},\"id\":\"hfbuzjyihsasbhud\",\"name\":\"pohyuemslynsqyr\",\"type\":\"foobrlttyms\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +61,8 @@ public final class SnapshotsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Snapshot> response =
-            manager.snapshots().list("ajlyjtlvofqzhv", "cib", "fmo", "uxrkjp", com.azure.core.util.Context.NONE);
+            manager.snapshots().list("vuzhyr", "ewipm", "ekdxuku", "gsjj", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dwxf", response.iterator().next().location());
+        Assertions.assertEquals("undxgketw", response.iterator().next().location());
     }
 }

@@ -29,6 +29,10 @@ public final class LinkableEnvironmentResponseInner {
     @JsonProperty(value = "planData")
     private PlanData planData;
 
+    /** Creates an instance of LinkableEnvironmentResponseInner class. */
+    public LinkableEnvironmentResponseInner() {
+    }
+
     /**
      * Get the environmentId property: environment id for which user is an admin.
      *

@@ -23,8 +23,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -100,7 +102,7 @@ public class ReadManySplitTest {
                                                             String resourceLink, String rewrittenQuery,
                                                             UUID correlatedActivityId) {
             super(diagnosticsClientContext, client, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions,
-                resourceLink, rewrittenQuery, correlatedActivityId, false);
+                resourceLink, rewrittenQuery, correlatedActivityId, false, new AtomicBoolean(false));
         }
 
         @Override
@@ -113,7 +115,7 @@ public class ReadManySplitTest {
                                                              TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc,
                                                              Function<RxDocumentServiceRequest,
                                                              Mono<FeedResponse<T>>> executeFunc,
-                                                             Callable<DocumentClientRetryPolicy> createRetryPolicyFunc,
+                                                             Supplier<DocumentClientRetryPolicy> createRetryPolicyFunc,
                                                              FeedRangeEpkImpl feedRange) {
             return new DocumentProducer<T>(
                 client,

@@ -36,6 +36,12 @@ public final class ClusterUpdate extends ProxyResource {
     private AzureSku sku;
 
     /*
+     * The availability zones of the cluster.
+     */
+    @JsonProperty(value = "zones")
+    private List<String> zones;
+
+    /*
      * The identity of the cluster, if configured.
      */
     @JsonProperty(value = "identity")
@@ -108,6 +114,26 @@ public final class ClusterUpdate extends ProxyResource {
      */
     public ClusterUpdate withSku(AzureSku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the zones property: The availability zones of the cluster.
+     *
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones property: The availability zones of the cluster.
+     *
+     * @param zones the zones value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withZones(List<String> zones) {
+        this.zones = zones;
         return this;
     }
 
@@ -614,6 +640,15 @@ public final class ClusterUpdate extends ProxyResource {
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
         return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Get the migrationCluster property: Properties of the peer cluster involved in a migration to/from this cluster.
+     *
+     * @return the migrationCluster value.
+     */
+    public MigrationClusterProperties migrationCluster() {
+        return this.innerProperties() == null ? null : this.innerProperties().migrationCluster();
     }
 
     /**

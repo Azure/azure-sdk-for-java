@@ -3,26 +3,12 @@
 
 package com.azure.cosmos.models;
 
-import java.time.Duration;
-import java.util.Collection;
-import java.util.EnumSet;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.Locale;
 import java.util.Objects;
 import java.util.StringJoiner;
-
-import com.azure.core.http.ProxyOptions;
-import com.azure.core.util.tracing.Tracer;
-import com.azure.cosmos.CosmosDiagnosticsHandler;
-import com.azure.cosmos.CosmosDiagnosticsThresholds;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
-import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
-import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
-import com.azure.cosmos.implementation.clienttelemetry.TagName;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants;
-import com.fasterxml.jackson.annotation.JsonValue;
-import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Tag;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 

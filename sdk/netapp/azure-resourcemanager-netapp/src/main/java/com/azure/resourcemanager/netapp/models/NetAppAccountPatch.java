@@ -20,6 +20,12 @@ public final class NetAppAccountPatch extends Resource {
     @JsonProperty(value = "properties")
     private AccountProperties innerProperties;
 
+    /*
+     * The identity used for the resource.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
+
     /** Creates an instance of NetAppAccountPatch class. */
     public NetAppAccountPatch() {
     }
@@ -31,6 +37,26 @@ public final class NetAppAccountPatch extends Resource {
      */
     private AccountProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the identity property: The identity used for the resource.
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity used for the resource.
+     *
+     * @param identity the identity value to set.
+     * @return the NetAppAccountPatch object itself.
+     */
+    public NetAppAccountPatch withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -120,6 +146,9 @@ public final class NetAppAccountPatch extends Resource {
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

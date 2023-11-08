@@ -28,6 +28,7 @@ import com.azure.resourcemanager.kusto.implementation.AttachedDatabaseConfigurat
 import com.azure.resourcemanager.kusto.implementation.ClusterPrincipalAssignmentsImpl;
 import com.azure.resourcemanager.kusto.implementation.ClustersImpl;
 import com.azure.resourcemanager.kusto.implementation.DataConnectionsImpl;
+import com.azure.resourcemanager.kusto.implementation.DatabaseOperationsImpl;
 import com.azure.resourcemanager.kusto.implementation.DatabasePrincipalAssignmentsImpl;
 import com.azure.resourcemanager.kusto.implementation.DatabasesImpl;
 import com.azure.resourcemanager.kusto.implementation.KustoManagementClientBuilder;
@@ -37,12 +38,14 @@ import com.azure.resourcemanager.kusto.implementation.OperationsResultsImpl;
 import com.azure.resourcemanager.kusto.implementation.OperationsResultsLocationsImpl;
 import com.azure.resourcemanager.kusto.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.kusto.implementation.PrivateLinkResourcesImpl;
+import com.azure.resourcemanager.kusto.implementation.SandboxCustomImagesImpl;
 import com.azure.resourcemanager.kusto.implementation.ScriptsImpl;
 import com.azure.resourcemanager.kusto.implementation.SkusImpl;
 import com.azure.resourcemanager.kusto.models.AttachedDatabaseConfigurations;
 import com.azure.resourcemanager.kusto.models.ClusterPrincipalAssignments;
 import com.azure.resourcemanager.kusto.models.Clusters;
 import com.azure.resourcemanager.kusto.models.DataConnections;
+import com.azure.resourcemanager.kusto.models.DatabaseOperations;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalAssignments;
 import com.azure.resourcemanager.kusto.models.Databases;
 import com.azure.resourcemanager.kusto.models.ManagedPrivateEndpoints;
@@ -51,6 +54,7 @@ import com.azure.resourcemanager.kusto.models.OperationsResults;
 import com.azure.resourcemanager.kusto.models.OperationsResultsLocations;
 import com.azure.resourcemanager.kusto.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.kusto.models.PrivateLinkResources;
+import com.azure.resourcemanager.kusto.models.SandboxCustomImages;
 import com.azure.resourcemanager.kusto.models.Scripts;
 import com.azure.resourcemanager.kusto.models.Skus;
 import java.time.Duration;
@@ -78,9 +82,13 @@ public final class KustoManager {
 
     private ManagedPrivateEndpoints managedPrivateEndpoints;
 
+    private DatabaseOperations databaseOperations;
+
     private DatabasePrincipalAssignments databasePrincipalAssignments;
 
     private Scripts scripts;
+
+    private SandboxCustomImages sandboxCustomImages;
 
     private PrivateEndpointConnections privateEndpointConnections;
 
@@ -259,7 +267,7 @@ public final class KustoManager {
                 .append("-")
                 .append("com.azure.resourcemanager.kusto")
                 .append("/")
-                .append("1.0.0-beta.6");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -392,6 +400,18 @@ public final class KustoManager {
     }
 
     /**
+     * Gets the resource collection API of DatabaseOperations.
+     *
+     * @return Resource collection API of DatabaseOperations.
+     */
+    public DatabaseOperations databaseOperations() {
+        if (this.databaseOperations == null) {
+            this.databaseOperations = new DatabaseOperationsImpl(clientObject.getDatabaseOperations(), this);
+        }
+        return databaseOperations;
+    }
+
+    /**
      * Gets the resource collection API of DatabasePrincipalAssignments. It manages DatabasePrincipalAssignment.
      *
      * @return Resource collection API of DatabasePrincipalAssignments.
@@ -414,6 +434,18 @@ public final class KustoManager {
             this.scripts = new ScriptsImpl(clientObject.getScripts(), this);
         }
         return scripts;
+    }
+
+    /**
+     * Gets the resource collection API of SandboxCustomImages. It manages SandboxCustomImage.
+     *
+     * @return Resource collection API of SandboxCustomImages.
+     */
+    public SandboxCustomImages sandboxCustomImages() {
+        if (this.sandboxCustomImages == null) {
+            this.sandboxCustomImages = new SandboxCustomImagesImpl(clientObject.getSandboxCustomImages(), this);
+        }
+        return sandboxCustomImages;
     }
 
     /**
@@ -491,8 +523,10 @@ public final class KustoManager {
     }
 
     /**
-     * @return Wrapped service client KustoManagementClient providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets wrapped service client KustoManagementClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client KustoManagementClient.
      */
     public KustoManagementClient serviceClient() {
         return this.clientObject;

@@ -8,13 +8,19 @@ import com.azure.core.annotation.Fluent;
 import java.util.Map;
 
 /**
- * Options that may be passed when copying models into the target Form Recognizer resource.
+ * The configurable options to pass when copying models into the target Form Recognizer resource.
  */
 @Fluent
 public final class CopyAuthorizationOptions {
     private String description;
     private Map<String, String> tags;
     private String modelId;
+
+    /**
+     * Create a CopyAuthorizationOptions instance.
+     */
+    public CopyAuthorizationOptions() {
+    }
 
     /**
      * Get the model description.

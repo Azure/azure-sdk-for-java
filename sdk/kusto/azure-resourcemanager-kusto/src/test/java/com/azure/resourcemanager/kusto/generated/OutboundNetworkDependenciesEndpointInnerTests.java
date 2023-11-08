@@ -7,6 +7,7 @@ package com.azure.resourcemanager.kusto.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.fluent.models.OutboundNetworkDependenciesEndpointInner;
 import com.azure.resourcemanager.kusto.models.EndpointDependency;
+import com.azure.resourcemanager.kusto.models.EndpointDetail;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -16,26 +17,41 @@ public final class OutboundNetworkDependenciesEndpointInnerTests {
         OutboundNetworkDependenciesEndpointInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"category\":\"edgfbcvkcvq\",\"endpoints\":[{\"domainName\":\"qdcvdrhvoo\",\"endpointDetails\":[]},{\"domainName\":\"tbobz\",\"endpointDetails\":[]},{\"domainName\":\"cjwvn\",\"endpointDetails\":[]},{\"domainName\":\"d\",\"endpointDetails\":[]}],\"provisioningState\":\"Canceled\"},\"etag\":\"xrslpm\",\"id\":\"twuoegrpkhjwni\",\"name\":\"qsluicp\",\"type\":\"ggkzzlvmbmpa\"}")
+                    "{\"properties\":{\"category\":\"o\",\"endpoints\":[{\"domainName\":\"jk\",\"endpointDetails\":[{\"port\":1604322971,\"ipAddress\":\"uwqlgzrfzeey\"},{\"port\":32622439,\"ipAddress\":\"ikayuhqlbjbsybb\"}]},{\"domainName\":\"r\",\"endpointDetails\":[{\"port\":1918019278,\"ipAddress\":\"fp\"},{\"port\":1408041355,\"ipAddress\":\"ipaslthaqfxssmwu\"},{\"port\":1363759065,\"ipAddress\":\"srezp\"}]}],\"provisioningState\":\"Creating\"},\"etag\":\"euyowqkd\",\"id\":\"ytisibir\",\"name\":\"gpikpzimejza\",\"type\":\"lfzxiavrmbzonoki\"}")
                 .toObject(OutboundNetworkDependenciesEndpointInner.class);
-        Assertions.assertEquals("edgfbcvkcvq", model.category());
-        Assertions.assertEquals("qdcvdrhvoo", model.endpoints().get(0).domainName());
+        Assertions.assertEquals("o", model.category());
+        Assertions.assertEquals("jk", model.endpoints().get(0).domainName());
+        Assertions.assertEquals(1604322971, model.endpoints().get(0).endpointDetails().get(0).port());
+        Assertions.assertEquals("uwqlgzrfzeey", model.endpoints().get(0).endpointDetails().get(0).ipAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OutboundNetworkDependenciesEndpointInner model =
             new OutboundNetworkDependenciesEndpointInner()
-                .withCategory("edgfbcvkcvq")
+                .withCategory("o")
                 .withEndpoints(
                     Arrays
                         .asList(
-                            new EndpointDependency().withDomainName("qdcvdrhvoo").withEndpointDetails(Arrays.asList()),
-                            new EndpointDependency().withDomainName("tbobz").withEndpointDetails(Arrays.asList()),
-                            new EndpointDependency().withDomainName("cjwvn").withEndpointDetails(Arrays.asList()),
-                            new EndpointDependency().withDomainName("d").withEndpointDetails(Arrays.asList())));
+                            new EndpointDependency()
+                                .withDomainName("jk")
+                                .withEndpointDetails(
+                                    Arrays
+                                        .asList(
+                                            new EndpointDetail().withPort(1604322971).withIpAddress("uwqlgzrfzeey"),
+                                            new EndpointDetail().withPort(32622439).withIpAddress("ikayuhqlbjbsybb"))),
+                            new EndpointDependency()
+                                .withDomainName("r")
+                                .withEndpointDetails(
+                                    Arrays
+                                        .asList(
+                                            new EndpointDetail().withPort(1918019278).withIpAddress("fp"),
+                                            new EndpointDetail().withPort(1408041355).withIpAddress("ipaslthaqfxssmwu"),
+                                            new EndpointDetail().withPort(1363759065).withIpAddress("srezp")))));
         model = BinaryData.fromObject(model).toObject(OutboundNetworkDependenciesEndpointInner.class);
-        Assertions.assertEquals("edgfbcvkcvq", model.category());
-        Assertions.assertEquals("qdcvdrhvoo", model.endpoints().get(0).domainName());
+        Assertions.assertEquals("o", model.category());
+        Assertions.assertEquals("jk", model.endpoints().get(0).domainName());
+        Assertions.assertEquals(1604322971, model.endpoints().get(0).endpointDetails().get(0).port());
+        Assertions.assertEquals("uwqlgzrfzeey", model.endpoints().get(0).endpointDetails().get(0).ipAddress());
     }
 }

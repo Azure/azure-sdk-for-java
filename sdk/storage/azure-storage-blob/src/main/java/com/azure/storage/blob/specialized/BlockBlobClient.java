@@ -219,9 +219,27 @@ public final class BlockBlobClient extends BlobClientBase {
      * @throws BlobStorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream(BlockBlobOutputStreamOptions options) {
+        return getBlobOutputStream(options, null);
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the block blob. If the blob already exists on the service, it
+     * will be overwritten.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     * <p>
+     * Note: We recommend you call write with reasonably sized buffers, you can do so by wrapping the BlobOutputStream
+     * obtained below with a {@link java.io.BufferedOutputStream}.
+     *
+     * @param options {@link BlockBlobOutputStreamOptions}
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     */
+    public BlobOutputStream getBlobOutputStream(BlockBlobOutputStreamOptions options, Context context) {
         BlobAsyncClient blobClient = prepareBuilder().buildAsyncClient();
 
-        return BlobOutputStream.blockBlobOutputStream(blobClient, options, null);
+        return BlobOutputStream.blockBlobOutputStream(blobClient, options, context);
     }
 
     /**

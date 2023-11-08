@@ -8,10 +8,10 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -58,6 +58,7 @@ public class CosmosQueryRequestOptions {
     private Function<JsonNode, ?> itemFactoryMethod;
     private String queryName;
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
+    private List<String> excludeRegions;
     private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
 
     /**
@@ -102,6 +103,7 @@ public class CosmosQueryRequestOptions {
         this.feedRange = options.feedRange;
         this.thresholds = options.thresholds;
         this.cosmosEndToEndOperationLatencyPolicyConfig = options.cosmosEndToEndOperationLatencyPolicyConfig;
+        this.excludeRegions = options.excludeRegions;
         this.cancelledRequestDiagnosticsTracker = options.cancelledRequestDiagnosticsTracker;
     }
 
@@ -339,6 +341,31 @@ public class CosmosQueryRequestOptions {
     public CosmosQueryRequestOptions setCosmosEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig) {
         this.cosmosEndToEndOperationLatencyPolicyConfig = cosmosEndToEndOperationLatencyPolicyConfig;
         return this;
+    }
+
+    /**
+     * List of regions to be excluded for the request/retries. Example "East US" or "East US, West US"
+     * These regions will be excluded from the preferred regions list
+     *
+     * @param excludeRegions the regions to exclude
+     * @return the {@link CosmosQueryRequestOptions}
+     */
+    public CosmosQueryRequestOptions setExcludedRegions(List<String> excludeRegions) {
+        this.excludeRegions = excludeRegions;
+        return this;
+    }
+
+    /**
+     * Gets the list of regions to exclude for the request/retries. These regions are excluded
+     * from the preferred region list.
+     *
+     * @return a list of excluded regions
+     * */
+    public List<String> getExcludedRegions() {
+        if (this.excludeRegions == null) {
+            return null;
+        }
+        return UnmodifiableList.unmodifiableList(this.excludeRegions);
     }
 
     /**
@@ -585,7 +612,7 @@ public class CosmosQueryRequestOptions {
      * Sets indexMetricsEnabled, which is used to obtain the index metrics to understand how the query engine used existing
      * indexes and could use potential new indexes.
      * The results will be displayed in QueryMetrics. Please note that this options will incurs overhead, so it should be
-     * enabled when debuging slow queries.
+     * enabled when debugging slow queries.
      *
      * By default the indexMetrics are disabled.
      *
@@ -660,20 +687,6 @@ public class CosmosQueryRequestOptions {
 
     boolean isEmptyPageDiagnosticsEnabled() { return this.emptyPageDiagnosticsEnabled; }
 
-    CosmosQueryRequestOptions setEmptyPageDiagnosticsEnabled(boolean emptyPageDiagnosticsEnabled) {
-        this.emptyPageDiagnosticsEnabled = emptyPageDiagnosticsEnabled;
-        return this;
-    }
-
-    CosmosQueryRequestOptions withEmptyPageDiagnosticsEnabled(boolean emptyPageDiagnosticsEnabled) {
-        if (this.emptyPageDiagnosticsEnabled == emptyPageDiagnosticsEnabled)
-        {
-            return this;
-        }
-
-        return new CosmosQueryRequestOptions(this).setEmptyPageDiagnosticsEnabled(emptyPageDiagnosticsEnabled);
-    }
-
     Function<JsonNode, ?> getItemFactoryMethod() { return this.itemFactoryMethod; }
 
     CosmosQueryRequestOptions setItemFactoryMethod(Function<JsonNode, ?> factoryMethod) {
@@ -696,6 +709,11 @@ public class CosmosQueryRequestOptions {
     static void initialize() {
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.setCosmosQueryRequestOptionsAccessor(
             new ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor() {
+
+                @Override
+                public CosmosQueryRequestOptions clone(CosmosQueryRequestOptions toBeCloned) {
+                    return new CosmosQueryRequestOptions(toBeCloned);
+                }
 
                 @Override
                 public void setOperationContext(CosmosQueryRequestOptions queryRequestOptions,
@@ -757,16 +775,6 @@ public class CosmosQueryRequestOptions {
                 }
 
                 @Override
-                public CosmosQueryRequestOptions setEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled) {
-                    return queryRequestOptions.setEmptyPageDiagnosticsEnabled(emptyPageDiagnosticsEnabled);
-                }
-
-                @Override
-                public CosmosQueryRequestOptions withEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled) {
-                    return queryRequestOptions.withEmptyPageDiagnosticsEnabled(emptyPageDiagnosticsEnabled);
-                }
-
-                @Override
                 @SuppressWarnings("unchecked")
                 public <T> Function<JsonNode, T> getItemFactoryMethod(
                     CosmosQueryRequestOptions queryRequestOptions, Class<T> classOfT) {
@@ -802,6 +810,7 @@ public class CosmosQueryRequestOptions {
                         requestOptions.setDiagnosticsThresholds(queryRequestOptions.thresholds);
                     }
                     requestOptions.setCosmosEndToEndLatencyPolicyConfig(queryRequestOptions.cosmosEndToEndOperationLatencyPolicyConfig);
+                    requestOptions.setExcludeRegions(queryRequestOptions.excludeRegions);
 
                     if (queryRequestOptions.customOptions != null) {
                         for(Map.Entry<String, String> entry : queryRequestOptions.customOptions.entrySet()) {
@@ -815,22 +824,6 @@ public class CosmosQueryRequestOptions {
                 @Override
                 public CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosQueryRequestOptions options) {
                     return options.thresholds;
-                }
-
-                @Override
-                public void applyMaxItemCount(
-                    CosmosQueryRequestOptions requestOptions,
-                    CosmosPagedFluxOptions fluxOptions) {
-
-                    if (requestOptions == null || requestOptions.getMaxItemCount() == null || fluxOptions == null) {
-                        return;
-                    }
-
-                    if (fluxOptions.getMaxItemCount() != null) {
-                        return;
-                    }
-
-                    fluxOptions.setMaxItemCount(requestOptions.getMaxItemCount());
                 }
 
                 @Override
@@ -848,6 +841,31 @@ public class CosmosQueryRequestOptions {
                     List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
 
                     options.setCancelledRequestDiagnosticsTracker(cancelledRequestDiagnosticsTracker);
+                }
+
+                @Override
+                public void setAllowEmptyPages(CosmosQueryRequestOptions options, boolean emptyPagesAllowed) {
+                    options.setEmptyPagesAllowed(emptyPagesAllowed);
+                }
+
+                @Override
+                public boolean getAllowEmptyPages(CosmosQueryRequestOptions options) {
+                    return options.isEmptyPagesAllowed();
+                }
+
+                @Override
+                public Integer getMaxItemCount(CosmosQueryRequestOptions options) {
+                    return options.getMaxItemCount();
+                }
+
+                @Override
+                public String getRequestContinuation(CosmosQueryRequestOptions options) {
+                    return options.getRequestContinuation();
+                }
+
+                @Override
+                public List<String> getExcludeRegions(CosmosQueryRequestOptions options) {
+                    return options.getExcludedRegions();
                 }
             });
     }

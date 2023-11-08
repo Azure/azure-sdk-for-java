@@ -19,6 +19,10 @@ public final class EmailTemplateContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private EmailTemplateContractProperties innerProperties;
 
+    /** Creates an instance of EmailTemplateContractInner class. */
+    public EmailTemplateContractInner() {
+    }
+
     /**
      * Get the innerProperties property: Email Template entity contract properties.
      *

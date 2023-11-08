@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.NameAvailabilityCheckRequestParameters;
 import com.azure.resourcemanager.hdinsight.models.NameAvailabilityCheckResult;
@@ -32,7 +31,7 @@ public final class LocationsCheckNameAvailabilityWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"nameAvailable\":false,\"reason\":\"mysu\",\"message\":\"wq\"}";
+        String responseStr = "{\"nameAvailable\":true,\"reason\":\"jszlb\",\"message\":\"mnlzijiufehgmvf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,11 +63,11 @@ public final class LocationsCheckNameAvailabilityWithResponseMockTests {
             manager
                 .locations()
                 .checkNameAvailabilityWithResponse(
-                    "wpgdak",
-                    new NameAvailabilityCheckRequestParameters().withName("zyvli").withType("nrkcxkj"),
-                    Context.NONE)
+                    "co",
+                    new NameAvailabilityCheckRequestParameters().withName("i").withType("s"),
+                    com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(false, response.nameAvailable());
+        Assertions.assertEquals(true, response.nameAvailable());
     }
 }

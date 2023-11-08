@@ -87,7 +87,7 @@ public final class AccountResourceImpl implements AccountResource, AccountResour
         this.innerObject =
             serviceManager
                 .serviceClient()
-                .getAccountOperations()
+                .getAccounts()
                 .createAndUpdate(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
         return this;
     }
@@ -96,7 +96,7 @@ public final class AccountResourceImpl implements AccountResource, AccountResour
         this.innerObject =
             serviceManager
                 .serviceClient()
-                .getAccountOperations()
+                .getAccounts()
                 .createAndUpdate(resourceGroupName, resourceName, this.innerModel(), context);
         return this;
     }
@@ -116,7 +116,7 @@ public final class AccountResourceImpl implements AccountResource, AccountResour
         this.innerObject =
             serviceManager
                 .serviceClient()
-                .getAccountOperations()
+                .getAccounts()
                 .updateWithResponse(resourceGroupName, resourceName, updateAccountResource, Context.NONE)
                 .getValue();
         return this;
@@ -126,7 +126,7 @@ public final class AccountResourceImpl implements AccountResource, AccountResour
         this.innerObject =
             serviceManager
                 .serviceClient()
-                .getAccountOperations()
+                .getAccounts()
                 .updateWithResponse(resourceGroupName, resourceName, updateAccountResource, context)
                 .getValue();
         return this;
@@ -144,7 +144,7 @@ public final class AccountResourceImpl implements AccountResource, AccountResour
         this.innerObject =
             serviceManager
                 .serviceClient()
-                .getAccountOperations()
+                .getAccounts()
                 .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
                 .getValue();
         return this;
@@ -154,7 +154,7 @@ public final class AccountResourceImpl implements AccountResource, AccountResour
         this.innerObject =
             serviceManager
                 .serviceClient()
-                .getAccountOperations()
+                .getAccounts()
                 .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
                 .getValue();
         return this;

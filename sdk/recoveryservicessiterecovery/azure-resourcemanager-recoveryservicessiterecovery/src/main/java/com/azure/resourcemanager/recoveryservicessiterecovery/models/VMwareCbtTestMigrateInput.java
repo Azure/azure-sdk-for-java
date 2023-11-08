@@ -34,6 +34,12 @@ public final class VMwareCbtTestMigrateInput extends TestMigrateProviderSpecific
     @JsonProperty(value = "vmNics")
     private List<VMwareCbtNicInput> vmNics;
 
+    /*
+     * A value indicating the inplace OS Upgrade version.
+     */
+    @JsonProperty(value = "osUpgradeVersion")
+    private String osUpgradeVersion;
+
     /** Creates an instance of VMwareCbtTestMigrateInput class. */
     public VMwareCbtTestMigrateInput() {
     }
@@ -95,6 +101,26 @@ public final class VMwareCbtTestMigrateInput extends TestMigrateProviderSpecific
      */
     public VMwareCbtTestMigrateInput withVmNics(List<VMwareCbtNicInput> vmNics) {
         this.vmNics = vmNics;
+        return this;
+    }
+
+    /**
+     * Get the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
+     *
+     * @return the osUpgradeVersion value.
+     */
+    public String osUpgradeVersion() {
+        return this.osUpgradeVersion;
+    }
+
+    /**
+     * Set the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
+     *
+     * @param osUpgradeVersion the osUpgradeVersion value to set.
+     * @return the VMwareCbtTestMigrateInput object itself.
+     */
+    public VMwareCbtTestMigrateInput withOsUpgradeVersion(String osUpgradeVersion) {
+        this.osUpgradeVersion = osUpgradeVersion;
         return this;
     }
 

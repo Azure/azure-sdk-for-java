@@ -9,25 +9,24 @@ import com.azure.resourcemanager.batch.models.AutoUserScope;
 import com.azure.resourcemanager.batch.models.AutoUserSpecification;
 import com.azure.resourcemanager.batch.models.ElevationLevel;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AutoUserSpecificationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AutoUserSpecification model =
             BinaryData
-                .fromString("{\"scope\":\"Pool\",\"elevationLevel\":\"Admin\"}")
+                .fromString("{\"scope\":\"Task\",\"elevationLevel\":\"Admin\"}")
                 .toObject(AutoUserSpecification.class);
-        Assertions.assertEquals(AutoUserScope.POOL, model.scope());
+        Assertions.assertEquals(AutoUserScope.TASK, model.scope());
         Assertions.assertEquals(ElevationLevel.ADMIN, model.elevationLevel());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AutoUserSpecification model =
-            new AutoUserSpecification().withScope(AutoUserScope.POOL).withElevationLevel(ElevationLevel.ADMIN);
+            new AutoUserSpecification().withScope(AutoUserScope.TASK).withElevationLevel(ElevationLevel.ADMIN);
         model = BinaryData.fromObject(model).toObject(AutoUserSpecification.class);
-        Assertions.assertEquals(AutoUserScope.POOL, model.scope());
+        Assertions.assertEquals(AutoUserScope.TASK, model.scope());
         Assertions.assertEquals(ElevationLevel.ADMIN, model.elevationLevel());
     }
 }

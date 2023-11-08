@@ -9,6 +9,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.connectedvmware.models.ExtendedLocation;
+import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -42,6 +43,10 @@ public final class ClusterInner extends Resource {
      */
     @JsonProperty(value = "kind")
     private String kind;
+
+    /** Creates an instance of ClusterInner class. */
+    public ClusterInner() {
+    }
 
     /**
      * Get the innerProperties property: Resource properties.
@@ -225,7 +230,43 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Get the datastoreIds property: Gets or sets the datastore ARM ids.
+     * Get the usedMemoryGB property: Gets the used physical memory on the cluster in GB.
+     *
+     * @return the usedMemoryGB value.
+     */
+    public Long usedMemoryGB() {
+        return this.innerProperties() == null ? null : this.innerProperties().usedMemoryGB();
+    }
+
+    /**
+     * Get the totalMemoryGB property: Gets the total amount of physical memory on the cluster in GB.
+     *
+     * @return the totalMemoryGB value.
+     */
+    public Long totalMemoryGB() {
+        return this.innerProperties() == null ? null : this.innerProperties().totalMemoryGB();
+    }
+
+    /**
+     * Get the usedCpuMHz property: Gets the used CPU usage across all cores on the cluster in MHz.
+     *
+     * @return the usedCpuMHz value.
+     */
+    public Long usedCpuMHz() {
+        return this.innerProperties() == null ? null : this.innerProperties().usedCpuMHz();
+    }
+
+    /**
+     * Get the totalCpuMHz property: Gets the max CPU usage across all cores on the cluster in MHz.
+     *
+     * @return the totalCpuMHz value.
+     */
+    public Long totalCpuMHz() {
+        return this.innerProperties() == null ? null : this.innerProperties().totalCpuMHz();
+    }
+
+    /**
+     * Get the datastoreIds property: Gets the datastore ARM ids.
      *
      * @return the datastoreIds value.
      */
@@ -234,7 +275,7 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Get the networkIds property: Gets or sets the network ARM ids.
+     * Get the networkIds property: Gets the network ARM ids.
      *
      * @return the networkIds value.
      */
@@ -243,11 +284,11 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Gets or sets the provisioning state.
+     * Get the provisioningState property: Gets the provisioning state.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

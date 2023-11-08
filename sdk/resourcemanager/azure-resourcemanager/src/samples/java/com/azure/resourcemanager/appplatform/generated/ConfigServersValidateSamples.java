@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for ConfigServers Validate. */
 public final class ConfigServersValidateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/ConfigServers_Validate.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/ConfigServers_Validate.json
      */
     /**
      * Sample code: ConfigServers_Validate.

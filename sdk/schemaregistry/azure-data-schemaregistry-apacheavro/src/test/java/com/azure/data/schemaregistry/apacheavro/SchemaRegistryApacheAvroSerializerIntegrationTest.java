@@ -3,14 +3,10 @@
 
 package com.azure.data.schemaregistry.apacheavro;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.models.MessageContent;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryClient;
 import com.azure.data.schemaregistry.SchemaRegistryClientBuilder;
@@ -32,12 +28,10 @@ import org.apache.avro.Schema;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.UUID;
@@ -45,14 +39,11 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Tests end to end experience of the schema registry class.
  */
-public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase {
+public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestProxyTestBase {
     static final String SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE = "SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE";
     static final String SCHEMA_REGISTRY_GROUP = "SCHEMA_REGISTRY_GROUP";
     static final String SCHEMA_REGISTRY_AVRO_EVENT_HUB_NAME = "SCHEMA_REGISTRY_AVRO_EVENT_HUB_NAME";
@@ -62,25 +53,18 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
     static final String PLAYBACK_TEST_GROUP = "azsdk_java_group";
     static final String PLAYBACK_ENDPOINT = "https://foo.servicebus.windows.net";
 
-    private TokenCredential tokenCredential;
     private String schemaGroup;
     private SchemaRegistryClientBuilder builder;
-    private String endpoint;
     private String eventHubName;
     private String connectionString;
 
     @Override
     protected void beforeTest() {
+        String endpoint;
+        TokenCredential tokenCredential;
         if (interceptorManager.isPlaybackMode()) {
-            tokenCredential = mock(TokenCredential.class);
+            tokenCredential = new MockTokenCredential();
             schemaGroup = PLAYBACK_TEST_GROUP;
-
-            // Sometimes it throws an "NotAMockException", so we had to change from thenReturn to thenAnswer.
-            when(tokenCredential.getToken(any(TokenRequestContext.class))).thenAnswer(invocationOnMock -> {
-                return Mono.fromCallable(() -> {
-                    return new AccessToken("foo", OffsetDateTime.now().plusMinutes(20));
-                });
-            });
 
             endpoint = PLAYBACK_ENDPOINT;
             eventHubName = "javaeventhub";
@@ -104,10 +88,8 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
-        } else {
-            builder.addPolicy(new RetryPolicy())
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .addPolicy(interceptorManager.getRecordPolicy());
+        } else if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
     }
 

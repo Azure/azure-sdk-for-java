@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.routing.Range;
@@ -123,11 +124,26 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                                                                    CosmosChangeFeedRequestOptions changeFeedRequestOptions,
                                                                    Class<T> klass) {
 
+        return this.createDocumentChangeFeedQuery(collectionLink, changeFeedRequestOptions, klass, true);
+    }
+
+    @Override
+    public  <T> Flux<FeedResponse<T>> createDocumentChangeFeedQuery(CosmosAsyncContainer collectionLink,
+                                                                    CosmosChangeFeedRequestOptions changeFeedRequestOptions,
+                                                                    Class<T> klass,
+                                                                    boolean isSplitHandlingDisabled) {
+
+        // Case 1: when split handling should be disabled
         // ChangeFeed processor relies on getting GoneException signals
         // to handle split of leases - so we need to suppress the split-proofing
         // in the underlying fetcher/pipeline for the change feed processor.
-        CosmosChangeFeedRequestOptions effectiveRequestOptions =
+        // Case 2: when split handling should be enabled
+        // A ChangeFeedProcessor instance which is backed by a client with a stale
+        // PKRange cache will run into 410/1002s (PartitionKeyRangeGone) if disable split handling is true
+        // in getCurrentState and getEstimatedLag scenarios therefore disable split handling should explicitly be set to false
+        if (isSplitHandlingDisabled) {
             ModelBridgeInternal.disableSplitHandling(changeFeedRequestOptions);
+        }
 
         AsyncDocumentClient clientWrapper =
             CosmosBridgeInternal.getAsyncDocumentClient(collectionLink.getDatabase());
@@ -144,7 +160,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                     }
 
                     return clientWrapper
-                        .queryDocumentChangeFeed(collection, effectiveRequestOptions, Document.class)
+                        .queryDocumentChangeFeed(collection, changeFeedRequestOptions, Document.class)
                         .map(response -> {
                             List<T> results = response.getResults()
                                                              .stream()
@@ -156,7 +172,9 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                             return BridgeInternal.toFeedResponsePage(
                                 results,
                                 response.getResponseHeaders(),
-                                false,
+                                ImplementationBridgeHelpers
+                                    .FeedResponseHelper
+                                    .getFeedResponseAccessor().getNoChanges(response),
                                 response.getCosmosDiagnostics());
                         });
                 });

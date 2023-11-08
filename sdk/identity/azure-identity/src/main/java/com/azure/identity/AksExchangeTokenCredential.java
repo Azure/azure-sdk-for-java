@@ -11,7 +11,7 @@ import com.azure.identity.implementation.IdentityClient;
 import reactor.core.publisher.Mono;
 
 /**
- * Authenticates a service principal with AAD using a client assertion.
+ * Authenticates a service principal with Microsoft Entra ID using a client assertion.
  */
 class AksExchangeTokenCredential extends ManagedIdentityServiceCredential {
     private static final ClientLogger LOGGER = new ClientLogger(AksExchangeTokenCredential.class);

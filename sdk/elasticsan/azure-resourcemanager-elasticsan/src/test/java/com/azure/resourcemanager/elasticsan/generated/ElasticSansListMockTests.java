@@ -12,9 +12,9 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
 import com.azure.resourcemanager.elasticsan.models.ElasticSan;
+import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
 import com.azure.resourcemanager.elasticsan.models.SkuName;
 import com.azure.resourcemanager.elasticsan.models.SkuTier;
 import java.nio.ByteBuffer;
@@ -35,7 +35,7 @@ public final class ElasticSansListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"sku\":{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"jx\",\"jnspydp\"],\"provisioningState\":\"Updating\",\"baseSizeTiB\":2872617202997783845,\"extendedCapacitySizeTiB\":3980056682158656120,\"totalVolumeSizeGiB\":3290062663385259489,\"volumeGroupCount\":316131865784554272,\"totalIops\":5918766078843387031,\"totalMBps\":5757208941637083541,\"totalSizeTiB\":2493670032116286006},\"location\":\"kpoc\",\"tags\":{\"xoegukgjnpiucgy\":\"z\",\"zcdrqjsdpydnfyhx\":\"evqzntypmrbp\",\"ifsjttgzfbishcb\":\"eoejzic\"},\"id\":\"hajdeyeamdpha\",\"name\":\"alpbuxwgipwhon\",\"type\":\"wkgshwa\"}]}";
+            "{\"value\":[{\"properties\":{\"sku\":{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"zpyqsemwab\"],\"provisioningState\":\"Pending\",\"baseSizeTiB\":6262179068899223005,\"extendedCapacitySizeTiB\":4936822045800298371,\"totalVolumeSizeGiB\":854866866416651839,\"volumeGroupCount\":6111204244847646570,\"totalIops\":6033840789921327792,\"totalMBps\":2247461655033792564,\"totalSizeTiB\":1945497697988409229,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Creating\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"wwtppj\"]},\"id\":\"cxogaokonzm\",\"name\":\"sikvmkqzeqqkdlt\",\"type\":\"zxmhhvhgu\"}],\"publicNetworkAccess\":\"Enabled\"},\"location\":\"kwobdagxtibq\",\"tags\":{\"ogqxndlkzgxhuri\":\"xwak\",\"ebxmubyynt\":\"lbpodxunk\"},\"id\":\"lrb\",\"name\":\"tkoievseotgq\",\"type\":\"l\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,14 +63,15 @@ public final class ElasticSansListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ElasticSan> response = manager.elasticSans().list(Context.NONE);
+        PagedIterable<ElasticSan> response = manager.elasticSans().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kpoc", response.iterator().next().location());
-        Assertions.assertEquals("z", response.iterator().next().tags().get("xoegukgjnpiucgy"));
+        Assertions.assertEquals("kwobdagxtibq", response.iterator().next().location());
+        Assertions.assertEquals("xwak", response.iterator().next().tags().get("ogqxndlkzgxhuri"));
         Assertions.assertEquals(SkuName.PREMIUM_ZRS, response.iterator().next().sku().name());
         Assertions.assertEquals(SkuTier.PREMIUM, response.iterator().next().sku().tier());
-        Assertions.assertEquals("jx", response.iterator().next().availabilityZones().get(0));
-        Assertions.assertEquals(2872617202997783845L, response.iterator().next().baseSizeTiB());
-        Assertions.assertEquals(3980056682158656120L, response.iterator().next().extendedCapacitySizeTiB());
+        Assertions.assertEquals("zpyqsemwab", response.iterator().next().availabilityZones().get(0));
+        Assertions.assertEquals(6262179068899223005L, response.iterator().next().baseSizeTiB());
+        Assertions.assertEquals(4936822045800298371L, response.iterator().next().extendedCapacitySizeTiB());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.iterator().next().publicNetworkAccess());
     }
 }

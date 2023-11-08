@@ -14,20 +14,20 @@ public final class RequiredAmlFilesystemSubnetsSizeInfoTests {
     public void testDeserialize() throws Exception {
         RequiredAmlFilesystemSubnetsSizeInfo model =
             BinaryData
-                .fromString("{\"storageCapacityTiB\":38.353115,\"sku\":{\"name\":\"cmbqfqvmk\"}}")
+                .fromString("{\"storageCapacityTiB\":38.036823,\"sku\":{\"name\":\"crmnohjtckwhds\"}}")
                 .toObject(RequiredAmlFilesystemSubnetsSizeInfo.class);
-        Assertions.assertEquals(38.353115F, model.storageCapacityTiB());
-        Assertions.assertEquals("cmbqfqvmk", model.sku().name());
+        Assertions.assertEquals(38.036823F, model.storageCapacityTiB());
+        Assertions.assertEquals("crmnohjtckwhds", model.sku().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RequiredAmlFilesystemSubnetsSizeInfo model =
             new RequiredAmlFilesystemSubnetsSizeInfo()
-                .withStorageCapacityTiB(38.353115F)
-                .withSku(new SkuName().withName("cmbqfqvmk"));
+                .withStorageCapacityTiB(38.036823F)
+                .withSku(new SkuName().withName("crmnohjtckwhds"));
         model = BinaryData.fromObject(model).toObject(RequiredAmlFilesystemSubnetsSizeInfo.class);
-        Assertions.assertEquals(38.353115F, model.storageCapacityTiB());
-        Assertions.assertEquals("cmbqfqvmk", model.sku().name());
+        Assertions.assertEquals(38.036823F, model.storageCapacityTiB());
+        Assertions.assertEquals("crmnohjtckwhds", model.sku().name());
     }
 }

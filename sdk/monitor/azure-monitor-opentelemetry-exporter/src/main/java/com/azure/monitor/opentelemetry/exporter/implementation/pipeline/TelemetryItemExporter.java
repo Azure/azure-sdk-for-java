@@ -5,7 +5,10 @@ package com.azure.monitor.opentelemetry.exporter.implementation.pipeline;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
+import com.azure.monitor.opentelemetry.exporter.implementation.ResourceAttributes;
+import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.OperationLogger;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -13,6 +16,7 @@ import com.fasterxml.jackson.core.io.SerializedString;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.opentelemetry.sdk.common.CompletableResultCode;
+import io.opentelemetry.sdk.resources.Resource;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -22,6 +26,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.zip.GZIPOutputStream;
@@ -33,6 +38,8 @@ public class TelemetryItemExporter {
     // the number 100 was calculated as the max number of concurrent exports that the single worker
     // thread can drive, so anything higher than this should not increase throughput
     private static final int MAX_CONCURRENT_EXPORTS = 100;
+
+    private static final String _OTELRESOURCE_ = "_OTELRESOURCE_";
 
     private static final ClientLogger logger = new ClientLogger(TelemetryItemExporter.class);
 
@@ -73,17 +80,30 @@ public class TelemetryItemExporter {
     }
 
     public CompletableResultCode send(List<TelemetryItem> telemetryItems) {
-        Map<String, List<TelemetryItem>> groupings = new HashMap<>();
-        for (TelemetryItem telemetryItem : telemetryItems) {
-            groupings
-                .computeIfAbsent(telemetryItem.getConnectionString(), k -> new ArrayList<>())
-                .add(telemetryItem);
-        }
+        Map<TelemetryItemBatchKey, List<TelemetryItem>> batches = splitIntoBatches(telemetryItems);
         List<CompletableResultCode> resultCodeList = new ArrayList<>();
-        for (Map.Entry<String, List<TelemetryItem>> entry : groupings.entrySet()) {
-            resultCodeList.add(internalSendByConnectionString(entry.getValue(), entry.getKey()));
+        for (Map.Entry<TelemetryItemBatchKey, List<TelemetryItem>> batch : batches.entrySet()) {
+            resultCodeList.add(internalSendByBatch(batch.getKey(), batch.getValue()));
         }
         return maybeAddToActiveExportResults(resultCodeList);
+    }
+
+    // visible for tests
+    Map<TelemetryItemBatchKey, List<TelemetryItem>> splitIntoBatches(
+        List<TelemetryItem> telemetryItems) {
+
+        Map<TelemetryItemBatchKey, List<TelemetryItem>> groupings = new HashMap<>();
+        for (TelemetryItem telemetryItem : telemetryItems) {
+            TelemetryItemBatchKey telemetryItemBatchKey = new TelemetryItemBatchKey(
+                telemetryItem.getConnectionString(),
+                telemetryItem.getResource(),
+                telemetryItem.getResourceFromTags()
+            );
+            groupings
+                .computeIfAbsent(telemetryItemBatchKey, k -> new ArrayList<>())
+                .add(telemetryItem);
+        }
+        return groupings;
     }
 
     private CompletableResultCode maybeAddToActiveExportResults(List<CompletableResultCode> results) {
@@ -114,9 +134,15 @@ public class TelemetryItemExporter {
         return listener.shutdown();
     }
 
-    CompletableResultCode internalSendByConnectionString(
-        List<TelemetryItem> telemetryItems, String connectionString) {
+    CompletableResultCode internalSendByBatch(TelemetryItemBatchKey telemetryItemBatchKey,
+                                              List<TelemetryItem> telemetryItems) {
         List<ByteBuffer> byteBuffers;
+        // Don't send _OTELRESOURCE_ custom metric when OTEL_RESOURCE_ATTRIBUTES env var is empty
+        // Don't send _OTELRESOURCE_ custom metric to Statsbeat yet
+        // insert _OTELRESOURCE_ at the beginning of each batch
+        if (!"Statsbeat".equals(telemetryItems.get(0).getName())) {
+            telemetryItems.add(0, createOtelResourceMetric(telemetryItemBatchKey));
+        }
         try {
             byteBuffers = encode(telemetryItems);
             encodeBatchOperationLogger.recordSuccess();
@@ -124,11 +150,32 @@ public class TelemetryItemExporter {
             encodeBatchOperationLogger.recordFailure(t.getMessage(), t);
             return CompletableResultCode.ofFailure();
         }
-        return telemetryPipeline.send(byteBuffers, connectionString, listener);
+        return telemetryPipeline.send(byteBuffers, telemetryItemBatchKey.connectionString, listener);
+    }
+
+    private TelemetryItem createOtelResourceMetric(TelemetryItemBatchKey telemetryItemBatchKey) {
+        MetricTelemetryBuilder builder = MetricTelemetryBuilder.create(_OTELRESOURCE_, 0);
+        builder.setConnectionString(telemetryItemBatchKey.connectionString);
+        telemetryItemBatchKey.resource.getAttributes().forEach((k, v) -> builder.addProperty(k.getKey(), v.toString()));
+        String roleName = telemetryItemBatchKey.resourceFromTags.get(ContextTagKeys.AI_CLOUD_ROLE.toString());
+        if (roleName != null) {
+            builder.addProperty(ResourceAttributes.SERVICE_NAME.getKey(), roleName);
+            builder.addTag(ContextTagKeys.AI_CLOUD_ROLE.toString(), roleName);
+        }
+        String roleInstance = telemetryItemBatchKey.resourceFromTags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString());
+        if (roleInstance != null) {
+            builder.addProperty(ResourceAttributes.SERVICE_INSTANCE_ID.getKey(), roleInstance);
+            builder.addTag(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(), roleInstance);
+        }
+        String internalSdkVersion = telemetryItemBatchKey.resourceFromTags.get(ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString());
+        if (internalSdkVersion != null) {
+            builder.addTag(ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString(), internalSdkVersion);
+        }
+
+        return builder.build();
     }
 
     List<ByteBuffer> encode(List<TelemetryItem> telemetryItems) throws IOException {
-
         if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
             StringWriter debug = new StringWriter();
             try (JsonGenerator jg = mapper.createGenerator(debug)) {
@@ -160,6 +207,38 @@ public class TelemetryItemExporter {
         jg.setRootValueSeparator(new SerializedString("\n"));
         for (TelemetryItem telemetryItem : telemetryItems) {
             mapper.writeValue(jg, telemetryItem);
+        }
+    }
+
+    private static class TelemetryItemBatchKey {
+
+        private final String connectionString;
+        private final Resource resource;
+        private final Map<String, String> resourceFromTags;
+
+        private TelemetryItemBatchKey(String connectionString, Resource resource, Map<String, String> resourceFromTags) {
+            this.connectionString = connectionString;
+            this.resource = resource;
+            this.resourceFromTags = resourceFromTags;
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            if (this == other) {
+                return true;
+            }
+            if (other == null || getClass() != other.getClass()) {
+                return false;
+            }
+            TelemetryItemBatchKey that = (TelemetryItemBatchKey) other;
+            return Objects.equals(connectionString, that.connectionString)
+                && Objects.equals(resource, that.resource)
+                && Objects.equals(resourceFromTags, that.resourceFromTags);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(connectionString, resource, resourceFromTags);
         }
     }
 }

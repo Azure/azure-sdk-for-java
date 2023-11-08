@@ -130,9 +130,7 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Get the cacheSizeGB property: The size of this cache, in GB, when scalingFactor is 1.0. Values depend on the
-     * cache SKU - &lt;a href="https://learn.microsoft.com/en-us/rest/api/storagecache/skus/list?tabs=HTTP"&gt;List
-     * SKUs&lt;/a&gt;.
+     * Get the cacheSizeGB property: The size of this Cache, in GB.
      *
      * @return the cacheSizeGB value.
      */
@@ -141,9 +139,7 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Set the cacheSizeGB property: The size of this cache, in GB, when scalingFactor is 1.0. Values depend on the
-     * cache SKU - &lt;a href="https://learn.microsoft.com/en-us/rest/api/storagecache/skus/list?tabs=HTTP"&gt;List
-     * SKUs&lt;/a&gt;.
+     * Set the cacheSizeGB property: The size of this Cache, in GB.
      *
      * @param cacheSizeGB the cacheSizeGB value to set.
      * @return the CacheInner object itself.
@@ -153,37 +149,6 @@ public final class CacheInner extends Resource {
             this.innerProperties = new CacheProperties();
         }
         this.innerProperties().withCacheSizeGB(cacheSizeGB);
-        return this;
-    }
-
-    /**
-     * Get the scalingFactor property: Multiplier that sets the current storage and throughput capacity of the cache.
-     * Values depend on the cache SKU - &lt;a
-     * href="https://learn.microsoft.com/en-us/rest/api/storagecache/skus/list?tabs=HTTP"&gt;List SKUs&lt;/a&gt;. Values
-     * above 1.0 increase the cache size and throughput - for example, the scaling factor 1.33 gives a cache that's 33%
-     * larger than its base size.
-     *
-     * @return the scalingFactor value.
-     */
-    public Double scalingFactor() {
-        return this.innerProperties() == null ? null : this.innerProperties().scalingFactor();
-    }
-
-    /**
-     * Set the scalingFactor property: Multiplier that sets the current storage and throughput capacity of the cache.
-     * Values depend on the cache SKU - &lt;a
-     * href="https://learn.microsoft.com/en-us/rest/api/storagecache/skus/list?tabs=HTTP"&gt;List SKUs&lt;/a&gt;. Values
-     * above 1.0 increase the cache size and throughput - for example, the scaling factor 1.33 gives a cache that's 33%
-     * larger than its base size.
-     *
-     * @param scalingFactor the scalingFactor value to set.
-     * @return the CacheInner object itself.
-     */
-    public CacheInner withScalingFactor(Double scalingFactor) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new CacheProperties();
-        }
-        this.innerProperties().withScalingFactor(scalingFactor);
         return this;
     }
 

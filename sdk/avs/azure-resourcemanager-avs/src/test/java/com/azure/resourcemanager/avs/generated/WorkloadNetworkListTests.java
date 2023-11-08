@@ -13,7 +13,7 @@ public final class WorkloadNetworkListTests {
         WorkloadNetworkList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"id\":\"osvmk\",\"name\":\"ss\",\"type\":\"qukkfp\"},{\"id\":\"gmgsxnkjzkde\",\"name\":\"lpvlopw\",\"type\":\"yighxpk\"},{\"id\":\"wzbaiue\",\"name\":\"baumnyqupedeoj\",\"type\":\"a\"},{\"id\":\"ckhsmtxpsieb\",\"name\":\"fhvpesaps\",\"type\":\"rdqmhjjdhtldwkyz\"}],\"nextLink\":\"utknc\"}")
+                    "{\"value\":[{\"id\":\"mbes\",\"name\":\"dnkwwtppjflcxog\",\"type\":\"okonzmnsikvmkqz\"},{\"id\":\"qqkdltfzxmhhvhgu\",\"name\":\"eodkwobda\",\"type\":\"xtibqdxbxwakbog\"},{\"id\":\"xndlkzgxhu\",\"name\":\"iplbpodxunkbebxm\",\"type\":\"byyntwlrbqt\"}],\"nextLink\":\"ievseotgqrllt\"}")
                 .toObject(WorkloadNetworkList.class);
     }
 

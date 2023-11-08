@@ -6,15 +6,20 @@ package com.azure.resourcemanager.elasticsan.implementation;
 
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.elasticsan.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeGroupInner;
+import com.azure.resourcemanager.elasticsan.models.EncryptionProperties;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
+import com.azure.resourcemanager.elasticsan.models.Identity;
 import com.azure.resourcemanager.elasticsan.models.NetworkRuleSet;
+import com.azure.resourcemanager.elasticsan.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.StorageTargetType;
 import com.azure.resourcemanager.elasticsan.models.VolumeGroup;
 import com.azure.resourcemanager.elasticsan.models.VolumeGroupUpdate;
 import java.util.Collections;
-import java.util.Map;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definition, VolumeGroup.Update {
     private VolumeGroupInner innerObject;
@@ -33,17 +38,12 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
         return this.innerModel().type();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
+    public Identity identity() {
+        return this.innerModel().identity();
     }
 
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public ProvisioningStates provisioningState() {
@@ -58,8 +58,26 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
         return this.innerModel().encryption();
     }
 
+    public EncryptionProperties encryptionProperties() {
+        return this.innerModel().encryptionProperties();
+    }
+
     public NetworkRuleSet networkAcls() {
         return this.innerModel().networkAcls();
+    }
+
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
+        if (inner != null) {
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public String resourceGroupName() {
@@ -164,12 +182,12 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
         return this;
     }
 
-    public VolumeGroupImpl withTags(Map<String, String> tags) {
+    public VolumeGroupImpl withIdentity(Identity identity) {
         if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
+            this.innerModel().withIdentity(identity);
             return this;
         } else {
-            this.updateParameters.withTags(tags);
+            this.updateParameters.withIdentity(identity);
             return this;
         }
     }
@@ -194,9 +212,24 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
         }
     }
 
+    public VolumeGroupImpl withEncryptionProperties(EncryptionProperties encryptionProperties) {
+        if (isInCreateMode()) {
+            this.innerModel().withEncryptionProperties(encryptionProperties);
+            return this;
+        } else {
+            this.updateParameters.withEncryptionProperties(encryptionProperties);
+            return this;
+        }
+    }
+
     public VolumeGroupImpl withNetworkAcls(NetworkRuleSet networkAcls) {
-        this.innerModel().withNetworkAcls(networkAcls);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withNetworkAcls(networkAcls);
+            return this;
+        } else {
+            this.updateParameters.withNetworkAcls(networkAcls);
+            return this;
+        }
     }
 
     private boolean isInCreateMode() {

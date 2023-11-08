@@ -78,7 +78,8 @@ public class StreamResponseTest {
     @Test
     public void closeDisposesFlux() {
         AtomicBoolean wasRead = new AtomicBoolean(false);
-        Flux<ByteBuffer> value = Flux.just(ByteBuffer.wrap(responseValue)).doFinally(ignore -> wasRead.set(true));
+        Flux<ByteBuffer> value = Flux.using(() -> wasRead, ignored -> Flux.just(ByteBuffer.wrap(responseValue)),
+            read -> read.set(true));
         StreamResponse streamResponse = new StreamResponse(request, RESPONSE_CODE, headers, value);
 
         streamResponse.close();
@@ -90,7 +91,8 @@ public class StreamResponseTest {
     @Test
     public void closeDisposesOnce() {
         AtomicInteger numberOfReads = new AtomicInteger();
-        Flux<ByteBuffer> value = Flux.just(ByteBuffer.wrap(responseValue)).doFinally(ignore -> numberOfReads.incrementAndGet());
+        Flux<ByteBuffer> value = Flux.using(() -> numberOfReads, ignored -> Flux.just(ByteBuffer.wrap(responseValue)),
+            AtomicInteger::incrementAndGet);
         StreamResponse streamResponse = new StreamResponse(request, RESPONSE_CODE, headers, value);
 
         streamResponse.close();
@@ -103,7 +105,8 @@ public class StreamResponseTest {
     @Test
     public void valueConsumptionDisposes() {
         AtomicInteger numberOfReads = new AtomicInteger();
-        Flux<ByteBuffer> value = Flux.just(ByteBuffer.wrap(responseValue)).doFinally(ignore -> numberOfReads.incrementAndGet());
+        Flux<ByteBuffer> value = Flux.using(() -> numberOfReads, ignored -> Flux.just(ByteBuffer.wrap(responseValue)),
+            AtomicInteger::incrementAndGet);
         StreamResponse streamResponse = new StreamResponse(request, RESPONSE_CODE, headers, value);
 
         streamResponse.getValue().then().block(); // This marks StreamResponse as consumed and increments numberOfReads

@@ -16,12 +16,12 @@ public final class ManagedPrivateEndpointListResultTests {
         ManagedPrivateEndpointListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"privateLinkResourceId\":\"igvpgylg\",\"privateLinkResourceRegion\":\"itxmedjvcslynqww\",\"groupId\":\"cwzzhxgktr\",\"requestMessage\":\"ucnapkteoellwp\",\"provisioningState\":\"Deleting\"},\"id\":\"gpfqbuace\",\"name\":\"pzfqrhhuaoppp\",\"type\":\"qeqxo\"},{\"properties\":{\"privateLinkResourceId\":\"dahzxctobg\",\"privateLinkResourceRegion\":\"dmoizpostmg\",\"groupId\":\"cfbu\",\"requestMessage\":\"mfqjhhkxbp\",\"provisioningState\":\"Running\"},\"id\":\"jhxxjyn\",\"name\":\"u\",\"type\":\"ivkrtsw\"}]}")
+                    "{\"value\":[{\"properties\":{\"privateLinkResourceId\":\"jhhyxxrwlycoduhp\",\"privateLinkResourceRegion\":\"kgymareqnajxqug\",\"groupId\":\"hky\",\"requestMessage\":\"beddgssofw\",\"provisioningState\":\"Running\"},\"id\":\"alkrmn\",\"name\":\"i\",\"type\":\"pxacqqudfn\"}]}")
                 .toObject(ManagedPrivateEndpointListResult.class);
-        Assertions.assertEquals("igvpgylg", model.value().get(0).privateLinkResourceId());
-        Assertions.assertEquals("itxmedjvcslynqww", model.value().get(0).privateLinkResourceRegion());
-        Assertions.assertEquals("cwzzhxgktr", model.value().get(0).groupId());
-        Assertions.assertEquals("ucnapkteoellwp", model.value().get(0).requestMessage());
+        Assertions.assertEquals("jhhyxxrwlycoduhp", model.value().get(0).privateLinkResourceId());
+        Assertions.assertEquals("kgymareqnajxqug", model.value().get(0).privateLinkResourceRegion());
+        Assertions.assertEquals("hky", model.value().get(0).groupId());
+        Assertions.assertEquals("beddgssofw", model.value().get(0).requestMessage());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,19 +32,14 @@ public final class ManagedPrivateEndpointListResultTests {
                     Arrays
                         .asList(
                             new ManagedPrivateEndpointInner()
-                                .withPrivateLinkResourceId("igvpgylg")
-                                .withPrivateLinkResourceRegion("itxmedjvcslynqww")
-                                .withGroupId("cwzzhxgktr")
-                                .withRequestMessage("ucnapkteoellwp"),
-                            new ManagedPrivateEndpointInner()
-                                .withPrivateLinkResourceId("dahzxctobg")
-                                .withPrivateLinkResourceRegion("dmoizpostmg")
-                                .withGroupId("cfbu")
-                                .withRequestMessage("mfqjhhkxbp")));
+                                .withPrivateLinkResourceId("jhhyxxrwlycoduhp")
+                                .withPrivateLinkResourceRegion("kgymareqnajxqug")
+                                .withGroupId("hky")
+                                .withRequestMessage("beddgssofw")));
         model = BinaryData.fromObject(model).toObject(ManagedPrivateEndpointListResult.class);
-        Assertions.assertEquals("igvpgylg", model.value().get(0).privateLinkResourceId());
-        Assertions.assertEquals("itxmedjvcslynqww", model.value().get(0).privateLinkResourceRegion());
-        Assertions.assertEquals("cwzzhxgktr", model.value().get(0).groupId());
-        Assertions.assertEquals("ucnapkteoellwp", model.value().get(0).requestMessage());
+        Assertions.assertEquals("jhhyxxrwlycoduhp", model.value().get(0).privateLinkResourceId());
+        Assertions.assertEquals("kgymareqnajxqug", model.value().get(0).privateLinkResourceRegion());
+        Assertions.assertEquals("hky", model.value().get(0).groupId());
+        Assertions.assertEquals("beddgssofw", model.value().get(0).requestMessage());
     }
 }

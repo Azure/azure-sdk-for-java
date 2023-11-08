@@ -15,15 +15,16 @@ public final class EndpointInnerTests {
         EndpointInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"osfln\",\"provisioningState\":\"Succeeded\"},\"id\":\"qpteeh\",\"name\":\"zvypyqrimzinp\",\"type\":\"swjdkirso\"}")
+                    "{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"fgibmadgakeq\",\"provisioningState\":\"Succeeded\"},\"id\":\"bzqqedqytbciq\",\"name\":\"ouf\",\"type\":\"mmnkzsmodmgl\"}")
                 .toObject(EndpointInner.class);
-        Assertions.assertEquals("osfln", model.properties().description());
+        Assertions.assertEquals("fgibmadgakeq", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EndpointInner model = new EndpointInner().withProperties(new EndpointBaseProperties().withDescription("osfln"));
+        EndpointInner model =
+            new EndpointInner().withProperties(new EndpointBaseProperties().withDescription("fgibmadgakeq"));
         model = BinaryData.fromObject(model).toObject(EndpointInner.class);
-        Assertions.assertEquals("osfln", model.properties().description());
+        Assertions.assertEquals("fgibmadgakeq", model.properties().description());
     }
 }

@@ -16,29 +16,26 @@ public final class ReplicationObjectTests {
         ReplicationObject model =
             BinaryData
                 .fromString(
-                    "{\"replicationId\":\"mhjrunmpxttdbhr\",\"endpointType\":\"src\",\"replicationSchedule\":\"daily\",\"remoteVolumeResourceId\":\"kx\",\"remoteVolumeRegion\":\"skpbhenbtkcxywn\"}")
+                    "{\"replicationId\":\"xdult\",\"endpointType\":\"dst\",\"replicationSchedule\":\"daily\",\"remoteVolumeResourceId\":\"tdzumveekgpw\",\"remoteVolumeRegion\":\"uh\"}")
                 .toObject(ReplicationObject.class);
-        Assertions.assertEquals("mhjrunmpxttdbhr", model.replicationId());
-        Assertions.assertEquals(EndpointType.SRC, model.endpointType());
+        Assertions.assertEquals(EndpointType.DST, model.endpointType());
         Assertions.assertEquals(ReplicationSchedule.DAILY, model.replicationSchedule());
-        Assertions.assertEquals("kx", model.remoteVolumeResourceId());
-        Assertions.assertEquals("skpbhenbtkcxywn", model.remoteVolumeRegion());
+        Assertions.assertEquals("tdzumveekgpw", model.remoteVolumeResourceId());
+        Assertions.assertEquals("uh", model.remoteVolumeRegion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReplicationObject model =
             new ReplicationObject()
-                .withReplicationId("mhjrunmpxttdbhr")
-                .withEndpointType(EndpointType.SRC)
+                .withEndpointType(EndpointType.DST)
                 .withReplicationSchedule(ReplicationSchedule.DAILY)
-                .withRemoteVolumeResourceId("kx")
-                .withRemoteVolumeRegion("skpbhenbtkcxywn");
+                .withRemoteVolumeResourceId("tdzumveekgpw")
+                .withRemoteVolumeRegion("uh");
         model = BinaryData.fromObject(model).toObject(ReplicationObject.class);
-        Assertions.assertEquals("mhjrunmpxttdbhr", model.replicationId());
-        Assertions.assertEquals(EndpointType.SRC, model.endpointType());
+        Assertions.assertEquals(EndpointType.DST, model.endpointType());
         Assertions.assertEquals(ReplicationSchedule.DAILY, model.replicationSchedule());
-        Assertions.assertEquals("kx", model.remoteVolumeResourceId());
-        Assertions.assertEquals("skpbhenbtkcxywn", model.remoteVolumeRegion());
+        Assertions.assertEquals("tdzumveekgpw", model.remoteVolumeResourceId());
+        Assertions.assertEquals("uh", model.remoteVolumeRegion());
     }
 }

@@ -44,6 +44,10 @@ public final class DatastoreInner extends Resource {
     @JsonProperty(value = "kind")
     private String kind;
 
+    /** Creates an instance of DatastoreInner class. */
+    public DatastoreInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *
@@ -223,6 +227,24 @@ public final class DatastoreInner extends Resource {
      */
     public String customResourceName() {
         return this.innerProperties() == null ? null : this.innerProperties().customResourceName();
+    }
+
+    /**
+     * Get the capacityGB property: Gets or sets Maximum capacity of this datastore in GBs.
+     *
+     * @return the capacityGB value.
+     */
+    public Long capacityGB() {
+        return this.innerProperties() == null ? null : this.innerProperties().capacityGB();
+    }
+
+    /**
+     * Get the freeSpaceGB property: Gets or sets Available space of this datastore in GBs.
+     *
+     * @return the freeSpaceGB value.
+     */
+    public Long freeSpaceGB() {
+        return this.innerProperties() == null ? null : this.innerProperties().freeSpaceGB();
     }
 
     /**

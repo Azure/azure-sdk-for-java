@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.models.BillingSku;
 import com.azure.resourcemanager.mobilenetwork.models.CoreNetworkType;
+import com.azure.resourcemanager.mobilenetwork.models.DiagnosticsUploadConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.Installation;
 import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
 import com.azure.resourcemanager.mobilenetwork.models.LocalDiagnosticsAccessConfiguration;
@@ -29,7 +30,7 @@ public final class PacketCoreControlPlanePropertiesFormat {
     /*
      * The installation state of the packet core control plane resource.
      */
-    @JsonProperty(value = "installation", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "installation")
     private Installation installation;
 
     /*
@@ -52,10 +53,16 @@ public final class PacketCoreControlPlanePropertiesFormat {
     private CoreNetworkType coreNetworkTechnology;
 
     /*
-     * The version of the packet core software that is deployed.
+     * The desired version of the packet core software.
      */
     @JsonProperty(value = "version")
     private String version;
+
+    /*
+     * The currently installed version of the packet core software.
+     */
+    @JsonProperty(value = "installedVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String installedVersion;
 
     /*
      * The previous version of the packet core software that was deployed. Used when performing the rollback action.
@@ -91,6 +98,12 @@ public final class PacketCoreControlPlanePropertiesFormat {
     private LocalDiagnosticsAccessConfiguration localDiagnosticsAccess;
 
     /*
+     * Configuration for uploading packet core diagnostics
+     */
+    @JsonProperty(value = "diagnosticsUpload")
+    private DiagnosticsUploadConfiguration diagnosticsUpload;
+
+    /*
      * Settings to allow interoperability with third party components e.g. RANs and UEs.
      */
     @JsonProperty(value = "interopSettings")
@@ -116,6 +129,17 @@ public final class PacketCoreControlPlanePropertiesFormat {
      */
     public Installation installation() {
         return this.installation;
+    }
+
+    /**
+     * Set the installation property: The installation state of the packet core control plane resource.
+     *
+     * @param installation the installation value to set.
+     * @return the PacketCoreControlPlanePropertiesFormat object itself.
+     */
+    public PacketCoreControlPlanePropertiesFormat withInstallation(Installation installation) {
+        this.installation = installation;
+        return this;
     }
 
     /**
@@ -181,7 +205,7 @@ public final class PacketCoreControlPlanePropertiesFormat {
     }
 
     /**
-     * Get the version property: The version of the packet core software that is deployed.
+     * Get the version property: The desired version of the packet core software.
      *
      * @return the version value.
      */
@@ -190,7 +214,7 @@ public final class PacketCoreControlPlanePropertiesFormat {
     }
 
     /**
-     * Set the version property: The version of the packet core software that is deployed.
+     * Set the version property: The desired version of the packet core software.
      *
      * @param version the version value to set.
      * @return the PacketCoreControlPlanePropertiesFormat object itself.
@@ -198,6 +222,15 @@ public final class PacketCoreControlPlanePropertiesFormat {
     public PacketCoreControlPlanePropertiesFormat withVersion(String version) {
         this.version = version;
         return this;
+    }
+
+    /**
+     * Get the installedVersion property: The currently installed version of the packet core software.
+     *
+     * @return the installedVersion value.
+     */
+    public String installedVersion() {
+        return this.installedVersion;
     }
 
     /**
@@ -303,6 +336,27 @@ public final class PacketCoreControlPlanePropertiesFormat {
     }
 
     /**
+     * Get the diagnosticsUpload property: Configuration for uploading packet core diagnostics.
+     *
+     * @return the diagnosticsUpload value.
+     */
+    public DiagnosticsUploadConfiguration diagnosticsUpload() {
+        return this.diagnosticsUpload;
+    }
+
+    /**
+     * Set the diagnosticsUpload property: Configuration for uploading packet core diagnostics.
+     *
+     * @param diagnosticsUpload the diagnosticsUpload value to set.
+     * @return the PacketCoreControlPlanePropertiesFormat object itself.
+     */
+    public PacketCoreControlPlanePropertiesFormat withDiagnosticsUpload(
+        DiagnosticsUploadConfiguration diagnosticsUpload) {
+        this.diagnosticsUpload = diagnosticsUpload;
+        return this;
+    }
+
+    /**
      * Get the interopSettings property: Settings to allow interoperability with third party components e.g. RANs and
      * UEs.
      *
@@ -372,6 +426,9 @@ public final class PacketCoreControlPlanePropertiesFormat {
                             + " PacketCoreControlPlanePropertiesFormat"));
         } else {
             localDiagnosticsAccess().validate();
+        }
+        if (diagnosticsUpload() != null) {
+            diagnosticsUpload().validate();
         }
     }
 

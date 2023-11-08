@@ -66,6 +66,12 @@ public class AzureSqlDWLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "typeProperties.credential")
+    private CredentialReference credential;
+
     /** Creates an instance of AzureSqlDWLinkedService class. */
     public AzureSqlDWLinkedService() {}
 
@@ -220,6 +226,26 @@ public class AzureSqlDWLinkedService extends LinkedService {
      */
     public AzureSqlDWLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the AzureSqlDWLinkedService object itself.
+     */
+    public AzureSqlDWLinkedService setCredential(CredentialReference credential) {
+        this.credential = credential;
         return this;
     }
 

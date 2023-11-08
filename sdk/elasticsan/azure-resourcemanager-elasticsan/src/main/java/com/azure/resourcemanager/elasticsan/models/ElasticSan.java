@@ -49,7 +49,7 @@ public interface ElasticSan {
     Map<String, String> tags();
 
     /**
-     * Gets the systemData property: Resource metadata required by ARM RPC.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -126,6 +126,21 @@ public interface ElasticSan {
     Long totalSizeTiB();
 
     /**
+     * Gets the privateEndpointConnections property: The list of Private Endpoint Connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    List<PrivateEndpointConnection> privateEndpointConnections();
+
+    /**
+     * Gets the publicNetworkAccess property: Allow or disallow public network access to ElasticSan. Value is optional
+     * but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -163,11 +178,13 @@ public interface ElasticSan {
             DefinitionStages.WithExtendedCapacitySizeTiB,
             DefinitionStages.WithCreate {
     }
+
     /** The ElasticSan definition stages. */
     interface DefinitionStages {
         /** The first stage of the ElasticSan definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ElasticSan definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -186,6 +203,7 @@ public interface ElasticSan {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the ElasticSan definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -196,6 +214,7 @@ public interface ElasticSan {
              */
             WithSku withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the ElasticSan definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -206,6 +225,7 @@ public interface ElasticSan {
              */
             WithBaseSizeTiB withSku(Sku sku);
         }
+
         /** The stage of the ElasticSan definition allowing to specify baseSizeTiB. */
         interface WithBaseSizeTiB {
             /**
@@ -216,6 +236,7 @@ public interface ElasticSan {
              */
             WithExtendedCapacitySizeTiB withBaseSizeTiB(long baseSizeTiB);
         }
+
         /** The stage of the ElasticSan definition allowing to specify extendedCapacitySizeTiB. */
         interface WithExtendedCapacitySizeTiB {
             /**
@@ -226,11 +247,15 @@ public interface ElasticSan {
              */
             WithCreate withExtendedCapacitySizeTiB(long extendedCapacitySizeTiB);
         }
+
         /**
          * The stage of the ElasticSan definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithAvailabilityZones {
+        interface WithCreate
+            extends DefinitionStages.WithTags,
+                DefinitionStages.WithAvailabilityZones,
+                DefinitionStages.WithPublicNetworkAccess {
             /**
              * Executes the create request.
              *
@@ -246,6 +271,7 @@ public interface ElasticSan {
              */
             ElasticSan create(Context context);
         }
+
         /** The stage of the ElasticSan definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -256,6 +282,7 @@ public interface ElasticSan {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ElasticSan definition allowing to specify availabilityZones. */
         interface WithAvailabilityZones {
             /**
@@ -266,7 +293,21 @@ public interface ElasticSan {
              */
             WithCreate withAvailabilityZones(List<String> availabilityZones);
         }
+
+        /** The stage of the ElasticSan definition allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Allow or disallow public network access to ElasticSan. Value
+             * is optional but if passed in, must be 'Enabled' or 'Disabled'..
+             *
+             * @param publicNetworkAccess Allow or disallow public network access to ElasticSan. Value is optional but
+             *     if passed in, must be 'Enabled' or 'Disabled'.
+             * @return the next definition stage.
+             */
+            WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
     }
+
     /**
      * Begins update for the ElasticSan resource.
      *
@@ -275,7 +316,11 @@ public interface ElasticSan {
     ElasticSan.Update update();
 
     /** The template for ElasticSan update. */
-    interface Update extends UpdateStages.WithTags {
+    interface Update
+        extends UpdateStages.WithTags,
+            UpdateStages.WithBaseSizeTiB,
+            UpdateStages.WithExtendedCapacitySizeTiB,
+            UpdateStages.WithPublicNetworkAccess {
         /**
          * Executes the update request.
          *
@@ -291,6 +336,7 @@ public interface ElasticSan {
          */
         ElasticSan apply(Context context);
     }
+
     /** The ElasticSan update stages. */
     interface UpdateStages {
         /** The stage of the ElasticSan update allowing to specify tags. */
@@ -303,7 +349,43 @@ public interface ElasticSan {
              */
             Update withTags(Map<String, String> tags);
         }
+
+        /** The stage of the ElasticSan update allowing to specify baseSizeTiB. */
+        interface WithBaseSizeTiB {
+            /**
+             * Specifies the baseSizeTiB property: Base size of the Elastic San appliance in TiB..
+             *
+             * @param baseSizeTiB Base size of the Elastic San appliance in TiB.
+             * @return the next definition stage.
+             */
+            Update withBaseSizeTiB(Long baseSizeTiB);
+        }
+
+        /** The stage of the ElasticSan update allowing to specify extendedCapacitySizeTiB. */
+        interface WithExtendedCapacitySizeTiB {
+            /**
+             * Specifies the extendedCapacitySizeTiB property: Extended size of the Elastic San appliance in TiB..
+             *
+             * @param extendedCapacitySizeTiB Extended size of the Elastic San appliance in TiB.
+             * @return the next definition stage.
+             */
+            Update withExtendedCapacitySizeTiB(Long extendedCapacitySizeTiB);
+        }
+
+        /** The stage of the ElasticSan update allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Allow or disallow public network access to ElasticSan
+             * Account. Value is optional but if passed in, must be 'Enabled' or 'Disabled'..
+             *
+             * @param publicNetworkAccess Allow or disallow public network access to ElasticSan Account. Value is
+             *     optional but if passed in, must be 'Enabled' or 'Disabled'.
+             * @return the next definition stage.
+             */
+            Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

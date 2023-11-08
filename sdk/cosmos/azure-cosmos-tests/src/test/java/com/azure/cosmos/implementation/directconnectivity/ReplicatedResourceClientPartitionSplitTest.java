@@ -122,7 +122,7 @@ public class ReplicatedResourceClientPartitionSplitTest {
                                                                                gatewayServiceConfigurationReaderWrapper.gatewayServiceConfigurationReader,
                                                                                authorizationTokenProvider,
                                                                                false,
-                                                                               false);
+                                                                               null);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);

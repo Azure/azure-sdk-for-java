@@ -65,7 +65,8 @@ class SparkE2EChangeFeedITest
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.maxItemCount" -> "2",
-      "spark.cosmos.read.inferSchema.enabled" -> "false"
+      "spark.cosmos.read.inferSchema.enabled" -> "false",
+      "spark.cosmos.diagnostics" -> "feed_details"
     )
 
     val df = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
@@ -685,7 +686,8 @@ class SparkE2EChangeFeedITest
     val effectiveUserConfig = CosmosConfig.getEffectiveConfig(None, None, cfg)
     val cosmosClientConfig = CosmosClientConfiguration(
       effectiveUserConfig,
-      useEventualConsistency = false)
+      useEventualConsistency = false,
+      sparkEnvironmentInfo = "")
 
     val tokenMap = scala.collection.mutable.Map[Int, Long]()
     var databaseResourceId = "n/a"

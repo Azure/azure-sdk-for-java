@@ -57,7 +57,7 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
      */
     @Host("{$host}")
     @ServiceInterface(name = "TrafficManagerManage")
-    private interface TrafficManagerUserMetricsKeysService {
+    public interface TrafficManagerUserMetricsKeysService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/trafficManagerUserMetricsKeys/default")
         @ExpectedResponses({200})

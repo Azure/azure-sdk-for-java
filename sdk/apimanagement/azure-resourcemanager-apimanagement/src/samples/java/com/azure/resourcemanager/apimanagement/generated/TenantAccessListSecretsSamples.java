@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.AccessIdName;
 
 /** Samples for TenantAccess ListSecrets. */
 public final class TenantAccessListSecretsSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListSecretsTenantAccess.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListSecretsTenantAccess.json
      */
     /**
      * Sample code: ApiManagementListSecretsTenantAccess.
@@ -19,6 +18,8 @@ public final class TenantAccessListSecretsSamples {
      */
     public static void apiManagementListSecretsTenantAccess(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.tenantAccess().listSecretsWithResponse("rg1", "apimService1", AccessIdName.ACCESS, Context.NONE);
+        manager
+            .tenantAccess()
+            .listSecretsWithResponse("rg1", "apimService1", AccessIdName.ACCESS, com.azure.core.util.Context.NONE);
     }
 }

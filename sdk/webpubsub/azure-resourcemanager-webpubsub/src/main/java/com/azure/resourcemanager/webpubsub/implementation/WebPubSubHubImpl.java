@@ -27,12 +27,12 @@ public final class WebPubSubHubImpl implements WebPubSubHub, WebPubSubHub.Defini
         return this.innerModel().type();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
     public WebPubSubHubProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String resourceGroupName() {

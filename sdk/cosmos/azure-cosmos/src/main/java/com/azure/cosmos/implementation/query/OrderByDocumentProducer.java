@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DistinctClientSideRequestStatisticsCollection;
 import com.azure.cosmos.implementation.Document;
@@ -26,7 +25,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -47,7 +45,7 @@ class OrderByDocumentProducer extends DocumentProducer<Document> {
             Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> executeRequestFunc,
             FeedRangeEpkImpl feedRange,
             String collectionLink,
-            Callable<DocumentClientRetryPolicy> createRetryPolicyFunc,
+            Supplier<DocumentClientRetryPolicy> createRetryPolicyFunc,
             Class<Document> resourceType,
             UUID correlatedActivityId,
             int initialPageSize,
@@ -73,12 +71,11 @@ class OrderByDocumentProducer extends DocumentProducer<Document> {
         });
     }
 
-    @SuppressWarnings("unchecked")
     private DocumentProducerFeedResponse resultPageFrom(RequestChargeTracker tracker, OrderByRowResult<Document> row) {
         double requestCharge = tracker.getAndResetCharge();
         Map<String, String> headers = Utils.immutableMapOf(HttpConstants.HttpHeaders.REQUEST_CHARGE, String.valueOf(requestCharge));
         FeedResponse<Document> fr = feedResponseAccessor.createFeedResponse(
-            Collections.singletonList((Document) row), headers, null);
+            Collections.singletonList(row), headers, null);
         return new DocumentProducerFeedResponse(fr, row.getSourceRange());
     }
 

@@ -14,20 +14,20 @@ public final class FollowerDatabaseDefinitionInnerTests {
         FollowerDatabaseDefinitionInner model =
             BinaryData
                 .fromString(
-                    "{\"clusterResourceId\":\"pzaoqvuhr\",\"attachedDatabaseConfigurationName\":\"cffcyddglmj\",\"databaseName\":\"jqkwpyeicx\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"wqvhkhixuigdt\",\"pbobjo\"],\"tablesToExclude\":[\"e\"],\"externalTablesToInclude\":[\"m\"],\"externalTablesToExclude\":[\"rzayv\",\"t\",\"gvdfgiotkftutq\",\"ln\"],\"materializedViewsToInclude\":[\"efgugnxk\",\"xdqmidtthzrvqdra\",\"hjybigehoqfbo\"],\"materializedViewsToExclude\":[\"anyktzlcuiywg\",\"ywgndrv\",\"nhzgpphrcgyn\",\"ocpecfvmmco\"],\"functionsToInclude\":[\"xlzevgbmqjqabcy\",\"mivkwlzuvcc\",\"wnfnbacf\"],\"functionsToExclude\":[\"l\",\"bxetqgtzxdpn\",\"bqqwxrj\",\"eallnwsubisnj\"]},\"databaseShareOrigin\":\"DataShare\"}")
+                    "{\"clusterResourceId\":\"xyqj\",\"attachedDatabaseConfigurationName\":\"k\",\"databaseName\":\"t\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"jcrcczsqpjhvmda\",\"v\",\"ysou\",\"q\"],\"tablesToExclude\":[\"noae\"],\"externalTablesToInclude\":[\"hy\",\"ltrpmopj\",\"cma\",\"u\"],\"externalTablesToExclude\":[\"hfuiuaodsfc\",\"kvxod\",\"uozmyzydagfua\",\"bezy\"],\"materializedViewsToInclude\":[\"kktwhrdxw\",\"ywqsmbsurexim\",\"ryocfsfksymdd\"],\"materializedViewsToExclude\":[\"kiiuxhqyudxor\"],\"functionsToInclude\":[\"b\",\"oczvy\",\"fqrvkdvjsllrmvvd\",\"watkpnpulexxb\"],\"functionsToExclude\":[\"truwiqzb\",\"j\",\"sovmyokacspkwl\",\"zdobpxjmflbvvnch\"]},\"databaseShareOrigin\":\"Direct\"}")
                 .toObject(FollowerDatabaseDefinitionInner.class);
-        Assertions.assertEquals("pzaoqvuhr", model.clusterResourceId());
-        Assertions.assertEquals("cffcyddglmj", model.attachedDatabaseConfigurationName());
+        Assertions.assertEquals("xyqj", model.clusterResourceId());
+        Assertions.assertEquals("k", model.attachedDatabaseConfigurationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FollowerDatabaseDefinitionInner model =
             new FollowerDatabaseDefinitionInner()
-                .withClusterResourceId("pzaoqvuhr")
-                .withAttachedDatabaseConfigurationName("cffcyddglmj");
+                .withClusterResourceId("xyqj")
+                .withAttachedDatabaseConfigurationName("k");
         model = BinaryData.fromObject(model).toObject(FollowerDatabaseDefinitionInner.class);
-        Assertions.assertEquals("pzaoqvuhr", model.clusterResourceId());
-        Assertions.assertEquals("cffcyddglmj", model.attachedDatabaseConfigurationName());
+        Assertions.assertEquals("xyqj", model.clusterResourceId());
+        Assertions.assertEquals("k", model.attachedDatabaseConfigurationName());
     }
 }

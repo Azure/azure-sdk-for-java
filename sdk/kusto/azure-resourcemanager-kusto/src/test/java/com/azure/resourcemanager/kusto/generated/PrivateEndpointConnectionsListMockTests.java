@@ -32,7 +32,7 @@ public final class PrivateEndpointConnectionsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"ayzejnhlbkpbz\"},\"privateLinkServiceConnectionState\":{\"status\":\"piljhahzvech\",\"description\":\"bnwieholew\",\"actionsRequired\":\"iuubwefqsf\"},\"groupId\":\"aqtferr\",\"provisioningState\":\"ex\"},\"id\":\"mfxapjwogqqno\",\"name\":\"pud\",\"type\":\"dabtqwp\"}]}";
+            "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"wvqsgny\"},\"privateLinkServiceConnectionState\":{\"status\":\"uzivensrpmeyyvp\",\"description\":\"atlb\",\"actionsRequired\":\"pzgsk\"},\"groupId\":\"fhfv\",\"provisioningState\":\"mknbnxwcdommpv\"},\"id\":\"awz\",\"name\":\"gbrt\",\"type\":\"uiaclkiexhajlfn\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,11 +61,10 @@ public final class PrivateEndpointConnectionsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PrivateEndpointConnection> response =
-            manager.privateEndpointConnections().list("qvcww", "yurmochpprprs", com.azure.core.util.Context.NONE);
+            manager.privateEndpointConnections().list("ma", "lpdwwexymzvlazi", com.azure.core.util.Context.NONE);
 
         Assertions
-            .assertEquals("piljhahzvech", response.iterator().next().privateLinkServiceConnectionState().status());
-        Assertions
-            .assertEquals("bnwieholew", response.iterator().next().privateLinkServiceConnectionState().description());
+            .assertEquals("uzivensrpmeyyvp", response.iterator().next().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("atlb", response.iterator().next().privateLinkServiceConnectionState().description());
     }
 }

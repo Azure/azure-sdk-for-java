@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.trafficmanager.generated;
 
-import com.azure.core.util.Context;
 import java.util.Arrays;
 
 /** Samples for HeatMap Get. */
 public final class HeatMapGetSamples {
     /*
-     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-04-01/examples/HeatMap-GET-With-TopLeft-BotRight.json
+     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/HeatMap-GET-With-TopLeft-BotRight.json
      */
     /**
      * Sample code: HeatMap-GET-With-TopLeft-BotRight.
@@ -28,11 +27,11 @@ public final class HeatMapGetSamples {
                 "azuresdkfornetautoresttrafficmanager3880",
                 Arrays.asList(10.0, 50.001),
                 Arrays.asList(-50.001, 80.0),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-04-01/examples/HeatMap-GET.json
+     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/HeatMap-GET.json
      */
     /**
      * Sample code: HeatMap-GET.
@@ -50,11 +49,11 @@ public final class HeatMapGetSamples {
                 "azuresdkfornetautoresttrafficmanager3880",
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-04-01/examples/HeatMap-GET-With-Null-Values.json
+     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/HeatMap-GET-With-Null-Values.json
      */
     /**
      * Sample code: HeatMap-GET-With-Null-Values.
@@ -72,6 +71,6 @@ public final class HeatMapGetSamples {
                 "azuresdkfornetautoresttrafficmanager3880",
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

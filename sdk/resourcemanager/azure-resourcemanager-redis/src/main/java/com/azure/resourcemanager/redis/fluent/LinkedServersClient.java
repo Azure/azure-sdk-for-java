@@ -24,7 +24,7 @@ public interface LinkedServersClient {
     /**
      * Adds a linked server to the Redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @param parameters Parameters supplied to the Create Linked server operation.
@@ -41,7 +41,7 @@ public interface LinkedServersClient {
     /**
      * Adds a linked server to the Redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @param parameters Parameters supplied to the Create Linked server operation.
@@ -58,7 +58,7 @@ public interface LinkedServersClient {
     /**
      * Adds a linked server to the Redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @param parameters Parameters supplied to the Create Linked server operation.
@@ -75,7 +75,7 @@ public interface LinkedServersClient {
     /**
      * Adds a linked server to the Redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @param parameters Parameters supplied to the Create Linked server operation.
@@ -97,7 +97,7 @@ public interface LinkedServersClient {
     /**
      * Adds a linked server to the Redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @param parameters Parameters supplied to the Create Linked server operation.
@@ -114,7 +114,7 @@ public interface LinkedServersClient {
     /**
      * Adds a linked server to the Redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @param parameters Parameters supplied to the Create Linked server operation.
@@ -130,7 +130,7 @@ public interface LinkedServersClient {
     /**
      * Adds a linked server to the Redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @param parameters Parameters supplied to the Create Linked server operation.
@@ -151,7 +151,7 @@ public interface LinkedServersClient {
     /**
      * Deletes the linked server from a redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -166,7 +166,7 @@ public interface LinkedServersClient {
     /**
      * Deletes the linked server from a redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -180,7 +180,7 @@ public interface LinkedServersClient {
     /**
      * Deletes the linked server from a redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -194,7 +194,7 @@ public interface LinkedServersClient {
     /**
      * Deletes the linked server from a redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @param context The context to associate with this operation.
@@ -210,7 +210,7 @@ public interface LinkedServersClient {
     /**
      * Deletes the linked server from a redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -224,7 +224,7 @@ public interface LinkedServersClient {
     /**
      * Deletes the linked server from a redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -237,7 +237,7 @@ public interface LinkedServersClient {
     /**
      * Deletes the linked server from a redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @param context The context to associate with this operation.
@@ -251,7 +251,7 @@ public interface LinkedServersClient {
     /**
      * Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -267,7 +267,7 @@ public interface LinkedServersClient {
     /**
      * Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -282,7 +282,7 @@ public interface LinkedServersClient {
     /**
      * Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server.
      * @param context The context to associate with this operation.
@@ -299,7 +299,7 @@ public interface LinkedServersClient {
     /**
      * Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -313,7 +313,7 @@ public interface LinkedServersClient {
     /**
      * Gets the list of linked servers associated with this redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -327,7 +327,7 @@ public interface LinkedServersClient {
     /**
      * Gets the list of linked servers associated with this redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -341,7 +341,7 @@ public interface LinkedServersClient {
     /**
      * Gets the list of linked servers associated with this redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

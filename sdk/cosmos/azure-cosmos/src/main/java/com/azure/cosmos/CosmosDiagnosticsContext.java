@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.CosmosDiagnosticsSystemUsageSnapshot;
 import com.azure.cosmos.implementation.DistinctClientSideRequestStatisticsCollection;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -74,11 +75,13 @@ public final class CosmosDiagnosticsContext {
     private String cachedRequestDiagnostics = null;
     private final AtomicBoolean isCompleted = new AtomicBoolean(false);
 
-    private CosmosDiagnosticsSystemUsageSnapshot systemUsage;
+    private Map<String, Object> systemUsage;
 
     private Double samplingRateSnapshot;
 
     private ArrayList<CosmosDiagnosticsRequestInfo> requestInfo = null;
+
+    private final Integer sequenceNumber;
 
     CosmosDiagnosticsContext(
         String spanName,
@@ -94,7 +97,8 @@ public final class CosmosDiagnosticsContext {
         CosmosDiagnosticsThresholds thresholds,
         String trackingId,
         String connectionMode,
-        String userAgent) {
+        String userAgent,
+        Integer sequenceNumber) {
 
         checkNotNull(spanName, "Argument 'spanName' must not be null.");
         checkNotNull(accountName, "Argument 'accountName' must not be null.");
@@ -123,6 +127,7 @@ public final class CosmosDiagnosticsContext {
         this.trackingId = trackingId;
         this.userAgent = userAgent;
         this.connectionMode = connectionMode;
+        this.sequenceNumber = sequenceNumber;
     }
 
     /**
@@ -203,6 +208,16 @@ public final class CosmosDiagnosticsContext {
     }
 
     /**
+     * For feed operations the sequence number allows identifying the order of diagnostics. For each page produced
+     * in the page flux the sequence number will be incremented by 1. For point operations the sequence number
+     * is always null.
+     * @return null for point operations or the monotonically increasing sequence number of pages/diagnostics
+     */
+    Integer getSequenceNumber() {
+        return this.sequenceNumber;
+    }
+
+    /**
      * The effective consistency level of the operation
      * @return the effective consistency level of the operation
      */
@@ -253,11 +268,13 @@ public final class CosmosDiagnosticsContext {
         }
 
         if (this.operationType.isPointOperation()) {
-            if (this.thresholds.getPointOperationLatencyThreshold().compareTo(this.duration) < 0) {
+            if (Duration.ZERO.equals(this.thresholds.getPointOperationLatencyThreshold())
+                || this.thresholds.getPointOperationLatencyThreshold().compareTo(this.duration) < 0) {
                 return true;
             }
         } else {
-            if (this.thresholds.getNonPointOperationLatencyThreshold().compareTo(this.duration) < 0) {
+            if (Duration.ZERO.equals(this.thresholds.getNonPointOperationLatencyThreshold())
+            || this.thresholds.getNonPointOperationLatencyThreshold().compareTo(this.duration) < 0) {
                 return true;
             }
         }
@@ -271,6 +288,16 @@ public final class CosmosDiagnosticsContext {
 
     void addDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
         checkNotNull(cosmosDiagnostics, "Argument 'cosmosDiagnostics' must not be null.");
+        if (cosmosDiagnostics.getDiagnosticsContext() == this) {
+            return;
+        }
+
+        if (cosmosDiagnostics.getFeedResponseDiagnostics() != null &&
+            !diagAccessor.isDiagnosticsCapturedInPagedFlux(cosmosDiagnostics).get()) {
+
+            return;
+        }
+
         synchronized (this.spanName) {
             if (this.samplingRateSnapshot != null) {
                 diagAccessor.setSamplingRateSnapshot(cosmosDiagnostics, this.samplingRateSnapshot);
@@ -375,14 +402,14 @@ public final class CosmosDiagnosticsContext {
      * a custom {@link CosmosDiagnosticsHandler}
      * @return the system usage
      */
-    public CosmosDiagnosticsSystemUsageSnapshot getSystemUsage() {
+    public Map<String, Object> getSystemUsage() {
         synchronized (this.spanName) {
-            CosmosDiagnosticsSystemUsageSnapshot snapshot = this.systemUsage;
+            Map<String, Object> snapshot = this.systemUsage;
             if (snapshot != null) {
                 return snapshot;
             }
 
-            return this.systemUsage = ClientSideRequestStatistics.fetchSystemInformation();
+            return this.systemUsage = ClientSideRequestStatistics.fetchSystemInformation().toMap();
         }
     }
 
@@ -467,28 +494,40 @@ public final class CosmosDiagnosticsContext {
     }
 
     void startOperation() {
-        checkState(
-            this.startTime == null,
-            "Method 'startOperation' must not be called multiple times.");
         synchronized (this.spanName) {
+            checkState(
+                this.startTime == null,
+                "Method 'startOperation' must not be called multiple times.");
             this.startTime = Instant.now();
 
             this.cachedRequestDiagnostics = null;
         }
     }
 
-    synchronized boolean endOperation(int statusCode, int subStatusCode, Integer actualItemCount, Throwable finalError) {
+    boolean endOperation(int statusCode,
+                                      int subStatusCode,
+                                      Integer actualItemCount,
+                                      Double requestCharge,
+                                      CosmosDiagnostics diagnostics,
+                                      Throwable finalError) {
         synchronized (this.spanName) {
             boolean hasCompletedOperation = this.isCompleted.compareAndSet(false, true);
             if (hasCompletedOperation) {
-                this.recordOperation(statusCode, subStatusCode, actualItemCount, finalError);
+                this.recordOperation(
+                    statusCode, subStatusCode, actualItemCount, requestCharge, diagnostics, finalError);
             }
 
             return hasCompletedOperation;
         }
     }
 
-    synchronized void recordOperation(int statusCode, int subStatusCode, Integer actualItemCount, Throwable finalError) {
+    void recordOperation(int statusCode,
+                                      int subStatusCode,
+                                      Integer actualItemCount,
+                                      Double requestCharge,
+                                      CosmosDiagnostics diagnostics,
+                                      Throwable finalError) {
+
         synchronized (this.spanName) {
             this.statusCode = statusCode;
             this.subStatusCode = subStatusCode;
@@ -498,15 +537,31 @@ public final class CosmosDiagnosticsContext {
                     this.actualItemCount.addAndGet(actualItemCount);
                 }
             }
-            this.duration = Duration.between(this.startTime, Instant.now());
+
+            if (this.startTime != null) {
+                this.duration = Duration.between(this.startTime, Instant.now());
+            } else {
+                this.duration = null;
+            }
+
+            if (diagnostics != null) {
+                this.addDiagnostics(diagnostics);
+            }
+
+            if (requestCharge != null) {
+                this.addRequestCharge(requestCharge.floatValue());
+            }
+
             this.cachedRequestDiagnostics = null;
         }
     }
 
-    synchronized void setSamplingRateSnapshot(double samplingRate) {
-        this.samplingRateSnapshot = samplingRate;
-        for (CosmosDiagnostics d : this.diagnostics) {
-            diagAccessor.setSamplingRateSnapshot(d, samplingRate);
+    void setSamplingRateSnapshot(double samplingRate) {
+        synchronized (this.spanName) {
+            this.samplingRateSnapshot = samplingRate;
+            for (CosmosDiagnostics d : this.diagnostics) {
+                diagAccessor.setSamplingRateSnapshot(d, samplingRate);
+            }
         }
     }
 
@@ -527,6 +582,9 @@ public final class CosmosDiagnosticsContext {
         if (this.trackingId != null && !this.trackingId.isEmpty()) {
             ctxNode.put("trackingId", this.trackingId);
         }
+        if (this.sequenceNumber != null) {
+            ctxNode.put("sequenceNumber", this.sequenceNumber);
+        }
         ctxNode.put("consistency", this.consistencyLevel.toString());
         ctxNode.put("status", this.statusCode);
         if (this.subStatusCode != 0) {
@@ -545,7 +603,11 @@ public final class CosmosDiagnosticsContext {
         }
 
         if (this.finalError != null) {
-            ctxNode.put("exception", this.finalError.toString());
+            if (this.finalError instanceof CosmosException) {
+                ctxNode.put("exception", ((CosmosException)this.finalError).toString(false));
+            } else {
+                ctxNode.put("exception", this.finalError.getMessage());
+            }
         }
 
         if (this.diagnostics != null && this.diagnostics.size() > 0) {
@@ -594,7 +656,7 @@ public final class CosmosDiagnosticsContext {
                 return snapshot;
             }
 
-            this.systemUsage = ClientSideRequestStatistics.fetchSystemInformation();
+            this.systemUsage = ClientSideRequestStatistics.fetchSystemInformation().toMap();
             return this.cachedRequestDiagnostics = getRequestDiagnostics();
         }
     }
@@ -625,34 +687,36 @@ public final class CosmosDiagnosticsContext {
         ClientSideRequestStatistics requestStats,
         List<CosmosDiagnosticsRequestInfo> requestInfo) {
 
-        ClientSideRequestStatistics.GatewayStatistics gatewayStats = requestStats.getGatewayStatistics();
+        List<ClientSideRequestStatistics.GatewayStatistics> gatewayStatsList = requestStats.getGatewayStatisticsList();
 
-        if (gatewayStats == null) {
+        if (gatewayStatsList == null || gatewayStatsList.size() == 0) {
             return;
         }
 
-        CosmosDiagnosticsRequestInfo info = new CosmosDiagnosticsRequestInfo(
-            requestStats.getActivityId(),
-            null,
-            gatewayStats.getPartitionKeyRangeId(),
-            gatewayStats.getResourceType() + ":" + gatewayStats.getOperationType(),
-            requestStats.getRequestStartTimeUTC(),
-            requestStats.getDuration(),
-            null,
-            gatewayStats.getRequestCharge(),
-            gatewayStats.getResponsePayloadSizeInBytes(),
-            gatewayStats.getStatusCode(),
-            gatewayStats.getSubStatusCode(),
-            new ArrayList<>()
-        );
+        for (ClientSideRequestStatistics.GatewayStatistics gatewayStats : gatewayStatsList) {
+            CosmosDiagnosticsRequestInfo info = new CosmosDiagnosticsRequestInfo(
+                requestStats.getActivityId(),
+                null,
+                gatewayStats.getPartitionKeyRangeId(),
+                gatewayStats.getResourceType() + ":" + gatewayStats.getOperationType(),
+                requestStats.getRequestStartTimeUTC(),
+                requestStats.getDuration(),
+                null,
+                gatewayStats.getRequestCharge(),
+                gatewayStats.getResponsePayloadSizeInBytes(),
+                gatewayStats.getStatusCode(),
+                gatewayStats.getSubStatusCode(),
+                new ArrayList<>()
+            );
 
-        requestInfo.add(info);
+            requestInfo.add(info);
+        }
     }
 
     private static void addRequestInfoForStoreResponses(
         ClientSideRequestStatistics requestStats,
         List<CosmosDiagnosticsRequestInfo> requestInfo,
-        List<ClientSideRequestStatistics.StoreResponseStatistics> storeResponses) {
+        Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponses) {
 
         for (ClientSideRequestStatistics.StoreResponseStatistics responseStats: storeResponses) {
 
@@ -841,7 +905,8 @@ public final class CosmosDiagnosticsContext {
                                                            String operationId,
                                                            ConsistencyLevel consistencyLevel, Integer maxItemCount,
                                                            CosmosDiagnosticsThresholds thresholds, String trackingId,
-                                                           String connectionMode, String userAgent) {
+                                                           String connectionMode, String userAgent,
+                                                           Integer sequenceNumber) {
 
                         return new CosmosDiagnosticsContext(
                             spanName,
@@ -857,7 +922,8 @@ public final class CosmosDiagnosticsContext {
                             thresholds,
                             trackingId,
                             connectionMode,
-                            userAgent);
+                            userAgent,
+                            sequenceNumber);
                     }
 
                     @Override
@@ -875,23 +941,7 @@ public final class CosmosDiagnosticsContext {
                     public void recordOperation(CosmosDiagnosticsContext ctx, int statusCode, int subStatusCode,
                                                 Integer actualItemCount, Double requestCharge,
                                                 CosmosDiagnostics diagnostics, Throwable finalError) {
-                        validateAndRecordOperationResult(ctx, requestCharge, diagnostics);
-                        ctx.recordOperation(statusCode, subStatusCode, actualItemCount, finalError);
-                    }
-
-                    private void validateAndRecordOperationResult(
-                        CosmosDiagnosticsContext ctx,
-                        Double requestCharge,
-                        CosmosDiagnostics diagnostics) {
-
-                        checkNotNull(ctx, "Argument 'ctx' must not be null.");
-                        if (diagnostics != null) {
-                            ctx.addDiagnostics(diagnostics);
-                        }
-
-                        if (requestCharge != null) {
-                            ctx.addRequestCharge(requestCharge.floatValue());
-                        }
+                        ctx.recordOperation(statusCode, subStatusCode, actualItemCount, requestCharge, diagnostics, finalError);
                     }
 
                     @Override
@@ -899,8 +949,7 @@ public final class CosmosDiagnosticsContext {
                                              Integer actualItemCount, Double requestCharge,
                                              CosmosDiagnostics diagnostics, Throwable finalError) {
 
-                        validateAndRecordOperationResult(ctx, requestCharge, diagnostics);
-                        return ctx.endOperation(statusCode, subStatusCode, actualItemCount, finalError);
+                        return ctx.endOperation(statusCode, subStatusCode, actualItemCount, requestCharge, diagnostics, finalError);
                     }
 
                     @Override
@@ -968,6 +1017,23 @@ public final class CosmosDiagnosticsContext {
                     public void setSamplingRateSnapshot(CosmosDiagnosticsContext ctx, double samplingRate) {
                         checkNotNull(ctx, "Argument 'ctx' must not be null.");
                         ctx.setSamplingRateSnapshot(samplingRate);
+                    }
+
+                    @Override
+                    public Integer getSequenceNumber(CosmosDiagnosticsContext ctx) {
+                        checkNotNull(ctx, "Argument 'ctx' must not be null.");
+                        return ctx.getSequenceNumber();
+                    }
+
+                    @Override
+                    public boolean isEmptyCompletion(CosmosDiagnosticsContext ctx) {
+                        checkNotNull(ctx, "Argument 'ctx' must not be null.");
+                        Integer sequenceNumber = ctx.getSequenceNumber();
+                        if (sequenceNumber == null || sequenceNumber == 1) {
+                            return false;
+                        }
+
+                        return true;
                     }
                 });
     }

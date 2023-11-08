@@ -13,7 +13,7 @@ public final class SkuCapacityTests {
         SkuCapacity model =
             BinaryData
                 .fromString(
-                    "{\"minimum\":1703781779,\"maximum\":995419481,\"default\":1024892279,\"allowedValues\":[1113434704,346562184,254804801,1095781686],\"scaleType\":\"Automatic\"}")
+                    "{\"minimum\":1644309968,\"maximum\":1360898265,\"default\":587819302,\"allowedValues\":[986861935,79492990],\"scaleType\":\"Automatic\"}")
                 .toObject(SkuCapacity.class);
     }
 

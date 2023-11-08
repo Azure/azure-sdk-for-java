@@ -66,8 +66,8 @@ public final class Schema {
     private TableTypeEnum tableType;
 
     /*
-     * The subtype describes what APIs can be used to interact with the table,
-     * and what features are available against it.
+     * The subtype describes what APIs can be used to interact with the table, and what features are available against
+     * it.
      */
     @JsonProperty(value = "tableSubType", access = JsonProperty.Access.WRITE_ONLY)
     private TableSubTypeEnum tableSubType;
@@ -78,17 +78,9 @@ public final class Schema {
     @JsonProperty(value = "solutions", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> solutions;
 
-    /*
-     * Parameters of the search job that initiated this table.
-     */
-    @JsonProperty(value = "searchResults", access = JsonProperty.Access.WRITE_ONLY)
-    private SearchResults searchResults;
-
-    /*
-     * Parameters of the restore operation that initiated this table.
-     */
-    @JsonProperty(value = "restoredLogs", access = JsonProperty.Access.WRITE_ONLY)
-    private RestoredLogs restoredLogs;
+    /** Creates an instance of Schema class. */
+    public Schema() {
+    }
 
     /**
      * Get the name property: Table name.
@@ -235,24 +227,6 @@ public final class Schema {
     }
 
     /**
-     * Get the searchResults property: Parameters of the search job that initiated this table.
-     *
-     * @return the searchResults value.
-     */
-    public SearchResults searchResults() {
-        return this.searchResults;
-    }
-
-    /**
-     * Get the restoredLogs property: Parameters of the restore operation that initiated this table.
-     *
-     * @return the restoredLogs value.
-     */
-    public RestoredLogs restoredLogs() {
-        return this.restoredLogs;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -263,12 +237,6 @@ public final class Schema {
         }
         if (standardColumns() != null) {
             standardColumns().forEach(e -> e.validate());
-        }
-        if (searchResults() != null) {
-            searchResults().validate();
-        }
-        if (restoredLogs() != null) {
-            restoredLogs().validate();
         }
     }
 }

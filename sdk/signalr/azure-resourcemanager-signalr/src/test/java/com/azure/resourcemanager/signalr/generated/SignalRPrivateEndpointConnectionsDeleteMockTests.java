@@ -58,6 +58,6 @@ public final class SignalRPrivateEndpointConnectionsDeleteMockTests {
 
         manager
             .signalRPrivateEndpointConnections()
-            .delete("jjoqkagf", "sxtta", "gzxnfaazpxdtnk", com.azure.core.util.Context.NONE);
+            .delete("afcbqw", "e", "jelaqacigele", com.azure.core.util.Context.NONE);
     }
 }

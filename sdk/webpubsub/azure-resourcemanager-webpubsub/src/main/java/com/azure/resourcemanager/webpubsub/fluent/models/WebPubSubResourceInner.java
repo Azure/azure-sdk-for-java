@@ -12,6 +12,7 @@ import com.azure.resourcemanager.webpubsub.models.ManagedIdentity;
 import com.azure.resourcemanager.webpubsub.models.ProvisioningState;
 import com.azure.resourcemanager.webpubsub.models.ResourceLogConfiguration;
 import com.azure.resourcemanager.webpubsub.models.ResourceSku;
+import com.azure.resourcemanager.webpubsub.models.ServiceKind;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubNetworkACLs;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubTlsSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -34,13 +35,19 @@ public final class WebPubSubResourceInner extends Resource {
     private WebPubSubProperties innerProperties;
 
     /*
+     * The kind of the service
+     */
+    @JsonProperty(value = "kind")
+    private ServiceKind kind;
+
+    /*
      * A class represent managed identities used for request and response
      */
     @JsonProperty(value = "identity")
     private ManagedIdentity identity;
 
     /*
-     * Metadata pertaining to creation and last modification of the resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -79,6 +86,26 @@ public final class WebPubSubResourceInner extends Resource {
     }
 
     /**
+     * Get the kind property: The kind of the service.
+     *
+     * @return the kind value.
+     */
+    public ServiceKind kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: The kind of the service.
+     *
+     * @param kind the kind value to set.
+     * @return the WebPubSubResourceInner object itself.
+     */
+    public WebPubSubResourceInner withKind(ServiceKind kind) {
+        this.kind = kind;
+        return this;
+    }
+
+    /**
      * Get the identity property: A class represent managed identities used for request and response.
      *
      * @return the identity value.
@@ -99,7 +126,7 @@ public final class WebPubSubResourceInner extends Resource {
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -370,6 +397,58 @@ public final class WebPubSubResourceInner extends Resource {
             this.innerProperties = new WebPubSubProperties();
         }
         this.innerProperties().withDisableAadAuth(disableAadAuth);
+        return this;
+    }
+
+    /**
+     * Get the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled". When it's
+     * Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.
+     * This property is replica specific. Disable the regional endpoint without replica is not allowed.
+     *
+     * @return the regionEndpointEnabled value.
+     */
+    public String regionEndpointEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().regionEndpointEnabled();
+    }
+
+    /**
+     * Set the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled". When it's
+     * Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.
+     * This property is replica specific. Disable the regional endpoint without replica is not allowed.
+     *
+     * @param regionEndpointEnabled the regionEndpointEnabled value to set.
+     * @return the WebPubSubResourceInner object itself.
+     */
+    public WebPubSubResourceInner withRegionEndpointEnabled(String regionEndpointEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebPubSubProperties();
+        }
+        this.innerProperties().withRegionEndpointEnabled(regionEndpointEnabled);
+        return this;
+    }
+
+    /**
+     * Get the resourceStopped property: Stop or start the resource. Default to "false". When it's true, the data plane
+     * of the resource is shutdown. When it's false, the data plane of the resource is started.
+     *
+     * @return the resourceStopped value.
+     */
+    public String resourceStopped() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceStopped();
+    }
+
+    /**
+     * Set the resourceStopped property: Stop or start the resource. Default to "false". When it's true, the data plane
+     * of the resource is shutdown. When it's false, the data plane of the resource is started.
+     *
+     * @param resourceStopped the resourceStopped value to set.
+     * @return the WebPubSubResourceInner object itself.
+     */
+    public WebPubSubResourceInner withResourceStopped(String resourceStopped) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebPubSubProperties();
+        }
+        this.innerProperties().withResourceStopped(resourceStopped);
         return this;
     }
 

@@ -16,6 +16,12 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
     /** Static value NfsMount for EndpointType. */
     public static final EndpointType NFS_MOUNT = fromString("NfsMount");
 
+    /** Static value AzureStorageSmbFileShare for EndpointType. */
+    public static final EndpointType AZURE_STORAGE_SMB_FILE_SHARE = fromString("AzureStorageSmbFileShare");
+
+    /** Static value SmbMount for EndpointType. */
+    public static final EndpointType SMB_MOUNT = fromString("SmbMount");
+
     /**
      * Creates a new instance of EndpointType value.
      *

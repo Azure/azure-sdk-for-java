@@ -23,7 +23,7 @@ public final class ErrorResponse {
      * @param error the error value to set.
      */
     @JsonCreator
-    public ErrorResponse(@JsonProperty(value = "error", required = true) Error error) {
+    private ErrorResponse(@JsonProperty(value = "error", required = true) Error error) {
         this.error = error;
     }
 

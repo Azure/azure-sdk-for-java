@@ -5,11 +5,13 @@
 package com.azure.resourcemanager.elasticsan.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.elasticsan.models.EncryptionProperties;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
 import com.azure.resourcemanager.elasticsan.models.NetworkRuleSet;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.StorageTargetType;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** VolumeGroup response properties. */
 @Fluent
@@ -33,10 +35,22 @@ public final class VolumeGroupProperties {
     private EncryptionType encryption;
 
     /*
+     * Encryption Properties describing Key Vault and Identity information
+     */
+    @JsonProperty(value = "encryptionProperties")
+    private EncryptionProperties encryptionProperties;
+
+    /*
      * A collection of rules governing the accessibility from specific network locations.
      */
     @JsonProperty(value = "networkAcls")
     private NetworkRuleSet networkAcls;
+
+    /*
+     * The list of Private Endpoint Connections.
+     */
+    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /** Creates an instance of VolumeGroupProperties class. */
     public VolumeGroupProperties() {
@@ -92,6 +106,26 @@ public final class VolumeGroupProperties {
     }
 
     /**
+     * Get the encryptionProperties property: Encryption Properties describing Key Vault and Identity information.
+     *
+     * @return the encryptionProperties value.
+     */
+    public EncryptionProperties encryptionProperties() {
+        return this.encryptionProperties;
+    }
+
+    /**
+     * Set the encryptionProperties property: Encryption Properties describing Key Vault and Identity information.
+     *
+     * @param encryptionProperties the encryptionProperties value to set.
+     * @return the VolumeGroupProperties object itself.
+     */
+    public VolumeGroupProperties withEncryptionProperties(EncryptionProperties encryptionProperties) {
+        this.encryptionProperties = encryptionProperties;
+        return this;
+    }
+
+    /**
      * Get the networkAcls property: A collection of rules governing the accessibility from specific network locations.
      *
      * @return the networkAcls value.
@@ -112,13 +146,28 @@ public final class VolumeGroupProperties {
     }
 
     /**
+     * Get the privateEndpointConnections property: The list of Private Endpoint Connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (encryptionProperties() != null) {
+            encryptionProperties().validate();
+        }
         if (networkAcls() != null) {
             networkAcls().validate();
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
         }
     }
 }

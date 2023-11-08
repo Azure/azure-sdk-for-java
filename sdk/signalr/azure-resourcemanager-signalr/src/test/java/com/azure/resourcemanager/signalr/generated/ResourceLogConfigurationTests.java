@@ -16,10 +16,10 @@ public final class ResourceLogConfigurationTests {
         ResourceLogConfiguration model =
             BinaryData
                 .fromString(
-                    "{\"categories\":[{\"name\":\"gibtnm\",\"enabled\":\"ebwwaloayqc\"},{\"name\":\"rtzju\",\"enabled\":\"wyzmhtxon\"},{\"name\":\"ts\",\"enabled\":\"jcbpwxqpsrknft\"},{\"name\":\"vriuhprwmdyvx\",\"enabled\":\"ayriwwroyqbexrm\"}]}")
+                    "{\"categories\":[{\"name\":\"lbfpncurd\",\"enabled\":\"wiithtywub\"},{\"name\":\"bihwqknfdnt\",\"enabled\":\"chrdgoihxumwcto\"},{\"name\":\"zj\",\"enabled\":\"udfdlwgg\"},{\"name\":\"sb\",\"enabled\":\"ovvtgseinqfiu\"}]}")
                 .toObject(ResourceLogConfiguration.class);
-        Assertions.assertEquals("gibtnm", model.categories().get(0).name());
-        Assertions.assertEquals("ebwwaloayqc", model.categories().get(0).enabled());
+        Assertions.assertEquals("lbfpncurd", model.categories().get(0).name());
+        Assertions.assertEquals("wiithtywub", model.categories().get(0).enabled());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,12 +29,12 @@ public final class ResourceLogConfigurationTests {
                 .withCategories(
                     Arrays
                         .asList(
-                            new ResourceLogCategory().withName("gibtnm").withEnabled("ebwwaloayqc"),
-                            new ResourceLogCategory().withName("rtzju").withEnabled("wyzmhtxon"),
-                            new ResourceLogCategory().withName("ts").withEnabled("jcbpwxqpsrknft"),
-                            new ResourceLogCategory().withName("vriuhprwmdyvx").withEnabled("ayriwwroyqbexrm")));
+                            new ResourceLogCategory().withName("lbfpncurd").withEnabled("wiithtywub"),
+                            new ResourceLogCategory().withName("bihwqknfdnt").withEnabled("chrdgoihxumwcto"),
+                            new ResourceLogCategory().withName("zj").withEnabled("udfdlwgg"),
+                            new ResourceLogCategory().withName("sb").withEnabled("ovvtgseinqfiu")));
         model = BinaryData.fromObject(model).toObject(ResourceLogConfiguration.class);
-        Assertions.assertEquals("gibtnm", model.categories().get(0).name());
-        Assertions.assertEquals("ebwwaloayqc", model.categories().get(0).enabled());
+        Assertions.assertEquals("lbfpncurd", model.categories().get(0).name());
+        Assertions.assertEquals("wiithtywub", model.categories().get(0).enabled());
     }
 }

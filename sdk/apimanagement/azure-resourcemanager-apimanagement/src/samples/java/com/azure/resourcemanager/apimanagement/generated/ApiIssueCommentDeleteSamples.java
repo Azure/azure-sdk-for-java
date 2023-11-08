@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiIssueComment Delete. */
 public final class ApiIssueCommentDeleteSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteApiIssueComment.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteApiIssueComment.json
      */
     /**
      * Sample code: ApiManagementDeleteApiIssueComment.
@@ -27,6 +25,6 @@ public final class ApiIssueCommentDeleteSamples {
                 "57d2ef278aa04f0ad01d6cdc",
                 "599e29ab193c3c0bd0b3e2fb",
                 "*",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

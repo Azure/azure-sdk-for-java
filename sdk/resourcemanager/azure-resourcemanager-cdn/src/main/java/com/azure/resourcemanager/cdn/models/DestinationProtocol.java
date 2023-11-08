@@ -20,6 +20,15 @@ public final class DestinationProtocol extends ExpandableStringEnum<DestinationP
     public static final DestinationProtocol HTTPS = fromString("Https");
 
     /**
+     * Creates a new instance of DestinationProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DestinationProtocol() {
+    }
+
+    /**
      * Creates or finds a DestinationProtocol from its string representation.
      *
      * @param name a name to look for.

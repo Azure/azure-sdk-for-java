@@ -45,7 +45,6 @@ import static java.time.temporal.ChronoUnit.MILLIS;
 class PartitionProcessorImpl implements PartitionProcessor {
     private static final Logger logger = LoggerFactory.getLogger(PartitionProcessorImpl.class);
 
-    private static final int DefaultMaxItemCount = 100;
     private final ProcessorSettings settings;
     private final PartitionCheckpointer checkpointer;
     private final ChangeFeedObserver<JsonNode> observer;
@@ -55,7 +54,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
     private volatile RuntimeException resultException;
 
     private volatile String lastServerContinuationToken;
-    private volatile boolean isFirstQueryForChangeFeeds;
+    private volatile boolean hasMoreResults;
 
     public PartitionProcessorImpl(ChangeFeedObserver<JsonNode> observer,
                                   ChangeFeedContextClient documentClient,
@@ -82,7 +81,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
     @Override
     public Mono<Void> run(CancellationToken cancellationToken) {
         logger.info("Partition {}: processing task started with owner {}.", this.lease.getLeaseToken(), this.lease.getOwner());
-        this.isFirstQueryForChangeFeeds = true;
+        this.hasMoreResults = true;
         this.checkpointer.setCancellationToken(cancellationToken);
 
         return Flux.just(this)
@@ -91,8 +90,9 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     return Flux.empty();
                 }
 
-                if(this.isFirstQueryForChangeFeeds) {
-                    this.isFirstQueryForChangeFeeds = false;
+                // If there are still changes need to be processed, fetch right away
+                // If there are no changes, wait pollDelay time then try again
+                if(this.hasMoreResults && this.resultException == null) {
                     return Flux.just(value);
                 }
 
@@ -125,6 +125,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     .getCurrentContinuationToken()
                     .getToken();
 
+                this.hasMoreResults = !ModelBridgeInternal.noChanges(documentFeedResponse);
                 if (documentFeedResponse.getResults() != null && documentFeedResponse.getResults().size() > 0) {
                     logger.info("Partition {}: processing {} feeds with owner {}.", this.lease.getLeaseToken(), documentFeedResponse.getResults().size(), this.lease.getOwner());
                     return this.dispatchChanges(documentFeedResponse, continuationState)

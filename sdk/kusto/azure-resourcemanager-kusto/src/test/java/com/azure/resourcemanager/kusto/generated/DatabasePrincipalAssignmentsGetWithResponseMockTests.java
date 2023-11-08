@@ -33,7 +33,7 @@ public final class DatabasePrincipalAssignmentsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"principalId\":\"bb\",\"role\":\"Monitor\",\"tenantId\":\"gdakchz\",\"principalType\":\"Group\",\"tenantName\":\"ixqnrkcxkjibnxm\",\"principalName\":\"uxswqrntvl\",\"provisioningState\":\"Canceled\",\"aadObjectId\":\"sttex\"},\"id\":\"qqpwcyyuf\",\"name\":\"hruncuwmq\",\"type\":\"pkcdqzhlct\"}";
+            "{\"properties\":{\"principalId\":\"iiovgqcgxu\",\"role\":\"Admin\",\"tenantId\":\"kctotiowlxteq\",\"principalType\":\"User\",\"tenantName\":\"jgwdtgukranbl\",\"principalName\":\"hqlkccuzgygqwaho\",\"provisioningState\":\"Running\",\"aadObjectId\":\"gniiprglvaw\"},\"id\":\"wzdufypivlsbb\",\"name\":\"pmcubkmifoxxkub\",\"type\":\"phavpmhbrb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,12 +64,12 @@ public final class DatabasePrincipalAssignmentsGetWithResponseMockTests {
         DatabasePrincipalAssignment response =
             manager
                 .databasePrincipalAssignments()
-                .getWithResponse("omd", "kywuhpsvfuu", "utlwexxwla", "niexzsrzpgepq", com.azure.core.util.Context.NONE)
+                .getWithResponse("mucfxhikkf", "rmymyincqlhr", "s", "sl", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("bb", response.principalId());
-        Assertions.assertEquals(DatabasePrincipalRole.MONITOR, response.role());
-        Assertions.assertEquals("gdakchz", response.tenantId());
-        Assertions.assertEquals(PrincipalType.GROUP, response.principalType());
+        Assertions.assertEquals("iiovgqcgxu", response.principalId());
+        Assertions.assertEquals(DatabasePrincipalRole.ADMIN, response.role());
+        Assertions.assertEquals("kctotiowlxteq", response.tenantId());
+        Assertions.assertEquals(PrincipalType.USER, response.principalType());
     }
 }

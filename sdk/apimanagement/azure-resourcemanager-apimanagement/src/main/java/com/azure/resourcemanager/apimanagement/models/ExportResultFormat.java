@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExportResultFormat. */
+/** Format in which the API Details are exported to the Storage Blob with Sas Key valid for 5 minutes. */
 public final class ExportResultFormat extends ExpandableStringEnum<ExportResultFormat> {
     /** Static value swagger-link-json for ExportResultFormat. */
     public static final ExportResultFormat SWAGGER_LINK_JSON = fromString("swagger-link-json");
@@ -23,6 +23,15 @@ public final class ExportResultFormat extends ExpandableStringEnum<ExportResultF
     public static final ExportResultFormat OPENAPI_LINK = fromString("openapi-link");
 
     /**
+     * Creates a new instance of ExportResultFormat value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExportResultFormat() {
+    }
+
+    /**
      * Creates or finds a ExportResultFormat from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class ExportResultFormat extends ExpandableStringEnum<ExportResultF
         return fromString(name, ExportResultFormat.class);
     }
 
-    /** @return known ExportResultFormat values. */
+    /**
+     * Gets known ExportResultFormat values.
+     *
+     * @return known ExportResultFormat values.
+     */
     public static Collection<ExportResultFormat> values() {
         return values(ExportResultFormat.class);
     }

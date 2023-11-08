@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Cache GetEntityTag. */
 public final class CacheGetEntityTagSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadCache.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadCache.json
      */
     /**
      * Sample code: ApiManagementHeadCache.
@@ -17,6 +15,6 @@ public final class CacheGetEntityTagSamples {
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementHeadCache(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.caches().getEntityTagWithResponse("rg1", "apimService1", "default", Context.NONE);
+        manager.caches().getEntityTagWithResponse("rg1", "apimService1", "default", com.azure.core.util.Context.NONE);
     }
 }

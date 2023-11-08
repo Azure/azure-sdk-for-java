@@ -123,6 +123,13 @@ public interface AppPlatformManagementClient {
     BindingsClient getBindings();
 
     /**
+     * Gets the StoragesClient object to access its operations.
+     *
+     * @return the StoragesClient object.
+     */
+    StoragesClient getStorages();
+
+    /**
      * Gets the CertificatesClient object to access its operations.
      *
      * @return the CertificatesClient object.
@@ -163,4 +170,39 @@ public interface AppPlatformManagementClient {
      * @return the SkusClient object.
      */
     SkusClient getSkus();
+
+    /**
+     * Gets the GatewaysClient object to access its operations.
+     *
+     * @return the GatewaysClient object.
+     */
+    GatewaysClient getGateways();
+
+    /**
+     * Gets the GatewayRouteConfigsClient object to access its operations.
+     *
+     * @return the GatewayRouteConfigsClient object.
+     */
+    GatewayRouteConfigsClient getGatewayRouteConfigs();
+
+    /**
+     * Gets the GatewayCustomDomainsClient object to access its operations.
+     *
+     * @return the GatewayCustomDomainsClient object.
+     */
+    GatewayCustomDomainsClient getGatewayCustomDomains();
+
+    /**
+     * Gets the ApiPortalsClient object to access its operations.
+     *
+     * @return the ApiPortalsClient object.
+     */
+    ApiPortalsClient getApiPortals();
+
+    /**
+     * Gets the ApiPortalCustomDomainsClient object to access its operations.
+     *
+     * @return the ApiPortalCustomDomainsClient object.
+     */
+    ApiPortalCustomDomainsClient getApiPortalCustomDomains();
 }

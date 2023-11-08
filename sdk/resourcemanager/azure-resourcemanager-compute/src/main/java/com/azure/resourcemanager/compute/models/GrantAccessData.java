@@ -29,6 +29,12 @@ public final class GrantAccessData {
     @JsonProperty(value = "getSecureVMGuestStateSAS")
     private Boolean getSecureVMGuestStateSas;
 
+    /*
+     * Used to specify the file format when making request for SAS on a VHDX file format snapshot
+     */
+    @JsonProperty(value = "fileFormat")
+    private FileFormat fileFormat;
+
     /** Creates an instance of GrantAccessData class. */
     public GrantAccessData() {
     }
@@ -90,6 +96,28 @@ public final class GrantAccessData {
      */
     public GrantAccessData withGetSecureVMGuestStateSas(Boolean getSecureVMGuestStateSas) {
         this.getSecureVMGuestStateSas = getSecureVMGuestStateSas;
+        return this;
+    }
+
+    /**
+     * Get the fileFormat property: Used to specify the file format when making request for SAS on a VHDX file format
+     * snapshot.
+     *
+     * @return the fileFormat value.
+     */
+    public FileFormat fileFormat() {
+        return this.fileFormat;
+    }
+
+    /**
+     * Set the fileFormat property: Used to specify the file format when making request for SAS on a VHDX file format
+     * snapshot.
+     *
+     * @param fileFormat the fileFormat value to set.
+     * @return the GrantAccessData object itself.
+     */
+    public GrantAccessData withFileFormat(FileFormat fileFormat) {
+        this.fileFormat = fileFormat;
         return this;
     }
 

@@ -465,6 +465,33 @@ public final class SubnetInner extends SubResource {
     }
 
     /**
+     * Get the defaultOutboundAccess property: Set this property to false to disable default outbound connectivity for
+     * all VMs in the subnet. This property can only be set at the time of subnet creation and cannot be updated for an
+     * existing subnet.
+     *
+     * @return the defaultOutboundAccess value.
+     */
+    public Boolean defaultOutboundAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultOutboundAccess();
+    }
+
+    /**
+     * Set the defaultOutboundAccess property: Set this property to false to disable default outbound connectivity for
+     * all VMs in the subnet. This property can only be set at the time of subnet creation and cannot be updated for an
+     * existing subnet.
+     *
+     * @param defaultOutboundAccess the defaultOutboundAccess value to set.
+     * @return the SubnetInner object itself.
+     */
+    public SubnetInner withDefaultOutboundAccess(Boolean defaultOutboundAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubnetPropertiesFormatInner();
+        }
+        this.innerProperties().withDefaultOutboundAccess(defaultOutboundAccess);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

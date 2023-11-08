@@ -32,7 +32,7 @@ public final class NetAppResourcesQueryRegionInfoWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"storageToNetworkProximity\":\"T2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"qknfd\",\"isAvailable\":false}]}";
+            "{\"storageToNetworkProximity\":\"T2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"vk\",\"isAvailable\":false},{\"availabilityZone\":\"ql\",\"isAvailable\":false},{\"availabilityZone\":\"tczheydbsdshmkx\",\"isAvailable\":true},{\"availabilityZone\":\"vbbxuripl\",\"isAvailable\":false}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,11 +63,11 @@ public final class NetAppResourcesQueryRegionInfoWithResponseMockTests {
         RegionInfo response =
             manager
                 .netAppResources()
-                .queryRegionInfoWithResponse("wiithtywub", com.azure.core.util.Context.NONE)
+                .queryRegionInfoWithResponse("ssxmojms", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(RegionStorageToNetworkProximity.T2, response.storageToNetworkProximity());
-        Assertions.assertEquals("qknfd", response.availabilityZoneMappings().get(0).availabilityZone());
+        Assertions.assertEquals("vk", response.availabilityZoneMappings().get(0).availabilityZone());
         Assertions.assertEquals(false, response.availabilityZoneMappings().get(0).isAvailable());
     }
 }

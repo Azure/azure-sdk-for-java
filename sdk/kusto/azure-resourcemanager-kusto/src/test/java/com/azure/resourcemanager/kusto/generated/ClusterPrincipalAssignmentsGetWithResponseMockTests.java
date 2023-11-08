@@ -33,7 +33,7 @@ public final class ClusterPrincipalAssignmentsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"principalId\":\"wqjnob\",\"role\":\"AllDatabasesAdmin\",\"tenantId\":\"hdd\",\"principalType\":\"Group\",\"tenantName\":\"cegfnmntfp\",\"principalName\":\"memfnczdwvvbalxl\",\"provisioningState\":\"Moving\",\"aadObjectId\":\"podbzevwrdnh\"},\"id\":\"ukuv\",\"name\":\"jcswsmys\",\"type\":\"uluqypfc\"}";
+            "{\"properties\":{\"principalId\":\"vwf\",\"role\":\"AllDatabasesAdmin\",\"tenantId\":\"yxonsupe\",\"principalType\":\"User\",\"tenantName\":\"zqn\",\"principalName\":\"vsqltnzoibgsxg\",\"provisioningState\":\"Moving\",\"aadObjectId\":\"qonmpqoxwdof\"},\"id\":\"bxiqxeiiqbimht\",\"name\":\"wwinhehf\",\"type\":\"pofvwb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,12 +64,12 @@ public final class ClusterPrincipalAssignmentsGetWithResponseMockTests {
         ClusterPrincipalAssignment response =
             manager
                 .clusterPrincipalAssignments()
-                .getWithResponse("plmag", "tcyohpfkyrk", "bdgiogsjk", com.azure.core.util.Context.NONE)
+                .getWithResponse("oi", "knsmjblmljhlnymz", "tqyryuzcbmqqv", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("wqjnob", response.principalId());
+        Assertions.assertEquals("vwf", response.principalId());
         Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_ADMIN, response.role());
-        Assertions.assertEquals("hdd", response.tenantId());
-        Assertions.assertEquals(PrincipalType.GROUP, response.principalType());
+        Assertions.assertEquals("yxonsupe", response.tenantId());
+        Assertions.assertEquals(PrincipalType.USER, response.principalType());
     }
 }

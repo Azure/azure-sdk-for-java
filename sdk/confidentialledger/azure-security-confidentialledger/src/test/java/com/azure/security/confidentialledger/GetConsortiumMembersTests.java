@@ -9,15 +9,14 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.IOException;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 public final class GetConsortiumMembersTests extends ConfidentialLedgerClientTestBase {
     @Test
-    public void testGetConsortiumMembersTests() throws Exception {
+    public void testGetConsortiumMembersTests() {
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> pagedIterableResponse = confidentialLedgerClient.listConsortiumMembers(requestOptions);
 

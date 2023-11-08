@@ -30,7 +30,7 @@ public final class WorkloadNetworksListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"value\":[{\"id\":\"ojocqwogf\",\"name\":\"zjvusfzldmo\",\"type\":\"uxylfsbtkadpy\"}]}";
+        String responseStr = "{\"value\":[{\"id\":\"jeokbzefezrxccz\",\"name\":\"rtle\",\"type\":\"pqxbkwvzgnzvdf\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,6 +59,6 @@ public final class WorkloadNetworksListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<WorkloadNetwork> response =
-            manager.workloadNetworks().list("agy", "wqfbylyrfgiagt", com.azure.core.util.Context.NONE);
+            manager.workloadNetworks().list("owxeqocljmy", "vkzqk", com.azure.core.util.Context.NONE);
     }
 }

@@ -14,7 +14,7 @@ import java.util.Arrays;
 /** Samples for ConfigServers UpdatePatch. */
 public final class ConfigServersUpdatePatchSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/ConfigServers_UpdatePatch.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/ConfigServers_UpdatePatch.json
      */
     /**
      * Sample code: ConfigServers_UpdatePatch.

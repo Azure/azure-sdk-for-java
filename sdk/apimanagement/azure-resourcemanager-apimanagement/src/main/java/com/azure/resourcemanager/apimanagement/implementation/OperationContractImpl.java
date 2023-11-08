@@ -74,6 +74,10 @@ public final class OperationContractImpl
         return this.innerModel().policies();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public OperationContractInner innerModel() {
         return this.innerObject;
     }

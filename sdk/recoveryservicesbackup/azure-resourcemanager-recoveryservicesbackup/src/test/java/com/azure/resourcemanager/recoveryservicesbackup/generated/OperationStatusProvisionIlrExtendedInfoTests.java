@@ -17,13 +17,13 @@ public final class OperationStatusProvisionIlrExtendedInfoTests {
         OperationStatusProvisionIlrExtendedInfo model =
             BinaryData
                 .fromString(
-                    "{\"objectType\":\"OperationStatusProvisionILRExtendedInfo\",\"recoveryTarget\":{\"clientScripts\":[{\"scriptContent\":\"hhhqosm\",\"scriptExtension\":\"jkutycyarnr\",\"osType\":\"hguabzoghktdp\",\"url\":\"z\",\"scriptNameSuffix\":\"oeocnhzqrott\"},{\"scriptContent\":\"cfyjzp\",\"scriptExtension\":\"rl\",\"osType\":\"apqinf\",\"url\":\"pyglqdhmrjzral\",\"scriptNameSuffix\":\"pjby\"}]}}")
+                    "{\"objectType\":\"OperationStatusProvisionILRExtendedInfo\",\"recoveryTarget\":{\"clientScripts\":[{\"scriptContent\":\"sf\",\"scriptExtension\":\"mx\",\"osType\":\"lpzealbmqkyojwyv\",\"url\":\"mbtsuahxsg\",\"scriptNameSuffix\":\"cmmzrrs\"},{\"scriptContent\":\"biwsd\",\"scriptExtension\":\"pxqwo\",\"osType\":\"ffjxcjrmmuabwib\",\"url\":\"ogjo\",\"scriptNameSuffix\":\"cyefoyzbamwine\"},{\"scriptContent\":\"vfkakpold\",\"scriptExtension\":\"evboclzhzjknyuxg\",\"osType\":\"txpnrupza\",\"url\":\"rdixt\",\"scriptNameSuffix\":\"kidswys\"},{\"scriptContent\":\"ruffgllukk\",\"scriptExtension\":\"vlxhrpqhvmblc\",\"osType\":\"qehbhbcds\",\"url\":\"ryrando\",\"scriptNameSuffix\":\"mbltoo\"}]}}")
                 .toObject(OperationStatusProvisionIlrExtendedInfo.class);
-        Assertions.assertEquals("hhhqosm", model.recoveryTarget().clientScripts().get(0).scriptContent());
-        Assertions.assertEquals("jkutycyarnr", model.recoveryTarget().clientScripts().get(0).scriptExtension());
-        Assertions.assertEquals("hguabzoghktdp", model.recoveryTarget().clientScripts().get(0).osType());
-        Assertions.assertEquals("z", model.recoveryTarget().clientScripts().get(0).url());
-        Assertions.assertEquals("oeocnhzqrott", model.recoveryTarget().clientScripts().get(0).scriptNameSuffix());
+        Assertions.assertEquals("sf", model.recoveryTarget().clientScripts().get(0).scriptContent());
+        Assertions.assertEquals("mx", model.recoveryTarget().clientScripts().get(0).scriptExtension());
+        Assertions.assertEquals("lpzealbmqkyojwyv", model.recoveryTarget().clientScripts().get(0).osType());
+        Assertions.assertEquals("mbtsuahxsg", model.recoveryTarget().clientScripts().get(0).url());
+        Assertions.assertEquals("cmmzrrs", model.recoveryTarget().clientScripts().get(0).scriptNameSuffix());
     }
 
     @org.junit.jupiter.api.Test
@@ -36,22 +36,34 @@ public final class OperationStatusProvisionIlrExtendedInfoTests {
                             Arrays
                                 .asList(
                                     new ClientScriptForConnect()
-                                        .withScriptContent("hhhqosm")
-                                        .withScriptExtension("jkutycyarnr")
-                                        .withOsType("hguabzoghktdp")
-                                        .withUrl("z")
-                                        .withScriptNameSuffix("oeocnhzqrott"),
+                                        .withScriptContent("sf")
+                                        .withScriptExtension("mx")
+                                        .withOsType("lpzealbmqkyojwyv")
+                                        .withUrl("mbtsuahxsg")
+                                        .withScriptNameSuffix("cmmzrrs"),
                                     new ClientScriptForConnect()
-                                        .withScriptContent("cfyjzp")
-                                        .withScriptExtension("rl")
-                                        .withOsType("apqinf")
-                                        .withUrl("pyglqdhmrjzral")
-                                        .withScriptNameSuffix("pjby"))));
+                                        .withScriptContent("biwsd")
+                                        .withScriptExtension("pxqwo")
+                                        .withOsType("ffjxcjrmmuabwib")
+                                        .withUrl("ogjo")
+                                        .withScriptNameSuffix("cyefoyzbamwine"),
+                                    new ClientScriptForConnect()
+                                        .withScriptContent("vfkakpold")
+                                        .withScriptExtension("evboclzhzjknyuxg")
+                                        .withOsType("txpnrupza")
+                                        .withUrl("rdixt")
+                                        .withScriptNameSuffix("kidswys"),
+                                    new ClientScriptForConnect()
+                                        .withScriptContent("ruffgllukk")
+                                        .withScriptExtension("vlxhrpqhvmblc")
+                                        .withOsType("qehbhbcds")
+                                        .withUrl("ryrando")
+                                        .withScriptNameSuffix("mbltoo"))));
         model = BinaryData.fromObject(model).toObject(OperationStatusProvisionIlrExtendedInfo.class);
-        Assertions.assertEquals("hhhqosm", model.recoveryTarget().clientScripts().get(0).scriptContent());
-        Assertions.assertEquals("jkutycyarnr", model.recoveryTarget().clientScripts().get(0).scriptExtension());
-        Assertions.assertEquals("hguabzoghktdp", model.recoveryTarget().clientScripts().get(0).osType());
-        Assertions.assertEquals("z", model.recoveryTarget().clientScripts().get(0).url());
-        Assertions.assertEquals("oeocnhzqrott", model.recoveryTarget().clientScripts().get(0).scriptNameSuffix());
+        Assertions.assertEquals("sf", model.recoveryTarget().clientScripts().get(0).scriptContent());
+        Assertions.assertEquals("mx", model.recoveryTarget().clientScripts().get(0).scriptExtension());
+        Assertions.assertEquals("lpzealbmqkyojwyv", model.recoveryTarget().clientScripts().get(0).osType());
+        Assertions.assertEquals("mbtsuahxsg", model.recoveryTarget().clientScripts().get(0).url());
+        Assertions.assertEquals("cmmzrrs", model.recoveryTarget().clientScripts().get(0).scriptNameSuffix());
     }
 }

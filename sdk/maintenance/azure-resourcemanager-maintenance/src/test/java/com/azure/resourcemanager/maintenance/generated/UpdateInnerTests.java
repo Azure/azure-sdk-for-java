@@ -18,32 +18,32 @@ public final class UpdateInnerTests {
         UpdateInner model =
             BinaryData
                 .fromString(
-                    "{\"maintenanceScope\":\"Extension\",\"impactType\":\"Redeploy\",\"status\":\"InProgress\",\"impactDurationInSec\":1230254023,\"notBefore\":\"2021-06-03T00:49:48Z\",\"properties\":{\"resourceId\":\"xhcr\"}}")
+                    "{\"maintenanceScope\":\"Resource\",\"impactType\":\"None\",\"status\":\"Pending\",\"impactDurationInSec\":1267034334,\"notBefore\":\"2021-09-05T17:35:53Z\",\"properties\":{\"resourceId\":\"ow\"}}")
                 .toObject(UpdateInner.class);
-        Assertions.assertEquals(MaintenanceScope.EXTENSION, model.maintenanceScope());
-        Assertions.assertEquals(ImpactType.REDEPLOY, model.impactType());
-        Assertions.assertEquals(UpdateStatus.IN_PROGRESS, model.status());
-        Assertions.assertEquals(1230254023, model.impactDurationInSec());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-03T00:49:48Z"), model.notBefore());
-        Assertions.assertEquals("xhcr", model.resourceId());
+        Assertions.assertEquals(MaintenanceScope.RESOURCE, model.maintenanceScope());
+        Assertions.assertEquals(ImpactType.NONE, model.impactType());
+        Assertions.assertEquals(UpdateStatus.PENDING, model.status());
+        Assertions.assertEquals(1267034334, model.impactDurationInSec());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-05T17:35:53Z"), model.notBefore());
+        Assertions.assertEquals("ow", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateInner model =
             new UpdateInner()
-                .withMaintenanceScope(MaintenanceScope.EXTENSION)
-                .withImpactType(ImpactType.REDEPLOY)
-                .withStatus(UpdateStatus.IN_PROGRESS)
-                .withImpactDurationInSec(1230254023)
-                .withNotBefore(OffsetDateTime.parse("2021-06-03T00:49:48Z"))
-                .withResourceId("xhcr");
+                .withMaintenanceScope(MaintenanceScope.RESOURCE)
+                .withImpactType(ImpactType.NONE)
+                .withStatus(UpdateStatus.PENDING)
+                .withImpactDurationInSec(1267034334)
+                .withNotBefore(OffsetDateTime.parse("2021-09-05T17:35:53Z"))
+                .withResourceId("ow");
         model = BinaryData.fromObject(model).toObject(UpdateInner.class);
-        Assertions.assertEquals(MaintenanceScope.EXTENSION, model.maintenanceScope());
-        Assertions.assertEquals(ImpactType.REDEPLOY, model.impactType());
-        Assertions.assertEquals(UpdateStatus.IN_PROGRESS, model.status());
-        Assertions.assertEquals(1230254023, model.impactDurationInSec());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-03T00:49:48Z"), model.notBefore());
-        Assertions.assertEquals("xhcr", model.resourceId());
+        Assertions.assertEquals(MaintenanceScope.RESOURCE, model.maintenanceScope());
+        Assertions.assertEquals(ImpactType.NONE, model.impactType());
+        Assertions.assertEquals(UpdateStatus.PENDING, model.status());
+        Assertions.assertEquals(1267034334, model.impactDurationInSec());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-05T17:35:53Z"), model.notBefore());
+        Assertions.assertEquals("ow", model.resourceId());
     }
 }

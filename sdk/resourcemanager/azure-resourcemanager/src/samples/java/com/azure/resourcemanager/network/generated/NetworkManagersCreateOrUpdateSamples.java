@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for NetworkManagers CreateOrUpdate. */
 public final class NetworkManagersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkManagerPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/NetworkManagerPut.json
      */
     /**
      * Sample code: Put Network Manager.
@@ -32,7 +32,8 @@ public final class NetworkManagersCreateOrUpdateSamples {
                     .withDescription("My Test Network Manager")
                     .withNetworkManagerScopes(
                         new NetworkManagerPropertiesNetworkManagerScopes()
-                            .withManagementGroups(Arrays.asList("/Microsoft.Management/testmg"))
+                            .withManagementGroups(
+                                Arrays.asList("/providers/Microsoft.Management/managementGroups/sampleMG"))
                             .withSubscriptions(Arrays.asList("/subscriptions/00000000-0000-0000-0000-000000000000")))
                     .withNetworkManagerScopeAccesses(Arrays.asList(ConfigurationType.CONNECTIVITY)),
                 com.azure.core.util.Context.NONE);

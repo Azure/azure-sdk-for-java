@@ -20,7 +20,6 @@ required-parameter-client-methods: false
 required-fields-as-ctor-args: true
 model-override-setter-from-superclass: true
 credential-types: tokencredential
-client-side-validations: true
 artifact-id: azure-monitor-query
 customization-class: src/main/java/LogsCustomization.java
 enable-sync-stack: true
@@ -45,7 +44,6 @@ required-parameter-client-methods: false
 required-fields-as-ctor-args: true
 model-override-setter-from-superclass: true
 credential-types: tokencredential
-client-side-validations: true
 artifact-id: azure-monitor-query
 customization-class: src/main/java/MetricsCustomization.java
 enable-sync-stack: true
@@ -75,7 +73,6 @@ required-parameter-client-methods: false
 required-fields-as-ctor-args: true
 model-override-setter-from-superclass: true
 credential-types: tokencredential
-client-side-validations: true
 artifact-id: azure-monitor-query
 customization-class: src/main/java/MetricsNamespacesCustomization.java
 enable-sync-stack: true
@@ -101,8 +98,31 @@ required-parameter-client-methods: false
 required-fields-as-ctor-args: true
 model-override-setter-from-superclass: true
 credential-types: tokencredential
-client-side-validations: true
 artifact-id: azure-monitor-query
 customization-class: src/main/java/MetricsDefinitionsCustomization.java
+enable-sync-stack: true
+```
+
+## Metrics Batch Query
+These settings apply only when `--tag=package-metrics-batch` is specified on the command line.
+
+``` yaml $(tag) == 'package-metrics-batch'
+use: '@autorest/java@4.1.17'
+input-file: https://raw.githubusercontent.com/srnagar/azure-rest-api-specs/fb0e6987b97d7cd6cd13f2f45493f48d3e63e804/specification/monitor/data-plane/Microsoft.Insights/stable/2023-10-01/metricBatch.json
+service-name: MetricsDefinitions
+java: true
+output-folder: ../
+namespace: com.azure.monitor.query.implementation.metricsbatch
+generate-client-interfaces: false
+service-interface-as-public: true
+sync-methods: all
+license-header: MICROSOFT_MIT_SMALL
+add-context-parameter: true
+context-client-method-parameter: true
+required-parameter-client-methods: false 
+required-fields-as-ctor-args: true
+model-override-setter-from-superclass: true
+credential-types: tokencredential
+artifact-id: azure-monitor-query
 enable-sync-stack: true
 ```

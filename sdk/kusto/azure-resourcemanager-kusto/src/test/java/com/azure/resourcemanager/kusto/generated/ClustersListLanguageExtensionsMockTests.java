@@ -34,7 +34,7 @@ public final class ClustersListLanguageExtensionsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"languageExtensionName\":\"PYTHON\",\"languageExtensionImageName\":\"Python3_10_8\"}]}";
+            "{\"value\":[{\"languageExtensionName\":\"R\",\"languageExtensionImageName\":\"Python3_6_5\",\"languageExtensionCustomImageName\":\"iojlvfhrb\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,12 @@ public final class ClustersListLanguageExtensionsMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<LanguageExtension> response =
-            manager
-                .clusters()
-                .listLanguageExtensions("bywdxsmicc", "rwfscjfnynszquj", com.azure.core.util.Context.NONE);
+            manager.clusters().listLanguageExtensions("sbostzel", "dlat", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(LanguageExtensionName.PYTHON, response.iterator().next().languageExtensionName());
+        Assertions.assertEquals(LanguageExtensionName.R, response.iterator().next().languageExtensionName());
         Assertions
             .assertEquals(
-                LanguageExtensionImageName.PYTHON3_10_8, response.iterator().next().languageExtensionImageName());
+                LanguageExtensionImageName.PYTHON3_6_5, response.iterator().next().languageExtensionImageName());
+        Assertions.assertEquals("iojlvfhrb", response.iterator().next().languageExtensionCustomImageName());
     }
 }

@@ -13,20 +13,20 @@ public final class VolumeBackupsTests {
     public void testDeserialize() throws Exception {
         VolumeBackups model =
             BinaryData
-                .fromString("{\"volumeName\":\"vdkcrodtj\",\"backupsCount\":321367930,\"policyEnabled\":true}")
+                .fromString("{\"volumeName\":\"wae\",\"backupsCount\":809360205,\"policyEnabled\":true}")
                 .toObject(VolumeBackups.class);
-        Assertions.assertEquals("vdkcrodtj", model.volumeName());
-        Assertions.assertEquals(321367930, model.backupsCount());
+        Assertions.assertEquals("wae", model.volumeName());
+        Assertions.assertEquals(809360205, model.backupsCount());
         Assertions.assertEquals(true, model.policyEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VolumeBackups model =
-            new VolumeBackups().withVolumeName("vdkcrodtj").withBackupsCount(321367930).withPolicyEnabled(true);
+            new VolumeBackups().withVolumeName("wae").withBackupsCount(809360205).withPolicyEnabled(true);
         model = BinaryData.fromObject(model).toObject(VolumeBackups.class);
-        Assertions.assertEquals("vdkcrodtj", model.volumeName());
-        Assertions.assertEquals(321367930, model.backupsCount());
+        Assertions.assertEquals("wae", model.volumeName());
+        Assertions.assertEquals(809360205, model.backupsCount());
         Assertions.assertEquals(true, model.policyEnabled());
     }
 }

@@ -33,7 +33,7 @@ public final class VolumesReplicationStatusWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"healthy\":false,\"relationshipStatus\":\"Transferring\",\"mirrorState\":\"Mirrored\",\"totalProgress\":\"bkjubdyhgkfmins\",\"errorMessage\":\"wzf\"}";
+            "{\"healthy\":false,\"relationshipStatus\":\"Idle\",\"mirrorState\":\"Uninitialized\",\"totalProgress\":\"cluqovekqvgqo\",\"errorMessage\":\"ifzmpjwyivqi\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,13 +64,14 @@ public final class VolumesReplicationStatusWithResponseMockTests {
         ReplicationStatus response =
             manager
                 .volumes()
-                .replicationStatusWithResponse("oljxkcgx", "lxsffg", "vizqzdwl", "w", com.azure.core.util.Context.NONE)
+                .replicationStatusWithResponse(
+                    "plcplcwkhi", "ihlhzdsqtzb", "rgnowcjhfgm", "ecactx", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(false, response.healthy());
-        Assertions.assertEquals(RelationshipStatus.TRANSFERRING, response.relationshipStatus());
-        Assertions.assertEquals(MirrorState.MIRRORED, response.mirrorState());
-        Assertions.assertEquals("bkjubdyhgkfmins", response.totalProgress());
-        Assertions.assertEquals("wzf", response.errorMessage());
+        Assertions.assertEquals(RelationshipStatus.IDLE, response.relationshipStatus());
+        Assertions.assertEquals(MirrorState.UNINITIALIZED, response.mirrorState());
+        Assertions.assertEquals("cluqovekqvgqo", response.totalProgress());
+        Assertions.assertEquals("ifzmpjwyivqi", response.errorMessage());
     }
 }

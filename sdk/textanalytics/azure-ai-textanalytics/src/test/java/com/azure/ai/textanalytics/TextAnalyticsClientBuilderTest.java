@@ -31,6 +31,7 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Header;
@@ -263,7 +264,6 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
         });
     }
 
-    @Disabled("Waiting for service to enable it")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithAAD(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -434,14 +434,17 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
                 .pipeline(getHttpPipeline(httpClient))
                 .serviceVersion(serviceVersion);
 
-        if (interceptorManager.isPlaybackMode()) {
+        if (interceptorManager.isRecordMode()) {
+            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+        } else if (interceptorManager.isPlaybackMode()) {
             // since running in playback mode won't have the token credential, so skipping matching it.
             interceptorManager.addMatchers(Arrays.asList(
                 new CustomMatcher().setExcludedHeaders(Arrays.asList("Authorization"))));
-        }
 
-        if (interceptorManager.isRecordMode()) {
-            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+            clientBuilder.credential(new MockTokenCredential());
+        }
+        if (!interceptorManager.isPlaybackMode()) {
+            clientBuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
 
         testRunner.apply(clientBuilder).accept(DETECT_LANGUAGE_INPUTS.get(0), DETECTED_LANGUAGE_ENGLISH);

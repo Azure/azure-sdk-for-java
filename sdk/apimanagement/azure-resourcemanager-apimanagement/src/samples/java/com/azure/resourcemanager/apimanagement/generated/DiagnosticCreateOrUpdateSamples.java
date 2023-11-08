@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.DiagnosticContractInner;
 import com.azure.resourcemanager.apimanagement.models.AlwaysLog;
 import com.azure.resourcemanager.apimanagement.models.BodyDiagnosticSettings;
@@ -17,7 +16,7 @@ import java.util.Arrays;
 /** Samples for Diagnostic CreateOrUpdate. */
 public final class DiagnosticCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateDiagnostic.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateDiagnostic.json
      */
     /**
      * Sample code: ApiManagementCreateDiagnostic.
@@ -35,7 +34,7 @@ public final class DiagnosticCreateOrUpdateSamples {
                 new DiagnosticContractInner()
                     .withAlwaysLog(AlwaysLog.ALL_ERRORS)
                     .withLoggerId("/loggers/azuremonitor")
-                    .withSampling(new SamplingSettings().withSamplingType(SamplingType.FIXED).withPercentage(50.0))
+                    .withSampling(new SamplingSettings().withSamplingType(SamplingType.FIXED).withPercentage(50.0D))
                     .withFrontend(
                         new PipelineDiagnosticSettings()
                             .withRequest(
@@ -57,6 +56,6 @@ public final class DiagnosticCreateOrUpdateSamples {
                                     .withHeaders(Arrays.asList("Content-type"))
                                     .withBody(new BodyDiagnosticSettings().withBytes(512)))),
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

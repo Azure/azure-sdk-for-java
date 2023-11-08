@@ -5,7 +5,6 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.CosmosException
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.PartitionKey
-import com.azure.cosmos.spark.catalog.CosmosCatalogCosmosSDKClient
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
@@ -75,9 +74,11 @@ private class ChangeFeedTable(val session: SparkSession,
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(effectiveUserConfig)
   private val tableName = s"com.azure.cosmos.spark.changeFeed.items.${clientConfig.accountName}." +
     s"${cosmosContainerConfig.database}.${cosmosContainerConfig.container}"
+  private val sparkEnvironmentInfo = CosmosClientConfiguration.getSparkEnvironmentInfo(Some(session))
   private val cosmosClientConfig = CosmosClientConfiguration(
     effectiveUserConfig,
-    useEventualConsistency = readConfig.forceEventualConsistency)
+    useEventualConsistency = readConfig.forceEventualConsistency,
+    sparkEnvironmentInfo)
   // This can only be used for data operation against a certain container.
   private lazy val containerStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots] =
     initializeAndBroadcastCosmosClientStatesForContainer()
@@ -108,7 +109,7 @@ private class ChangeFeedTable(val session: SparkSession,
     Loan(
       List[Option[CosmosClientCacheItem]](
         Some(CosmosClientCache(cosmosClientConfig, None, calledFrom)),
-        ThroughputControlHelper.getThroughputControlClientCacheItem(effectiveUserConfig, calledFrom, None)
+        ThroughputControlHelper.getThroughputControlClientCacheItem(effectiveUserConfig, calledFrom, None, sparkEnvironmentInfo)
       ))
       .to(clientCacheItems =>
         userProvidedSchema.getOrElse(this.inferSchema(clientCacheItems(0).get, clientCacheItems(1), effectiveUserConfig))
@@ -147,7 +148,8 @@ private class ChangeFeedTable(val session: SparkSession,
         ThroughputControlHelper.getThroughputControlClientCacheItem(
           effectiveUserConfig,
           calledFrom,
-          None
+          None,
+          sparkEnvironmentInfo
         )
       ))
       .to(clientCacheItems => {

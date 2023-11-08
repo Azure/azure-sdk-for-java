@@ -19,7 +19,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("UserSourceInfo")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "UploadedUserSourceInfo", value = UploadedUserSourceInfo.class),
-    @JsonSubTypes.Type(name = "BuildResult", value = BuildResultUserSourceInfo.class)
+    @JsonSubTypes.Type(name = "BuildResult", value = BuildResultUserSourceInfo.class),
+    @JsonSubTypes.Type(name = "Container", value = CustomContainerUserSourceInfo.class)
 })
 @Fluent
 public class UserSourceInfo {

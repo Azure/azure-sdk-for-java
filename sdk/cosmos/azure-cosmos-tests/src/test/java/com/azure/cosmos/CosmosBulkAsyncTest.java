@@ -10,11 +10,22 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResultBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import com.azure.cosmos.test.faultinjection.IFaultInjectionResult;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
@@ -44,7 +55,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosBulkAsyncTest() {
         assertThat(this.bulkClient).isNull();
         ThrottlingRetryOptions throttlingOptions = new ThrottlingRetryOptions()
@@ -54,17 +65,17 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         bulkAsyncContainer = getSharedMultiPartitionCosmosContainer(this.bulkClient);
     }
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(this.bulkClient);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT * 2)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT * 2)
     public void createItem_withBulkAndThroughputControlAsDefaultGroup() throws InterruptedException {
         runBulkTest(true);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT * 2)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT * 2)
     public void createItem_withBulkAndThroughputControlAsNonDefaultGroup() throws InterruptedException {
         runBulkTest(false);
     }
@@ -138,7 +149,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void createItem_withBulk() {
         int totalRequest = getTotalRequest();
 
@@ -186,7 +197,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         assertThat(processedDoc.get()).isEqualTo(totalRequest * 2);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void createItem_withBulk_after_collectionRecreate() {
         int totalRequest = getTotalRequest();
 
@@ -252,7 +263,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void createItem_withBulk_and_operationLevelContext() {
         int totalRequest = getTotalRequest();
 
@@ -314,7 +325,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         assertThat(processedDoc.get()).isEqualTo(totalRequest * 2);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void createItemMultipleTimesWithOperationOnFly_withBulk() {
         int totalRequest = getTotalRequest();
 
@@ -395,7 +406,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         assertThat(distinctDocs.size()).isEqualTo(totalRequest * 4);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void runCreateItemMultipleTimesWithFixedOperations_withBulk() {
         int totalRequest = getTotalRequest();
 
@@ -472,7 +483,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         assertThat(distinctDocs.size()).isEqualTo(totalRequest);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void createItemWithError_withBulk() {
         int totalRequest = getTotalRequest();
 
@@ -526,7 +537,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         assertThat(processedDoc.get()).isEqualTo(totalRequest - 3);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void upsertItem_withbulk() {
         int totalRequest = getTotalRequest();
 
@@ -576,7 +587,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         assertThat(processedDoc.get()).isEqualTo(totalRequest);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void deleteItem_withBulk() {
         int totalRequest = Math.min(getTotalRequest(), 20);
 
@@ -624,7 +635,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         assertThat(processedDoc.get()).isEqualTo(totalRequest);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void readItem_withBulk() {
         int totalRequest = getTotalRequest();
 
@@ -677,7 +688,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         assertThat(processedDoc.get()).isEqualTo(totalRequest);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void readItemMultipleTimes_withBulk() {
         int totalRequest = getTotalRequest();
 
@@ -745,7 +756,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         assertThat(distinctDocs.size()).isEqualTo(totalRequest);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void replaceItem_withBulk() {
         int totalRequest = getTotalRequest();
 
@@ -838,6 +849,47 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         // Verify if all are distinct and count is equal to request count.
         assertThat(processedDoc.get()).isEqualTo(cosmosItemOperations.size());
         assertThat(distinctIndex.size()).isEqualTo(cosmosItemOperations.size());
+    }
+
+    @DataProvider()
+    public Object[][] faultInjectionProvider() {
+        return new Object[][]{
+            {null},
+            {injectBatchFailure("RequestRateTooLarge", FaultInjectionServerErrorType.TOO_MANY_REQUEST, 10)},
+            {injectBatchFailure("PartitionSplit", FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, 2)}
+        };
+    }
+
+    private FaultInjectionRule injectBatchFailure(String id, FaultInjectionServerErrorType serverErrorType, int hitLimit) {
+
+
+        FaultInjectionServerErrorResultBuilder faultInjectionResultBuilder = FaultInjectionResultBuilders
+            .getResultBuilder(serverErrorType)
+            .delay(Duration.ofMillis(1500));
+
+
+        IFaultInjectionResult result = faultInjectionResultBuilder.build();
+
+        FaultInjectionConnectionType connectionType = FaultInjectionConnectionType.GATEWAY;
+        if (ImplementationBridgeHelpers
+            .CosmosAsyncClientHelper
+            .getCosmosAsyncClientAccessor()
+            .getConnectionMode(this.bulkClient)
+            .equals(ConnectionMode.DIRECT.toString())) {
+            connectionType = FaultInjectionConnectionType.DIRECT;
+        }
+
+        FaultInjectionCondition condition = new FaultInjectionConditionBuilder()
+            .operationType(FaultInjectionOperationType.BATCH_ITEM)
+            .connectionType(connectionType)
+            .build();
+
+        return new FaultInjectionRuleBuilder(id)
+            .condition(condition)
+            .result(result)
+            .startDelay(Duration.ofSeconds(1))
+            .hitLimit(hitLimit)
+            .build();
     }
 
     private int getTotalRequest(int min, int max) {

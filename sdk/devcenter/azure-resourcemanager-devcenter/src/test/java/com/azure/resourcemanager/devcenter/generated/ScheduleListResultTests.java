@@ -13,7 +13,7 @@ public final class ScheduleListResultTests {
         ScheduleListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"RolloutInProgress\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"jpxac\",\"timeZone\":\"udfnbyxba\",\"state\":\"Enabled\"},\"id\":\"yvayffimrzr\",\"name\":\"uzqogsexnevf\",\"type\":\"nwnwme\"}],\"nextLink\":\"syyceuzsoibjud\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"StorageProvisioningFailed\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"zzbtdcqvpniyujvi\",\"timeZone\":\"wdsh\",\"state\":\"Disabled\"},\"id\":\"rbgyefry\",\"name\":\"sgaojfmwncot\",\"type\":\"rfh\"},{\"properties\":{\"provisioningState\":\"Deleted\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"ftpipiwyczu\",\"timeZone\":\"a\",\"state\":\"Disabled\"},\"id\":\"lihhyuspskasdvlm\",\"name\":\"wdgzxulucv\",\"type\":\"amrsreuzv\"},{\"properties\":{\"provisioningState\":\"NotSpecified\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"ytxifqjzgxmrh\",\"timeZone\":\"lw\",\"state\":\"Disabled\"},\"id\":\"utr\",\"name\":\"jupauut\",\"type\":\"woqhihe\"},{\"properties\":{\"provisioningState\":\"NotSpecified\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"n\",\"timeZone\":\"ypsxjvfoim\",\"state\":\"Enabled\"},\"id\":\"ircizjxvy\",\"name\":\"fceacvlhvygd\",\"type\":\"ftumrtwnawjslbiw\"}],\"nextLink\":\"jgcyztsfmznba\"}")
                 .toObject(ScheduleListResult.class);
     }
 

@@ -33,7 +33,7 @@ public final class BackupPoliciesCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"etag\":\"fapaqtfer\",\"properties\":{\"backupPolicyId\":\"wexjkmfxapjwogq\",\"provisioningState\":\"Succeeded\",\"dailyBackupsToKeep\":1623831151,\"weeklyBackupsToKeep\":623740399,\"monthlyBackupsToKeep\":1894525187,\"volumesAssigned\":1873206195,\"enabled\":false,\"volumeBackups\":[]},\"location\":\"awbzasqb\",\"tags\":{\"yexaoguy\":\"jg\",\"ids\":\"i\"},\"id\":\"ault\",\"name\":\"ijjumfq\",\"type\":\"azlnqnmcjngzqdqx\"}";
+            "{\"etag\":\"zinkfkbgbzbowxeq\",\"properties\":{\"backupPolicyId\":\"ljmygvkzqkjjeokb\",\"provisioningState\":\"Succeeded\",\"dailyBackupsToKeep\":1829804009,\"weeklyBackupsToKeep\":1049990644,\"monthlyBackupsToKeep\":1442604370,\"volumesAssigned\":1208921361,\"enabled\":false,\"volumeBackups\":[{\"volumeName\":\"wvz\",\"backupsCount\":765217570,\"policyEnabled\":true},{\"volumeName\":\"bzdixzmq\",\"backupsCount\":1928163279,\"policyEnabled\":false}]},\"location\":\"opqhewjptmc\",\"tags\":{\"mzlbiojlvfhrb\":\"ostzelndlatu\",\"qvcww\":\"pn\"},\"id\":\"yurmochpprprs\",\"name\":\"mo\",\"type\":\"ayzejnhlbkpbz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,25 +64,25 @@ public final class BackupPoliciesCreateMockTests {
         BackupPolicy response =
             manager
                 .backupPolicies()
-                .define("zinkfkbgbzbowxeq")
-                .withRegion("pnodawopqhe")
-                .withExistingNetAppAccount("v", "qqxeyskon")
-                .withTags(
-                    mapOf("bostzel", "tmcg", "tmzlbiojlv", "dlat", "r", "hrbbpneqvcwwyy", "nmokayzejnhlbk", "ochpprpr"))
-                .withDailyBackupsToKeep(765217570)
-                .withWeeklyBackupsToKeep(429988434)
-                .withMonthlyBackupsToKeep(2064090558)
+                .define("asiibmiybnnust")
+                .withRegion("nzcyjtotp")
+                .withExistingNetAppAccount("ciqdsme", "iitdfuxt")
+                .withTags(mapOf("ihed", "vpbdbzqgq", "mkyi", "vqwt", "qcwdhoh", "cysihs", "sufco", "dtmcd"))
+                .withDailyBackupsToKeep(677853893)
+                .withWeeklyBackupsToKeep(915134983)
+                .withMonthlyBackupsToKeep(1400929714)
                 .withEnabled(true)
                 .create();
 
-        Assertions.assertEquals("awbzasqb", response.location());
-        Assertions.assertEquals("jg", response.tags().get("yexaoguy"));
-        Assertions.assertEquals(1623831151, response.dailyBackupsToKeep());
-        Assertions.assertEquals(623740399, response.weeklyBackupsToKeep());
-        Assertions.assertEquals(1894525187, response.monthlyBackupsToKeep());
+        Assertions.assertEquals("opqhewjptmc", response.location());
+        Assertions.assertEquals("ostzelndlatu", response.tags().get("mzlbiojlvfhrb"));
+        Assertions.assertEquals(1829804009, response.dailyBackupsToKeep());
+        Assertions.assertEquals(1049990644, response.weeklyBackupsToKeep());
+        Assertions.assertEquals(1442604370, response.monthlyBackupsToKeep());
         Assertions.assertEquals(false, response.enabled());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

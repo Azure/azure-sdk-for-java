@@ -58,6 +58,6 @@ public final class JobCancellationsTriggerWithResponseMockTests {
 
         manager
             .jobCancellations()
-            .triggerWithResponse("wwa", "ecleqioulndhzyo", "ojhtollhs", com.azure.core.util.Context.NONE);
+            .triggerWithResponse("guhfupe", "asvvoqsbpkfl", "nfkgxsyaowuzowpu", com.azure.core.util.Context.NONE);
     }
 }

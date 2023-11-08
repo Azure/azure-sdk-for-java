@@ -17,11 +17,9 @@ import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
-import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -47,12 +45,7 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
         Assumptions.assumeFalse(getTestMode() == TestMode.PLAYBACK, "Skipping playback tests");
-    }
-
-    @Override
-    @AfterEach
-    public void teardownTest(TestInfo testInfo) {
-        GlobalOpenTelemetry.resetForTest();
+        super.setupTest(testInfo);
     }
 
     @Test
@@ -75,7 +68,7 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
                     });
                 return next.process();
             };
-        Tracer tracer = TestUtils.configureAzureMonitorTraceExporter(getHttpPipeline(validationPolicy));
+        Tracer tracer = TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy)).getTracer("Sample");
         EventHubProducerAsyncClient producer =
             new EventHubClientBuilder().connectionString(CONNECTION_STRING).buildAsyncProducerClient();
         Span span = tracer.spanBuilder(spanName).startSpan();
@@ -126,7 +119,7 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
                     });
                 return next.process();
             };
-        Tracer tracer = TestUtils.configureAzureMonitorTraceExporter(getHttpPipeline(validationPolicy));
+        Tracer tracer = TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy)).getTracer("Sample");
 
         CountDownLatch partitionOwned = new CountDownLatch(1);
         CountDownLatch eventCountDown = new CountDownLatch(1);

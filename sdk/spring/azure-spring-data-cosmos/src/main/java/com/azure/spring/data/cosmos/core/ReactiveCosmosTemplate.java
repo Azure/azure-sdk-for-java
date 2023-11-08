@@ -5,9 +5,13 @@ package com.azure.spring.data.cosmos.core;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkItemRequestOptions;
+import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
@@ -69,7 +73,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     private final int responseContinuationTokenLimitInKb;
     private final IsNewAwareAuditingHandler cosmosAuditingHandler;
     private final DatabaseThroughputConfig databaseThroughputConfig;
-
+    private boolean pointReadWarningLogged = false;
     private ApplicationContext applicationContext;
 
     /**
@@ -325,6 +329,15 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     public <T> Mono<T> findById(String containerName, Object id, Class<T> domainType) {
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(domainType, "domainType should not be null");
+        CosmosEntityInformation<?, ?> cosmosEntityInformation = CosmosEntityInformation.getInstance(domainType);
+        String containerPartitionKey = cosmosEntityInformation.getPartitionKeyFieldName();
+        if ("id".equals(containerPartitionKey) && id != null) {
+            return findById(id, domainType, new PartitionKey(id));
+        }
+        if (!this.pointReadWarningLogged) {
+            LOGGER.warn("The partitionKey is not id!! Consider using findById(ID id, PartitionKey partitionKey) instead to avoid the need for using a cross partition query which results in higher latency and cost than necessary. See https://aka.ms/PointReadsInSpring for more info.");
+            this.pointReadWarningLogged = true;
+        }
         final String finalContainerName = getContainerNameOverride(containerName);
         final String query = "select * from root where root.id = @ROOT_ID";
         final SqlParameter param = new SqlParameter("@ROOT_ID", CosmosUtils.getStringIDValue(id));
@@ -454,6 +467,63 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     @Override
     public <T> Mono<T> insert(String containerName, T objectToSave) {
         return insert(containerName, objectToSave, null);
+    }
+
+    /**
+     * Insert all items with bulk.
+     *
+     * @param entityInformation the CosmosEntityInformation
+     * @param entities the Iterable entities to be inserted
+     * @param <T> type class of domain type
+     * @param <S> type class of domain type
+     * @return Flux of result
+     */
+    public <S extends T, T> Flux<S> insertAll(CosmosEntityInformation<T, ?> entityInformation, Iterable<S> entities) {
+        return insertAll(entityInformation, Flux.fromIterable(entities));
+    }
+
+    /**
+     * Insert all items with bulk.
+     *
+     * @param entityInformation the CosmosEntityInformation
+     * @param entities the Flux of entities to be inserted
+     * @param <T> type class of domain type
+     * @param <S> type class of domain type
+     * @return Flux of result
+     */
+    public <S extends T, T> Flux<S> insertAll(CosmosEntityInformation<T, ?> entityInformation, Flux<S> entities) {
+        Assert.notNull(entities, "entities to be inserted should not be null");
+
+        String containerName = entityInformation.getContainerName();
+        Class<T> domainType = entityInformation.getJavaType();
+
+        Flux<CosmosItemOperation> cosmosItemOperationsFlux = entities.map(entity -> {
+            JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
+            PartitionKey partitionKey = new PartitionKey(entityInformation.getPartitionKeyFieldValue(entity));
+            final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
+            applyBulkVersioning(domainType, originalItem, options);
+            return CosmosBulkOperations.getUpsertItemOperation(originalItem, partitionKey, options);
+        });
+
+        // Default micro batch size is 100 which will be too high for most Spring cases, this configuration
+        // allows it to start at 1 and increase until it finds the appropriate batch size.
+        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
+        cosmosBulkExecutionOptions.setInitialMicroBatchSize(1);
+
+        return (Flux<S>) this.getCosmosAsyncClient()
+                             .getDatabase(this.getDatabaseName())
+                             .getContainer(containerName)
+                             .executeBulkOperations(cosmosItemOperationsFlux, cosmosBulkExecutionOptions)
+                             .publishOn(Schedulers.parallel())
+                             .onErrorResume(throwable ->
+                                 CosmosExceptionUtils.exceptionHandler("Failed to insert item(s)", throwable,
+                                     this.responseDiagnosticsProcessor))
+                             .flatMap(r -> {
+                                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                                     r.getResponse().getCosmosDiagnostics(), null);
+                                 JsonNode responseItem = r.getResponse().getItem(JsonNode.class);
+                                 return responseItem != null ? Flux.just(toDomainObject(domainType, responseItem)) : Flux.empty();
+                             });
     }
 
     /**
@@ -618,6 +688,58 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     }
 
     /**
+     * Delete all items with bulk.
+     *
+     * @param entityInformation the CosmosEntityInformation
+     * @param entities the Iterable entities to be deleted
+     * @param <T> type class of domain type
+     * @param <S> type class of domain type
+     * @return void Mono
+     */
+    public <S extends T, T> Mono<Void> deleteEntities(CosmosEntityInformation<T, ?> entityInformation, Iterable<S> entities) {
+        return deleteEntities(entityInformation, Flux.fromIterable(entities));
+    }
+
+    /**
+     * Delete all items with bulk.
+     *
+     * @param entityInformation the CosmosEntityInformation
+     * @param entities the Iterable entities to be deleted
+     * @param <T> type class of domain type
+     * @param <S> type class of domain type
+     * @return void Mono
+     */
+    public <S extends T, T> Mono<Void> deleteEntities(CosmosEntityInformation<T, ?> entityInformation, Flux<S> entities) {
+        Assert.notNull(entities, "entities to be deleted should not be null");
+
+        String containerName = entityInformation.getContainerName();
+        Class<T> domainType = entityInformation.getJavaType();
+
+        Flux<CosmosItemOperation> cosmosItemOperationFlux = entities.map(entity -> {
+            JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
+            PartitionKey partitionKey = new PartitionKey(entityInformation.getPartitionKeyFieldValue(entity));
+            final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
+            applyBulkVersioning(domainType, originalItem, options);
+            return CosmosBulkOperations.getDeleteItemOperation(String.valueOf(entityInformation.getId(entity)),
+                partitionKey, options);
+        });
+
+        // Default micro batch size is 100 which will be too high for most Spring cases, this configuration
+        // allows it to start at 1 and increase until it finds the appropriate batch size.
+        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
+        cosmosBulkExecutionOptions.setInitialMicroBatchSize(1);
+
+        return this.getCosmosAsyncClient()
+                   .getDatabase(this.getDatabaseName())
+                   .getContainer(containerName)
+                   .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions)
+                   .publishOn(Schedulers.parallel())
+                   .onErrorResume(throwable ->
+                       CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)", throwable,
+                           this.responseDiagnosticsProcessor)).then();
+    }
+
+    /**
      * Delete all items in a container
      *
      * @param containerName the container name
@@ -634,7 +756,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     }
 
     /**
-     * Delete items matching query
+     * Delete items matching query with bulk if PK exists
      *
      * @param query the document query
      * @param domainType the entity class
@@ -648,9 +770,40 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         Assert.notNull(domainType, "domainType should not be null.");
         Assert.hasText(containerName, "container name should not be null, empty or only whitespaces");
 
+        @SuppressWarnings("unchecked")
+        CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
+
         final Flux<JsonNode> results = findItems(query, finalContainerName, domainType);
 
-        return results.flatMap(d -> deleteItem(d, finalContainerName, domainType));
+        if (entityInfo.getPartitionKeyFieldName() != null) {
+            Flux<CosmosItemOperation> cosmosItemOperationFlux = results.map(item -> {
+                T object = toDomainObject(domainType, item);
+                Object id = entityInfo.getId(object);
+                String idString = id != null ? id.toString() : "";
+                final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
+                applyBulkVersioning(domainType, item, options);
+                return CosmosBulkOperations.getDeleteItemOperation(idString,
+                    new PartitionKey(entityInfo.getPartitionKeyFieldValue(object)), options);
+            });
+
+            // Default micro batch size is 100 which will be too high for most Spring cases, this configuration
+            // allows it to start at 1 and increase until it finds the appropriate batch size.
+            CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
+            cosmosBulkExecutionOptions.setInitialMicroBatchSize(1);
+
+            this.getCosmosAsyncClient()
+                .getDatabase(this.getDatabaseName())
+                .getContainer(containerName)
+                .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions)
+                .publishOn(Schedulers.parallel())
+                .onErrorResume(throwable ->
+                    CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)", throwable,
+                        this.responseDiagnosticsProcessor))
+                .collectList().block();
+            return results.flatMap(jsonNode -> Mono.just(toDomainObject(domainType, jsonNode)));
+        } else {
+            return results.flatMap(d -> deleteItem(d, finalContainerName, domainType));
+        }
     }
 
     /**
@@ -914,6 +1067,15 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     private void applyVersioning(Class<?> domainType,
                                  JsonNode jsonNode,
                                  CosmosItemRequestOptions options) {
+        CosmosEntityInformation<?, ?> entityInformation = CosmosEntityInformation.getInstance(domainType);
+        if (entityInformation.isVersioned()) {
+            options.setIfMatchETag(jsonNode.get(Constants.ETAG_PROPERTY_DEFAULT_NAME).asText());
+        }
+    }
+
+    private void applyBulkVersioning(Class<?> domainType,
+                                     JsonNode jsonNode,
+                                     CosmosBulkItemRequestOptions options) {
         CosmosEntityInformation<?, ?> entityInformation = CosmosEntityInformation.getInstance(domainType);
         if (entityInformation.isVersioned()) {
             options.setIfMatchETag(jsonNode.get(Constants.ETAG_PROPERTY_DEFAULT_NAME).asText());

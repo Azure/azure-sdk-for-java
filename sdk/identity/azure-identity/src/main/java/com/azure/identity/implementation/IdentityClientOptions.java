@@ -15,6 +15,8 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.AuthenticationRecord;
+import com.azure.identity.BrowserCustomizationOptions;
+import com.azure.identity.ChainedTokenCredential;
 import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.ValidationUtil;
@@ -39,6 +41,7 @@ public final class IdentityClientOptions implements Cloneable {
     public static final String AZURE_POD_IDENTITY_AUTHORITY_HOST = "AZURE_POD_IDENTITY_AUTHORITY_HOST";
 
     private String authorityHost;
+    private BrowserCustomizationOptions browserCustomizationOptions;
     private String imdsAuthorityHost;
     private int maxRetry;
     private Function<Duration, Duration> retryTimeout;
@@ -52,7 +55,6 @@ public final class IdentityClientOptions implements Cloneable {
     private boolean includeX5c;
     private AuthenticationRecord authenticationRecord;
     private TokenCachePersistenceOptions tokenCachePersistenceOptions;
-    private boolean cp1Disabled;
     private RegionalAuthority regionalAuthority;
     private UserAssertion userAssertion;
     private boolean multiTenantAuthDisabled;
@@ -72,6 +74,12 @@ public final class IdentityClientOptions implements Cloneable {
 
     private Duration credentialProcessTimeout = Duration.ofSeconds(10);
 
+    private boolean isChained;
+    private boolean enableUnsafeSupportLogging;
+    private long brokerWindowHandle;
+    private boolean brokerEnabled;
+    private boolean enableMsaPassthrough;
+
     /**
      * Creates an instance of IdentityClientOptions with default settings.
      */
@@ -79,6 +87,7 @@ public final class IdentityClientOptions implements Cloneable {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         loadFromConfiguration(configuration);
         identityLogOptionsImpl = new IdentityLogOptionsImpl();
+        browserCustomizationOptions = new BrowserCustomizationOptions();
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
         perCallPolicies = new ArrayList<>();
@@ -90,15 +99,15 @@ public final class IdentityClientOptions implements Cloneable {
     }
 
     /**
-     * @return the Azure Active Directory endpoint to acquire tokens.
+     * @return the Microsoft Entra endpoint to acquire tokens.
      */
     public String getAuthorityHost() {
         return authorityHost;
     }
 
     /**
-     * Specifies the Azure Active Directory endpoint to acquire tokens.
-     * @param authorityHost the Azure Active Directory endpoint
+     * Specifies the Microsoft Entra endpoint to acquire tokens.
+     * @param authorityHost the Microsoft Entra endpoint
      * @return IdentityClientOptions
      */
     public IdentityClientOptions setAuthorityHost(String authorityHost) {
@@ -340,15 +349,6 @@ public final class IdentityClientOptions implements Cloneable {
      */
     public TokenCachePersistenceOptions getTokenCacheOptions() {
         return this.tokenCachePersistenceOptions;
-    }
-
-    /**
-     * Check whether CP1 client capability should be disabled.
-     *
-     * @return the status indicating if CP1 client capability should be disabled.
-     */
-    public boolean isCp1Disabled() {
-        return this.cp1Disabled;
     }
 
     /**
@@ -602,11 +602,6 @@ public final class IdentityClientOptions implements Cloneable {
         return this.perCallPolicies;
     }
 
-    IdentityClientOptions setCp1Disabled(boolean cp1Disabled) {
-        this.cp1Disabled = cp1Disabled;
-        return this;
-    }
-
     IdentityClientOptions setMultiTenantAuthDisabled(boolean multiTenantAuthDisabled) {
         this.multiTenantAuthDisabled = multiTenantAuthDisabled;
         return this;
@@ -670,6 +665,15 @@ public final class IdentityClientOptions implements Cloneable {
         return this;
     }
 
+    public IdentityClientOptions setBrowserCustomizationOptions(BrowserCustomizationOptions browserCustomizationOptions) {
+        this.browserCustomizationOptions = browserCustomizationOptions;
+        return this;
+    }
+
+    public BrowserCustomizationOptions getBrowserCustomizationOptions() {
+        return this.browserCustomizationOptions;
+    }
+
     /**
      * Gets the instance discovery policy.
      * @return boolean indicating if instance discovery is enabled.
@@ -687,7 +691,6 @@ public final class IdentityClientOptions implements Cloneable {
         imdsAuthorityHost = configuration.get(AZURE_POD_IDENTITY_AUTHORITY_HOST,
             IdentityConstants.DEFAULT_IMDS_ENDPOINT);
         ValidationUtil.validateAuthHost(authorityHost, LOGGER);
-        cp1Disabled = configuration.get(Configuration.PROPERTY_AZURE_IDENTITY_DISABLE_CP1, false);
         multiTenantAuthDisabled = configuration
             .get(AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH, false);
     }
@@ -708,6 +711,84 @@ public final class IdentityClientOptions implements Cloneable {
         this.credentialProcessTimeout = credentialProcessTimeout;
     }
 
+    /**
+     * Indicates whether this options instance is part of a {@link ChainedTokenCredential}.
+     * @return true if this options instance is part of a {@link ChainedTokenCredential}, false otherwise.
+     */
+    public boolean isChained() {
+        return this.isChained;
+    }
+
+    /**
+     * Sets whether this options instance is part of a {@link ChainedTokenCredential}.
+     * @param isChained
+     * @return the updated client options
+     */
+    public IdentityClientOptions setChained(boolean isChained) {
+        this.isChained = isChained;
+        return this;
+    }
+
+    /**
+     * Gets the status whether support logging is enabled or not.
+     * @return the flag indicating if support logging is enabled or not.
+     */
+    public boolean isUnsafeSupportLoggingEnabled() {
+        return enableUnsafeSupportLogging;
+    }
+
+    /**
+     * Enables additional support logging (including PII) for MSAL based credentials.
+     * @return the updated client options
+     */
+    public IdentityClientOptions enableUnsafeSupportLogging() {
+        this.enableUnsafeSupportLogging = true;
+        return this;
+    }
+
+    /**
+     * Gets the window handle for use with the interactive broker.
+     * @return the window handle for use with the interactive broker.
+     */
+    public IdentityClientOptions setBrokerWindowHandle(long windowHandle) {
+        this.brokerEnabled = true;
+        this.brokerWindowHandle = windowHandle;
+        return this;
+    }
+
+    /**
+     * Gets the window handle for use with the interactive broker.
+     * @return the window handle for use with the interactive broker.
+     */
+    public long getBrokerWindowHandle() {
+        return this.brokerWindowHandle;
+    }
+
+    /**
+     * Gets the status whether broker is enabled or not.
+     * @return the flag indicating if broker is enabled or not.
+     */
+    public boolean isBrokerEnabled() {
+        return this.brokerEnabled;
+    }
+
+    /**
+     * Enables MSA passthrough.
+     */
+    public IdentityClientOptions setEnableLegacyMsaPassthrough(boolean enableMsaPassthrough) {
+        this.brokerEnabled = true;
+        this.enableMsaPassthrough = enableMsaPassthrough;
+        return this;
+    }
+
+    /**
+     * Gets the status whether MSA passthrough is enabled or not.
+     * @return the flag indicating if MSA passthrough is enabled or not.
+     */
+    public boolean isMsaPassthroughEnabled() {
+        return this.enableMsaPassthrough;
+    }
+
     public IdentityClientOptions clone() {
         IdentityClientOptions clone =  new IdentityClientOptions()
             .setAdditionallyAllowedTenants(this.additionallyAllowedTenants)
@@ -726,7 +807,6 @@ public final class IdentityClientOptions implements Cloneable {
             .setIntelliJKeePassDatabasePath(this.keePassDatabasePath)
             .setAuthorityHost(this.authorityHost)
             .setImdsAuthorityHost(this.imdsAuthorityHost)
-            .setCp1Disabled(this.cp1Disabled)
             .setMultiTenantAuthDisabled(this.multiTenantAuthDisabled)
             .setUserAssertion(this.userAssertion)
             .setConfigurationStore(this.configuration)
@@ -736,9 +816,16 @@ public final class IdentityClientOptions implements Cloneable {
             .setRetryOptions(this.retryOptions)
             .setRetryPolicy(this.retryPolicy)
             .setPerCallPolicies(this.perCallPolicies)
-            .setPerRetryPolicies(this.perRetryPolicies);
+            .setPerRetryPolicies(this.perRetryPolicies)
+            .setBrowserCustomizationOptions(this.browserCustomizationOptions)
+            .setChained(this.isChained)
+            .setBrokerWindowHandle(this.brokerWindowHandle)
+            .setEnableLegacyMsaPassthrough(this.enableMsaPassthrough);
         if (!isInstanceDiscoveryEnabled()) {
             clone.disableInstanceDiscovery();
+        }
+        if (isUnsafeSupportLoggingEnabled()) {
+            clone.enableUnsafeSupportLogging();
         }
         return clone;
     }

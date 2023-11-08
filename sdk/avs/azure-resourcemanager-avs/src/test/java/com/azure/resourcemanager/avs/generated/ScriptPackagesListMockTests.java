@@ -31,7 +31,7 @@ public final class ScriptPackagesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"munjdxvglnkvx\",\"version\":\"paglqivbgk\",\"company\":\"khpzvuqdflv\",\"uri\":\"iypfp\"},\"id\":\"bcpzgpxtivh\",\"name\":\"knidib\",\"type\":\"qjxgpnrhgovfgp\"}]}";
+            "{\"value\":[{\"properties\":{\"description\":\"kumuikjcjca\",\"version\":\"bwsnsqow\",\"company\":\"comlikytwvczc\",\"uri\":\"k\"},\"id\":\"cvejyfdvlvhbwrn\",\"name\":\"xt\",\"type\":\"ddpqt\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,6 @@ public final class ScriptPackagesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ScriptPackage> response =
-            manager.scriptPackages().list("yjpmspbpssdfppyo", "tieyujtvczkcny", com.azure.core.util.Context.NONE);
+            manager.scriptPackages().list("gddeimaw", "o", com.azure.core.util.Context.NONE);
     }
 }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.redis.generated;
 /** Samples for PatchSchedules ListByRedisResource. */
 public final class PatchSchedulesListByRedisResourceSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCachePatchSchedulesList.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-08-01/examples/RedisCachePatchSchedulesList.json
      */
     /**
      * Sample code: RedisCachePatchSchedulesList.

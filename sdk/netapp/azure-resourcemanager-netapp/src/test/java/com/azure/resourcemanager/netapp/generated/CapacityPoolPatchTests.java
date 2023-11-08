@@ -17,32 +17,33 @@ public final class CapacityPoolPatchTests {
         CapacityPoolPatch model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"size\":8593552720128453851,\"qosType\":\"Auto\",\"coolAccess\":true},\"location\":\"spyd\",\"tags\":{\"kbldngkpocipa\":\"oenkouknvudwti\"},\"id\":\"yxoegukgjnp\",\"name\":\"ucgygevqz\",\"type\":\"typmrbpizcdrqjsd\"}")
+                    "{\"properties\":{\"size\":2542526403950408941,\"qosType\":\"Auto\",\"coolAccess\":false},\"location\":\"fadmws\",\"tags\":{\"gomz\":\"gvxp\"},\"id\":\"fmisg\",\"name\":\"bnbbeldawkz\",\"type\":\"ali\"}")
                 .toObject(CapacityPoolPatch.class);
-        Assertions.assertEquals("spyd", model.location());
-        Assertions.assertEquals("oenkouknvudwti", model.tags().get("kbldngkpocipa"));
-        Assertions.assertEquals(8593552720128453851L, model.size());
+        Assertions.assertEquals("fadmws", model.location());
+        Assertions.assertEquals("gvxp", model.tags().get("gomz"));
+        Assertions.assertEquals(2542526403950408941L, model.size());
         Assertions.assertEquals(QosType.AUTO, model.qosType());
-        Assertions.assertEquals(true, model.coolAccess());
+        Assertions.assertEquals(false, model.coolAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CapacityPoolPatch model =
             new CapacityPoolPatch()
-                .withLocation("spyd")
-                .withTags(mapOf("kbldngkpocipa", "oenkouknvudwti"))
-                .withSize(8593552720128453851L)
+                .withLocation("fadmws")
+                .withTags(mapOf("gomz", "gvxp"))
+                .withSize(2542526403950408941L)
                 .withQosType(QosType.AUTO)
-                .withCoolAccess(true);
+                .withCoolAccess(false);
         model = BinaryData.fromObject(model).toObject(CapacityPoolPatch.class);
-        Assertions.assertEquals("spyd", model.location());
-        Assertions.assertEquals("oenkouknvudwti", model.tags().get("kbldngkpocipa"));
-        Assertions.assertEquals(8593552720128453851L, model.size());
+        Assertions.assertEquals("fadmws", model.location());
+        Assertions.assertEquals("gvxp", model.tags().get("gomz"));
+        Assertions.assertEquals(2542526403950408941L, model.size());
         Assertions.assertEquals(QosType.AUTO, model.qosType());
-        Assertions.assertEquals(true, model.coolAccess());
+        Assertions.assertEquals(false, model.coolAccess());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

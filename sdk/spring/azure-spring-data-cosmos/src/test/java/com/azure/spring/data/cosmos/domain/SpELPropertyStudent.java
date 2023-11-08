@@ -3,11 +3,12 @@
 
 package com.azure.spring.data.cosmos.domain;
 
+import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 
 import java.util.Objects;
 
-@Container(containerName = "${dynamic.collection.name}")
+@Container(containerName = "${dynamic.collection.name}", ru = TestConstants.DEFAULT_MINIMUM_RU)
 public class SpELPropertyStudent {
     private String id;
     private String firstName;

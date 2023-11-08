@@ -18,12 +18,12 @@ public final class ClusterPrincipalAssignmentListResultTests {
         ClusterPrincipalAssignmentListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"principalId\":\"z\",\"role\":\"AllDatabasesViewer\",\"tenantId\":\"ac\",\"principalType\":\"App\",\"tenantName\":\"osfln\",\"principalName\":\"sfqpteehz\",\"provisioningState\":\"Canceled\",\"aadObjectId\":\"yqrimzin\"},\"id\":\"vswjdk\",\"name\":\"rsoodqxhcrmnoh\",\"type\":\"t\"},{\"properties\":{\"principalId\":\"whdsoifiyip\",\"role\":\"AllDatabasesViewer\",\"tenantId\":\"qwpgrjbzn\",\"principalType\":\"App\",\"tenantName\":\"jxvsnbyxqabn\",\"principalName\":\"cpc\",\"provisioningState\":\"Deleting\",\"aadObjectId\":\"rzafbljjgpbtoqcj\"},\"id\":\"klj\",\"name\":\"vbqid\",\"type\":\"qajzyulpkudjkr\"},{\"properties\":{\"principalId\":\"hbzhfepg\",\"role\":\"AllDatabasesViewer\",\"tenantId\":\"e\",\"principalType\":\"Group\",\"tenantName\":\"ocxscpaierhhbcs\",\"principalName\":\"ummajtjaod\",\"provisioningState\":\"Creating\",\"aadObjectId\":\"bdxkqpxokaj\"},\"id\":\"onpimexgstxg\",\"name\":\"po\",\"type\":\"gmaajrm\"}]}")
+                    "{\"value\":[{\"properties\":{\"principalId\":\"sflnrosfqp\",\"role\":\"AllDatabasesAdmin\",\"tenantId\":\"hzzvypyq\",\"principalType\":\"User\",\"tenantName\":\"z\",\"principalName\":\"pvswjdkirso\",\"provisioningState\":\"Deleting\",\"aadObjectId\":\"hc\"},\"id\":\"mnoh\",\"name\":\"t\",\"type\":\"kwh\"},{\"properties\":{\"principalId\":\"oifiyipjxsqwpgr\",\"role\":\"AllDatabasesViewer\",\"tenantId\":\"norcjxvsnbyxqab\",\"principalType\":\"User\",\"tenantName\":\"cpc\",\"principalName\":\"hurzafblj\",\"provisioningState\":\"Creating\",\"aadObjectId\":\"toqcjmklja\"},\"id\":\"bqidtqaj\",\"name\":\"yulpkudjkr\",\"type\":\"khbzhfepgzg\"}]}")
                 .toObject(ClusterPrincipalAssignmentListResult.class);
-        Assertions.assertEquals("z", model.value().get(0).principalId());
-        Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_VIEWER, model.value().get(0).role());
-        Assertions.assertEquals("ac", model.value().get(0).tenantId());
-        Assertions.assertEquals(PrincipalType.APP, model.value().get(0).principalType());
+        Assertions.assertEquals("sflnrosfqp", model.value().get(0).principalId());
+        Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_ADMIN, model.value().get(0).role());
+        Assertions.assertEquals("hzzvypyq", model.value().get(0).tenantId());
+        Assertions.assertEquals(PrincipalType.USER, model.value().get(0).principalType());
     }
 
     @org.junit.jupiter.api.Test
@@ -34,24 +34,19 @@ public final class ClusterPrincipalAssignmentListResultTests {
                     Arrays
                         .asList(
                             new ClusterPrincipalAssignmentInner()
-                                .withPrincipalId("z")
-                                .withRole(ClusterPrincipalRole.ALL_DATABASES_VIEWER)
-                                .withTenantId("ac")
-                                .withPrincipalType(PrincipalType.APP),
+                                .withPrincipalId("sflnrosfqp")
+                                .withRole(ClusterPrincipalRole.ALL_DATABASES_ADMIN)
+                                .withTenantId("hzzvypyq")
+                                .withPrincipalType(PrincipalType.USER),
                             new ClusterPrincipalAssignmentInner()
-                                .withPrincipalId("whdsoifiyip")
+                                .withPrincipalId("oifiyipjxsqwpgr")
                                 .withRole(ClusterPrincipalRole.ALL_DATABASES_VIEWER)
-                                .withTenantId("qwpgrjbzn")
-                                .withPrincipalType(PrincipalType.APP),
-                            new ClusterPrincipalAssignmentInner()
-                                .withPrincipalId("hbzhfepg")
-                                .withRole(ClusterPrincipalRole.ALL_DATABASES_VIEWER)
-                                .withTenantId("e")
-                                .withPrincipalType(PrincipalType.GROUP)));
+                                .withTenantId("norcjxvsnbyxqab")
+                                .withPrincipalType(PrincipalType.USER)));
         model = BinaryData.fromObject(model).toObject(ClusterPrincipalAssignmentListResult.class);
-        Assertions.assertEquals("z", model.value().get(0).principalId());
-        Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_VIEWER, model.value().get(0).role());
-        Assertions.assertEquals("ac", model.value().get(0).tenantId());
-        Assertions.assertEquals(PrincipalType.APP, model.value().get(0).principalType());
+        Assertions.assertEquals("sflnrosfqp", model.value().get(0).principalId());
+        Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_ADMIN, model.value().get(0).role());
+        Assertions.assertEquals("hzzvypyq", model.value().get(0).tenantId());
+        Assertions.assertEquals(PrincipalType.USER, model.value().get(0).principalType());
     }
 }

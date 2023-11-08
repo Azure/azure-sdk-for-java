@@ -3,25 +3,24 @@
 
 package com.azure.maps.timezone;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.io.IOException;
-import java.util.List;
-
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.GeoPosition;
 import com.azure.maps.timezone.models.IanaId;
 import com.azure.maps.timezone.models.TimeZoneCoordinateOptions;
-import com.azure.maps.timezone.models.TimeZoneIdOptions;
 import com.azure.maps.timezone.models.TimeZoneIanaVersionResult;
+import com.azure.maps.timezone.models.TimeZoneIdOptions;
 import com.azure.maps.timezone.models.TimeZoneOptions;
 import com.azure.maps.timezone.models.TimeZoneResult;
 import com.azure.maps.timezone.models.TimeZoneWindows;
-
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.io.IOException;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TimeZoneClientTest extends TimeZoneClientTestBase {
     private TimeZoneClient client;
@@ -42,7 +41,7 @@ public class TimeZoneClientTest extends TimeZoneClientTestBase {
         TimeZoneResult expectedResult = TestUtils.getExpectedTimezoneById();
         validateGetTimezoneById(actualResult, expectedResult);
     }
-    
+
 
     // Test get timezone by id with response
     // Case 1: 200
@@ -67,7 +66,7 @@ public class TimeZoneClientTest extends TimeZoneClientTestBase {
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
 
-    // Test get timezone by coordinates 
+    // Test get timezone by coordinates
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
     public void testGetTimezoneByCoordinates(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) throws IOException {

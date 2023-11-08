@@ -1,6 +1,6 @@
 # Release History
 
-## 11.6.0-beta.7 (Unreleased)
+## 11.6.0-beta.11 (Unreleased)
 
 ### Features Added
 
@@ -9,7 +9,137 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 11.5.12 (2023-10-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.4` to version `1.4.6`.
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+
+## 11.6.0-beta.10 (2023-10-12)
+
+### Features Added
+
+- `SemanticQuery` has been added to `SearchOptions`, allowing the setting of a separate search query that will be solely 
+used for semantic reranking, semantic captions and semantic answers.
+
+
+### Breaking Changes
+
+- `SearchQueryVector` model has been replaced by `VectorQuery`.
+- `SearchOptions` instance method `SearchOptions setVectors(List<SearchQueryVector>)` has been replaced by `SearchOptions setVectorQueries(List<VectorQuery>)`.
+- `SearchOptions` instance method `SearchOptions setVectors(SearchQueryVector...)` has been replaced by `SearchOptions setVetorQueries(VectorQuery...)`.
+- `SearchOptions` instance method `List<SearchQueryVector> getVectors()` has been replaced by `List<VectorQuery> getVectorQueries()`.
+- `VectorSearch` instance property `List<VectorSearchAlgorithmConfiguration> algorithmConfigurations` has been replaced by properties `List<VectorSearchProfile> profiles`, 
+`List<VectorSearchAlgorithmConfiguration> algorithms`, and `List<VectorSearchVectorizer> vectorizers`.
+
+### Other Changes
+
+- Added additional models to support vector search.
+- Updated vector search samples to use `VectorQuery`.
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.8`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.4` to version `1.4.5`.
+- Upgraded `azure-core` from `1.43.0` to version `1.44.0`.
+
+## 11.5.11 (2023-09-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.3` to version `1.4.4`.
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+
+## 11.6.0-beta.9 (2023-09-15)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.3` to version `1.4.4`.
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+
+## 11.5.10 (2023-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.2` to version `1.4.3`.
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+
+## 11.6.0-beta.8 (2023-08-11)
+
+### Features Added
+
+- Added FieldBuilder support for float data types.
+- Added support for multi-vector searches.
+- Adjusted method for setting `fields` in `SearchQueryVector` from `SearchQueryVector setFields(String)` to `SearchQueryVector setFields(String...)` for convenience.
+
+### Breaking Changes
+
+- `SearchOptions` method `SearchOptions setVector(SearchQueryVector)` has been replaced with `SearchOptions setVectors(SearchQueryVector...)` and `SearchOptions setVectors(List<SearchQueryVector>)`
+- `SearchOptions` method `SearchQueryVector getVector()` has been replaced with `List<SearchQueryVector> getVectors()`
+
+### Other Changes
+
+- Added sample for multi-vector search.
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.2` to version `1.4.3`.
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+
+## 11.5.9 (2023-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.1` to version `1.4.2`.
+- Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+
+
+## 11.6.0-beta.7 (2023-07-11)
+
+### Features Added
+
+- Added support for [Vector Search](https://learn.microsoft.com/azure/search/vector-search-overview) ([Examples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/VectorSearchExample.java)).
+
+### Breaking Changes
+
+- Deprecated `EntityRecognitionSkillVersion.V1` and `SentimentSkillVersion.V1`, and corresponding constructors in
+  `EntityRecognitionSkill` and `SentimentSkill`, use `EntityRecognitionSkillVersion.V3` and `SentimentSkillVersion.V3`
+  instead. See [Cognitive Search skill deprecated](https://learn.microsoft.com/azure/search/cognitive-search-skill-deprecated) 
+  for more details.
+
+### Other Changes
+
 - Migrate test recordings to assets repo.
+
+## 11.5.8 (2023-06-09)
+
+### Other Changes
+
+- Properly set Index and Search Analyzer names in FieldBuilder
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.0` to version `1.4.1`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
 
 ## 11.5.7 (2023-05-23)
 

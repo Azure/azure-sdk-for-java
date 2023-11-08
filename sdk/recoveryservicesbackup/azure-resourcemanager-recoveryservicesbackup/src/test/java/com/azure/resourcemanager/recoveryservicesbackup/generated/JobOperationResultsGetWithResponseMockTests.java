@@ -58,6 +58,7 @@ public final class JobOperationResultsGetWithResponseMockTests {
 
         manager
             .jobOperationResults()
-            .getWithResponse("idmytzln", "lxpnovyoanf", "cswqa", "ywv", com.azure.core.util.Context.NONE);
+            .getWithResponse(
+                "hdkcprgu", "xrztiochlu", "ixmqrudjizcbf", "mcrunfhiucn", com.azure.core.util.Context.NONE);
     }
 }

@@ -8,16 +8,24 @@ import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
-/** Defines values for DocumentModelBuildMode. */
+/** Class describing the custom document build mode values */
 @Immutable
 public final class DocumentModelBuildMode extends ExpandableStringEnum<DocumentModelBuildMode> {
 
-    /** Static value template for DocumentModelBuildMode.
+    /**
+     * Creates a DocumentModelBuildMode object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DocumentModelBuildMode() {
+    }
+
+    /**
      * Used for documents with fixed visual templates.
      */
     public static final DocumentModelBuildMode TEMPLATE = fromString("template");
 
-    /** Static value neural for DocumentModelBuildMode.
+    /**
      * Used for English documents with diverse visual templates.
      */
     public static final DocumentModelBuildMode NEURAL = fromString("neural");
@@ -32,7 +40,10 @@ public final class DocumentModelBuildMode extends ExpandableStringEnum<DocumentM
         return fromString(name, DocumentModelBuildMode.class);
     }
 
-    /** @return known DocumentModelBuildMode values. */
+    /**
+     * Returns known DocumentModelBuildMode values.
+     * @return known DocumentModelBuildMode values.
+     */
     public static Collection<DocumentModelBuildMode> values() {
         return values(DocumentModelBuildMode.class);
     }

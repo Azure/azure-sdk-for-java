@@ -16,12 +16,12 @@ public final class ReplicationInnerTests {
         ReplicationInner model =
             BinaryData
                 .fromString(
-                    "{\"endpointType\":\"dst\",\"replicationSchedule\":\"hourly\",\"remoteVolumeResourceId\":\"hashsfwxosow\",\"remoteVolumeRegion\":\"cugicjoox\"}")
+                    "{\"endpointType\":\"dst\",\"replicationSchedule\":\"hourly\",\"remoteVolumeResourceId\":\"dxunkbebxmubyyn\",\"remoteVolumeRegion\":\"lrb\"}")
                 .toObject(ReplicationInner.class);
         Assertions.assertEquals(EndpointType.DST, model.endpointType());
         Assertions.assertEquals(ReplicationSchedule.HOURLY, model.replicationSchedule());
-        Assertions.assertEquals("hashsfwxosow", model.remoteVolumeResourceId());
-        Assertions.assertEquals("cugicjoox", model.remoteVolumeRegion());
+        Assertions.assertEquals("dxunkbebxmubyyn", model.remoteVolumeResourceId());
+        Assertions.assertEquals("lrb", model.remoteVolumeRegion());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,12 +30,12 @@ public final class ReplicationInnerTests {
             new ReplicationInner()
                 .withEndpointType(EndpointType.DST)
                 .withReplicationSchedule(ReplicationSchedule.HOURLY)
-                .withRemoteVolumeResourceId("hashsfwxosow")
-                .withRemoteVolumeRegion("cugicjoox");
+                .withRemoteVolumeResourceId("dxunkbebxmubyyn")
+                .withRemoteVolumeRegion("lrb");
         model = BinaryData.fromObject(model).toObject(ReplicationInner.class);
         Assertions.assertEquals(EndpointType.DST, model.endpointType());
         Assertions.assertEquals(ReplicationSchedule.HOURLY, model.replicationSchedule());
-        Assertions.assertEquals("hashsfwxosow", model.remoteVolumeResourceId());
-        Assertions.assertEquals("cugicjoox", model.remoteVolumeRegion());
+        Assertions.assertEquals("dxunkbebxmubyyn", model.remoteVolumeResourceId());
+        Assertions.assertEquals("lrb", model.remoteVolumeRegion());
     }
 }

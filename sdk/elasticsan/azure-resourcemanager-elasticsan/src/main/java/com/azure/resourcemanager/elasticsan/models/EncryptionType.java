@@ -14,6 +14,19 @@ public final class EncryptionType extends ExpandableStringEnum<EncryptionType> {
     public static final EncryptionType ENCRYPTION_AT_REST_WITH_PLATFORM_KEY =
         fromString("EncryptionAtRestWithPlatformKey");
 
+    /** Static value EncryptionAtRestWithCustomerManagedKey for EncryptionType. */
+    public static final EncryptionType ENCRYPTION_AT_REST_WITH_CUSTOMER_MANAGED_KEY =
+        fromString("EncryptionAtRestWithCustomerManagedKey");
+
+    /**
+     * Creates a new instance of EncryptionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EncryptionType() {
+    }
+
     /**
      * Creates or finds a EncryptionType from its string representation.
      *

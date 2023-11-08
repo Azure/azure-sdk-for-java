@@ -18,6 +18,10 @@ public final class OriginGroupUpdateParameters {
     @JsonProperty(value = "properties")
     private OriginGroupUpdatePropertiesParameters innerProperties;
 
+    /** Creates an instance of OriginGroupUpdateParameters class. */
+    public OriginGroupUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the origin group.
      *

@@ -13,7 +13,7 @@ public final class SkuDescriptionInnerTests {
         SkuDescriptionInner model =
             BinaryData
                 .fromString(
-                    "{\"resourceType\":\"lihkaetcktvfc\",\"name\":\"fsnkymuctq\",\"tier\":\"fbebrjcxer\",\"locations\":[\"utttxfvjrbirp\",\"xepcyvahfn\",\"jky\"],\"locationInfo\":[{\"location\":\"vuujq\",\"zones\":[\"ok\",\"jljyoxgv\"],\"zoneDetails\":[]}],\"restrictions\":[\"datasncghkjeszz\",\"databijhtxfvgxbf\",\"datamxnehmp\"]}")
+                    "{\"resourceType\":\"fudwpznt\",\"name\":\"dzhlrq\",\"tier\":\"hckfrlhrx\",\"locations\":[\"yvpycanuzbpzk\"],\"locationInfo\":[{\"location\":\"uwbc\",\"zones\":[\"bmehh\"],\"zoneDetails\":[{\"name\":[\"us\",\"tslhspkdeem\",\"ofmxagkvtmelmqkr\"],\"capabilities\":[{},{},{}]},{\"name\":[\"juahaquhcdhmdual\",\"exq\",\"vfadmws\"],\"capabilities\":[{}]},{\"name\":[\"xpvgo\",\"zlfmisgwbnbbeld\"],\"capabilities\":[{}]}]},{\"location\":\"zbaliourqha\",\"zones\":[\"hashsfwxosow\",\"xcug\",\"cjooxdjebwpucwwf\"],\"zoneDetails\":[{\"name\":[\"meue\",\"ivyhzceuojgjrwju\"],\"capabilities\":[{},{}]},{\"name\":[\"mcdytdxwitxnrj\",\"wgqwgxhn\",\"skxfbk\"],\"capabilities\":[{}]}]},{\"location\":\"gklwn\",\"zones\":[\"jdauwhvy\",\"wzbtdhxu\",\"znbmpowuwprzq\"],\"zoneDetails\":[{\"name\":[\"lupj\",\"khfxobbcswsrt\"],\"capabilities\":[{},{},{},{}]},{\"name\":[\"rbpbewtghfgblcg\",\"xzvlvqhjkbegib\",\"nmxiebwwaloayqc\",\"wrtz\"],\"capabilities\":[{}]},{\"name\":[\"yzm\",\"txon\",\"mtsavjcbpwxqp\"],\"capabilities\":[{},{},{}]}]}],\"restrictions\":[\"datatguvriuhp\",\"datawmdyvxqtay\"]}")
                 .toObject(SkuDescriptionInner.class);
     }
 

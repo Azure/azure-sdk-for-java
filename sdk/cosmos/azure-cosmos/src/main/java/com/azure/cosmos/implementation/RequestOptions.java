@@ -4,17 +4,20 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
-import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * Encapsulates options that can be specified for a request issued to the Azure Cosmos DB database service.
@@ -46,7 +49,56 @@ public class RequestOptions {
     private String trackingId;
     private boolean nonIdempotentWriteRetriesEnabled = false;
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig;
+    private List<String> excludeRegions;
 
+    private Supplier<CosmosDiagnosticsContext> diagnosticsCtxSupplier;
+
+    public RequestOptions() {}
+
+    public RequestOptions(RequestOptions toBeCloned) {
+        this.indexingDirective = toBeCloned.indexingDirective;
+        this.consistencyLevel = toBeCloned.consistencyLevel;
+        this.sessionToken = toBeCloned.sessionToken;
+        this.resourceTokenExpirySeconds = toBeCloned.resourceTokenExpirySeconds;
+        this.offerType = toBeCloned.offerType;
+        this.ifMatchETag = toBeCloned.ifMatchETag;
+        this.ifNoneMatchETag = toBeCloned.ifNoneMatchETag;
+        this.offerThroughput = toBeCloned.offerThroughput;
+        this.partitionkey = toBeCloned.partitionkey;
+        this.scriptLoggingEnabled = toBeCloned.scriptLoggingEnabled;
+        this.quotaInfoEnabled = toBeCloned.quotaInfoEnabled;
+        this.throughputProperties = toBeCloned.throughputProperties;
+        this.contentResponseOnWriteEnabled = toBeCloned.contentResponseOnWriteEnabled;
+        this.filterPredicate = toBeCloned.filterPredicate;
+        this.throughputControlGroupName = toBeCloned.throughputControlGroupName;
+        this.operationContextAndListenerTuple = toBeCloned.operationContextAndListenerTuple;
+        this.dedicatedGatewayRequestOptions = toBeCloned.dedicatedGatewayRequestOptions;
+        this.thresholds = toBeCloned.thresholds;
+        this.trackingId = toBeCloned.trackingId;
+        this.nonIdempotentWriteRetriesEnabled = toBeCloned.nonIdempotentWriteRetriesEnabled;
+        this.endToEndOperationLatencyConfig = toBeCloned.endToEndOperationLatencyConfig;
+        this.diagnosticsCtxSupplier = toBeCloned.diagnosticsCtxSupplier;
+
+        if (toBeCloned.customOptions != null) {
+            this.customOptions = new HashMap<>(toBeCloned.customOptions);
+        }
+
+        if (toBeCloned.properties != null) {
+            this.properties = new HashMap<>(toBeCloned.properties);
+        }
+
+        if (toBeCloned.preTriggerInclude != null) {
+            this.preTriggerInclude = new ArrayList<>(toBeCloned.preTriggerInclude);
+        }
+
+        if (toBeCloned.postTriggerInclude != null) {
+            this.postTriggerInclude = new ArrayList<>(toBeCloned.postTriggerInclude);
+        }
+
+        if (toBeCloned.excludeRegions != null) {
+            this.excludeRegions = new ArrayList<>(toBeCloned.excludeRegions);
+        }
+    }
 
     /**
      * Gets the triggers to be invoked before the operation.
@@ -445,11 +497,32 @@ public class RequestOptions {
         this.thresholds = thresholds;
     }
 
+    public void setDiagnosticsContextSupplier(Supplier<CosmosDiagnosticsContext> ctxSupplier) {
+        this.diagnosticsCtxSupplier = ctxSupplier;
+    }
+
+    public CosmosDiagnosticsContext getDiagnosticsContextSnapshot() {
+        Supplier<CosmosDiagnosticsContext> ctxSupplierSnapshot = this.diagnosticsCtxSupplier;
+        if (ctxSupplierSnapshot == null) {
+            return null;
+        }
+
+        return ctxSupplierSnapshot.get();
+    }
+
     public void setCosmosEndToEndLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
         this.endToEndOperationLatencyConfig = endToEndOperationLatencyPolicyConfig;
     }
 
     public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndLatencyPolicyConfig(){
         return this.endToEndOperationLatencyConfig;
+    }
+
+    public List<String> getExcludeRegions() {
+        return this.excludeRegions;
+    }
+
+    public void setExcludeRegions(List<String> excludeRegions) {
+        this.excludeRegions = excludeRegions;
     }
 }

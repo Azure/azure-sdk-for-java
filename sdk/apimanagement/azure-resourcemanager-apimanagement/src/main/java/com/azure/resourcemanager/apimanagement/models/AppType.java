@@ -17,6 +17,15 @@ public final class AppType extends ExpandableStringEnum<AppType> {
     public static final AppType DEVELOPER_PORTAL = fromString("developerPortal");
 
     /**
+     * Creates a new instance of AppType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AppType() {
+    }
+
+    /**
      * Creates or finds a AppType from its string representation.
      *
      * @param name a name to look for.
@@ -27,7 +36,11 @@ public final class AppType extends ExpandableStringEnum<AppType> {
         return fromString(name, AppType.class);
     }
 
-    /** @return known AppType values. */
+    /**
+     * Gets known AppType values.
+     *
+     * @return known AppType values.
+     */
     public static Collection<AppType> values() {
         return values(AppType.class);
     }

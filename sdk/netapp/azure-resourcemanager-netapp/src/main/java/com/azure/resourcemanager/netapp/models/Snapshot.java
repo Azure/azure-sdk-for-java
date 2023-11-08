@@ -100,11 +100,13 @@ public interface Snapshot {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The Snapshot definition stages. */
     interface DefinitionStages {
         /** The first stage of the Snapshot definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Snapshot definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -123,6 +125,7 @@ public interface Snapshot {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the Snapshot definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -137,6 +140,7 @@ public interface Snapshot {
             WithCreate withExistingVolume(
                 String resourceGroupName, String accountName, String poolName, String volumeName);
         }
+
         /**
          * The stage of the Snapshot definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -158,6 +162,7 @@ public interface Snapshot {
             Snapshot create(Context context);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

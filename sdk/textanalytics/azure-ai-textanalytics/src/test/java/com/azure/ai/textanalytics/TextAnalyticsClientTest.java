@@ -52,7 +52,6 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -62,7 +61,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
@@ -109,7 +107,6 @@ import static com.azure.ai.textanalytics.TestUtils.getRecognizeEntitiesResultCol
 import static com.azure.ai.textanalytics.TestUtils.getRecognizeHealthcareEntitiesResult1;
 import static com.azure.ai.textanalytics.TestUtils.getRecognizeHealthcareEntitiesResult2;
 import static com.azure.ai.textanalytics.TestUtils.getRecognizeLinkedEntitiesResultCollection;
-import static com.azure.ai.textanalytics.TestUtils.getRecognizeLinkedEntitiesResultCollectionForActions;
 import static com.azure.ai.textanalytics.TestUtils.getRecognizePiiEntitiesResultCollection;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_COUNTRY_HINT;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_DOCUMENT;
@@ -124,14 +121,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     private TextAnalyticsClient client;
 
-    @BeforeAll
-    static void beforeAll() throws InterruptedException {
-        TimeUnit.SECONDS.sleep(180);
-    }
-
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest((ignored1, ignored2) -> false)
             .assertSync()
             .build();
     }
@@ -434,7 +425,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/22257")
     public void recognizeEntitiesBatchWithResponseEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion, false);
 //        batchEmojiRunner(
@@ -623,6 +613,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/35642")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesForBatchInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -632,6 +623,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 client.recognizePiiEntitiesBatchWithResponse(inputs, null, Context.NONE)));
     }
 
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/35642")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesForBatchInputShowStatistics(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -641,6 +633,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 client.recognizePiiEntitiesBatchWithResponse(inputs, options, Context.NONE)));
     }
 
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/35642")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesForListLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -651,6 +644,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         );
     }
 
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/35642")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesForListStringWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -792,6 +786,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         }, PII_ENTITY_OFFSET_INPUT);
     }
 
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/35642")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesForDomainFilter(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -802,6 +797,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/35642")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesForBatchInputStringForDomainFilter(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -813,6 +809,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/35642")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesForBatchInputForDomainFilter(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1710,7 +1707,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         );
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33555")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -2126,8 +2122,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 Arrays.asList(getExpectedAnalyzeBatchActionsResult(
                     IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(false, null,
                         TIME_NOW, getRecognizeEntitiesResultCollection(), null))),
-                    IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(false, null,
-                        TIME_NOW, getRecognizeLinkedEntitiesResultCollectionForActions(), null))),
+                    IterableStream.of(null),
                     IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false, null,
                         TIME_NOW, getRecognizePiiEntitiesResultCollection(), null))),
                     IterableStream.of(null),
@@ -2158,8 +2153,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 Arrays.asList(getExpectedAnalyzeBatchActionsResult(
                     IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(false, null,
                         TIME_NOW, getRecognizeEntitiesResultCollection(), null))),
-                    IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(false, null,
-                        TIME_NOW, getRecognizeLinkedEntitiesResultCollectionForActions(), null))),
+                    IterableStream.of(null),
                     IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false, null,
                         TIME_NOW, getRecognizePiiEntitiesResultCollection(), null))),
                     IterableStream.of(null),
@@ -2211,8 +2205,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 assertEquals(CUSTOM_ACTION_NAME, actionsResult.getRecognizeEntitiesResults().stream()
                                                      .collect(Collectors.toList()).get(0).getActionName());
                 assertEquals(CUSTOM_ACTION_NAME, actionsResult.getRecognizePiiEntitiesResults().stream()
-                                                     .collect(Collectors.toList()).get(0).getActionName());
-                assertEquals(CUSTOM_ACTION_NAME, actionsResult.getRecognizeLinkedEntitiesResults().stream()
                                                      .collect(Collectors.toList()).get(0).getActionName());
                 assertEquals(CUSTOM_ACTION_NAME, actionsResult.getAnalyzeSentimentResults().stream()
                                                      .collect(Collectors.toList()).get(0).getActionName());
@@ -2315,6 +2307,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         );
     }
 
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/35642")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzePiiEntityRecognitionWithDomainFilters(HttpClient httpClient,
@@ -2346,6 +2339,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         );
     }
 
+    @Disabled("Linked entity action do not work")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeLinkedEntityActions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {

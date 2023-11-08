@@ -7,7 +7,6 @@ package com.azure.resourcemanager.elasticsan.models;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeInner;
-import java.util.Map;
 
 /** An immutable client-side representation of Volume. */
 public interface Volume {
@@ -33,18 +32,11 @@ public interface Volume {
     String type();
 
     /**
-     * Gets the systemData property: Resource metadata required by ARM RPC.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
     SystemData systemData();
-
-    /**
-     * Gets the tags property: Azure resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
 
     /**
      * Gets the volumeId property: Unique Id of the volume in GUID format.
@@ -65,7 +57,7 @@ public interface Volume {
      *
      * @return the sizeGiB value.
      */
-    Long sizeGiB();
+    long sizeGiB();
 
     /**
      * Gets the storageTarget property: Storage target information.
@@ -73,6 +65,20 @@ public interface Volume {
      * @return the storageTarget value.
      */
     IscsiTargetInfo storageTarget();
+
+    /**
+     * Gets the managedBy property: Parent resource information.
+     *
+     * @return the managedBy value.
+     */
+    ManagedByInfo managedBy();
+
+    /**
+     * Gets the provisioningState property: State of the operation on the resource.
+     *
+     * @return the provisioningState value.
+     */
+    ProvisioningStates provisioningState();
 
     /**
      * Gets the name of the resource group.
@@ -90,13 +96,18 @@ public interface Volume {
 
     /** The entirety of the Volume definition. */
     interface Definition
-        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank,
+            DefinitionStages.WithParentResource,
+            DefinitionStages.WithSizeGiB,
+            DefinitionStages.WithCreate {
     }
+
     /** The Volume definition stages. */
     interface DefinitionStages {
         /** The first stage of the Volume definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Volume definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -107,14 +118,26 @@ public interface Volume {
              * @param volumeGroupName The name of the VolumeGroup.
              * @return the next definition stage.
              */
-            WithCreate withExistingVolumegroup(String resourceGroupName, String elasticSanName, String volumeGroupName);
+            WithSizeGiB withExistingVolumegroup(
+                String resourceGroupName, String elasticSanName, String volumeGroupName);
         }
+
+        /** The stage of the Volume definition allowing to specify sizeGiB. */
+        interface WithSizeGiB {
+            /**
+             * Specifies the sizeGiB property: Volume size..
+             *
+             * @param sizeGiB Volume size.
+             * @return the next definition stage.
+             */
+            WithCreate withSizeGiB(long sizeGiB);
+        }
+
         /**
          * The stage of the Volume definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithCreationData, DefinitionStages.WithSizeGiB {
+        interface WithCreate extends DefinitionStages.WithCreationData, DefinitionStages.WithManagedBy {
             /**
              * Executes the create request.
              *
@@ -130,16 +153,7 @@ public interface Volume {
              */
             Volume create(Context context);
         }
-        /** The stage of the Volume definition allowing to specify tags. */
-        interface WithTags {
-            /**
-             * Specifies the tags property: Azure resource tags..
-             *
-             * @param tags Azure resource tags.
-             * @return the next definition stage.
-             */
-            WithCreate withTags(Map<String, String> tags);
-        }
+
         /** The stage of the Volume definition allowing to specify creationData. */
         interface WithCreationData {
             /**
@@ -150,17 +164,19 @@ public interface Volume {
              */
             WithCreate withCreationData(SourceCreationData creationData);
         }
-        /** The stage of the Volume definition allowing to specify sizeGiB. */
-        interface WithSizeGiB {
+
+        /** The stage of the Volume definition allowing to specify managedBy. */
+        interface WithManagedBy {
             /**
-             * Specifies the sizeGiB property: Volume size..
+             * Specifies the managedBy property: Parent resource information..
              *
-             * @param sizeGiB Volume size.
+             * @param managedBy Parent resource information.
              * @return the next definition stage.
              */
-            WithCreate withSizeGiB(Long sizeGiB);
+            WithCreate withManagedBy(ManagedByInfo managedBy);
         }
     }
+
     /**
      * Begins update for the Volume resource.
      *
@@ -169,7 +185,7 @@ public interface Volume {
     Volume.Update update();
 
     /** The template for Volume update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithSizeGiB {
+    interface Update extends UpdateStages.WithSizeGiB, UpdateStages.WithManagedBy {
         /**
          * Executes the update request.
          *
@@ -185,18 +201,9 @@ public interface Volume {
          */
         Volume apply(Context context);
     }
+
     /** The Volume update stages. */
     interface UpdateStages {
-        /** The stage of the Volume update allowing to specify tags. */
-        interface WithTags {
-            /**
-             * Specifies the tags property: Resource tags..
-             *
-             * @param tags Resource tags.
-             * @return the next definition stage.
-             */
-            Update withTags(Map<String, String> tags);
-        }
         /** The stage of the Volume update allowing to specify sizeGiB. */
         interface WithSizeGiB {
             /**
@@ -207,7 +214,19 @@ public interface Volume {
              */
             Update withSizeGiB(Long sizeGiB);
         }
+
+        /** The stage of the Volume update allowing to specify managedBy. */
+        interface WithManagedBy {
+            /**
+             * Specifies the managedBy property: Parent resource information..
+             *
+             * @param managedBy Parent resource information.
+             * @return the next definition stage.
+             */
+            Update withManagedBy(ManagedByInfo managedBy);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

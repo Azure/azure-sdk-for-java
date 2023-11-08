@@ -6,28 +6,45 @@ package com.azure.resourcemanager.elasticsan.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeGroupUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
 
 /** Volume Group request. */
 @Fluent
 public final class VolumeGroupUpdate {
+    /*
+     * The identity of the resource.
+     */
+    @JsonProperty(value = "identity")
+    private Identity identity;
+
     /*
      * Properties of VolumeGroup.
      */
     @JsonProperty(value = "properties")
     private VolumeGroupUpdateProperties innerProperties;
 
-    /*
-     * Resource tags.
-     */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
-
     /** Creates an instance of VolumeGroupUpdate class. */
     public VolumeGroupUpdate() {
+    }
+
+    /**
+     * Get the identity property: The identity of the resource.
+     *
+     * @return the identity value.
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the resource.
+     *
+     * @param identity the identity value to set.
+     * @return the VolumeGroupUpdate object itself.
+     */
+    public VolumeGroupUpdate withIdentity(Identity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -37,26 +54,6 @@ public final class VolumeGroupUpdate {
      */
     private VolumeGroupUpdateProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     *
-     * @param tags the tags value to set.
-     * @return the VolumeGroupUpdate object itself.
-     */
-    public VolumeGroupUpdate withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
     }
 
     /**
@@ -106,6 +103,29 @@ public final class VolumeGroupUpdate {
     }
 
     /**
+     * Get the encryptionProperties property: Encryption Properties describing Key Vault and Identity information.
+     *
+     * @return the encryptionProperties value.
+     */
+    public EncryptionProperties encryptionProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryptionProperties();
+    }
+
+    /**
+     * Set the encryptionProperties property: Encryption Properties describing Key Vault and Identity information.
+     *
+     * @param encryptionProperties the encryptionProperties value to set.
+     * @return the VolumeGroupUpdate object itself.
+     */
+    public VolumeGroupUpdate withEncryptionProperties(EncryptionProperties encryptionProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeGroupUpdateProperties();
+        }
+        this.innerProperties().withEncryptionProperties(encryptionProperties);
+        return this;
+    }
+
+    /**
      * Get the networkAcls property: A collection of rules governing the accessibility from specific network locations.
      *
      * @return the networkAcls value.
@@ -134,6 +154,9 @@ public final class VolumeGroupUpdate {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }

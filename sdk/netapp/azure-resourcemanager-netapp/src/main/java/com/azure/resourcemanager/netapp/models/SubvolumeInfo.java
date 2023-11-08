@@ -90,11 +90,13 @@ public interface SubvolumeInfo {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The SubvolumeInfo definition stages. */
     interface DefinitionStages {
         /** The first stage of the SubvolumeInfo definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the SubvolumeInfo definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -109,6 +111,7 @@ public interface SubvolumeInfo {
             WithCreate withExistingVolume(
                 String resourceGroupName, String accountName, String poolName, String volumeName);
         }
+
         /**
          * The stage of the SubvolumeInfo definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -130,6 +133,7 @@ public interface SubvolumeInfo {
              */
             SubvolumeInfo create(Context context);
         }
+
         /** The stage of the SubvolumeInfo definition allowing to specify path. */
         interface WithPath {
             /**
@@ -143,6 +147,7 @@ public interface SubvolumeInfo {
              */
             WithCreate withPath(String path);
         }
+
         /** The stage of the SubvolumeInfo definition allowing to specify size. */
         interface WithSize {
             /**
@@ -156,6 +161,7 @@ public interface SubvolumeInfo {
              */
             WithCreate withSize(Long size);
         }
+
         /** The stage of the SubvolumeInfo definition allowing to specify parentPath. */
         interface WithParentPath {
             /**
@@ -170,6 +176,7 @@ public interface SubvolumeInfo {
             WithCreate withParentPath(String parentPath);
         }
     }
+
     /**
      * Begins update for the SubvolumeInfo resource.
      *
@@ -194,6 +201,7 @@ public interface SubvolumeInfo {
          */
         SubvolumeInfo apply(Context context);
     }
+
     /** The SubvolumeInfo update stages. */
     interface UpdateStages {
         /** The stage of the SubvolumeInfo update allowing to specify size. */
@@ -209,6 +217,7 @@ public interface SubvolumeInfo {
              */
             Update withSize(Long size);
         }
+
         /** The stage of the SubvolumeInfo update allowing to specify path. */
         interface WithPath {
             /**
@@ -223,6 +232,7 @@ public interface SubvolumeInfo {
             Update withPath(String path);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

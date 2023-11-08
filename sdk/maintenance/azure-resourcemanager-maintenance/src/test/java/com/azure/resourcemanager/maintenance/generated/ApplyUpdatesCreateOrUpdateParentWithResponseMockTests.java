@@ -32,7 +32,7 @@ public final class ApplyUpdatesCreateOrUpdateParentWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"status\":\"RetryNow\",\"resourceId\":\"b\",\"lastUpdateTime\":\"2021-11-11T15:58:55Z\"},\"id\":\"jj\",\"name\":\"zvdudgwdslfhotwm\",\"type\":\"ynpwlbj\"}";
+            "{\"properties\":{\"status\":\"RetryLater\",\"resourceId\":\"tkoievseotgq\",\"lastUpdateTime\":\"2021-11-06T17:34:33Z\"},\"id\":\"muwlauwzizxbm\",\"name\":\"gcj\",\"type\":\"fuzmuvpbtt\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,11 +64,17 @@ public final class ApplyUpdatesCreateOrUpdateParentWithResponseMockTests {
             manager
                 .applyUpdates()
                 .createOrUpdateParentWithResponse(
-                    "njeaseipheofloke", "y", "enjbdlwtgrhp", "jp", "umasxazjpq", "e", com.azure.core.util.Context.NONE)
+                    "v",
+                    "gureodkwobdag",
+                    "tibqdxbxwakb",
+                    "gqxndlkzgxhuripl",
+                    "podxunkb",
+                    "bxmubyynt",
+                    com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(UpdateStatus.RETRY_NOW, response.status());
-        Assertions.assertEquals("b", response.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-11T15:58:55Z"), response.lastUpdateTime());
+        Assertions.assertEquals(UpdateStatus.RETRY_LATER, response.status());
+        Assertions.assertEquals("tkoievseotgq", response.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-06T17:34:33Z"), response.lastUpdateTime());
     }
 }

@@ -14,16 +14,15 @@ public final class CommitmentPlanAccountAssociationInnerTests {
         CommitmentPlanAccountAssociationInner model =
             BinaryData
                 .fromString(
-                    "{\"etag\":\"kby\",\"properties\":{\"accountId\":\"wpfhpagmhrskd\"},\"id\":\"nfd\",\"name\":\"doakgtdlmkkzevdl\",\"type\":\"ewpusdsttwvogvb\"}")
+                    "{\"etag\":\"einqf\",\"properties\":{\"accountId\":\"x\"},\"id\":\"knpirgnepttwq\",\"name\":\"sniffc\",\"type\":\"mqnrojlpijnkr\"}")
                 .toObject(CommitmentPlanAccountAssociationInner.class);
-        Assertions.assertEquals("wpfhpagmhrskd", model.accountId());
+        Assertions.assertEquals("x", model.accountId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommitmentPlanAccountAssociationInner model =
-            new CommitmentPlanAccountAssociationInner().withAccountId("wpfhpagmhrskd");
+        CommitmentPlanAccountAssociationInner model = new CommitmentPlanAccountAssociationInner().withAccountId("x");
         model = BinaryData.fromObject(model).toObject(CommitmentPlanAccountAssociationInner.class);
-        Assertions.assertEquals("wpfhpagmhrskd", model.accountId());
+        Assertions.assertEquals("x", model.accountId());
     }
 }

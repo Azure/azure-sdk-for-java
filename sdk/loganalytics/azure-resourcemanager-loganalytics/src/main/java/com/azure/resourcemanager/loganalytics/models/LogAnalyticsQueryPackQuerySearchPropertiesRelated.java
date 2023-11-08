@@ -29,6 +29,10 @@ public final class LogAnalyticsQueryPackQuerySearchPropertiesRelated {
     @JsonProperty(value = "solutions")
     private List<String> solutions;
 
+    /** Creates an instance of LogAnalyticsQueryPackQuerySearchPropertiesRelated class. */
+    public LogAnalyticsQueryPackQuerySearchPropertiesRelated() {
+    }
+
     /**
      * Get the categories property: The related categories for the function.
      *

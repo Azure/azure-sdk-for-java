@@ -15,35 +15,35 @@ public final class CosmosDbDataConnectionPropertiesTests {
         CosmosDbDataConnectionProperties model =
             BinaryData
                 .fromString(
-                    "{\"tableName\":\"krribdeibqi\",\"mappingRuleName\":\"kghv\",\"managedIdentityResourceId\":\"ndzwmkrefa\",\"managedIdentityObjectId\":\"jorwkqnyhgbij\",\"cosmosDbAccountResourceId\":\"jivfxzsjabib\",\"cosmosDbDatabase\":\"ystawfsdjpvkvp\",\"cosmosDbContainer\":\"jxbkzbzkdvn\",\"retrievalStartDate\":\"2021-04-26T00:18:09Z\",\"provisioningState\":\"Creating\"}")
+                    "{\"tableName\":\"nhdwdigumbnra\",\"mappingRuleName\":\"zzp\",\"managedIdentityResourceId\":\"jazysdzhezwwvaiq\",\"managedIdentityObjectId\":\"vv\",\"cosmosDbAccountResourceId\":\"onkp\",\"cosmosDbDatabase\":\"hqyikvy\",\"cosmosDbContainer\":\"auy\",\"retrievalStartDate\":\"2021-04-05T06:39:57Z\",\"provisioningState\":\"Succeeded\"}")
                 .toObject(CosmosDbDataConnectionProperties.class);
-        Assertions.assertEquals("krribdeibqi", model.tableName());
-        Assertions.assertEquals("kghv", model.mappingRuleName());
-        Assertions.assertEquals("ndzwmkrefa", model.managedIdentityResourceId());
-        Assertions.assertEquals("jivfxzsjabib", model.cosmosDbAccountResourceId());
-        Assertions.assertEquals("ystawfsdjpvkvp", model.cosmosDbDatabase());
-        Assertions.assertEquals("jxbkzbzkdvn", model.cosmosDbContainer());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-26T00:18:09Z"), model.retrievalStartDate());
+        Assertions.assertEquals("nhdwdigumbnra", model.tableName());
+        Assertions.assertEquals("zzp", model.mappingRuleName());
+        Assertions.assertEquals("jazysdzhezwwvaiq", model.managedIdentityResourceId());
+        Assertions.assertEquals("onkp", model.cosmosDbAccountResourceId());
+        Assertions.assertEquals("hqyikvy", model.cosmosDbDatabase());
+        Assertions.assertEquals("auy", model.cosmosDbContainer());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-05T06:39:57Z"), model.retrievalStartDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CosmosDbDataConnectionProperties model =
             new CosmosDbDataConnectionProperties()
-                .withTableName("krribdeibqi")
-                .withMappingRuleName("kghv")
-                .withManagedIdentityResourceId("ndzwmkrefa")
-                .withCosmosDbAccountResourceId("jivfxzsjabib")
-                .withCosmosDbDatabase("ystawfsdjpvkvp")
-                .withCosmosDbContainer("jxbkzbzkdvn")
-                .withRetrievalStartDate(OffsetDateTime.parse("2021-04-26T00:18:09Z"));
+                .withTableName("nhdwdigumbnra")
+                .withMappingRuleName("zzp")
+                .withManagedIdentityResourceId("jazysdzhezwwvaiq")
+                .withCosmosDbAccountResourceId("onkp")
+                .withCosmosDbDatabase("hqyikvy")
+                .withCosmosDbContainer("auy")
+                .withRetrievalStartDate(OffsetDateTime.parse("2021-04-05T06:39:57Z"));
         model = BinaryData.fromObject(model).toObject(CosmosDbDataConnectionProperties.class);
-        Assertions.assertEquals("krribdeibqi", model.tableName());
-        Assertions.assertEquals("kghv", model.mappingRuleName());
-        Assertions.assertEquals("ndzwmkrefa", model.managedIdentityResourceId());
-        Assertions.assertEquals("jivfxzsjabib", model.cosmosDbAccountResourceId());
-        Assertions.assertEquals("ystawfsdjpvkvp", model.cosmosDbDatabase());
-        Assertions.assertEquals("jxbkzbzkdvn", model.cosmosDbContainer());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-26T00:18:09Z"), model.retrievalStartDate());
+        Assertions.assertEquals("nhdwdigumbnra", model.tableName());
+        Assertions.assertEquals("zzp", model.mappingRuleName());
+        Assertions.assertEquals("jazysdzhezwwvaiq", model.managedIdentityResourceId());
+        Assertions.assertEquals("onkp", model.cosmosDbAccountResourceId());
+        Assertions.assertEquals("hqyikvy", model.cosmosDbDatabase());
+        Assertions.assertEquals("auy", model.cosmosDbContainer());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-05T06:39:57Z"), model.retrievalStartDate());
     }
 }

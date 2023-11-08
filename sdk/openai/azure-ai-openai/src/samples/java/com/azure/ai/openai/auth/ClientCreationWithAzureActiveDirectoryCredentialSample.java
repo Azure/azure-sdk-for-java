@@ -34,6 +34,6 @@ public class ClientCreationWithAzureActiveDirectoryCredentialSample {
         prompt.add("Why did the eagles not carry Frodo Baggins to Mordor?");
         String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
         Completions completions = client.getCompletions(deploymentOrModelId, new CompletionsOptions(prompt));
-        System.out.printf("Model ID=%s is created at %d.%n", completions.getId(), completions.getCreated());
+        System.out.printf("Model ID=%s is created at %s.%n", completions.getId(), completions.getCreatedAt());
     }
 }

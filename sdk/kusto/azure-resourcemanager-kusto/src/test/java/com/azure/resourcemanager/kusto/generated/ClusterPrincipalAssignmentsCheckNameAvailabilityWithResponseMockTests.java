@@ -33,7 +33,7 @@ public final class ClusterPrincipalAssignmentsCheckNameAvailabilityWithResponseM
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"nameAvailable\":true,\"name\":\"whcjyxcc\",\"message\":\"vpayakkudzpx\",\"reason\":\"AlreadyExists\"}";
+            "{\"nameAvailable\":true,\"name\":\"v\",\"message\":\"yasflvgsgzwy\",\"reason\":\"Invalid\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,15 +65,15 @@ public final class ClusterPrincipalAssignmentsCheckNameAvailabilityWithResponseM
             manager
                 .clusterPrincipalAssignments()
                 .checkNameAvailabilityWithResponse(
-                    "mywwtkgkxnyed",
-                    "b",
-                    new ClusterPrincipalAssignmentCheckNameRequest().withName("yvudtjuewbci"),
+                    "z",
+                    "puamwabzxr",
+                    new ClusterPrincipalAssignmentCheckNameRequest().withName("xcushs"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(true, response.nameAvailable());
-        Assertions.assertEquals("whcjyxcc", response.name());
-        Assertions.assertEquals("vpayakkudzpx", response.message());
-        Assertions.assertEquals(Reason.ALREADY_EXISTS, response.reason());
+        Assertions.assertEquals("v", response.name());
+        Assertions.assertEquals("yasflvgsgzwy", response.message());
+        Assertions.assertEquals(Reason.INVALID, response.reason());
     }
 }

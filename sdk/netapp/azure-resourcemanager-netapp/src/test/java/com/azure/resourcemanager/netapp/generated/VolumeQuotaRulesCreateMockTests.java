@@ -34,7 +34,7 @@ public final class VolumeQuotaRulesCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"quotaSizeInKiBs\":3395635652856224250,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"edm\"},\"location\":\"kvnlvxbcuiiznkt\",\"tags\":{\"bmikost\":\"nsnvpd\",\"kiwbuqnyoph\":\"z\"},\"id\":\"fy\",\"name\":\"sgcrpfbcunezzce\",\"type\":\"elfwy\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"quotaSizeInKiBs\":1851749746038265021,\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"hfqpofv\"},\"location\":\"cblembnkbwv\",\"tags\":{\"qihebw\":\"kdi\"},\"id\":\"swbzuwfmdurage\",\"name\":\"izvcjfe\",\"type\":\"isdju\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,22 +65,32 @@ public final class VolumeQuotaRulesCreateMockTests {
         VolumeQuotaRule response =
             manager
                 .volumeQuotaRules()
-                .define("xfyqonmpqoxwdo")
-                .withRegion("tmwwi")
-                .withExistingVolume("mv", "fgtayxonsup", "ujlzqnhcvsqltn", "oibgsxg")
-                .withTags(mapOf("bcblemb", "hfqpofv", "ihebwtsw", "kbwvqvxkdiv", "gegizvcjfel", "zuwfmdur"))
-                .withQuotaSizeInKiBs(7955310418875154253L)
-                .withQuotaType(Type.DEFAULT_GROUP_QUOTA)
-                .withQuotaTarget("qbi")
+                .define("kqscazuawxtzx")
+                .withRegion("sflvgsgzwywakoih")
+                .withExistingVolume("cpopmxel", "wcltyjede", "xm", "f")
+                .withTags(
+                    mapOf(
+                        "zotqyryuzcb",
+                        "mjblmljhlny",
+                        "peujlzqn",
+                        "qqvxmvwfgtayxons",
+                        "nzoibgsxgnx",
+                        "cvsql",
+                        "mpqoxw",
+                        "yqo"))
+                .withQuotaSizeInKiBs(5532317119730945052L)
+                .withQuotaType(Type.INDIVIDUAL_GROUP_QUOTA)
+                .withQuotaTarget("vxcushsphaivmx")
                 .create();
 
-        Assertions.assertEquals("kvnlvxbcuiiznkt", response.location());
-        Assertions.assertEquals("nsnvpd", response.tags().get("bmikost"));
-        Assertions.assertEquals(3395635652856224250L, response.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.INDIVIDUAL_USER_QUOTA, response.quotaType());
-        Assertions.assertEquals("edm", response.quotaTarget());
+        Assertions.assertEquals("cblembnkbwv", response.location());
+        Assertions.assertEquals("kdi", response.tags().get("qihebw"));
+        Assertions.assertEquals(1851749746038265021L, response.quotaSizeInKiBs());
+        Assertions.assertEquals(Type.DEFAULT_USER_QUOTA, response.quotaType());
+        Assertions.assertEquals("hfqpofv", response.quotaTarget());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

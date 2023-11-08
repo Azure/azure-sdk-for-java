@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LocalUsersOperation Delete. */
 public final class LocalUsersOperationDeleteSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/LocalUserDelete.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/LocalUserDelete.json
      */
     /**
      * Sample code: DeleteLocalUser.
@@ -22,6 +20,6 @@ public final class LocalUsersOperationDeleteSamples {
             .manager()
             .serviceClient()
             .getLocalUsersOperations()
-            .deleteWithResponse("res6977", "sto2527", "user1", Context.NONE);
+            .deleteWithResponse("res6977", "sto2527", "user1", com.azure.core.util.Context.NONE);
     }
 }

@@ -41,6 +41,10 @@ public final class LoadBalancerConfiguration {
     @JsonProperty(value = "sqlVirtualMachineInstances")
     private List<String> sqlVirtualMachineInstances;
 
+    /** Creates an instance of LoadBalancerConfiguration class. */
+    public LoadBalancerConfiguration() {
+    }
+
     /**
      * Get the privateIpAddress property: Private IP address.
      *

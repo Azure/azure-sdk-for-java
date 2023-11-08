@@ -31,7 +31,7 @@ public final class WebPubSubSharedPrivateLinkResourcesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"groupId\":\"zejntps\",\"privateLinkResourceId\":\"wgioilqukry\",\"provisioningState\":\"Succeeded\",\"requestMessage\":\"mieoxorgguf\",\"status\":\"Pending\"},\"id\":\"omtbghhavgrvkff\",\"name\":\"vjzhpjbib\",\"type\":\"jmfxumvf\"}";
+            "{\"properties\":{\"groupId\":\"fdv\",\"privateLinkResourceId\":\"vhb\",\"provisioningState\":\"Succeeded\",\"requestMessage\":\"xt\",\"status\":\"Approved\"},\"id\":\"qthe\",\"name\":\"n\",\"type\":\"naoyank\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,15 +62,15 @@ public final class WebPubSubSharedPrivateLinkResourcesCreateOrUpdateMockTests {
         SharedPrivateLinkResource response =
             manager
                 .webPubSubSharedPrivateLinkResources()
-                .define("zh")
-                .withExistingWebPubSub("tw", "sgogczhonnxk")
-                .withGroupId("nyhmossxkkgthr")
-                .withPrivateLinkResourceId("gh")
-                .withRequestMessage("hqxvcxgfrpdsofbs")
+                .define("xfbvfb")
+                .withExistingWebPubSub("dy", "rhpw")
+                .withGroupId("ddei")
+                .withPrivateLinkResourceId("awzovgkk")
+                .withRequestMessage("kjcjcaztbwsnsqow")
                 .create();
 
-        Assertions.assertEquals("zejntps", response.groupId());
-        Assertions.assertEquals("wgioilqukry", response.privateLinkResourceId());
-        Assertions.assertEquals("mieoxorgguf", response.requestMessage());
+        Assertions.assertEquals("fdv", response.groupId());
+        Assertions.assertEquals("vhb", response.privateLinkResourceId());
+        Assertions.assertEquals("xt", response.requestMessage());
     }
 }

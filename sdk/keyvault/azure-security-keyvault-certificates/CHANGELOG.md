@@ -7,8 +7,57 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed code snippets for `CertificateClient`'s `deleteIssuer` and `deletedIssuerWithResponse` methods. 
+  ([#37423](https://github.com/Azure/azure-sdk-for-java/issues/37423))
+ 
+### Other Changes
+
+## 4.5.7 (2023-10-20)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
+
+## 4.5.6 (2023-09-25)
+
+### Bugs Fixed
+- Fixed response code for certificate merging operations from `200` to the correct `201`. 
+([#36260](https://github.com/Azure/azure-sdk-for-java/issues/36260))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+
+## 4.5.5 (2023-08-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+
+## 4.5.4 (2023-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+- Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
+
+## 4.5.3 (2023-06-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
 
 ## 4.5.2 (2023-05-23)
 

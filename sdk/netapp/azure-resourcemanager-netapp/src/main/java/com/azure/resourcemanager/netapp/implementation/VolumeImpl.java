@@ -14,9 +14,12 @@ import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
+import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
+import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
+import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserResponse;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
@@ -204,6 +207,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().throughputMibps();
     }
 
+    public Float actualThroughputMibps() {
+        return this.innerModel().actualThroughputMibps();
+    }
+
     public EncryptionKeySource encryptionKeySource() {
         return this.innerModel().encryptionKeySource();
     }
@@ -222,6 +229,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public Integer coolnessPeriod() {
         return this.innerModel().coolnessPeriod();
+    }
+
+    public CoolAccessRetrievalPolicy coolAccessRetrievalPolicy() {
+        return this.innerModel().coolAccessRetrievalPolicy();
     }
 
     public String unixPermissions() {
@@ -308,6 +319,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public Boolean isLargeVolume() {
         return this.innerModel().isLargeVolume();
+    }
+
+    public String originatingResourceId() {
+        return this.innerModel().originatingResourceId();
     }
 
     public Region region() {
@@ -423,6 +438,16 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
+    public Volume populateAvailabilityZone() {
+        return serviceManager.volumes().populateAvailabilityZone(resourceGroupName, accountName, poolName, volumeName);
+    }
+
+    public Volume populateAvailabilityZone(Context context) {
+        return serviceManager
+            .volumes()
+            .populateAvailabilityZone(resourceGroupName, accountName, poolName, volumeName, context);
+    }
+
     public void revert(VolumeRevert body) {
         serviceManager.volumes().revert(resourceGroupName, accountName, poolName, volumeName, body);
     }
@@ -445,6 +470,19 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public void breakFileLocks(BreakFileLocksRequest body, Context context) {
         serviceManager.volumes().breakFileLocks(resourceGroupName, accountName, poolName, volumeName, body, context);
+    }
+
+    public GetGroupIdListForLdapUserResponse listGetGroupIdListForLdapUser(GetGroupIdListForLdapUserRequest body) {
+        return serviceManager
+            .volumes()
+            .listGetGroupIdListForLdapUser(resourceGroupName, accountName, poolName, volumeName, body);
+    }
+
+    public GetGroupIdListForLdapUserResponse listGetGroupIdListForLdapUser(
+        GetGroupIdListForLdapUserRequest body, Context context) {
+        return serviceManager
+            .volumes()
+            .listGetGroupIdListForLdapUser(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
     public void breakReplication() {
@@ -635,8 +673,13 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public VolumeImpl withSnapshotDirectoryVisible(Boolean snapshotDirectoryVisible) {
-        this.innerModel().withSnapshotDirectoryVisible(snapshotDirectoryVisible);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withSnapshotDirectoryVisible(snapshotDirectoryVisible);
+            return this;
+        } else {
+            this.updateBody.withSnapshotDirectoryVisible(snapshotDirectoryVisible);
+            return this;
+        }
     }
 
     public VolumeImpl withKerberosEnabled(Boolean kerberosEnabled) {
@@ -655,13 +698,23 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public VolumeImpl withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration smbAccessBasedEnumeration) {
-        this.innerModel().withSmbAccessBasedEnumeration(smbAccessBasedEnumeration);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withSmbAccessBasedEnumeration(smbAccessBasedEnumeration);
+            return this;
+        } else {
+            this.updateBody.withSmbAccessBasedEnumeration(smbAccessBasedEnumeration);
+            return this;
+        }
     }
 
     public VolumeImpl withSmbNonBrowsable(SmbNonBrowsable smbNonBrowsable) {
-        this.innerModel().withSmbNonBrowsable(smbNonBrowsable);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withSmbNonBrowsable(smbNonBrowsable);
+            return this;
+        } else {
+            this.updateBody.withSmbNonBrowsable(smbNonBrowsable);
+            return this;
+        }
     }
 
     public VolumeImpl withSmbContinuouslyAvailable(Boolean smbContinuouslyAvailable) {
@@ -710,6 +763,16 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
             return this;
         } else {
             this.updateBody.withCoolnessPeriod(coolnessPeriod);
+            return this;
+        }
+    }
+
+    public VolumeImpl withCoolAccessRetrievalPolicy(CoolAccessRetrievalPolicy coolAccessRetrievalPolicy) {
+        if (isInCreateMode()) {
+            this.innerModel().withCoolAccessRetrievalPolicy(coolAccessRetrievalPolicy);
+            return this;
+        } else {
+            this.updateBody.withCoolAccessRetrievalPolicy(coolAccessRetrievalPolicy);
             return this;
         }
     }

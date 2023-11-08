@@ -32,7 +32,7 @@ public final class ClustersListFollowerDatabasesMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"clusterResourceId\":\"tgseinqfiufxqkn\",\"attachedDatabaseConfigurationName\":\"irgne\",\"databaseName\":\"twqmsniffcdmqnr\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"ijnkrxfrdd\"],\"tablesToExclude\":[\"atiz\",\"ronasxift\"],\"externalTablesToInclude\":[\"yzhftwesgogczh\",\"nnxk\"],\"externalTablesToExclude\":[\"nyhmossxkkgthr\",\"gh\",\"jbdhqxvc\"],\"materializedViewsToInclude\":[\"rpdsof\",\"shrnsvbuswdvz\",\"ybycnunvj\",\"rtkfawnopq\"],\"materializedViewsToExclude\":[\"yzirtxdyuxzejn\",\"psew\",\"ioilqukrydxtq\"],\"functionsToInclude\":[\"ox\",\"rgguf\",\"yaomtb\",\"hhavgrvkffovjz\"],\"functionsToExclude\":[\"bibgjmfxumv\",\"cluyovwxnbkf\"]},\"databaseShareOrigin\":\"DataShare\"}]}";
+            "{\"value\":[{\"clusterResourceId\":\"yxkyxvx\",\"attachedDatabaseConfigurationName\":\"vblbjednljlageua\",\"databaseName\":\"xuns\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"kppxynenlsvxeiz\",\"gwklnsr\",\"ffeycx\"],\"tablesToExclude\":[\"piymerteea\",\"mx\",\"iekkkzddrtkgdojb\"],\"externalTablesToInclude\":[\"a\",\"refdee\",\"vecuijpx\"],\"externalTablesToExclude\":[\"uwprtujwsawd\"],\"materializedViewsToInclude\":[\"babxvitit\",\"tzeexav\",\"xtfglecdmdqb\",\"pypqtgsfj\"],\"materializedViewsToExclude\":[\"slhhxudbxv\"],\"functionsToInclude\":[\"tnsi\",\"ud\"],\"functionsToExclude\":[\"mes\"]},\"databaseShareOrigin\":\"Other\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,9 +61,9 @@ public final class ClustersListFollowerDatabasesMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<FollowerDatabaseDefinition> response =
-            manager.clusters().listFollowerDatabases("luudfdlwggytsb", "tov", com.azure.core.util.Context.NONE);
+            manager.clusters().listFollowerDatabases("kzyb", "jjidjk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tgseinqfiufxqkn", response.iterator().next().clusterResourceId());
-        Assertions.assertEquals("irgne", response.iterator().next().attachedDatabaseConfigurationName());
+        Assertions.assertEquals("yxkyxvx", response.iterator().next().clusterResourceId());
+        Assertions.assertEquals("vblbjednljlageua", response.iterator().next().attachedDatabaseConfigurationName());
     }
 }

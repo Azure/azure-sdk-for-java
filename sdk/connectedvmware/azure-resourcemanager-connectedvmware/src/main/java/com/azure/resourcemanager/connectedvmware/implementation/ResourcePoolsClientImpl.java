@@ -65,11 +65,10 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ConnectedVMwareClien")
-    private interface ResourcePoolsService {
+    public interface ResourcePoolsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/resourcePools/{resourcePoolName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/resourcePools/{resourcePoolName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -84,8 +83,7 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/resourcePools/{resourcePoolName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/resourcePools/{resourcePoolName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourcePoolInner>> getByResourceGroup(
@@ -99,8 +97,7 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/resourcePools/{resourcePoolName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/resourcePools/{resourcePoolName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourcePoolInner>> update(
@@ -115,8 +112,7 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/resourcePools/{resourcePoolName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/resourcePools/{resourcePoolName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -142,8 +138,7 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/resourcePools")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/resourcePools")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourcePoolsList>> listByResourceGroup(
@@ -319,6 +314,33 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of define the resourcePool.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ResourcePoolInner>, ResourcePoolInner> beginCreateAsync(
+        String resourceGroupName, String resourcePoolName) {
+        final ResourcePoolInner body = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, resourcePoolName, body);
+        return this
+            .client
+            .<ResourcePoolInner, ResourcePoolInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ResourcePoolInner.class,
+                ResourcePoolInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Implements resourcePool PUT method.
+     *
+     * <p>Create Or Update resourcePool.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param resourcePoolName Name of the resourcePool.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -345,7 +367,6 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
-     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -353,8 +374,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourcePoolInner>, ResourcePoolInner> beginCreate(
-        String resourceGroupName, String resourcePoolName, ResourcePoolInner body) {
-        return beginCreateAsync(resourceGroupName, resourcePoolName, body).getSyncPoller();
+        String resourceGroupName, String resourcePoolName) {
+        final ResourcePoolInner body = null;
+        return this.beginCreateAsync(resourceGroupName, resourcePoolName, body).getSyncPoller();
     }
 
     /**
@@ -374,7 +396,7 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourcePoolInner>, ResourcePoolInner> beginCreate(
         String resourceGroupName, String resourcePoolName, ResourcePoolInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, resourcePoolName, body, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, resourcePoolName, body, context).getSyncPoller();
     }
 
     /**
@@ -438,24 +460,6 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
         return beginCreateAsync(resourceGroupName, resourcePoolName, body, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Implements resourcePool PUT method.
-     *
-     * <p>Create Or Update resourcePool.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param resourcePoolName Name of the resourcePool.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the resourcePool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourcePoolInner create(String resourceGroupName, String resourcePoolName, ResourcePoolInner body) {
-        return createAsync(resourceGroupName, resourcePoolName, body).block();
     }
 
     /**
@@ -621,23 +625,6 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the resourcePool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourcePoolInner getByResourceGroup(String resourceGroupName, String resourcePoolName) {
-        return getByResourceGroupAsync(resourceGroupName, resourcePoolName).block();
-    }
-
-    /**
-     * Gets a resourcePool.
-     *
-     * <p>Implements resourcePool GET method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param resourcePoolName Name of the resourcePool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -648,6 +635,23 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
     public Response<ResourcePoolInner> getByResourceGroupWithResponse(
         String resourceGroupName, String resourcePoolName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourcePoolName, context).block();
+    }
+
+    /**
+     * Gets a resourcePool.
+     *
+     * <p>Implements resourcePool GET method.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param resourcePoolName Name of the resourcePool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the resourcePool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResourcePoolInner getByResourceGroup(String resourceGroupName, String resourcePoolName) {
+        return getByResourceGroupWithResponse(resourceGroupName, resourcePoolName, Context.NONE).getValue();
     }
 
     /**
@@ -767,25 +771,6 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
-     * @param body Resource properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the resourcePool on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ResourcePoolInner> updateAsync(String resourceGroupName, String resourcePoolName, ResourcePatch body) {
-        return updateWithResponseAsync(resourceGroupName, resourcePoolName, body)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Updates a resourcePool.
-     *
-     * <p>API to update certain properties of the resourcePool resource.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param resourcePoolName Name of the resourcePool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -796,24 +781,6 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
         final ResourcePatch body = null;
         return updateWithResponseAsync(resourceGroupName, resourcePoolName, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Updates a resourcePool.
-     *
-     * <p>API to update certain properties of the resourcePool resource.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param resourcePoolName Name of the resourcePool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the resourcePool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourcePoolInner update(String resourceGroupName, String resourcePoolName) {
-        final ResourcePatch body = null;
-        return updateAsync(resourceGroupName, resourcePoolName, body).block();
     }
 
     /**
@@ -834,6 +801,24 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
     public Response<ResourcePoolInner> updateWithResponse(
         String resourceGroupName, String resourcePoolName, ResourcePatch body, Context context) {
         return updateWithResponseAsync(resourceGroupName, resourcePoolName, body, context).block();
+    }
+
+    /**
+     * Updates a resourcePool.
+     *
+     * <p>API to update certain properties of the resourcePool resource.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param resourcePoolName Name of the resourcePool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the resourcePool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResourcePoolInner update(String resourceGroupName, String resourcePoolName) {
+        final ResourcePatch body = null;
+        return updateWithResponse(resourceGroupName, resourcePoolName, body, Context.NONE).getValue();
     }
 
     /**
@@ -970,6 +955,28 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourcePoolName) {
+        final Boolean force = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourcePoolName, force);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Deletes an resourcePool.
+     *
+     * <p>Implements resourcePool DELETE method.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param resourcePoolName Name of the resourcePool.
      * @param force Whether force delete was specified.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -995,16 +1002,15 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
-     * @param force Whether force delete was specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String resourcePoolName, Boolean force) {
-        return beginDeleteAsync(resourceGroupName, resourcePoolName, force).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourcePoolName) {
+        final Boolean force = null;
+        return this.beginDeleteAsync(resourceGroupName, resourcePoolName, force).getSyncPoller();
     }
 
     /**
@@ -1024,7 +1030,7 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String resourcePoolName, Boolean force, Context context) {
-        return beginDeleteAsync(resourceGroupName, resourcePoolName, force, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, resourcePoolName, force, context).getSyncPoller();
     }
 
     /**
@@ -1086,23 +1092,6 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
         return beginDeleteAsync(resourceGroupName, resourcePoolName, force, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes an resourcePool.
-     *
-     * <p>Implements resourcePool DELETE method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param resourcePoolName Name of the resourcePool.
-     * @param force Whether force delete was specified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String resourcePoolName, Boolean force) {
-        deleteAsync(resourceGroupName, resourcePoolName, force).block();
     }
 
     /**
@@ -1470,7 +1459,8 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1505,7 +1495,8 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1541,7 +1532,8 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1577,7 +1569,8 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

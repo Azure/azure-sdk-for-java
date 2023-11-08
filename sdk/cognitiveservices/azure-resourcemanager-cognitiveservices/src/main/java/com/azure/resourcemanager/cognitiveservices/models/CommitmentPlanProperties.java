@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Properties of Cognitive Services account commitment plan. */
 @Fluent
@@ -57,6 +58,12 @@ public final class CommitmentPlanProperties {
      */
     @JsonProperty(value = "last", access = JsonProperty.Access.WRITE_ONLY)
     private CommitmentPeriod last;
+
+    /*
+     * The list of ProvisioningIssue.
+     */
+    @JsonProperty(value = "provisioningIssues", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> provisioningIssues;
 
     /** Creates an instance of CommitmentPlanProperties class. */
     public CommitmentPlanProperties() {
@@ -198,6 +205,15 @@ public final class CommitmentPlanProperties {
      */
     public CommitmentPeriod last() {
         return this.last;
+    }
+
+    /**
+     * Get the provisioningIssues property: The list of ProvisioningIssue.
+     *
+     * @return the provisioningIssues value.
+     */
+    public List<String> provisioningIssues() {
+        return this.provisioningIssues;
     }
 
     /**

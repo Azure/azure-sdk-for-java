@@ -121,7 +121,7 @@ final class MemberNameConverterImpl implements MemberNameConverter {
         AnnotatedClass annotatedClass = AnnotatedClassResolver.resolve(config,
             mapper.constructType(method.getDeclaringClass()), null);
 
-        AnnotatedMethod annotatedMethod = new AnnotatedMethod(null, method, null, null);
+        AnnotatedMethod annotatedMethod = annotatedClass.findMethod(method.getName(), method.getParameterTypes());
         String annotatedMethodName = annotatedMethod.getName();
 
         String name = null;

@@ -30,6 +30,11 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
      */
     private final long storageSize;
 
+    /*
+     * The amount of memory in bytes consumed by vectors in the index.
+     */
+    private Long vectorIndexSize;
+
     /**
      * Creates an instance of SearchIndexStatistics class.
      *
@@ -59,11 +64,21 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
         return this.storageSize;
     }
 
+    /**
+     * Get the vectorIndexSize property: The amount of memory in bytes consumed by vectors in the index.
+     *
+     * @return the vectorIndexSize value.
+     */
+    public Long getVectorIndexSize() {
+        return this.vectorIndexSize;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeLongField("documentCount", this.documentCount);
         jsonWriter.writeLongField("storageSize", this.storageSize);
+        jsonWriter.writeNumberField("vectorIndexSize", this.vectorIndexSize);
         return jsonWriter.writeEndObject();
     }
 
@@ -83,6 +98,7 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
                     long documentCount = 0L;
                     boolean storageSizeFound = false;
                     long storageSize = 0L;
+                    Long vectorIndexSize = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -93,6 +109,8 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
                         } else if ("storageSize".equals(fieldName)) {
                             storageSize = reader.getLong();
                             storageSizeFound = true;
+                        } else if ("vectorIndexSize".equals(fieldName)) {
+                            vectorIndexSize = reader.getNullable(JsonReader::getLong);
                         } else {
                             reader.skipChildren();
                         }
@@ -100,6 +118,7 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
                     if (documentCountFound && storageSizeFound) {
                         SearchIndexStatistics deserializedSearchIndexStatistics =
                                 new SearchIndexStatistics(documentCount, storageSize);
+                        deserializedSearchIndexStatistics.vectorIndexSize = vectorIndexSize;
 
                         return deserializedSearchIndexStatistics;
                     }

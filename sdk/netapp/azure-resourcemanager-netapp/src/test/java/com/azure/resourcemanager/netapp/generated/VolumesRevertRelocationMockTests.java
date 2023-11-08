@@ -58,6 +58,6 @@ public final class VolumesRevertRelocationMockTests {
 
         manager
             .volumes()
-            .revertRelocation("bm", "pjbabwidfc", "sspuunnoxyhkx", "qddrihpfhoqcaae", com.azure.core.util.Context.NONE);
+            .revertRelocation("qizxfpxtgqscjavf", "juhdqazkmtgguwpi", "r", "jcivmmg", com.azure.core.util.Context.NONE);
     }
 }

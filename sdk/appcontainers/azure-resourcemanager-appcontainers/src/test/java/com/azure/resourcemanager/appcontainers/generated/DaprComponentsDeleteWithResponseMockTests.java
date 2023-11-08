@@ -58,6 +58,6 @@ public final class DaprComponentsDeleteWithResponseMockTests {
 
         manager
             .daprComponents()
-            .deleteWithResponse("maonurj", "umghihpvecmsl", "lbl", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("zjiihjr", "ybmrzoepnxwd", "wnjkgvfn", com.azure.core.util.Context.NONE);
     }
 }

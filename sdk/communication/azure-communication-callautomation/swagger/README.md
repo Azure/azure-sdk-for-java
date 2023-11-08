@@ -28,7 +28,7 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/model
 ``` yaml
 tag: package-2023-01-15-preview
 require:
-    - https://github.com/williamzhao87/azure-rest-api-specs/blob/885b18fa094fbb953b1a0cb77c52536a8d745be5/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/williamzhao87/azure-rest-api-specs/blob/5b7321a923a30b83b978e3a30ed1d497e35052fd/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -167,6 +167,12 @@ directive:
     from: UnmuteParticipantsResponse
     to: UnmuteParticipantsResponseInternal
 - rename-model:
+    from: StartHoldMusicRequest
+    to: StartHoldMusicRequestInternal
+- rename-model:
+    from: StopHoldMusicRequest
+    to: StopHoldMusicRequestInternal
+- rename-model:
     from: CollectTonesResult
     to: CollectTonesResultInternal
 - rename-model:
@@ -187,6 +193,9 @@ directive:
 - rename-model:
     from: SendDtmfRequest
     to: SendDtmfRequestInternal
+- rename-model:
+    from: StartDialogRequest
+    to: StartDialogRequestInternal
 
 # Remove models
 - remove-model: AddParticipantFailed
@@ -210,6 +219,17 @@ directive:
 - remove-model: ContinuousDtmfRecognitionStopped
 - remove-model: SendDtmfCompleted
 - remove-model: SendDtmfFailed
+- remove-model: AddParticipantCancelled
+- remove-model: CancelAddParticipantFailed
+- remove-model: DialogCompleted
+- remove-model: DialogConsent
+- remove-model: DialogFailed
+- remove-model: DialogHangup
+- remove-model: DialogLanguageChange
+- remove-model: DialogSensitivityUpdate
+- remove-model: DialogStarted
+- remove-model: DialogTransfer
+- remove-model: DialogFailed
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal

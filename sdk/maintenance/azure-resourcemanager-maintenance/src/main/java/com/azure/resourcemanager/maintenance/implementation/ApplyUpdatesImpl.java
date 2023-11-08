@@ -29,9 +29,9 @@ public final class ApplyUpdatesImpl implements ApplyUpdates {
 
     public Response<ApplyUpdate> getParentWithResponse(
         String resourceGroupName,
+        String providerName,
         String resourceParentType,
         String resourceParentName,
-        String providerName,
         String resourceType,
         String resourceName,
         String applyUpdateName,
@@ -41,9 +41,9 @@ public final class ApplyUpdatesImpl implements ApplyUpdates {
                 .serviceClient()
                 .getParentWithResponse(
                     resourceGroupName,
+                    providerName,
                     resourceParentType,
                     resourceParentName,
-                    providerName,
                     resourceType,
                     resourceName,
                     applyUpdateName,
@@ -61,9 +61,9 @@ public final class ApplyUpdatesImpl implements ApplyUpdates {
 
     public ApplyUpdate getParent(
         String resourceGroupName,
+        String providerName,
         String resourceParentType,
         String resourceParentName,
-        String providerName,
         String resourceType,
         String resourceName,
         String applyUpdateName) {
@@ -72,9 +72,9 @@ public final class ApplyUpdatesImpl implements ApplyUpdates {
                 .serviceClient()
                 .getParent(
                     resourceGroupName,
+                    providerName,
                     resourceParentType,
                     resourceParentName,
-                    providerName,
                     resourceType,
                     resourceName,
                     applyUpdateName);

@@ -3,32 +3,33 @@
 
 package com.azure.communication.jobrouter;
 
-import com.azure.communication.jobrouter.models.ChannelConfiguration;
+import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
-import com.azure.communication.jobrouter.models.JobQueue;
-import com.azure.communication.jobrouter.models.LabelValue;
-import com.azure.communication.jobrouter.models.QueueAssignment;
+import com.azure.communication.jobrouter.models.RouterChannel;
+import com.azure.communication.jobrouter.models.RouterQueue;
+import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.communication.jobrouter.models.RouterWorker;
-import com.azure.communication.jobrouter.models.options.CreateWorkerOptions;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RouterWorkerLiveTests extends JobRouterTestBase {
-    private RouterClient routerClient;
+    private JobRouterClient jobRouterClient;
 
-    private RouterAdministrationClient routerAdminClient;
+    private JobRouterAdministrationClient routerAdminClient;
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createWorker(HttpClient httpClient) {
         // Setup
-        routerClient = getRouterClient(httpClient);
+        jobRouterClient = getRouterClient(httpClient);
         routerAdminClient = getRouterAdministrationClient(httpClient);
         /**
          * Setup queue
@@ -37,36 +38,35 @@ public class RouterWorkerLiveTests extends JobRouterTestBase {
         DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);
 
         String queueId = String.format("%s-CreateWorker-Queue", JAVA_LIVE_TESTS);
-        JobQueue jobQueue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
+        RouterQueue jobQueue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
 
         /**
          * Setup worker
          */
         String workerId = String.format("%s-CreateWorker-Worker", JAVA_LIVE_TESTS);
 
-        Map<String, LabelValue> labels = new HashMap<String, LabelValue>() {
+        Map<String, RouterValue> labels = new HashMap<String, RouterValue>() {
             {
-                put("Label", new LabelValue("Value"));
+                put("Label", new RouterValue("Value", null, null, null));
             }
         };
 
-        Map<String, Object> tags = new HashMap<String, Object>() {
+        Map<String, RouterValue> tags = new HashMap<String, RouterValue>() {
             {
-                put("Tag", "Value");
+                put("Tag", new RouterValue("Value", null, null, null));
             }
         };
 
-        ChannelConfiguration channelConfiguration = new ChannelConfiguration();
-        channelConfiguration.setCapacityCostPerJob(1);
-        Map<String, ChannelConfiguration> channelConfigurations = new HashMap<String, ChannelConfiguration>() {
+        RouterChannel channel = new RouterChannel("router-channel", 1);
+        List<RouterChannel> channels = new ArrayList<RouterChannel>() {
             {
-                put("channel1", channelConfiguration);
+                add(channel);
             }
         };
 
-        Map<String, QueueAssignment> queueAssignments = new HashMap<String, QueueAssignment>() {
+        List<String> queues = new ArrayList<String>() {
             {
-                put(jobQueue.getId(), new QueueAssignment());
+                add(jobQueue.getId());
             }
         };
 
@@ -74,17 +74,17 @@ public class RouterWorkerLiveTests extends JobRouterTestBase {
             .setLabels(labels)
             .setTags(tags)
             .setAvailableForOffers(false)
-            .setChannelConfigurations(channelConfigurations)
-            .setQueueAssignments(queueAssignments);
+            .setChannels(channels)
+            .setQueues(queues);
 
         // Action
-        RouterWorker result = routerClient.createWorker(createWorkerOptions);
+        RouterWorker result = jobRouterClient.createWorker(createWorkerOptions);
 
         // Verify
         assertEquals(workerId, result.getId());
 
         // Cleanup
-        routerClient.deleteWorker(workerId);
+        jobRouterClient.deleteWorker(workerId);
         routerAdminClient.deleteQueue(queueId);
         routerAdminClient.deleteDistributionPolicy(distributionPolicyId);
     }

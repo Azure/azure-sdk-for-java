@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.search.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Services GetByResourceGroup. */
 public final class ServicesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/SearchGetService.json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchGetService.json
      */
     /**
      * Sample code: SearchGetService.
@@ -22,6 +20,6 @@ public final class ServicesGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getServices()
-            .getByResourceGroupWithResponse("rg1", "mysearchservice", null, Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "mysearchservice", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -32,7 +32,7 @@ public final class DiscoverySolutionsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"solutionId\":\"hrhcffcyddglmjth\",\"solutionType\":\"kw\",\"description\":\"eicxmqciwqvhkhi\",\"requiredParameterSets\":[[\"dtopbob\",\"og\",\"m\"],[\"u\"],[\"a\"]]},\"id\":\"rzayv\",\"name\":\"t\",\"type\":\"gvdfgiotkftutq\"}]}";
+            "{\"value\":[{\"properties\":{\"solutions\":[{\"solutionId\":\"jhdgqggebdunyga\",\"solutionType\":\"Diagnostics\",\"description\":\"bqfatpxllrxcyjmo\",\"requiredInputs\":[\"uvarmywdmjsjq\"]}]},\"id\":\"hhyxxrw\",\"name\":\"yc\",\"type\":\"duhpk\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,11 +63,8 @@ public final class DiscoverySolutionsListMockTests {
         PagedIterable<SolutionMetadataResource> response =
             manager
                 .discoverySolutions()
-                .list("zxibqeoj", "xqbzvddntwnd", "icbtwnpzao", com.azure.core.util.Context.NONE);
+                .list("ag", "rvimjwosytxitcsk", "cktqumiekkezzi", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hrhcffcyddglmjth", response.iterator().next().solutionId());
-        Assertions.assertEquals("kw", response.iterator().next().solutionType());
-        Assertions.assertEquals("eicxmqciwqvhkhi", response.iterator().next().description());
-        Assertions.assertEquals("dtopbob", response.iterator().next().requiredParameterSets().get(0).get(0));
+        Assertions.assertEquals("jhdgqggebdunyga", response.iterator().next().solutions().get(0).solutionId());
     }
 }

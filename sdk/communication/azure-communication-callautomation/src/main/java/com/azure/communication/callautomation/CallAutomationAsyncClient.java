@@ -7,6 +7,7 @@ import com.azure.communication.callautomation.implementation.AzureCommunicationC
 import com.azure.communication.callautomation.implementation.CallConnectionsImpl;
 import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
+import com.azure.communication.callautomation.implementation.CallDialogsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.CommunicationUserIdentifierConverter;
@@ -44,11 +45,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.util.DateTimeRfc1123;
-import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
 import java.net.URISyntaxException;
+import java.time.OffsetDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -72,17 +72,21 @@ public final class CallAutomationAsyncClient {
     private final AzureCommunicationCallAutomationServiceImpl azureCommunicationCallAutomationServiceInternal;
     private final CallRecordingsImpl callRecordingsInternal;
     private final CallMediasImpl callMediasInternal;
+    private final CallDialogsImpl callDialogsInternal;
     private final ClientLogger logger;
     private final ContentDownloader contentDownloader;
     private final HttpPipeline httpPipelineInternal;
     private final String resourceUrl;
     private final CommunicationUserIdentifierModel sourceIdentity;
+    private final CallAutomationEventProcessor eventProcessor;
 
-    CallAutomationAsyncClient(AzureCommunicationCallAutomationServiceImpl callServiceClient, CommunicationUserIdentifier sourceIdentity) {
+    CallAutomationAsyncClient(AzureCommunicationCallAutomationServiceImpl callServiceClient, CommunicationUserIdentifier sourceIdentity, CallAutomationEventProcessor eventProcessor) {
         this.callConnectionsInternal = callServiceClient.getCallConnections();
         this.azureCommunicationCallAutomationServiceInternal = callServiceClient;
         this.callRecordingsInternal = callServiceClient.getCallRecordings();
         this.callMediasInternal = callServiceClient.getCallMedias();
+        this.callDialogsInternal = callServiceClient.getCallDialogs();
+        this.eventProcessor = eventProcessor;
         this.logger = new ClientLogger(CallAutomationAsyncClient.class);
         this.contentDownloader = new ContentDownloader(callServiceClient.getEndpoint(), callServiceClient.getHttpPipeline());
         this.httpPipelineInternal = callServiceClient.getHttpPipeline();
@@ -90,7 +94,14 @@ public final class CallAutomationAsyncClient {
         this.sourceIdentity = sourceIdentity == null ? null : CommunicationUserIdentifierConverter.convert(sourceIdentity);
     }
 
-    //region Pre-call Actions
+    /**
+     * Get the event processor for handling events.
+     * @return {@link CallAutomationEventProcessor} as event processor
+     */
+    public CallAutomationEventProcessor getEventProcessor() {
+        return eventProcessor;
+    }
+
     /**
      * Get Source Identity that is used for create and answer call
      * @return {@link CommunicationUserIdentifier} represent source
@@ -99,6 +110,7 @@ public final class CallAutomationAsyncClient {
         return sourceIdentity == null ? null : CommunicationUserIdentifierConverter.convert(sourceIdentity);
     }
 
+    //region Pre-call Actions
     /**
      * Create a call connection request from a source identity to a target identity.
      *
@@ -164,15 +176,15 @@ public final class CallAutomationAsyncClient {
             return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(
                     request,
                     UUID.randomUUID(),
-                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    OffsetDateTime.now(),
                     context)
                 .map(response -> {
                     try {
                         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(response.getValue().getCallConnectionId());
-
-                        return new SimpleResponse<>(response,
-                            new CreateCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
-                                new CallConnection(callConnectionAsync), callConnectionAsync));
+                        CreateCallResult result = new CreateCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
+                            new CallConnection(callConnectionAsync), callConnectionAsync);
+                        result.setEventProcessor(eventProcessor, response.getValue().getCallConnectionId(), null);
+                        return new SimpleResponse<>(response, result);
                     } catch (URISyntaxException e) {
                         throw logger.logExceptionAsError(new RuntimeException(e));
                     }
@@ -189,15 +201,15 @@ public final class CallAutomationAsyncClient {
             return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(
                     request,
                     UUID.randomUUID(),
-                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    OffsetDateTime.now(),
                     context)
                 .map(response -> {
                     try {
                         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(response.getValue().getCallConnectionId());
-
-                        return new SimpleResponse<>(response,
-                            new CreateCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
-                                new CallConnection(callConnectionAsync), callConnectionAsync));
+                        CreateCallResult result = new CreateCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
+                            new CallConnection(callConnectionAsync), callConnectionAsync);
+                        result.setEventProcessor(eventProcessor, response.getValue().getCallConnectionId(), null);
+                        return new SimpleResponse<>(response, result);
                     } catch (URISyntaxException e) {
                         throw logger.logExceptionAsError(new RuntimeException(e));
                     }
@@ -220,10 +232,10 @@ public final class CallAutomationAsyncClient {
             .setOperationContext(createCallOptions.getOperationContext());
 
         // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
-        if (createCallOptions.getCallInvite().getSipHeaders() != null || createCallOptions.getCallInvite().getVoipHeaders() != null) {
+        if (createCallOptions.getCallInvite().getCustomContext().getSipHeaders() != null || createCallOptions.getCallInvite().getCustomContext().getVoipHeaders() != null) {
             CustomContext customContext = new CustomContext();
-            customContext.setSipHeaders(createCallOptions.getCallInvite().getSipHeaders());
-            customContext.setVoipHeaders(createCallOptions.getCallInvite().getVoipHeaders());
+            customContext.setSipHeaders(createCallOptions.getCallInvite().getCustomContext().getSipHeaders());
+            customContext.setVoipHeaders(createCallOptions.getCallInvite().getCustomContext().getVoipHeaders());
             request.setCustomContext(customContext);
         }
 
@@ -252,10 +264,10 @@ public final class CallAutomationAsyncClient {
             .setCallbackUri(createCallGroupOptions.getCallbackUrl())
             .setOperationContext(createCallGroupOptions.getOperationContext());
 
-        if (createCallGroupOptions.getSipHeaders() != null || createCallGroupOptions.getVoipHeaders() != null) {
+        if (createCallGroupOptions.getCustomContext().getSipHeaders() != null || createCallGroupOptions.getCustomContext().getVoipHeaders() != null) {
             CustomContext customContext = new CustomContext();
-            customContext.setSipHeaders(createCallGroupOptions.getSipHeaders());
-            customContext.setVoipHeaders(createCallGroupOptions.getVoipHeaders());
+            customContext.setSipHeaders(createCallGroupOptions.getCustomContext().getSipHeaders());
+            customContext.setVoipHeaders(createCallGroupOptions.getCustomContext().getVoipHeaders());
             request.setCustomContext(customContext);
         }
 
@@ -340,14 +352,16 @@ public final class CallAutomationAsyncClient {
             return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(
                     request,
                     UUID.randomUUID(),
-                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    OffsetDateTime.now(),
                     context)
                 .map(response -> {
                     try {
                         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(response.getValue().getCallConnectionId());
-                        return new SimpleResponse<>(response,
-                            new AnswerCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
-                                new CallConnection(callConnectionAsync), callConnectionAsync));
+                        AnswerCallResult result = new AnswerCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
+                            new CallConnection(callConnectionAsync), callConnectionAsync);
+                        result.setEventProcessor(eventProcessor, response.getValue().getCallConnectionId(), null);
+
+                        return new SimpleResponse<>(response, result);
                     } catch (URISyntaxException e) {
                         throw logger.logExceptionAsError(new RuntimeException(e));
                     }
@@ -394,17 +408,17 @@ public final class CallAutomationAsyncClient {
                 .setTarget(CommunicationIdentifierConverter.convert(redirectCallOptions.getTargetParticipant().getTargetParticipant()));
 
             // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
-            if (redirectCallOptions.getTargetParticipant().getSipHeaders() != null || redirectCallOptions.getTargetParticipant().getVoipHeaders() != null) {
+            if (redirectCallOptions.getTargetParticipant().getCustomContext().getSipHeaders() != null || redirectCallOptions.getTargetParticipant().getCustomContext().getVoipHeaders() != null) {
                 CustomContext customContext = new CustomContext();
-                customContext.setSipHeaders(redirectCallOptions.getTargetParticipant().getSipHeaders());
-                customContext.setVoipHeaders(redirectCallOptions.getTargetParticipant().getVoipHeaders());
+                customContext.setSipHeaders(redirectCallOptions.getTargetParticipant().getCustomContext().getSipHeaders());
+                customContext.setVoipHeaders(redirectCallOptions.getTargetParticipant().getCustomContext().getVoipHeaders());
                 request.setCustomContext(customContext);
             }
 
             return azureCommunicationCallAutomationServiceInternal.redirectCallWithResponseAsync(
                     request,
                     UUID.randomUUID(),
-                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    OffsetDateTime.now(),
                     context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -451,7 +465,7 @@ public final class CallAutomationAsyncClient {
             return azureCommunicationCallAutomationServiceInternal.rejectCallWithResponseAsync(
                     request,
                     UUID.randomUUID(),
-                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    OffsetDateTime.now(),
                     context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -467,7 +481,7 @@ public final class CallAutomationAsyncClient {
      * @return a CallContentAsync.
      */
     public CallConnectionAsync getCallConnectionAsync(String callConnectionId) {
-        return new CallConnectionAsync(callConnectionId, callConnectionsInternal, callMediasInternal);
+        return new CallConnectionAsync(callConnectionId, callConnectionsInternal, callMediasInternal, callDialogsInternal, eventProcessor);
     }
     //endregion
 

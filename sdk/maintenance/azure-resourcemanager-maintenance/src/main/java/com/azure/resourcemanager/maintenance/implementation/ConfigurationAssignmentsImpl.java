@@ -28,6 +28,64 @@ public final class ConfigurationAssignmentsImpl implements ConfigurationAssignme
         this.serviceManager = serviceManager;
     }
 
+    public Response<ConfigurationAssignment> getParentWithResponse(
+        String resourceGroupName,
+        String providerName,
+        String resourceParentType,
+        String resourceParentName,
+        String resourceType,
+        String resourceName,
+        String configurationAssignmentName,
+        Context context) {
+        Response<ConfigurationAssignmentInner> inner =
+            this
+                .serviceClient()
+                .getParentWithResponse(
+                    resourceGroupName,
+                    providerName,
+                    resourceParentType,
+                    resourceParentName,
+                    resourceType,
+                    resourceName,
+                    configurationAssignmentName,
+                    context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ConfigurationAssignment getParent(
+        String resourceGroupName,
+        String providerName,
+        String resourceParentType,
+        String resourceParentName,
+        String resourceType,
+        String resourceName,
+        String configurationAssignmentName) {
+        ConfigurationAssignmentInner inner =
+            this
+                .serviceClient()
+                .getParent(
+                    resourceGroupName,
+                    providerName,
+                    resourceParentType,
+                    resourceParentName,
+                    resourceType,
+                    resourceName,
+                    configurationAssignmentName);
+        if (inner != null) {
+            return new ConfigurationAssignmentImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public Response<ConfigurationAssignment> createOrUpdateParentWithResponse(
         String resourceGroupName,
         String providerName,
@@ -141,6 +199,46 @@ public final class ConfigurationAssignmentsImpl implements ConfigurationAssignme
                     resourceType,
                     resourceName,
                     configurationAssignmentName);
+        if (inner != null) {
+            return new ConfigurationAssignmentImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<ConfigurationAssignment> getWithResponse(
+        String resourceGroupName,
+        String providerName,
+        String resourceType,
+        String resourceName,
+        String configurationAssignmentName,
+        Context context) {
+        Response<ConfigurationAssignmentInner> inner =
+            this
+                .serviceClient()
+                .getWithResponse(
+                    resourceGroupName, providerName, resourceType, resourceName, configurationAssignmentName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ConfigurationAssignment get(
+        String resourceGroupName,
+        String providerName,
+        String resourceType,
+        String resourceName,
+        String configurationAssignmentName) {
+        ConfigurationAssignmentInner inner =
+            this
+                .serviceClient()
+                .get(resourceGroupName, providerName, resourceType, resourceName, configurationAssignmentName);
         if (inner != null) {
             return new ConfigurationAssignmentImpl(inner, this.manager());
         } else {

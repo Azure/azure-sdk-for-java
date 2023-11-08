@@ -84,7 +84,8 @@ public final class ServerProperties {
     private Backup backup;
 
     /*
-     * Network properties of a server.
+     * Network properties of a server. This Network property is required to be passed only in case you want the server
+     * to be Private access server.
      */
     @JsonProperty(value = "network")
     private Network network;
@@ -103,7 +104,7 @@ public final class ServerProperties {
 
     /*
      * The source server resource ID to restore from. It's required when 'createMode' is 'PointInTimeRestore' or
-     * 'GeoRestore' or 'Replica'.
+     * 'GeoRestore' or 'Replica'. This property is returned only for Replica server
      */
     @JsonProperty(value = "sourceServerResourceId")
     private String sourceServerResourceId;
@@ -130,7 +131,7 @@ public final class ServerProperties {
     /*
      * Replicas allowed for a server.
      */
-    @JsonProperty(value = "replicaCapacity")
+    @JsonProperty(value = "replicaCapacity", access = JsonProperty.Access.WRITE_ONLY)
     private Integer replicaCapacity;
 
     /*
@@ -313,7 +314,8 @@ public final class ServerProperties {
     }
 
     /**
-     * Get the network property: Network properties of a server.
+     * Get the network property: Network properties of a server. This Network property is required to be passed only in
+     * case you want the server to be Private access server.
      *
      * @return the network value.
      */
@@ -322,7 +324,8 @@ public final class ServerProperties {
     }
 
     /**
-     * Set the network property: Network properties of a server.
+     * Set the network property: Network properties of a server. This Network property is required to be passed only in
+     * case you want the server to be Private access server.
      *
      * @param network the network value to set.
      * @return the ServerProperties object itself.
@@ -374,7 +377,8 @@ public final class ServerProperties {
 
     /**
      * Get the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'.
+     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'. This property is returned only for Replica
+     * server.
      *
      * @return the sourceServerResourceId value.
      */
@@ -384,7 +388,8 @@ public final class ServerProperties {
 
     /**
      * Set the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'.
+     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'. This property is returned only for Replica
+     * server.
      *
      * @param sourceServerResourceId the sourceServerResourceId value to set.
      * @return the ServerProperties object itself.
@@ -463,17 +468,6 @@ public final class ServerProperties {
      */
     public Integer replicaCapacity() {
         return this.replicaCapacity;
-    }
-
-    /**
-     * Set the replicaCapacity property: Replicas allowed for a server.
-     *
-     * @param replicaCapacity the replicaCapacity value to set.
-     * @return the ServerProperties object itself.
-     */
-    public ServerProperties withReplicaCapacity(Integer replicaCapacity) {
-        this.replicaCapacity = replicaCapacity;
-        return this;
     }
 
     /**

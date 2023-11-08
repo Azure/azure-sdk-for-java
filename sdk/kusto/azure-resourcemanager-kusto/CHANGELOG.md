@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,131 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2023-10-20)
+
+- Azure Resource Manager Kusto client library for Java. This package contains Microsoft Azure SDK for Kusto Management SDK. The Azure Kusto management API provides a RESTful set of web services that interact with Azure Kusto services to manage your clusters and databases. The API enables you to create, update, and delete clusters and databases. Package tag package-2023-08. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.SandboxCustomImages` was added
+
+* `models.SandboxCustomImagesListResult` was added
+
+* `models.SandboxCustomImage$DefinitionStages` was added
+
+* `models.SandboxCustomImage$UpdateStages` was added
+
+* `models.SandboxCustomImage$Definition` was added
+
+* `models.SandboxCustomImage` was added
+
+* `models.Language` was added
+
+* `models.SandboxCustomImagesCheckNameRequest` was added
+
+* `models.SandboxCustomImage$Update` was added
+
+* `models.VnetState` was added
+
+#### `models.VirtualNetworkConfiguration` was modified
+
+* `state()` was added
+* `withState(models.VnetState)` was added
+
+#### `KustoManager` was modified
+
+* `sandboxCustomImages()` was added
+
+#### `models.LanguageExtension` was modified
+
+* `languageExtensionCustomImageName()` was added
+
+#### `models.EndpointDetail` was modified
+
+* `withIpAddress(java.lang.String)` was added
+* `ipAddress()` was added
+
+#### `models.ClusterUpdate` was modified
+
+* `withZones(java.util.List)` was added
+* `zones()` was added
+
+#### `models.Cluster$Update` was modified
+
+* `withZones(java.util.List)` was added
+
+## 1.0.0-beta.7 (2023-07-19)
+
+- Azure Resource Manager Kusto client library for Java. This package contains Microsoft Azure SDK for Kusto Management SDK. The Azure Kusto management API provides a RESTful set of web services that interact with Azure Kusto services to manage your clusters and databases. The API enables you to create, update, and delete clusters and databases. Package tag package-2023-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.OperationsResultsLocations` was modified
+
+* `com.azure.core.http.rest.Response getWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationsResultsLocationsGetResponse getWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+
+#### `models.Databases` was modified
+
+* `listByCluster(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.MigrationClusterRole` was added
+
+* `models.OperationsResultsLocationsGetHeaders` was added
+
+* `models.DatabaseInviteFollowerRequest` was added
+
+* `models.SuspensionDetails` was added
+
+* `models.OperationsResultsLocationsGetResponse` was added
+
+* `models.DatabaseOperations` was added
+
+* `models.ClusterMigrateRequest` was added
+
+* `models.MigrationClusterProperties` was added
+
+* `models.DatabaseInviteFollowerResult` was added
+
+#### `models.Clusters` was modified
+
+* `migrate(java.lang.String,java.lang.String,models.ClusterMigrateRequest)` was added
+* `migrate(java.lang.String,java.lang.String,models.ClusterMigrateRequest,com.azure.core.util.Context)` was added
+
+#### `KustoManager` was modified
+
+* `databaseOperations()` was added
+
+#### `models.Cluster` was modified
+
+* `migrate(models.ClusterMigrateRequest)` was added
+* `migrate(models.ClusterMigrateRequest,com.azure.core.util.Context)` was added
+* `migrationCluster()` was added
+
+#### `models.ReadOnlyFollowingDatabase` was modified
+
+* `suspensionDetails()` was added
+
+#### `models.DatabaseListResult` was modified
+
+* `nextLink()` was added
+* `withNextLink(java.lang.String)` was added
+
+#### `models.Databases` was modified
+
+* `listByCluster(java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.ClusterUpdate` was modified
+
+* `migrationCluster()` was added
+
+#### `models.ReadWriteDatabase` was modified
+
+* `keyVaultProperties()` was added
+* `withKeyVaultProperties(models.KeyVaultProperties)` was added
+* `suspensionDetails()` was added
 
 ## 1.0.0-beta.6 (2023-02-21)
 

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for DedicatedHostGroups ListByResourceGroup. */
 public final class DedicatedHostGroupsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHostGroup_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/dedicatedHostExamples/DedicatedHostGroup_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHostGroup_ListByResourceGroup_MaximumSet_Gen.
@@ -25,7 +25,7 @@ public final class DedicatedHostGroupsListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHostGroup_ListByResourceGroup_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/dedicatedHostExamples/DedicatedHostGroup_ListByResourceGroup_MinimumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHostGroup_ListByResourceGroup_MinimumSet_Gen.

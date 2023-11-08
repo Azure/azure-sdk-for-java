@@ -37,7 +37,7 @@ public final class SnapshotPoliciesCreateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"etag\":\"jid\",\"properties\":{\"hourlySchedule\":{\"snapshotsToKeep\":1763110580,\"minute\":1374695683,\"usedBytes\":8248669428764587059},\"dailySchedule\":{\"snapshotsToKeep\":2084257328,\"hour\":618500847,\"minute\":1570149623,\"usedBytes\":3500912749026197727},\"weeklySchedule\":{\"snapshotsToKeep\":602295715,\"day\":\"geuaulx\",\"hour\":783935050,\"minute\":1584096460,\"usedBytes\":1025453690932299158},\"monthlySchedule\":{\"snapshotsToKeep\":1476296254,\"daysOfMonth\":\"nenlsvxeizzg\",\"hour\":1958797848,\"minute\":2086736187,\"usedBytes\":4209661666295596661},\"enabled\":true,\"provisioningState\":\"cxcktpi\"},\"location\":\"erteeammxqiekk\",\"tags\":{\"mxvavrefdee\":\"drtkgdoj\",\"xs\":\"vecuijpx\",\"wsawddjibabxvi\":\"wprtu\"},\"id\":\"itvtzeexavo\",\"name\":\"tfgle\",\"type\":\"dmdqb\"}";
+            "{\"etag\":\"vreljea\",\"properties\":{\"hourlySchedule\":{\"snapshotsToKeep\":1671689667,\"minute\":1202304870,\"usedBytes\":1705297672247999328},\"dailySchedule\":{\"snapshotsToKeep\":2073795724,\"hour\":1291910908,\"minute\":264997502,\"usedBytes\":7353815266805175635},\"weeklySchedule\":{\"snapshotsToKeep\":1178556723,\"day\":\"bdkelvidizo\",\"hour\":344121425,\"minute\":1181700002,\"usedBytes\":6191416292355922762},\"monthlySchedule\":{\"snapshotsToKeep\":1331407717,\"daysOfMonth\":\"dgnwncypuuwwlt\",\"hour\":740306752,\"minute\":1798680046,\"usedBytes\":5288027656858110726},\"enabled\":true,\"provisioningState\":\"if\"},\"location\":\"hmkdasvfl\",\"tags\":{\"oldforobw\":\"xcudchxgsr\",\"hfovvacqpbtu\":\"lvizb\"},\"id\":\"dxe\",\"name\":\"zab\",\"type\":\"elawumu\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -68,60 +68,61 @@ public final class SnapshotPoliciesCreateWithResponseMockTests {
         SnapshotPolicy response =
             manager
                 .snapshotPolicies()
-                .define("xxrtikvc")
-                .withRegion("cansymoyqhlwigd")
-                .withExistingNetAppAccount("zdzgtilaxhnfhqly", "ijouwivkxoyzunb")
-                .withTags(mapOf("ajuwas", "kbxgom", "hzbezkgi", "vdaeyyguxakjsq", "vvjskgfmocwahp", "sidxasicdd"))
+                .define("ieekpndzaa")
+                .withRegion("czexrxzbujrtrhqv")
+                .withExistingNetAppAccount("ttadijae", "kmr")
+                .withTags(mapOf("gnl", "vk"))
                 .withHourlySchedule(
                     new HourlySchedule()
-                        .withSnapshotsToKeep(916087616)
-                        .withMinute(1269366447)
-                        .withUsedBytes(1943698242721661529L))
+                        .withSnapshotsToKeep(517735759)
+                        .withMinute(161734406)
+                        .withUsedBytes(5927921282145979607L))
                 .withDailySchedule(
                     new DailySchedule()
-                        .withSnapshotsToKeep(27132642)
-                        .withHour(1600333305)
-                        .withMinute(1221530840)
-                        .withUsedBytes(5358862832851160047L))
+                        .withSnapshotsToKeep(606462246)
+                        .withHour(619135714)
+                        .withMinute(310350754)
+                        .withUsedBytes(8944608160105267933L))
                 .withWeeklySchedule(
                     new WeeklySchedule()
-                        .withSnapshotsToKeep(898501663)
-                        .withDay("qskaw")
-                        .withHour(1561642293)
-                        .withMinute(793073079)
-                        .withUsedBytes(4618566353209491802L))
+                        .withSnapshotsToKeep(203387229)
+                        .withDay("hheioqaqhvseuf")
+                        .withHour(695023637)
+                        .withMinute(703231006)
+                        .withUsedBytes(6853300792215489751L))
                 .withMonthlySchedule(
                     new MonthlySchedule()
-                        .withSnapshotsToKeep(483847293)
-                        .withDaysOfMonth("tqlkz")
-                        .withHour(910896257)
-                        .withMinute(1366992874)
-                        .withUsedBytes(3840225965423705629L))
+                        .withSnapshotsToKeep(1303034345)
+                        .withDaysOfMonth("sismjqfrddga")
+                        .withHour(15155929)
+                        .withMinute(1363527870)
+                        .withUsedBytes(490169068933879788L))
                 .withEnabled(false)
                 .create();
 
-        Assertions.assertEquals("erteeammxqiekk", response.location());
-        Assertions.assertEquals("drtkgdoj", response.tags().get("mxvavrefdee"));
-        Assertions.assertEquals(1763110580, response.hourlySchedule().snapshotsToKeep());
-        Assertions.assertEquals(1374695683, response.hourlySchedule().minute());
-        Assertions.assertEquals(8248669428764587059L, response.hourlySchedule().usedBytes());
-        Assertions.assertEquals(2084257328, response.dailySchedule().snapshotsToKeep());
-        Assertions.assertEquals(618500847, response.dailySchedule().hour());
-        Assertions.assertEquals(1570149623, response.dailySchedule().minute());
-        Assertions.assertEquals(3500912749026197727L, response.dailySchedule().usedBytes());
-        Assertions.assertEquals(602295715, response.weeklySchedule().snapshotsToKeep());
-        Assertions.assertEquals("geuaulx", response.weeklySchedule().day());
-        Assertions.assertEquals(783935050, response.weeklySchedule().hour());
-        Assertions.assertEquals(1584096460, response.weeklySchedule().minute());
-        Assertions.assertEquals(1025453690932299158L, response.weeklySchedule().usedBytes());
-        Assertions.assertEquals(1476296254, response.monthlySchedule().snapshotsToKeep());
-        Assertions.assertEquals("nenlsvxeizzg", response.monthlySchedule().daysOfMonth());
-        Assertions.assertEquals(1958797848, response.monthlySchedule().hour());
-        Assertions.assertEquals(2086736187, response.monthlySchedule().minute());
-        Assertions.assertEquals(4209661666295596661L, response.monthlySchedule().usedBytes());
+        Assertions.assertEquals("hmkdasvfl", response.location());
+        Assertions.assertEquals("xcudchxgsr", response.tags().get("oldforobw"));
+        Assertions.assertEquals(1671689667, response.hourlySchedule().snapshotsToKeep());
+        Assertions.assertEquals(1202304870, response.hourlySchedule().minute());
+        Assertions.assertEquals(1705297672247999328L, response.hourlySchedule().usedBytes());
+        Assertions.assertEquals(2073795724, response.dailySchedule().snapshotsToKeep());
+        Assertions.assertEquals(1291910908, response.dailySchedule().hour());
+        Assertions.assertEquals(264997502, response.dailySchedule().minute());
+        Assertions.assertEquals(7353815266805175635L, response.dailySchedule().usedBytes());
+        Assertions.assertEquals(1178556723, response.weeklySchedule().snapshotsToKeep());
+        Assertions.assertEquals("bdkelvidizo", response.weeklySchedule().day());
+        Assertions.assertEquals(344121425, response.weeklySchedule().hour());
+        Assertions.assertEquals(1181700002, response.weeklySchedule().minute());
+        Assertions.assertEquals(6191416292355922762L, response.weeklySchedule().usedBytes());
+        Assertions.assertEquals(1331407717, response.monthlySchedule().snapshotsToKeep());
+        Assertions.assertEquals("dgnwncypuuwwlt", response.monthlySchedule().daysOfMonth());
+        Assertions.assertEquals(740306752, response.monthlySchedule().hour());
+        Assertions.assertEquals(1798680046, response.monthlySchedule().minute());
+        Assertions.assertEquals(5288027656858110726L, response.monthlySchedule().usedBytes());
         Assertions.assertEquals(true, response.enabled());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
