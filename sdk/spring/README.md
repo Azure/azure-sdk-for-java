@@ -137,7 +137,7 @@ If you’re a Maven user, add our BOM to your pom.xml `<dependencyManagement>` s
         <dependency>
             <groupId>com.azure.spring</groupId>
             <artifactId>spring-cloud-azure-dependencies</artifactId>
-            <version>5.6.0</version>
+            <version>5.7.0</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>

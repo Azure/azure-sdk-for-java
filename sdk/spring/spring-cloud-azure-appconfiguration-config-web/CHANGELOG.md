@@ -1,6 +1,6 @@
 # Release History
 
-## 5.7.0-beta.1 (Unreleased)
+## 5.8.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,9 +8,11 @@
 
 ### Bugs Fixed
 
-* Fixed Event Hook validation
-
 ### Other Changes
+
+## 5.7.0 (2023-11-07)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#570-2023-11-07) for more details.
 
 ## 5.6.0 (2023-10-24)
 
