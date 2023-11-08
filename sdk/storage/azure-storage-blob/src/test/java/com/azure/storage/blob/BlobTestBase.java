@@ -472,6 +472,14 @@ public class BlobTestBase extends TestProxyTestBase {
         }
     }
 
+    protected String setupContainerAsyncLeaseCondition(BlobContainerAsyncClient cu, String leaseID) {
+        if (Objects.equals(leaseID, RECEIVED_LEASE_ID)) {
+            return createLeaseAsyncClient(cu).acquireLease(-1).block();
+        } else {
+            return leaseID;
+        }
+    }
+
     protected BlobServiceClient getOAuthServiceClient() {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
@@ -588,6 +596,17 @@ public class BlobTestBase extends TestProxyTestBase {
             .containerClient(containerClient)
             .leaseId(leaseId)
             .buildClient();
+    }
+
+    protected static BlobLeaseAsyncClient createLeaseAsyncClient(BlobContainerAsyncClient containerAsyncClient) {
+        return createLeaseAsyncClient(containerAsyncClient, null);
+    }
+
+    protected static BlobLeaseAsyncClient createLeaseAsyncClient(BlobContainerAsyncClient containerAsyncClient, String leaseId) {
+        return new BlobLeaseClientBuilder()
+            .containerAsyncClient(containerAsyncClient)
+            .leaseId(leaseId)
+            .buildAsyncClient();
     }
 
     /**
