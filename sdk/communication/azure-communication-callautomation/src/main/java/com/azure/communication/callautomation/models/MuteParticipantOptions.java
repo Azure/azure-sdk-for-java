@@ -6,19 +6,16 @@ package com.azure.communication.callautomation.models;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
-import java.util.List;
-
 /**
- * The options for unmuting a participant.
+ * The options for muting a participant.
  */
 @Fluent
-public final class UnmuteParticipantsOptions {
+public final class MuteParticipantOptions {
     /**
-     * The participants to unmute.
-     *  Only one participant currently supported.
-     *  Only ACS Users are currently supported.
+     * The participant to mute.
+     * Only ACS Users are currently supported.
      */
-    private final List<CommunicationIdentifier> targetParticipant;
+    private final CommunicationIdentifier targetParticipant;
 
     /**
      * The operational context
@@ -28,18 +25,18 @@ public final class UnmuteParticipantsOptions {
     /**
      * Constructor
      *
-     * @param targetParticipant The participants to unmute.
+     * @param targetParticipant The targetParticipant to mute.
      */
-    public UnmuteParticipantsOptions(List<CommunicationIdentifier> targetParticipant) {
+    public MuteParticipantOptions(CommunicationIdentifier targetParticipant) {
         this.targetParticipant = targetParticipant;
     }
 
     /**
-     * Get the participants.
+     * Get the participant.
      *
-     * @return the participants to mute.
+     * @return the participant to mute.
      */
-    public List<CommunicationIdentifier> getTargetParticipant() {
+    public CommunicationIdentifier getTargetParticipant() {
         return targetParticipant;
     }
 
@@ -56,9 +53,9 @@ public final class UnmuteParticipantsOptions {
      * Set the operationContext.
      *
      * @param operationContext the operationContext to set
-     * @return the UnmuteParticipantsOptions object itself.
+     * @return the MuteParticipantOptions object itself.
      */
-    public UnmuteParticipantsOptions setOperationContext(String operationContext) {
+    public MuteParticipantOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }

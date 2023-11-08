@@ -3,11 +3,11 @@
 
 package com.azure.communication.callautomation.implementation.accesshelpers;
 
-import com.azure.communication.callautomation.implementation.models.MuteParticipantsResponseInternal;
-import com.azure.communication.callautomation.models.MuteParticipantsResult;
+import com.azure.communication.callautomation.implementation.models.MuteParticipantsResultInternal;
+import com.azure.communication.callautomation.models.MuteParticipantResult;
 
 /**
- * Helper class to access private values of {@link MuteParticipantsResult} across package boundaries.
+ * Helper class to access private values of {@link MuteParticipantsResultInternal} across package boundaries.
  */
 public final class MuteParticipantsResponseConstructorProxy {
     private static MuteParticipantsResponseConstructorAccessor accessor;
@@ -20,17 +20,17 @@ public final class MuteParticipantsResponseConstructorProxy {
      */
     public interface MuteParticipantsResponseConstructorAccessor {
         /**
-         * Creates a new instance of {@link MuteParticipantsResult} backed by an internal instance of
-         * {@link MuteParticipantsResult}.
+         * Creates a new instance of {@link MuteParticipantResult} backed by an internal instance of
+         * {@link MuteParticipantsResultInternal}.
          *
          * @param internalResponse The internal response.
-         * @return A new instance of {@link MuteParticipantsResult}.
+         * @return A new instance of {@link MuteParticipantResult}.
          */
-        MuteParticipantsResult create(MuteParticipantsResponseInternal internalResponse);
+        MuteParticipantResult create(MuteParticipantsResultInternal internalResponse);
     }
 
     /**
-     * The method called from {@link MuteParticipantsResult} to set it's accessor.
+     * The method called from {@link MuteParticipantResult} to set it's accessor.
      *
      * @param accessor The accessor.
      */
@@ -39,18 +39,18 @@ public final class MuteParticipantsResponseConstructorProxy {
     }
 
     /**
-     * Creates a new instance of {@link MuteParticipantsResult} backed by an internal instance of
-     * {@link MuteParticipantsResult}.
+     * Creates a new instance of {@link MuteParticipantResult} backed by an internal instance of
+     * {@link MuteParticipantsResultInternal}.
      *
      * @param internalResponse The internal response.
-     * @return A new instance of {@link MuteParticipantsResult}.
+     * @return A new instance of {@link MuteParticipantResult}.
      */
-    public static MuteParticipantsResult create(MuteParticipantsResponseInternal internalResponse) {
+    public static MuteParticipantResult create(MuteParticipantsResultInternal internalResponse) {
         // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
         // application accesses BlobDownloadHeaders which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
         if (accessor == null) {
-            new MuteParticipantsResult();
+            new MuteParticipantResult();
         }
 
         assert accessor != null;

@@ -43,14 +43,17 @@ public final class AnswerCallRequestInternal {
     /*
      * The endpoint URL of the Azure Cognitive Services resource attached
      */
-    @JsonProperty(value = "azureCognitiveServicesEndpointUrl")
-    private String azureCognitiveServicesEndpointUrl;
+    @JsonProperty(value = "cognitiveServicesEndpoint")
+    private String cognitiveServicesEndpoint;
 
     /*
      * The identifier of the call automation entity which answers the call
      */
-    @JsonProperty(value = "answeredByIdentifier")
-    private CommunicationUserIdentifierModel answeredByIdentifier;
+    @JsonProperty(value = "answeredBy")
+    private CommunicationUserIdentifierModel answeredBy;
+
+    /** Creates an instance of AnswerCallRequestInternal class. */
+    public AnswerCallRequestInternal() {}
 
     /**
      * Get the incomingCallContext property: The context associated with the call.
@@ -155,44 +158,42 @@ public final class AnswerCallRequestInternal {
     }
 
     /**
-     * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
+     * Get the cognitiveServicesEndpoint property: The endpoint URL of the Azure Cognitive Services resource attached.
      *
-     * @return the azureCognitiveServicesEndpointUrl value.
+     * @return the cognitiveServicesEndpoint value.
      */
-    public String getAzureCognitiveServicesEndpointUrl() {
-        return this.azureCognitiveServicesEndpointUrl;
+    public String getCognitiveServicesEndpoint() {
+        return this.cognitiveServicesEndpoint;
     }
 
     /**
-     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
+     * Set the cognitiveServicesEndpoint property: The endpoint URL of the Azure Cognitive Services resource attached.
      *
-     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @param cognitiveServicesEndpoint the cognitiveServicesEndpoint value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
-    public AnswerCallRequestInternal setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
-        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
+    public AnswerCallRequestInternal setCognitiveServicesEndpoint(String cognitiveServicesEndpoint) {
+        this.cognitiveServicesEndpoint = cognitiveServicesEndpoint;
         return this;
     }
 
     /**
-     * Get the answeredByIdentifier property: The identifier of the call automation entity which answers the call.
+     * Get the answeredBy property: The identifier of the call automation entity which answers the call.
      *
-     * @return the answeredByIdentifier value.
+     * @return the answeredBy value.
      */
-    public CommunicationUserIdentifierModel getAnsweredByIdentifier() {
-        return this.answeredByIdentifier;
+    public CommunicationUserIdentifierModel getAnsweredBy() {
+        return this.answeredBy;
     }
 
     /**
-     * Set the answeredByIdentifier property: The identifier of the call automation entity which answers the call.
+     * Set the answeredBy property: The identifier of the call automation entity which answers the call.
      *
-     * @param answeredByIdentifier the answeredByIdentifier value to set.
+     * @param answeredBy the answeredBy value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
-    public AnswerCallRequestInternal setAnsweredByIdentifier(CommunicationUserIdentifierModel answeredByIdentifier) {
-        this.answeredByIdentifier = answeredByIdentifier;
+    public AnswerCallRequestInternal setAnsweredBy(CommunicationUserIdentifierModel answeredBy) {
+        this.answeredBy = answeredBy;
         return this;
     }
 }

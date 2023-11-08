@@ -11,16 +11,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class StartDialogRequestInternal {
     /*
-     * Defines options for dialog.
+     * Defines the dialog.
      */
-    @JsonProperty(value = "dialogOptions", required = true)
-    private DialogOptions dialogOptions;
-
-    /*
-     * Determines the type of the dialog.
-     */
-    @JsonProperty(value = "dialogInputType", required = true)
-    private DialogInputType dialogInputType;
+    @JsonProperty(value = "dialog", required = true)
+    private BaseDialog dialog;
 
     /*
      * The value to identify context of the operation.
@@ -28,43 +22,26 @@ public final class StartDialogRequestInternal {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
+    /** Creates an instance of StartDialogRequestInternal class. */
+    public StartDialogRequestInternal() {}
+
     /**
-     * Get the dialogOptions property: Defines options for dialog.
+     * Get the dialog property: Defines the dialog.
      *
-     * @return the dialogOptions value.
+     * @return the dialog value.
      */
-    public DialogOptions getDialogOptions() {
-        return this.dialogOptions;
+    public BaseDialog getDialog() {
+        return this.dialog;
     }
 
     /**
-     * Set the dialogOptions property: Defines options for dialog.
+     * Set the dialog property: Defines the dialog.
      *
-     * @param dialogOptions the dialogOptions value to set.
+     * @param dialog the dialog value to set.
      * @return the StartDialogRequestInternal object itself.
      */
-    public StartDialogRequestInternal setDialogOptions(DialogOptions dialogOptions) {
-        this.dialogOptions = dialogOptions;
-        return this;
-    }
-
-    /**
-     * Get the dialogInputType property: Determines the type of the dialog.
-     *
-     * @return the dialogInputType value.
-     */
-    public DialogInputType getDialogInputType() {
-        return this.dialogInputType;
-    }
-
-    /**
-     * Set the dialogInputType property: Determines the type of the dialog.
-     *
-     * @param dialogInputType the dialogInputType value to set.
-     * @return the StartDialogRequestInternal object itself.
-     */
-    public StartDialogRequestInternal setDialogInputType(DialogInputType dialogInputType) {
-        this.dialogInputType = dialogInputType;
+    public StartDialogRequestInternal setDialog(BaseDialog dialog) {
+        this.dialog = dialog;
         return this;
     }
 

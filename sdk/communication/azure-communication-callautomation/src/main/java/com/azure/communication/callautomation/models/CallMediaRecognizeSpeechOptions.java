@@ -3,28 +3,42 @@
 
 package com.azure.communication.callautomation.models;
 
-import java.time.Duration;
-
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.Duration;
+
 /** The Recognize configurations specific for Continuous Speech Recognition. **/
+@Fluent
 public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
     /*
      * The length of end silence when user stops speaking and cogservice send
      * response.
      */
-    @JsonProperty(value = "endSilenceTimeoutInMs")
-    private Duration endSilenceTimeoutInMs;
+    @JsonProperty(value = "endSilenceTimeout")
+    private Duration endSilenceTimeout;
+
+    /*
+     * Speech language to be recognized, If not set default is en-US
+     */
+    @JsonProperty(value = "speechLanguage")
+    private String speechLanguage;
+
+    /*
+     * Endpoint where the custom model was deployed.
+     */
+    @JsonProperty(value = "speechRecognitionModelEndpointId")
+    private String speechRecognitionModelEndpointId;
 
     /**
-     * Get the endSilenceTimeoutInMs property: The length of end silence when user stops speaking and cogservice send
+     * Get the endSilenceTimeout property: The length of end silence when user stops speaking and cogservice send
      * response.
      *
-     * @return the endSilenceTimeoutInMs value.
+     * @return the endSilenceTimeout value.
      */
-    public Duration getEndSilenceTimeoutInMs() {
-        return this.endSilenceTimeoutInMs;
+    public Duration getEndSilenceTimeout() {
+        return this.endSilenceTimeout;
     }
 
     /**
@@ -115,13 +129,52 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
     }
 
     /**
+     * Set the speech language property.
+     * @param speechLanguage the speechLanguage value to set.
+     * @return the CallMediaRecognizeSpeechOptions object itself.
+     */
+    public CallMediaRecognizeSpeechOptions setSpeechLanguage(String speechLanguage) {
+        this.speechLanguage = speechLanguage;
+        return this;
+    }
+
+    /**
+     * Get the speech language property.
+     *
+     * @return the speech language.
+     */
+    public String getSpeechLanguage() {
+        return this.speechLanguage;
+    }
+
+    /**
+     * Get the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     *
+     * @return the speechRecognitionModelEndpointId value.
+     */
+    public String getSpeechRecognitionModelEndpointId() {
+        return this.speechRecognitionModelEndpointId;
+    }
+
+    /**
+     * Set the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     *
+     * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
+     * @return the CallMediaRecognizeSpeechOptions object itself.
+     */
+    public CallMediaRecognizeSpeechOptions setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
+        this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
+        return this;
+    }
+
+    /**
      * Initializes a CallMediaRecognizeSpeechOptions object.
      *
      * @param targetParticipant Target participant of continuous speech recognition.
-     * @param endSilenceTimeoutInMs the endSilenceTimeoutInMs value to set.
+     * @param endSilenceTimeout the endSilenceTimeout value to set.
      */
-    public CallMediaRecognizeSpeechOptions(CommunicationIdentifier targetParticipant, Duration endSilenceTimeoutInMs) {
+    public CallMediaRecognizeSpeechOptions(CommunicationIdentifier targetParticipant, Duration endSilenceTimeout) {
         super(RecognizeInputType.SPEECH, targetParticipant);
-        this.endSilenceTimeoutInMs = endSilenceTimeoutInMs;
+        this.endSilenceTimeout = endSilenceTimeout;
     }
 }

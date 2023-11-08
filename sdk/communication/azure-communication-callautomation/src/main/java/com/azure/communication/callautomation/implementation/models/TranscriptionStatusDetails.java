@@ -42,6 +42,14 @@ public final class TranscriptionStatusDetails extends ExpandableStringEnum<Trans
     public static final TranscriptionStatusDetails UNSPECIFIED_ERROR = fromString("unspecifiedError");
 
     /**
+     * Creates a new instance of TranscriptionStatusDetails value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TranscriptionStatusDetails() {}
+
+    /**
      * Creates or finds a TranscriptionStatusDetails from its string representation.
      *
      * @param name a name to look for.
@@ -52,7 +60,11 @@ public final class TranscriptionStatusDetails extends ExpandableStringEnum<Trans
         return fromString(name, TranscriptionStatusDetails.class);
     }
 
-    /** @return known TranscriptionStatusDetails values. */
+    /**
+     * Gets known TranscriptionStatusDetails values.
+     *
+     * @return known TranscriptionStatusDetails values.
+     */
     public static Collection<TranscriptionStatusDetails> values() {
         return values(TranscriptionStatusDetails.class);
     }

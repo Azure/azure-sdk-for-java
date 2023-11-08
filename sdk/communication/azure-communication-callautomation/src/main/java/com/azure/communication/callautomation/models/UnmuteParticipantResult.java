@@ -11,21 +11,21 @@ import java.util.Objects;
 
 /** The UnmuteParticipantsResult model. */
 @Immutable
-public final class UnmuteParticipantsResult {
+public final class UnmuteParticipantResult {
     /*
      * The operation context provided by client.
      */
     private final String operationContext;
 
     static {
-        UnmuteParticipantsResponseConstructorProxy.setAccessor(UnmuteParticipantsResult::new);
+        UnmuteParticipantsResponseConstructorProxy.setAccessor(UnmuteParticipantResult::new);
     }
 
     /**
      * Public constructor.
      *
      */
-    public UnmuteParticipantsResult() {
+    public UnmuteParticipantResult() {
         this.operationContext = null;
     }
 
@@ -34,7 +34,7 @@ public final class UnmuteParticipantsResult {
      *
      * @param  unmuteParticipantsResponseInternal The response from the service
      */
-    UnmuteParticipantsResult(UnmuteParticipantsResponseInternal unmuteParticipantsResponseInternal) {
+    UnmuteParticipantResult(UnmuteParticipantsResponseInternal unmuteParticipantsResponseInternal) {
         Objects.requireNonNull(unmuteParticipantsResponseInternal, "unmuteParticipantsResponseInternal must not be null");
 
         this.operationContext = unmuteParticipantsResponseInternal.getOperationContext();

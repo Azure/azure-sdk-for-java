@@ -8,10 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TranscriptionTransportType. */
+/** The type of transport to be used for live transcription, eg. Websocket. */
 public final class TranscriptionTransportType extends ExpandableStringEnum<TranscriptionTransportType> {
     /** Static value websocket for TranscriptionTransportType. */
     public static final TranscriptionTransportType WEBSOCKET = fromString("websocket");
+
+    /**
+     * Creates a new instance of TranscriptionTransportType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TranscriptionTransportType() {}
 
     /**
      * Creates or finds a TranscriptionTransportType from its string representation.
@@ -24,7 +32,11 @@ public final class TranscriptionTransportType extends ExpandableStringEnum<Trans
         return fromString(name, TranscriptionTransportType.class);
     }
 
-    /** @return known TranscriptionTransportType values. */
+    /**
+     * Gets known TranscriptionTransportType values.
+     *
+     * @return known TranscriptionTransportType values.
+     */
     public static Collection<TranscriptionTransportType> values() {
         return values(TranscriptionTransportType.class);
     }

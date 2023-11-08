@@ -9,6 +9,17 @@ import com.azure.core.util.ServiceVersion;
  * Versions of CallAutomation service supported by this client library.
  */
 public enum CallAutomationServiceVersion implements ServiceVersion {
+
+    /**
+     * Service version {@code 2023-10-03-preview}.
+     */
+    V2023_10_03_PREVIEW("2023-10-03-preview"),
+
+    /**
+     * Service version {@code 2023-10-15}.
+     */
+    V2023_10_15("2023-10-15"),
+
     /**
      * Service version {@code 2023-03-06}.
      */
@@ -39,6 +50,6 @@ public enum CallAutomationServiceVersion implements ServiceVersion {
      * @return The latest {@link CallAutomationServiceVersion} object.
      */
     public static CallAutomationServiceVersion getLatest() {
-        return V2023_01_15_PREVIEW;
+        return V2023_10_03_PREVIEW;
     }
 }

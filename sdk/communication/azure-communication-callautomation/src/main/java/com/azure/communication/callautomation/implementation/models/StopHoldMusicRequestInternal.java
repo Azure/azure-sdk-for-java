@@ -18,11 +18,13 @@ public final class StopHoldMusicRequestInternal {
     private CommunicationIdentifierModel targetParticipant;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request
-     * to the response event.
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
+
+    /** Creates an instance of StopHoldMusicRequestInternal class. */
+    public StopHoldMusicRequestInternal() {}
 
     /**
      * Get the targetParticipant property: Participants to be hold from the call. Only ACS Users are supported.

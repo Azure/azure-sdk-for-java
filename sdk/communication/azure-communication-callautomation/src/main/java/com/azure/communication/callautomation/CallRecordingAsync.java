@@ -122,8 +122,6 @@ public final class CallRecordingAsync {
                 return callRecordingsInternal
                     .startRecordingWithResponseAsync(
                         request,
-                        UUID.randomUUID(),
-                        OffsetDateTime.now(),
                         contextValue)
                     .map(response ->
                         new SimpleResponse<>(response, RecordingStateResponseConstructorProxy.create(response.getValue()))

@@ -16,6 +16,9 @@ public final class UserConsent {
     @JsonProperty(value = "recording")
     private Integer recording;
 
+    /** Creates an instance of UserConsent class. */
+    public UserConsent() {}
+
     /**
      * Get the recording property: The recording property.
      *

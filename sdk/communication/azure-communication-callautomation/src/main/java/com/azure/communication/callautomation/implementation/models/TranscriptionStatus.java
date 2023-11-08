@@ -29,6 +29,14 @@ public final class TranscriptionStatus extends ExpandableStringEnum<Transcriptio
     public static final TranscriptionStatus UNSPECIFIED_ERROR = fromString("unspecifiedError");
 
     /**
+     * Creates a new instance of TranscriptionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TranscriptionStatus() {}
+
+    /**
      * Creates or finds a TranscriptionStatus from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +47,11 @@ public final class TranscriptionStatus extends ExpandableStringEnum<Transcriptio
         return fromString(name, TranscriptionStatus.class);
     }
 
-    /** @return known TranscriptionStatus values. */
+    /**
+     * Gets known TranscriptionStatus values.
+     *
+     * @return known TranscriptionStatus values.
+     */
     public static Collection<TranscriptionStatus> values() {
         return values(TranscriptionStatus.class);
     }

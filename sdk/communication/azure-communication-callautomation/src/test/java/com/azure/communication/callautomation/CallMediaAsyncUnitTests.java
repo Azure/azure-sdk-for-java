@@ -4,19 +4,22 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.PlayToAllOptions;
-import com.azure.communication.callautomation.models.RecognizeChoice;
+import com.azure.communication.callautomation.models.RecognitionChoice;
+import com.azure.communication.callautomation.implementation.models.SendDtmfTonesResultInternal;
 import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOrDtmfOptions;
+import com.azure.communication.callautomation.models.ContinuousDtmfRecognitionOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
-import com.azure.communication.callautomation.models.GenderType;
+import com.azure.communication.callautomation.models.VoiceKind;
 import com.azure.communication.callautomation.models.StartHoldMusicOptions;
 import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.callautomation.models.SsmlSource;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.RecognizeInputType;
+import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,12 +50,12 @@ public class CallMediaAsyncUnitTests {
         callMedia = getMockCallMedia(202);
 
         playFileSource = new FileSource();
-        playFileSource.setPlaySourceId("playFileSourceId");
+        playFileSource.setPlaySourceCacheId("playFileSourceId");
         playFileSource.setUrl("filePath");
 
         playTextSource = new TextSource();
-        playTextSource.setPlaySourceId("playTextSourceId");
-        playTextSource.setVoiceGender(GenderType.MALE);
+        playTextSource.setPlaySourceCacheId("playTextSourceId");
+        playTextSource.setVoiceKind(VoiceKind.MALE);
         playTextSource.setSourceLocale("en-US");
         playTextSource.setVoiceName("LULU");
         playTextSource.setCustomVoiceEndpointId("customVoiceEndpointId");
@@ -174,10 +177,10 @@ public class CallMediaAsyncUnitTests {
     public void startContinuousDtmfRecognitionWithResponse() {
         // override callMedia to mock 200 response code
         callMedia = getMockCallMedia(200);
+        ContinuousDtmfRecognitionOptions options = new ContinuousDtmfRecognitionOptions(new CommunicationUserIdentifier("id"));
         StepVerifier.create(
-                callMedia.startContinuousDtmfRecognitionWithResponse(new CommunicationUserIdentifier("id"),
-                    "operationContext")
-            )
+                callMedia.startContinuousDtmfRecognitionWithResponse(
+                    options))
             .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
@@ -186,24 +189,28 @@ public class CallMediaAsyncUnitTests {
     public void stopContinuousDtmfRecognitionWithResponse() {
         // override callMedia to mock 200 response code
         callMedia = getMockCallMedia(200);
+        ContinuousDtmfRecognitionOptions options = new ContinuousDtmfRecognitionOptions(new CommunicationUserIdentifier("id"));
         StepVerifier.create(
-                callMedia.stopContinuousDtmfRecognitionWithResponse(new CommunicationUserIdentifier("id"),
-                    "operationContext", null)
-            )
+                callMedia.stopContinuousDtmfRecognitionWithResponse(
+                    options))
             .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
 
     @Test
     public void sendDtmfWithResponse() {
-        StepVerifier.create(
-                callMedia.sendDtmfWithResponse(
-                        Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()), new CommunicationUserIdentifier("id"),
-                        "operationContext",
-                        null
-                )
-            ).consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
-            .verifyComplete();
+        CallConnectionAsync callConnection =
+            CallAutomationUnitTestBase.getCallConnectionAsync(new ArrayList<>(
+                Collections.singletonList(new AbstractMap.SimpleEntry<>(
+                    CallAutomationUnitTestBase.serializeObject(new SendDtmfTonesResultInternal().setOperationContext("operationContext")), 202)))
+            );
+        callMedia = callConnection.getCallMediaAsync();
+        List<DtmfTone> tones = Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList());
+        SendDtmfTonesOptions options = new SendDtmfTonesOptions(tones, new CommunicationUserIdentifier("id"));
+        options.setOperationContext("operationContext");
+        options.setOperationCallbackUrl(CallAutomationUnitTestBase.CALL_CALLBACK_URL);
+        StepVerifier.create(callMedia.sendDtmfTonesWithResponse(options))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode())).verifyComplete();
     }
 
     @Test
@@ -235,11 +242,11 @@ public class CallMediaAsyncUnitTests {
     @Test
     public void recognizeWithResponseWithFileSourceChoiceOptions() {
 
-        RecognizeChoice recognizeChoice1 = new RecognizeChoice();
-        RecognizeChoice recognizeChoice2 = new RecognizeChoice();
+        RecognitionChoice recognizeChoice1 = new RecognitionChoice();
+        RecognitionChoice recognizeChoice2 = new RecognitionChoice();
         recognizeChoice1.setTone(DtmfTone.ZERO);
         recognizeChoice2.setTone(DtmfTone.SIX);
-        List<RecognizeChoice> recognizeChoices = new ArrayList<>(
+        List<RecognitionChoice> recognizeChoices = new ArrayList<>(
             Arrays.asList(recognizeChoice1, recognizeChoice2)
         );
         CallMediaRecognizeChoiceOptions recognizeOptions = new CallMediaRecognizeChoiceOptions(new CommunicationUserIdentifier("id"), recognizeChoices);
@@ -263,11 +270,11 @@ public class CallMediaAsyncUnitTests {
     @Test
     public void recognizeWithResponseTextChoiceOptions() {
 
-        RecognizeChoice recognizeChoice1 = new RecognizeChoice();
-        RecognizeChoice recognizeChoice2 = new RecognizeChoice();
+        RecognitionChoice recognizeChoice1 = new RecognitionChoice();
+        RecognitionChoice recognizeChoice2 = new RecognitionChoice();
         recognizeChoice1.setTone(DtmfTone.ZERO);
         recognizeChoice2.setTone(DtmfTone.THREE);
-        List<RecognizeChoice> recognizeChoices = new ArrayList<>(
+        List<RecognitionChoice> recognizeChoices = new ArrayList<>(
             Arrays.asList(recognizeChoice1, recognizeChoice2)
         );
         CallMediaRecognizeChoiceOptions recognizeOptions = new CallMediaRecognizeChoiceOptions(new CommunicationUserIdentifier("id"), recognizeChoices);

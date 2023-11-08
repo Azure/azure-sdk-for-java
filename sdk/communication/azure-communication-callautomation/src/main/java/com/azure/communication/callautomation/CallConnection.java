@@ -10,14 +10,14 @@ import com.azure.communication.callautomation.models.AddParticipantOptions;
 import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallInvite;
-import com.azure.communication.callautomation.models.MuteParticipantsOptions;
-import com.azure.communication.callautomation.models.MuteParticipantsResult;
+import com.azure.communication.callautomation.models.MuteParticipantOptions;
+import com.azure.communication.callautomation.models.MuteParticipantResult;
 import com.azure.communication.callautomation.models.RemoveParticipantOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferCallToParticipantOptions;
-import com.azure.communication.callautomation.models.UnmuteParticipantsOptions;
-import com.azure.communication.callautomation.models.UnmuteParticipantsResult;
+import com.azure.communication.callautomation.models.UnmuteParticipantOptions;
+import com.azure.communication.callautomation.models.UnmuteParticipantResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -223,46 +223,46 @@ public final class CallConnection {
     }
 
     /**
-     * Mutes participants in the call.
+     * Mutes participant in the call.
      *
      * @param targetParticipant - Participant to be muted. Only ACS Users are currently supported.
-     * @return A MuteParticipantsResult object.
+     * @return A MuteParticipantResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MuteParticipantsResult muteParticipants(CommunicationIdentifier targetParticipant) {
-        return callConnectionAsync.muteParticipantsAsync(targetParticipant).block();
+    public MuteParticipantResult muteParticipant(CommunicationIdentifier targetParticipant) {
+        return callConnectionAsync.muteParticipantAsync(targetParticipant).block();
     }
 
     /**
-     * Mute participants in the call.
-     * @param muteParticipantsOptions - Options for the request.
+     * Mute participant in the call.
+     * @param options - Options for the request.
      * @param context A {@link Context} representing the request context.
-     * @return a Response containing the MuteParticipantsResult object.
+     * @return a Response containing the MuteParticipantResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MuteParticipantsResult> muteParticipantsWithResponse(MuteParticipantsOptions muteParticipantsOptions, Context context) {
-        return callConnectionAsync.muteParticipantWithResponseInternal(muteParticipantsOptions, context).block();
+    public Response<MuteParticipantResult> muteParticipantWithResponse(MuteParticipantOptions options, Context context) {
+        return callConnectionAsync.muteParticipantWithResponseInternal(options, context).block();
     }
 
     /**
-     * Unmutes participants in the call.
+     * Unmutes participant in the call.
      * @param targetParticipant - Participant to be unmuted. Only ACS Users are currently supported.
-     * @return An UnmuteParticipantsResult object.
+     * @return An UnmuteParticipantResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UnmuteParticipantsResult unmuteParticipants(CommunicationIdentifier targetParticipant) {
-        return callConnectionAsync.unmuteParticipantsAsync(targetParticipant).block();
+    public UnmuteParticipantResult unmuteParticipant(CommunicationIdentifier targetParticipant) {
+        return callConnectionAsync.unmuteParticipantAsync(targetParticipant).block();
     }
 
     /**
-     * Unmutes participants in the call.
-     * @param unmuteParticipantsOptions - Options for the request.
+     * Unmutes participant in the call.
+     * @param options - Options for the request.
      * @param context A {@link Context} representing the request context.
-     * @return a Response containing the UnmuteParticipantsResult object.
+     * @return a Response containing the UnmuteParticipantResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UnmuteParticipantsResult> unmuteParticipantsWithResponse(UnmuteParticipantsOptions unmuteParticipantsOptions, Context context) {
-        return callConnectionAsync.unmuteParticipantWithResponseInternal(unmuteParticipantsOptions, context).block();
+    public Response<UnmuteParticipantResult> unmuteParticipantWithResponse(UnmuteParticipantOptions options, Context context) {
+        return callConnectionAsync.unmuteParticipantWithResponseInternal(options, context).block();
     }
 
     /**

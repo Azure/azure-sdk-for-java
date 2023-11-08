@@ -6,19 +6,16 @@ package com.azure.communication.callautomation.models;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
-import java.util.List;
-
 /**
- * The options for muting a participant.
+ * The options for unmuting a participant.
  */
 @Fluent
-public final class MuteParticipantsOptions {
+public final class UnmuteParticipantOptions {
     /**
-     * The participants to mute.
-     * Only one participant currently supported.
-     * Only ACS Users are currently supported.
+     * The participants to unmute.
+     *  Only ACS Users are currently supported.
      */
-    private final List<CommunicationIdentifier> targetParticipant;
+    private final CommunicationIdentifier targetParticipant;
 
     /**
      * The operational context
@@ -28,18 +25,18 @@ public final class MuteParticipantsOptions {
     /**
      * Constructor
      *
-     * @param targetParticipant The targetParticipant to mute.
+     * @param targetParticipant The participants to unmute.
      */
-    public MuteParticipantsOptions(List<CommunicationIdentifier> targetParticipant) {
+    public UnmuteParticipantOptions(CommunicationIdentifier targetParticipant) {
         this.targetParticipant = targetParticipant;
     }
 
     /**
      * Get the participant.
      *
-     * @return the participants to mute.
+     * @return the participant to unmute.
      */
-    public List<CommunicationIdentifier> getTargetParticipant() {
+    public CommunicationIdentifier getTargetParticipant() {
         return targetParticipant;
     }
 
@@ -56,9 +53,9 @@ public final class MuteParticipantsOptions {
      * Set the operationContext.
      *
      * @param operationContext the operationContext to set
-     * @return the MuteParticipantsOptions object itself.
+     * @return the UnmuteParticipantOptions object itself.
      */
-    public MuteParticipantsOptions setOperationContext(String operationContext) {
+    public UnmuteParticipantOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }

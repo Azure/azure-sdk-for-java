@@ -29,11 +29,13 @@ public final class StartHoldMusicRequestInternal {
     private Boolean loop;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request
-     * to the response event.
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
+
+    /** Creates an instance of StartHoldMusicRequestInternal class. */
+    public StartHoldMusicRequestInternal() {}
 
     /**
      * Get the targetParticipant property: Participant to be held from the call.

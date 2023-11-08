@@ -3,12 +3,15 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
+import com.azure.communication.callautomation.models.ContinuousDtmfRecognitionOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
-import com.azure.communication.callautomation.models.PlaySource;
-import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
+import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
+import com.azure.communication.callautomation.models.SendDtmfTonesResult;
 import com.azure.communication.callautomation.models.StartHoldMusicOptions;
+import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -153,26 +156,23 @@ public final class CallMedia {
      *
      * @param tones tones to be sent
      * @param targetParticipant the target participant
+     * @return Response for successful sendDtmfTones request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendDtmf(List<DtmfTone> tones, CommunicationIdentifier targetParticipant) {
-        callMediaAsync.sendDtmf(tones, targetParticipant).block();
+    public SendDtmfTonesResult sendDtmfTones(List<DtmfTone> tones, CommunicationIdentifier targetParticipant) {
+        return callMediaAsync.sendDtmfTones(tones, targetParticipant).block();
     }
 
-    /**
+     /**
      * Sends Dtmf tones
      *
-     * @param tones tones to be sent
-     * @param targetParticipant the target participant
-     * @param operationContext operationContext (pass null if not applicable)
-     * @param callbackUrl the call back URI override to set (pass null if not applicable)
+     * @param options SendDtmfTones configuration options
      * @param context Context
-     * @return Response for successful sendDtmf request.
+     * @return Response for successful sendDtmfTones request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendDtmfWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant,
-                                               String operationContext, String callbackUrl, Context context) {
-        return callMediaAsync.sendDtmfWithResponseInternal(targetParticipant, tones, operationContext, callbackUrl, context).block();
+    public Response<SendDtmfTonesResult> sendDtmfTonesWithResponse(SendDtmfTonesOptions options, Context context) {
+        return callMediaAsync.sendDtmfTonesWithResponseInternal(options, context).block();
     }
 
     /**
@@ -187,14 +187,13 @@ public final class CallMedia {
     /**
      * Starts continuous Dtmf recognition.
      *
-     * @param targetParticipant the target participant
-     * @param operationContext operationContext (pass null if not applicable)
+     * @param options ContinuousDtmfRecognition configuration options
      * @param context Context
      * @return Response for successful start continuous dtmf recognition request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> startContinuousDtmfRecognitionWithResponse(CommunicationIdentifier targetParticipant, String operationContext, Context context) {
-        return callMediaAsync.startContinuousDtmfRecognitionWithResponseInternal(targetParticipant, operationContext, context).block();
+    public Response<Void> startContinuousDtmfRecognitionWithResponse(ContinuousDtmfRecognitionOptions options, Context context) {
+        return callMediaAsync.startContinuousDtmfRecognitionWithResponseInternal(options, context).block();
     }
 
     /**
@@ -208,15 +207,13 @@ public final class CallMedia {
 
     /**
      * Stops continuous Dtmf recognition.
-     * @param targetParticipant the target participant
-     * @param operationContext operationContext (pass null if not applicable)
+     * @param options ContinuousDtmfRecognition configuration options
      * @param context Context
-     * @param callbackUrl the call back URI override to set (pass null if not applicable)
      * @return Response for successful stop continuous dtmf recognition request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopContinuousDtmfRecognitionWithResponse(CommunicationIdentifier targetParticipant, String operationContext, String callbackUrl, Context context) {
-        return callMediaAsync.stopContinuousDtmfRecognitionWithResponseInternal(targetParticipant, operationContext, callbackUrl, context).block();
+    public Response<Void> stopContinuousDtmfRecognitionWithResponse(ContinuousDtmfRecognitionOptions options, Context context) {
+        return callMediaAsync.stopContinuousDtmfRecognitionWithResponseInternal(options, context).block();
     }
 
     /**

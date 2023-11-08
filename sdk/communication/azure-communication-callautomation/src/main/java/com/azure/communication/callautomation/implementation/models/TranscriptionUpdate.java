@@ -22,6 +22,9 @@ public final class TranscriptionUpdate {
     @JsonProperty(value = "transcriptionStatusDetails")
     private TranscriptionStatusDetails transcriptionStatusDetails;
 
+    /** Creates an instance of TranscriptionUpdate class. */
+    public TranscriptionUpdate() {}
+
     /**
      * Get the transcriptionStatus property: The transcriptionStatus property.
      *

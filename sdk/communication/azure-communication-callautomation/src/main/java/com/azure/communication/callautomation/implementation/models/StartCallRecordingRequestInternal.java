@@ -42,24 +42,19 @@ public final class StartCallRecordingRequestInternal {
     private RecordingFormatInternal recordingFormatType;
 
     /*
-     * The sequential order in which audio channels are assigned to
-     * participants in the unmixed recording.
-     * When 'recordingChannelType' is set to 'unmixed' and
-     * `audioChannelParticipantOrdering is not specified,
-     * the audio channel to participant mapping will be automatically assigned
-     * based on the order in which participant
-     * first audio was detected.  Channel to participant mapping details can be
-     * found in the metadata of the recording.
+     * The sequential order in which audio channels are assigned to participants in the unmixed recording.
+     * When 'recordingChannelType' is set to 'unmixed' and `audioChannelParticipantOrdering is not specified,
+     * the audio channel to participant mapping will be automatically assigned based on the order in which participant
+     * first audio was detected.  Channel to participant mapping details can be found in the metadata of the recording.
      */
     @JsonProperty(value = "audioChannelParticipantOrdering")
     private List<CommunicationIdentifierModel> audioChannelParticipantOrdering;
 
     /*
      * The channel affinity of call recording
-     * When 'recordingChannelType' is set to 'unmixed', if channelAffinity is
-     * not specified, 'channel' will be automatically assigned.
-     * Channel-Participant mapping details can be found in the metadata of the
-     * recording.
+     * When 'recordingChannelType' is set to 'unmixed', if channelAffinity is not specified, 'channel' will be
+     * automatically assigned.
+     * Channel-Participant mapping details can be found in the metadata of the recording.
      * ///
      */
     @JsonProperty(value = "channelAffinity")
@@ -72,11 +67,13 @@ public final class StartCallRecordingRequestInternal {
     private ExternalStorageInternal externalStorage;
 
     /*
-     * When set to true will start recording in Pause mode, which could be
-     * resumed.
+     * When set to true will start recording in Pause mode, which could be resumed.
      */
     @JsonProperty(value = "pauseOnStart")
     private Boolean pauseOnStart;
+
+    /** Creates an instance of StartCallRecordingRequestInternal class. */
+    public StartCallRecordingRequestInternal() {}
 
     /**
      * Get the callLocator property: The call locator.

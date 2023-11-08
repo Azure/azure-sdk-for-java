@@ -85,7 +85,7 @@ public class CallAutomationUnitTestBase {
 
     public static String generateListParticipantsResponse() {
         GetParticipantsResponseInternal getParticipantsResponseInternal = new GetParticipantsResponseInternal()
-            .setValues(new ArrayList<>(Arrays.asList(
+            .setValue(new ArrayList<>(Arrays.asList(
                 ModelGenerator.generateAcsCallParticipantInternal(CALL_CALLER_ID, false),
                 ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, true))))
             .setNextLink("");
@@ -103,8 +103,7 @@ public class CallAutomationUnitTestBase {
 
     public static String generateDialogStateResponse() {
         DialogStateResponse dialogStateResponse = new DialogStateResponse()
-            .setDialogId(DIALOG_ID)
-            .setDialogInputType(DialogInputType.POWER_VIRTUAL_AGENTS);
+            .setDialogId(DIALOG_ID);
 
         return serializeObject(dialogStateResponse);
     }

@@ -23,23 +23,27 @@ public final class TransferToParticipantRequestInternal {
     private CustomContext customContext;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request
-     * to the response event.
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /*
-     * Transferee is the participant who is transferring the call.
+     * Transferee is the participant who is transferred away.
      */
     @JsonProperty(value = "transferee")
     private CommunicationIdentifierModel transferee;
 
     /*
-     * The callback URI to override the main callback URI.
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      */
-    @JsonProperty(value = "callbackUri")
-    private String callbackUri;
+    @JsonProperty(value = "operationCallbackUri")
+    private String operationCallbackUri;
+
+    /** Creates an instance of TransferToParticipantRequestInternal class. */
+    public TransferToParticipantRequestInternal() {}
 
     /**
      * Get the targetParticipant property: The identity of the target where call should be transferred to.
@@ -104,7 +108,7 @@ public final class TransferToParticipantRequestInternal {
     }
 
     /**
-     * Get the transferee property: Transferee is the participant who is transferring the call.
+     * Get the transferee property: Transferee is the participant who is transferred away.
      *
      * @return the transferee value.
      */
@@ -113,7 +117,7 @@ public final class TransferToParticipantRequestInternal {
     }
 
     /**
-     * Set the transferee property: Transferee is the participant who is transferring the call.
+     * Set the transferee property: Transferee is the participant who is transferred away.
      *
      * @param transferee the transferee value to set.
      * @return the TransferToParticipantRequestInternal object itself.
@@ -124,22 +128,26 @@ public final class TransferToParticipantRequestInternal {
     }
 
     /**
-     * Get the callbackUri property: The callback URI to override the main callback URI.
+     * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
      *
-     * @return the callbackUri value.
+     * @return the operationCallbackUri value.
      */
-    public String getCallbackUri() {
-        return this.callbackUri;
+    public String getOperationCallbackUri() {
+        return this.operationCallbackUri;
     }
 
     /**
-     * Set the callbackUri property: The callback URI to override the main callback URI.
+     * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
      *
-     * @param callbackUri the callbackUri value to set.
+     * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */
-    public TransferToParticipantRequestInternal setCallbackUri(String callbackUri) {
-        this.callbackUri = callbackUri;
+    public TransferToParticipantRequestInternal setOperationCallbackUri(String operationCallbackUri) {
+        this.operationCallbackUri = operationCallbackUri;
         return this;
     }
 }

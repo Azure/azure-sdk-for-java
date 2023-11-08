@@ -4,37 +4,37 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.communication.callautomation.implementation.accesshelpers.MuteParticipantsResponseConstructorProxy;
-import com.azure.communication.callautomation.implementation.models.MuteParticipantsResponseInternal;
+import com.azure.communication.callautomation.implementation.models.MuteParticipantsResultInternal;
 import com.azure.core.annotation.Immutable;
 
 import java.util.Objects;
 
-/** The MuteParticipantsResult model. */
+/** The MuteParticipantResult model. */
 @Immutable
-public final class MuteParticipantsResult {
+public final class MuteParticipantResult {
     /*
      * The operation context provided by client.
      */
     private final String operationContext;
 
     static {
-        MuteParticipantsResponseConstructorProxy.setAccessor(MuteParticipantsResult::new);
+        MuteParticipantsResponseConstructorProxy.setAccessor(MuteParticipantResult::new);
     }
 
     /**
      * Public constructor.
      *
      */
-    public MuteParticipantsResult() {
+    public MuteParticipantResult() {
         this.operationContext = null;
     }
 
     /**
      * Package-private constructor of the class, used internally only.
      *
-     * @param  muteParticipantsResponseInternal The response from the service
+     * @param  MuteParticipantsResultInternal The response from the service
      */
-    MuteParticipantsResult(MuteParticipantsResponseInternal muteParticipantsResponseInternal) {
+    MuteParticipantResult(MuteParticipantsResultInternal muteParticipantsResponseInternal) {
         Objects.requireNonNull(muteParticipantsResponseInternal, "muteParticipantsResponseInternal must not be null");
 
         this.operationContext = muteParticipantsResponseInternal.getOperationContext();

@@ -4,12 +4,30 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The TranscriptionFailed model. */
-@Fluent
+@Immutable
 public final class TranscriptionFailed {
+    /*
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
+     */
+    @JsonProperty(value = "operationContext", access = JsonProperty.Access.WRITE_ONLY)
+    private String operationContext;
+
+    /*
+     * Contains the resulting SIP code, sub-code and message.
+     */
+    @JsonProperty(value = "resultInformation", access = JsonProperty.Access.WRITE_ONLY)
+    private ResultInformation resultInformation;
+
+    /*
+     * Defines the result for TranscriptionUpdate with the current status and the details about the status
+     */
+    @JsonProperty(value = "transcriptionUpdate", access = JsonProperty.Access.WRITE_ONLY)
+    private TranscriptionUpdate transcriptionUpdate;
+
     /*
      * Call connection ID.
      */
@@ -19,35 +37,46 @@ public final class TranscriptionFailed {
     /*
      * Server call ID.
      */
-    @JsonProperty(value = "serverCallId")
+    @JsonProperty(value = "serverCallId", access = JsonProperty.Access.WRITE_ONLY)
     private String serverCallId;
 
     /*
-     * Correlation ID for event to call correlation. Also called ChainId for
-     * skype chain ID.
+     * Correlation ID for event to call correlation. Also called ChainId for skype chain ID.
      */
-    @JsonProperty(value = "correlationId")
+    @JsonProperty(value = "correlationId", access = JsonProperty.Access.WRITE_ONLY)
     private String correlationId;
 
-    /*
-     * Used by customers when calling answerCall action to correlate the
-     * request to the response event.
-     */
-    @JsonProperty(value = "operationContext", access = JsonProperty.Access.WRITE_ONLY)
-    private String operationContext;
+    /** Creates an instance of TranscriptionFailed class. */
+    public TranscriptionFailed() {}
 
-    /*
-     * Contains the resulting SIP code/sub-code and message from NGC services.
+    /**
+     * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
+     * the response event.
+     *
+     * @return the operationContext value.
      */
-    @JsonProperty(value = "resultInformation", access = JsonProperty.Access.WRITE_ONLY)
-    private ResultInformation resultInformation;
+    public String getOperationContext() {
+        return this.operationContext;
+    }
 
-    /*
-     * Defines the result for TranscriptionUpdate with the current status and
-     * the details about the status
+    /**
+     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     *
+     * @return the resultInformation value.
      */
-    @JsonProperty(value = "transcriptionUpdateResult", access = JsonProperty.Access.WRITE_ONLY)
-    private TranscriptionUpdate transcriptionUpdateResult;
+    public ResultInformation getResultInformation() {
+        return this.resultInformation;
+    }
+
+    /**
+     * Get the transcriptionUpdate property: Defines the result for TranscriptionUpdate with the current status and the
+     * details about the status.
+     *
+     * @return the transcriptionUpdate value.
+     */
+    public TranscriptionUpdate getTranscriptionUpdate() {
+        return this.transcriptionUpdate;
+    }
 
     /**
      * Get the callConnectionId property: Call connection ID.
@@ -68,17 +97,6 @@ public final class TranscriptionFailed {
     }
 
     /**
-     * Set the serverCallId property: Server call ID.
-     *
-     * @param serverCallId the serverCallId value to set.
-     * @return the TranscriptionFailed object itself.
-     */
-    public TranscriptionFailed setServerCallId(String serverCallId) {
-        this.serverCallId = serverCallId;
-        return this;
-    }
-
-    /**
      * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
      * ID.
      *
@@ -86,46 +104,5 @@ public final class TranscriptionFailed {
      */
     public String getCorrelationId() {
         return this.correlationId;
-    }
-
-    /**
-     * Set the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
-     * ID.
-     *
-     * @param correlationId the correlationId value to set.
-     * @return the TranscriptionFailed object itself.
-     */
-    public TranscriptionFailed setCorrelationId(String correlationId) {
-        this.correlationId = correlationId;
-        return this;
-    }
-
-    /**
-     * Get the operationContext property: Used by customers when calling answerCall action to correlate the request to
-     * the response event.
-     *
-     * @return the operationContext value.
-     */
-    public String getOperationContext() {
-        return this.operationContext;
-    }
-
-    /**
-     * Get the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.
-     *
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
-    }
-
-    /**
-     * Get the transcriptionUpdateResult property: Defines the result for TranscriptionUpdate with the current status
-     * and the details about the status.
-     *
-     * @return the transcriptionUpdateResult value.
-     */
-    public TranscriptionUpdate getTranscriptionUpdateResult() {
-        return this.transcriptionUpdateResult;
     }
 }

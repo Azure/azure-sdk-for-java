@@ -6,7 +6,7 @@ package com.azure.communication.callautomation.models;
 import com.azure.communication.callautomation.implementation.accesshelpers.CancelAddParticipantResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.CancelAddParticipantResponseConstructorProxy.CancelAddParticipantResponseConstructorAccessor;
 import com.azure.communication.callautomation.implementation.models.CancelAddParticipantResponse;
-import com.azure.communication.callautomation.models.events.AddParticipantCancelled;
+import com.azure.communication.callautomation.models.events.CancelAddParticipantSucceeded;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 import com.azure.communication.callautomation.models.events.CancelAddParticipantFailed;
 import com.azure.core.annotation.Immutable;
@@ -87,19 +87,19 @@ public final class CancelAddParticipantResult extends ResultWithEventHandling<Ca
 
         return (timeout == null ? eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
             && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == AddParticipantCancelled.class || event.getClass() == CancelAddParticipantFailed.class))
+            && (event.getClass() == CancelAddParticipantSucceeded.class || event.getClass() == CancelAddParticipantFailed.class))
             : eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
             && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == AddParticipantCancelled.class || event.getClass() == CancelAddParticipantFailed.class), timeout)).flatMap(event -> Mono.just(getReturnedEvent(event)));
+            && (event.getClass() == CancelAddParticipantSucceeded.class || event.getClass() == CancelAddParticipantFailed.class), timeout)).flatMap(event -> Mono.just(getReturnedEvent(event)));
     }
 
     @Override
     protected CancelAddParticipantEventResult getReturnedEvent(CallAutomationEventBase event) {
         CancelAddParticipantEventResult result = null;
-        if (event.getClass() == AddParticipantCancelled.class) {
-            result = new CancelAddParticipantEventResult(true, (AddParticipantCancelled) event, null, ((AddParticipantCancelled) event).getParticipant(), ((AddParticipantCancelled) event).getInvitationId());
+        if (event.getClass() == CancelAddParticipantSucceeded.class) {
+            result = new CancelAddParticipantEventResult(true, (CancelAddParticipantSucceeded) event, null, ((CancelAddParticipantSucceeded) event).getInvitationId());
         } else if (event.getClass() == CancelAddParticipantFailed.class) {
-            result = new CancelAddParticipantEventResult(false, null, (CancelAddParticipantFailed) event, null, ((CancelAddParticipantFailed) event).getInvitationId());
+            result = new CancelAddParticipantEventResult(false, null, (CancelAddParticipantFailed) event, ((CancelAddParticipantFailed) event).getInvitationId());
         }
         return result;
     }

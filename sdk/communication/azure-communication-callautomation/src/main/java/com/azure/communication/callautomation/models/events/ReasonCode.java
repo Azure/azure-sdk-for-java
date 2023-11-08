@@ -5,6 +5,8 @@ package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.util.ExpandableStringEnum;
 
+import java.util.Collection;
+
 /** Defines values for ReasonCode. */
 public final class ReasonCode extends ExpandableStringEnum<ReasonCode> {
     /** Reason code names for the Recognize operation */
@@ -39,10 +41,14 @@ public final class ReasonCode extends ExpandableStringEnum<ReasonCode> {
     public static class Play extends ExpandableStringEnum<ReasonCode> {
         /** Action failed, file could not be downloaded. */
         public static final ReasonCode DOWNLOAD_FAILED = fromReasonCode(8536);
-        /** Action failed, file could not be downloaded. */
+        /** Action failed, invalid file format. */
         public static final ReasonCode INVALID_FILE_FORMAT = fromReasonCode(8535);
         /** Action failed, cognitive service play error. */
         public static final ReasonCode COGNITEIVE_SERVICE_PLAY_ERROR = fromReasonCode(8565);
+        /** Action failed, text or ssml play source empty. */
+        public static final ReasonCode TEXT_OR_SSML_SOURCE_EMPTY = fromReasonCode(8582);
+        /** Action failed, cognitive services error. */
+        public static final ReasonCode COGNITIVE_SERVICES_ERROR = fromReasonCode(8565);
     }
 
     /** Action completed successfully. */
@@ -56,7 +62,7 @@ public final class ReasonCode extends ExpandableStringEnum<ReasonCode> {
      * @param reasonCode a reasonCode to look for.
      * @return the corresponding ResourceCode.
      */
-    private static ReasonCode fromString(String reasonCode) {
+    public static ReasonCode fromString(String reasonCode) {
         return fromString(reasonCode, ReasonCode.class);
     }
 
@@ -68,5 +74,14 @@ public final class ReasonCode extends ExpandableStringEnum<ReasonCode> {
      */
     static ReasonCode fromReasonCode(int reasonCode) {
         return fromString(Integer.toString(reasonCode));
+    }
+
+    /**
+     * Gets known ReasonCode values.
+     *
+     * @return known ReasonCode values.
+     */
+    public static Collection<ReasonCode> values() {
+        return values(ReasonCode.class);
     }
 }
