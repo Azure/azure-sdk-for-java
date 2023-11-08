@@ -484,6 +484,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.diagnosticsClientConfig.withPreferredRegions(this.connectionPolicy.getPreferredRegions());
             this.diagnosticsClientConfig.withMachineId(tempMachineId);
             this.diagnosticsClientConfig.withProactiveContainerInitConfig(containerProactiveInitConfig);
+            this.diagnosticsClientConfig.withSessionRetryOptions(sessionRetryOptions);
 
             boolean disableSessionCapturing = (ConsistencyLevel.SESSION != consistencyLevel && !sessionCapturingOverrideEnabled);
 
