@@ -18,6 +18,24 @@ matrix:
 #      testTime: 900
 #      imageBuildDir: "../../.."
 
+    download-med-file-test:
+        testTarget: downloadToFile
+        async: false
+        blobSizeBytes: 16777216
+        parallel: 100
+        faultInjection: true
+        testTime: 900
+        imageBuildDir: "../../.."
+
+    download-chunk-file-test:
+        testTarget: downloadToFile
+        async: false
+        blobSizeBytes: 4194304
+        parallel: 100
+        faultInjection: true
+        testTime: 900
+        imageBuildDir: "../../.."
+
 #    we can add new test cases here - will run in parallel
 #    download-large-file-test:
 #      testTarget: downloadToFile
