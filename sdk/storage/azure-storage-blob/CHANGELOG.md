@@ -7,12 +7,6 @@
 - Added support for service versions 2023-11-03.
 - Added support for BlobAudience.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 12.24.1 (2023-10-24)
 
 ### Other Changes
