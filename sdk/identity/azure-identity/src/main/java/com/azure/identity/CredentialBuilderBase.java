@@ -33,7 +33,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
     /**
      * The options for configuring the identity client.
      */
-    protected IdentityClientOptions identityClientOptions;
+    IdentityClientOptions identityClientOptions;
 
     CredentialBuilderBase() {
         this.identityClientOptions = new IdentityClientOptions();

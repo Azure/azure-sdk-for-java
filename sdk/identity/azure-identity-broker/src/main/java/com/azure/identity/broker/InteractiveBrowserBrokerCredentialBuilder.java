@@ -13,12 +13,16 @@ import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AuthenticationRecord;
 import com.azure.identity.BrowserCustomizationOptions;
+import com.azure.identity.CredentialBuilderBase;
 import com.azure.identity.InteractiveBrowserCredential;
 import com.azure.identity.InteractiveBrowserCredentialBuilder;
 import com.azure.identity.TokenCachePersistenceOptions;
+import com.azure.identity.implementation.IdentityClientOptions;
 
+import java.lang.reflect.Field;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -38,6 +42,7 @@ import java.util.function.Function;
  * <!-- end com.azure.identity.broker.interactivebrowserbrokercredentialbuilder.construct -->
  */
 public class InteractiveBrowserBrokerCredentialBuilder extends InteractiveBrowserCredentialBuilder {
+    private static final ClientLogger LOGGER = new ClientLogger(InteractiveBrowserBrokerCredentialBuilder.class);
 
     /**
      * Sets the parent window handle used by the broker. For use on Windows only.
@@ -46,7 +51,14 @@ public class InteractiveBrowserBrokerCredentialBuilder extends InteractiveBrowse
      * @return An updated instance of this builder with the interactive browser broker configured.
      */
     public InteractiveBrowserBrokerCredentialBuilder setWindowHandle(long windowHandle) {
-        this.identityClientOptions.setBrokerWindowHandle(windowHandle);
+        try {
+            Field field = CredentialBuilderBase.class.getDeclaredField("identityClientOptions");
+            field.setAccessible(true);
+            IdentityClientOptions options = (IdentityClientOptions) field.get(this);
+            options.setBrokerWindowHandle(windowHandle);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
         return this;
     }
 
@@ -57,7 +69,15 @@ public class InteractiveBrowserBrokerCredentialBuilder extends InteractiveBrowse
      * @return An updated instance of this builder with enable Legacy MSA Passthrough set to true.
      */
     public InteractiveBrowserBrokerCredentialBuilder enableLegacyMsaPassthrough() {
-        this.identityClientOptions.setEnableLegacyMsaPassthrough(true);
+        Field field = null;
+        try {
+            field = CredentialBuilderBase.class.getDeclaredField("identityClientOptions");
+            field.setAccessible(true);
+            IdentityClientOptions options = (IdentityClientOptions) field.get(this);
+            options.setEnableLegacyMsaPassthrough(true);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
         return this;
     }
 
