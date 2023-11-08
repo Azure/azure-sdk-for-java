@@ -1,14 +1,10 @@
 # Release History
 
-## 12.20.0-beta.2 (Unreleased)
+## 12.20.0 (2023-11-08)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added support for service versions 2023-11-03.
+- Added support for QueueAudience.
 
 ## 12.19.1 (2023-10-24)
 
