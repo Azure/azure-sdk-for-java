@@ -3,8 +3,7 @@
 
 package com.generic.core.http;
 
-import com.generic.core.http.RestProxy;
-import com.generic.core.implementation.http.rest.RequestOptions;
+import com.generic.core.models.RequestOptions;
 import com.generic.core.models.Context;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;

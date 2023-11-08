@@ -3,6 +3,7 @@
 
 package com.generic.core.implementation.http.rest;
 
+import com.generic.core.models.RequestOptions;
 import com.generic.core.models.SimpleClass;
 import com.generic.core.annotation.BodyParam;
 import com.generic.core.annotation.Delete;

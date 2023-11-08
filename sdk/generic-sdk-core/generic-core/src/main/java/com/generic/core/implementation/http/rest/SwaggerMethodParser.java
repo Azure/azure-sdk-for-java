@@ -37,6 +37,7 @@ import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
 import com.generic.core.models.ExpandableStringEnum;
 import com.generic.core.models.Headers;
+import com.generic.core.models.RequestOptions;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.ByteArrayOutputStream;
@@ -61,7 +62,6 @@ import java.util.TreeMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static com.generic.core.implementation.TypeUtil.getRawClass;
 import static com.generic.core.implementation.TypeUtil.typeImplementsInterface;
 
 /**

@@ -16,11 +16,11 @@ import com.generic.core.implementation.util.BinaryDataHelper;
 import com.generic.core.implementation.util.InputStreamContent;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
+import com.generic.core.models.RequestOptions;
 import com.generic.core.util.logging.ClientLogger;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 

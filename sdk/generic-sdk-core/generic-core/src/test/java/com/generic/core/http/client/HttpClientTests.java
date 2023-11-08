@@ -32,7 +32,7 @@ import com.generic.core.http.policy.logging.HttpLogDetailLevel;
 import com.generic.core.http.policy.logging.HttpLogOptions;
 import com.generic.core.implementation.http.ContentType;
 import com.generic.core.implementation.http.policy.logging.HttpLoggingPolicy;
-import com.generic.core.implementation.http.rest.RequestOptions;
+import com.generic.core.models.RequestOptions;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.util.UrlBuilder;
 import com.generic.core.models.BinaryData;

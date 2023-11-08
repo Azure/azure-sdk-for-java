@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.implementation.http.rest;
+package com.generic.core.models;
 
 import com.generic.core.annotation.QueryParam;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.models.BinaryData;
-import com.generic.core.models.Context;
+import com.generic.core.implementation.http.rest.ErrorOptions;
+import com.generic.core.implementation.http.rest.UrlEscapers;
 import com.generic.core.util.logging.ClientLogger;
 
 import java.util.EnumSet;
