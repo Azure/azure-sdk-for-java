@@ -9,24 +9,28 @@ import com.azure.resourcemanager.search.fluent.models.QueryKeyInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response containing the query API keys for a given Azure Cognitive Search service. */
+/** Response containing the query API keys for a given search service. */
 @Immutable
 public final class ListQueryKeysResult {
     /*
-     * The query keys for the Azure Cognitive Search service.
+     * The query keys for the search service.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<QueryKeyInner> value;
 
     /*
-     * Request URL that can be used to query next page of query keys. Returned
-     * when the total number of requested query keys exceed maximum page size.
+     * Request URL that can be used to query next page of query keys. Returned when the total number of requested query
+     * keys exceed maximum page size.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ListQueryKeysResult class. */
+    public ListQueryKeysResult() {
+    }
+
     /**
-     * Get the value property: The query keys for the Azure Cognitive Search service.
+     * Get the value property: The query keys for the search service.
      *
      * @return the value value.
      */

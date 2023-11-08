@@ -12,7 +12,7 @@ public final class AllowedEnvironmentTypePropertiesTests {
     public void testDeserialize() throws Exception {
         AllowedEnvironmentTypeProperties model =
             BinaryData
-                .fromString("{\"provisioningState\":\"TransientFailure\"}")
+                .fromString("{\"provisioningState\":\"Succeeded\",\"displayName\":\"yaxuconuqszfkb\"}")
                 .toObject(AllowedEnvironmentTypeProperties.class);
     }
 

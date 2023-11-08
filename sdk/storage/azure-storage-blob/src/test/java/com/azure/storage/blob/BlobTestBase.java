@@ -75,6 +75,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import java.util.zip.CRC32;
@@ -86,7 +87,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
  * Base class for Azure Storage Blob tests.
  */
 public class BlobTestBase extends TestProxyTestBase {
-    protected static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance();
+    public static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance();
     protected static final TestDataFactory DATA = TestDataFactory.getInstance();
     private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build();
     private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncHttpClientBuilder()
@@ -261,6 +262,10 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected HttpClient getHttpClient() {
+        return getHttpClient(interceptorManager::getPlaybackClient);
+    }
+
+    public static HttpClient getHttpClient(Supplier<HttpClient> playbackClientSupplier) {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
             switch (ENVIRONMENT.getHttpClientType()) {
                 case NETTY:
@@ -271,7 +276,7 @@ public class BlobTestBase extends TestProxyTestBase {
                     throw new IllegalArgumentException("Unknown http client type: " + ENVIRONMENT.getHttpClientType());
             }
         } else {
-            return interceptorManager.getPlaybackClient();
+            return playbackClientSupplier.get();
         }
     }
 

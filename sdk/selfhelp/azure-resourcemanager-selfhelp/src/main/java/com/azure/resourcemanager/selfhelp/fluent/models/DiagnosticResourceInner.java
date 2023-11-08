@@ -9,7 +9,7 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.selfhelp.models.Diagnostic;
 import com.azure.resourcemanager.selfhelp.models.DiagnosticInvocation;
-import com.azure.resourcemanager.selfhelp.models.ProvisioningState;
+import com.azure.resourcemanager.selfhelp.models.DiagnosticProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -111,7 +111,7 @@ public final class DiagnosticResourceInner extends ProxyResource {
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public DiagnosticProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

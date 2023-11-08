@@ -40,7 +40,14 @@ public final class CallAutomationClient {
         this.callAutomationAsyncClient = callAutomationAsyncClient;
     }
 
-    //region Pre-call Actions
+    /**
+     * Get the event processor for handling events.
+     * @return {@link CallAutomationEventProcessor} as event processor
+     */
+    public CallAutomationEventProcessor getEventProcessor() {
+        return callAutomationAsyncClient.getEventProcessor();
+    }
+
     /**
      * Get Source Identity that is used for create and answer call
      * @return {@link CommunicationUserIdentifier} represent source
@@ -49,6 +56,7 @@ public final class CallAutomationClient {
         return callAutomationAsyncClient.getSourceIdentity();
     }
 
+    //region Pre-call Actions
     /**
      * Create a call connection request from a source identity to a target identity.
      *

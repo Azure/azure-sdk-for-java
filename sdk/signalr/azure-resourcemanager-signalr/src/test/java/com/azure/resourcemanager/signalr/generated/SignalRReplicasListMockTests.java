@@ -33,7 +33,7 @@ public final class SignalRReplicasListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"sku\":{\"name\":\"ltxdwhmozu\",\"tier\":\"Standard\",\"size\":\"ln\",\"family\":\"nj\",\"capacity\":1586632226},\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"pymwamxqzragp\",\"tags\":{\"vl\":\"htvdula\",\"rupdwvnphcnzq\":\"jchcsrlzknmzla\"},\"id\":\"pjhmqrhvthl\",\"name\":\"iwdcxsmlzzhzd\",\"type\":\"xetlgydlhqv\"}]}";
+            "{\"value\":[{\"sku\":{\"name\":\"ohcmbu\",\"tier\":\"Standard\",\"size\":\"r\",\"family\":\"mbpyryxamebly\",\"capacity\":1356441160},\"properties\":{\"provisioningState\":\"Creating\",\"regionEndpointEnabled\":\"rocxnehvs\",\"resourceStopped\":\"odlfpyapucygvo\"},\"location\":\"yunssx\",\"tags\":{\"vvpa\":\"ieegjl\"},\"id\":\"eksgbuxantuygd\",\"name\":\"gaqi\",\"type\":\"irpiwrqofulopmj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +62,14 @@ public final class SignalRReplicasListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Replica> response =
-            manager.signalRReplicas().list("lhguyn", "chl", com.azure.core.util.Context.NONE);
+            manager.signalRReplicas().list("qfutlxjo", "zasunwqrjzfrgq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pymwamxqzragp", response.iterator().next().location());
-        Assertions.assertEquals("htvdula", response.iterator().next().tags().get("vl"));
-        Assertions.assertEquals("ltxdwhmozu", response.iterator().next().sku().name());
+        Assertions.assertEquals("yunssx", response.iterator().next().location());
+        Assertions.assertEquals("ieegjl", response.iterator().next().tags().get("vvpa"));
+        Assertions.assertEquals("ohcmbu", response.iterator().next().sku().name());
         Assertions.assertEquals(SignalRSkuTier.STANDARD, response.iterator().next().sku().tier());
-        Assertions.assertEquals(1586632226, response.iterator().next().sku().capacity());
+        Assertions.assertEquals(1356441160, response.iterator().next().sku().capacity());
+        Assertions.assertEquals("rocxnehvs", response.iterator().next().regionEndpointEnabled());
+        Assertions.assertEquals("odlfpyapucygvo", response.iterator().next().resourceStopped());
     }
 }

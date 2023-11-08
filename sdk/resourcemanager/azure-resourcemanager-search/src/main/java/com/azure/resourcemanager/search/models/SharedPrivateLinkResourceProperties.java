@@ -7,9 +7,7 @@ package com.azure.resourcemanager.search.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Describes the properties of an existing Shared Private Link Resource managed by the Azure Cognitive Search service.
- */
+/** Describes the properties of an existing Shared Private Link Resource managed by the search service. */
 @Fluent
 public final class SharedPrivateLinkResourceProperties {
     /*
@@ -19,41 +17,41 @@ public final class SharedPrivateLinkResourceProperties {
     private String privateLinkResourceId;
 
     /*
-     * The group id from the provider of resource the shared private link
-     * resource is for.
+     * The group id from the provider of resource the shared private link resource is for.
      */
     @JsonProperty(value = "groupId")
     private String groupId;
 
     /*
-     * The request message for requesting approval of the shared private link
-     * resource.
+     * The request message for requesting approval of the shared private link resource.
      */
     @JsonProperty(value = "requestMessage")
     private String requestMessage;
 
     /*
-     * Optional. Can be used to specify the Azure Resource Manager location of
-     * the resource to which a shared private link is to be created. This is
-     * only required for those resources whose DNS configuration are regional
-     * (such as Azure Kubernetes Service).
+     * Optional. Can be used to specify the Azure Resource Manager location of the resource to which a shared private
+     * link is to be created. This is only required for those resources whose DNS configuration are regional (such as
+     * Azure Kubernetes Service).
      */
     @JsonProperty(value = "resourceRegion")
     private String resourceRegion;
 
     /*
-     * Status of the shared private link resource. Can be Pending, Approved,
-     * Rejected or Disconnected.
+     * Status of the shared private link resource. Valid values are Pending, Approved, Rejected or Disconnected.
      */
     @JsonProperty(value = "status")
     private SharedPrivateLinkResourceStatus status;
 
     /*
-     * The provisioning state of the shared private link resource. Can be
-     * Updating, Deleting, Failed, Succeeded or Incomplete.
+     * The provisioning state of the shared private link resource. Valid values are Updating, Deleting, Failed,
+     * Succeeded or Incomplete.
      */
     @JsonProperty(value = "provisioningState")
     private SharedPrivateLinkResourceProvisioningState provisioningState;
+
+    /** Creates an instance of SharedPrivateLinkResourceProperties class. */
+    public SharedPrivateLinkResourceProperties() {
+    }
 
     /**
      * Get the privateLinkResourceId property: The resource id of the resource the shared private link resource is for.
@@ -140,8 +138,8 @@ public final class SharedPrivateLinkResourceProperties {
     }
 
     /**
-     * Get the status property: Status of the shared private link resource. Can be Pending, Approved, Rejected or
-     * Disconnected.
+     * Get the status property: Status of the shared private link resource. Valid values are Pending, Approved, Rejected
+     * or Disconnected.
      *
      * @return the status value.
      */
@@ -150,8 +148,8 @@ public final class SharedPrivateLinkResourceProperties {
     }
 
     /**
-     * Set the status property: Status of the shared private link resource. Can be Pending, Approved, Rejected or
-     * Disconnected.
+     * Set the status property: Status of the shared private link resource. Valid values are Pending, Approved, Rejected
+     * or Disconnected.
      *
      * @param status the status value to set.
      * @return the SharedPrivateLinkResourceProperties object itself.
@@ -162,8 +160,8 @@ public final class SharedPrivateLinkResourceProperties {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the shared private link resource. Can be Updating,
-     * Deleting, Failed, Succeeded or Incomplete.
+     * Get the provisioningState property: The provisioning state of the shared private link resource. Valid values are
+     * Updating, Deleting, Failed, Succeeded or Incomplete.
      *
      * @return the provisioningState value.
      */
@@ -172,8 +170,8 @@ public final class SharedPrivateLinkResourceProperties {
     }
 
     /**
-     * Set the provisioningState property: The provisioning state of the shared private link resource. Can be Updating,
-     * Deleting, Failed, Succeeded or Incomplete.
+     * Set the provisioningState property: The provisioning state of the shared private link resource. Valid values are
+     * Updating, Deleting, Failed, Succeeded or Incomplete.
      *
      * @param provisioningState the provisioningState value to set.
      * @return the SharedPrivateLinkResourceProperties object itself.

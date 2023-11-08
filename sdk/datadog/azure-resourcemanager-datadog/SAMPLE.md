@@ -1,10 +1,23 @@
 # Code snippets and samples
 
 
+## CreationSupported
+
+- [Get](#creationsupported_get)
+- [List](#creationsupported_list)
+
 ## MarketplaceAgreements
 
 - [CreateOrUpdate](#marketplaceagreements_createorupdate)
 - [List](#marketplaceagreements_list)
+
+## MonitoredSubscriptions
+
+- [CreateorUpdate](#monitoredsubscriptions_createorupdate)
+- [Delete](#monitoredsubscriptions_delete)
+- [Get](#monitoredsubscriptions_get)
+- [List](#monitoredsubscriptions_list)
+- [Update](#monitoredsubscriptions_update)
 
 ## Monitors
 
@@ -37,13 +50,51 @@
 - [CreateOrUpdate](#tagrules_createorupdate)
 - [Get](#tagrules_get)
 - [List](#tagrules_list)
+### CreationSupported_Get
+
+```java
+/** Samples for CreationSupported Get. */
+public final class CreationSupportedGetSamples {
+    /*
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/CreationSupported_Get.json
+     */
+    /**
+     * Sample code: CreationSupported_Get.
+     *
+     * @param manager Entry point to MicrosoftDatadogManager.
+     */
+    public static void creationSupportedGet(com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager) {
+        manager.creationSupporteds().getWithResponse("00000000-0000-0000-0000", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### CreationSupported_List
+
+```java
+/** Samples for CreationSupported List. */
+public final class CreationSupportedListSamples {
+    /*
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/CreationSupported_List.json
+     */
+    /**
+     * Sample code: CreationSupported_List.
+     *
+     * @param manager Entry point to MicrosoftDatadogManager.
+     */
+    public static void creationSupportedList(com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager) {
+        manager.creationSupporteds().list("00000000-0000-0000-0000", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### MarketplaceAgreements_CreateOrUpdate
 
 ```java
 /** Samples for MarketplaceAgreements CreateOrUpdate. */
 public final class MarketplaceAgreementsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/MarketplaceAgreements_Create.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/MarketplaceAgreements_Create.json
      */
     /**
      * Sample code: MarketplaceAgreements_CreateOrUpdate.
@@ -63,7 +114,7 @@ public final class MarketplaceAgreementsCreateOrUpdateSamples {
 /** Samples for MarketplaceAgreements List. */
 public final class MarketplaceAgreementsListSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/MarketplaceAgreements_List.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/MarketplaceAgreements_List.json
      */
     /**
      * Sample code: MarketplaceAgreements_List.
@@ -76,13 +127,124 @@ public final class MarketplaceAgreementsListSamples {
 }
 ```
 
+### MonitoredSubscriptions_CreateorUpdate
+
+```java
+/** Samples for MonitoredSubscriptions CreateorUpdate. */
+public final class MonitoredSubscriptionsCreateorUpdateSamples {
+    /*
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/MonitoredSubscriptions_CreateorUpdate.json
+     */
+    /**
+     * Sample code: Monitors_AddMonitoredSubscriptions.
+     *
+     * @param manager Entry point to MicrosoftDatadogManager.
+     */
+    public static void monitorsAddMonitoredSubscriptions(
+        com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager) {
+        manager.monitoredSubscriptions().define("default").withExistingMonitor("myResourceGroup", "myMonitor").create();
+    }
+}
+```
+
+### MonitoredSubscriptions_Delete
+
+```java
+/** Samples for MonitoredSubscriptions Delete. */
+public final class MonitoredSubscriptionsDeleteSamples {
+    /*
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/MonitoredSubscriptions_Delete.json
+     */
+    /**
+     * Sample code: Monitors_DeleteMonitoredSubscriptions.
+     *
+     * @param manager Entry point to MicrosoftDatadogManager.
+     */
+    public static void monitorsDeleteMonitoredSubscriptions(
+        com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager) {
+        manager
+            .monitoredSubscriptions()
+            .delete("myResourceGroup", "myMonitor", "default", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### MonitoredSubscriptions_Get
+
+```java
+/** Samples for MonitoredSubscriptions Get. */
+public final class MonitoredSubscriptionsGetSamples {
+    /*
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/MonitoredSubscriptions_Get.json
+     */
+    /**
+     * Sample code: Monitors_GetMonitoredSubscriptions.
+     *
+     * @param manager Entry point to MicrosoftDatadogManager.
+     */
+    public static void monitorsGetMonitoredSubscriptions(
+        com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager) {
+        manager
+            .monitoredSubscriptions()
+            .getWithResponse("myResourceGroup", "myMonitor", "default", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### MonitoredSubscriptions_List
+
+```java
+/** Samples for MonitoredSubscriptions List. */
+public final class MonitoredSubscriptionsListSamples {
+    /*
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/MonitoredSubscriptions_List.json
+     */
+    /**
+     * Sample code: Monitors_GetMonitoredSubscriptions.
+     *
+     * @param manager Entry point to MicrosoftDatadogManager.
+     */
+    public static void monitorsGetMonitoredSubscriptions(
+        com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager) {
+        manager.monitoredSubscriptions().list("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### MonitoredSubscriptions_Update
+
+```java
+import com.azure.resourcemanager.datadog.models.MonitoredSubscriptionProperties;
+
+/** Samples for MonitoredSubscriptions Update. */
+public final class MonitoredSubscriptionsUpdateSamples {
+    /*
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/MonitoredSubscriptions_Update.json
+     */
+    /**
+     * Sample code: Monitors_UpdateMonitoredSubscriptions.
+     *
+     * @param manager Entry point to MicrosoftDatadogManager.
+     */
+    public static void monitorsUpdateMonitoredSubscriptions(
+        com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager) {
+        MonitoredSubscriptionProperties resource =
+            manager
+                .monitoredSubscriptions()
+                .getWithResponse("myResourceGroup", "myMonitor", "default", com.azure.core.util.Context.NONE)
+                .getValue();
+        resource.update().apply();
+    }
+}
+```
+
 ### Monitors_Create
 
 ```java
 /** Samples for Monitors Create. */
 public final class MonitorsCreateSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/Monitors_Create.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/Monitors_Create.json
      */
     /**
      * Sample code: Monitors_Create.
@@ -106,7 +268,7 @@ public final class MonitorsCreateSamples {
 /** Samples for Monitors Delete. */
 public final class MonitorsDeleteSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/Monitors_Delete.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/Monitors_Delete.json
      */
     /**
      * Sample code: Monitors_Delete.
@@ -125,7 +287,7 @@ public final class MonitorsDeleteSamples {
 /** Samples for Monitors GetByResourceGroup. */
 public final class MonitorsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/Monitors_Get.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/Monitors_Get.json
      */
     /**
      * Sample code: Monitors_Get.
@@ -146,7 +308,7 @@ public final class MonitorsGetByResourceGroupSamples {
 /** Samples for Monitors GetDefaultKey. */
 public final class MonitorsGetDefaultKeySamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/ApiKeys_GetDefaultKey.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/ApiKeys_GetDefaultKey.json
      */
     /**
      * Sample code: Monitors_GetDefaultKey.
@@ -165,7 +327,7 @@ public final class MonitorsGetDefaultKeySamples {
 /** Samples for Monitors List. */
 public final class MonitorsListSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/Monitors_List.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/Monitors_List.json
      */
     /**
      * Sample code: Monitors_List.
@@ -184,7 +346,7 @@ public final class MonitorsListSamples {
 /** Samples for Monitors ListApiKeys. */
 public final class MonitorsListApiKeysSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/ApiKeys_List.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/ApiKeys_List.json
      */
     /**
      * Sample code: Monitors_ListApiKeys.
@@ -203,7 +365,7 @@ public final class MonitorsListApiKeysSamples {
 /** Samples for Monitors ListByResourceGroup. */
 public final class MonitorsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/Monitors_ListByResourceGroup.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/Monitors_ListByResourceGroup.json
      */
     /**
      * Sample code: Monitors_ListByResourceGroup.
@@ -222,7 +384,7 @@ public final class MonitorsListByResourceGroupSamples {
 /** Samples for Monitors ListHosts. */
 public final class MonitorsListHostsSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/Hosts_List.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/Hosts_List.json
      */
     /**
      * Sample code: Monitors_ListHosts.
@@ -241,7 +403,7 @@ public final class MonitorsListHostsSamples {
 /** Samples for Monitors ListLinkedResources. */
 public final class MonitorsListLinkedResourcesSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/LinkedResources_List.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/LinkedResources_List.json
      */
     /**
      * Sample code: Monitors_ListLinkedResources.
@@ -260,7 +422,7 @@ public final class MonitorsListLinkedResourcesSamples {
 /** Samples for Monitors ListMonitoredResources. */
 public final class MonitorsListMonitoredResourcesSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/MonitoredResources_List.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/MonitoredResources_List.json
      */
     /**
      * Sample code: Monitors_ListMonitoredResources.
@@ -280,7 +442,7 @@ public final class MonitorsListMonitoredResourcesSamples {
 /** Samples for Monitors RefreshSetPasswordLink. */
 public final class MonitorsRefreshSetPasswordLinkSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/RefreshSetPassword_Get.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/RefreshSetPassword_Get.json
      */
     /**
      * Sample code: Monitors_RefreshSetPasswordLink.
@@ -302,7 +464,7 @@ public final class MonitorsRefreshSetPasswordLinkSamples {
 /** Samples for Monitors SetDefaultKey. */
 public final class MonitorsSetDefaultKeySamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/ApiKeys_SetDefaultKey.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/ApiKeys_SetDefaultKey.json
      */
     /**
      * Sample code: Monitors_SetDefaultKey.
@@ -325,7 +487,7 @@ import com.azure.resourcemanager.datadog.models.DatadogMonitorResource;
 /** Samples for Monitors Update. */
 public final class MonitorsUpdateSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/Monitors_Update.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/Monitors_Update.json
      */
     /**
      * Sample code: Monitors_Update.
@@ -349,7 +511,7 @@ public final class MonitorsUpdateSamples {
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/Operations_List.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -368,7 +530,7 @@ public final class OperationsListSamples {
 /** Samples for SingleSignOnConfigurations CreateOrUpdate. */
 public final class SingleSignOnConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/SingleSignOnConfigurations_CreateOrUpdate.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/SingleSignOnConfigurations_CreateOrUpdate.json
      */
     /**
      * Sample code: SingleSignOnConfigurations_CreateOrUpdate.
@@ -392,7 +554,7 @@ public final class SingleSignOnConfigurationsCreateOrUpdateSamples {
 /** Samples for SingleSignOnConfigurations Get. */
 public final class SingleSignOnConfigurationsGetSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/SingleSignOnConfigurations_Get.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/SingleSignOnConfigurations_Get.json
      */
     /**
      * Sample code: SingleSignOnConfigurations_Get.
@@ -414,7 +576,7 @@ public final class SingleSignOnConfigurationsGetSamples {
 /** Samples for SingleSignOnConfigurations List. */
 public final class SingleSignOnConfigurationsListSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/SingleSignOnConfigurations_List.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/SingleSignOnConfigurations_List.json
      */
     /**
      * Sample code: SingleSignOnConfigurations_List.
@@ -434,7 +596,7 @@ public final class SingleSignOnConfigurationsListSamples {
 /** Samples for TagRules CreateOrUpdate. */
 public final class TagRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/TagRules_CreateOrUpdate.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/TagRules_CreateOrUpdate.json
      */
     /**
      * Sample code: TagRules_CreateOrUpdate.
@@ -453,7 +615,7 @@ public final class TagRulesCreateOrUpdateSamples {
 /** Samples for TagRules Get. */
 public final class TagRulesGetSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/TagRules_Get.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/TagRules_Get.json
      */
     /**
      * Sample code: TagRules_Get.
@@ -472,7 +634,7 @@ public final class TagRulesGetSamples {
 /** Samples for TagRules List. */
 public final class TagRulesListSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/TagRules_List.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/TagRules_List.json
      */
     /**
      * Sample code: TagRules_List.

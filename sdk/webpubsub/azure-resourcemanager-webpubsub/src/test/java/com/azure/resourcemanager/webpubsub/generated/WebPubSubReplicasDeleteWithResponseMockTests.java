@@ -58,6 +58,6 @@ public final class WebPubSubReplicasDeleteWithResponseMockTests {
 
         manager
             .webPubSubReplicas()
-            .deleteWithResponse("vdulajv", "ejchcsrlz", "nmzlanru", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("attcju", "plrvkmjcwmjvlg", "ggcvk", com.azure.core.util.Context.NONE);
     }
 }

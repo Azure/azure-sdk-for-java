@@ -19,59 +19,63 @@ public final class NicIpConfigurationResourceSettingsTests {
         NicIpConfigurationResourceSettings model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"rbnlankxmyskp\",\"privateIpAddress\":\"enbtkcxywny\",\"privateIpAllocationMethod\":\"rsyn\",\"subnet\":{\"name\":\"dybyxczfclhaa\",\"sourceArmResourceId\":\"dbabp\"},\"primary\":true,\"loadBalancerBackendAddressPools\":[{\"name\":\"fkts\",\"sourceArmResourceId\":\"hsucoc\"},{\"name\":\"yyazttbt\",\"sourceArmResourceId\":\"wrqpue\"},{\"name\":\"kzywbiex\",\"sourceArmResourceId\":\"fey\"}],\"loadBalancerNatRules\":[{\"name\":\"ibx\",\"sourceArmResourceId\":\"jwbhqwalmuz\"},{\"name\":\"xaepdkzjancuxr\",\"sourceArmResourceId\":\"d\"}],\"publicIp\":{\"sourceArmResourceId\":\"avxbniwdjswztsdb\"}}")
+                    "{\"name\":\"svlxotogtwrup\",\"privateIpAddress\":\"xvnmicykvceov\",\"privateIpAllocationMethod\":\"lo\",\"subnet\":{\"name\":\"tyfjfcnjbkcnxdhb\",\"sourceArmResourceId\":\"tkphywpnvjtoqn\"},\"primary\":true,\"loadBalancerBackendAddressPools\":[{\"name\":\"plpho\",\"sourceArmResourceId\":\"uscrpabgyepsb\"},{\"name\":\"azqugxywpmueefj\",\"sourceArmResourceId\":\"wfqkquj\"}],\"loadBalancerNatRules\":[{\"name\":\"yonobgl\",\"sourceArmResourceId\":\"ocqxtccmg\"},{\"name\":\"dxyt\",\"sourceArmResourceId\":\"moyrxvwfudwpz\"},{\"name\":\"xhdzhlrqjbhckf\",\"sourceArmResourceId\":\"lhrxsbkyvpyc\"},{\"name\":\"uzbpzkafku\",\"sourceArmResourceId\":\"b\"}],\"publicIp\":{\"sourceArmResourceId\":\"nwbmeh\"}}")
                 .toObject(NicIpConfigurationResourceSettings.class);
-        Assertions.assertEquals("rbnlankxmyskp", model.name());
-        Assertions.assertEquals("enbtkcxywny", model.privateIpAddress());
-        Assertions.assertEquals("rsyn", model.privateIpAllocationMethod());
-        Assertions.assertEquals("dbabp", model.subnet().sourceArmResourceId());
-        Assertions.assertEquals("dybyxczfclhaa", model.subnet().name());
+        Assertions.assertEquals("svlxotogtwrup", model.name());
+        Assertions.assertEquals("xvnmicykvceov", model.privateIpAddress());
+        Assertions.assertEquals("lo", model.privateIpAllocationMethod());
+        Assertions.assertEquals("tkphywpnvjtoqn", model.subnet().sourceArmResourceId());
+        Assertions.assertEquals("tyfjfcnjbkcnxdhb", model.subnet().name());
         Assertions.assertEquals(true, model.primary());
-        Assertions.assertEquals("hsucoc", model.loadBalancerBackendAddressPools().get(0).sourceArmResourceId());
-        Assertions.assertEquals("fkts", model.loadBalancerBackendAddressPools().get(0).name());
-        Assertions.assertEquals("jwbhqwalmuz", model.loadBalancerNatRules().get(0).sourceArmResourceId());
-        Assertions.assertEquals("ibx", model.loadBalancerNatRules().get(0).name());
-        Assertions.assertEquals("avxbniwdjswztsdb", model.publicIp().sourceArmResourceId());
+        Assertions.assertEquals("uscrpabgyepsb", model.loadBalancerBackendAddressPools().get(0).sourceArmResourceId());
+        Assertions.assertEquals("plpho", model.loadBalancerBackendAddressPools().get(0).name());
+        Assertions.assertEquals("ocqxtccmg", model.loadBalancerNatRules().get(0).sourceArmResourceId());
+        Assertions.assertEquals("yonobgl", model.loadBalancerNatRules().get(0).name());
+        Assertions.assertEquals("nwbmeh", model.publicIp().sourceArmResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NicIpConfigurationResourceSettings model =
             new NicIpConfigurationResourceSettings()
-                .withName("rbnlankxmyskp")
-                .withPrivateIpAddress("enbtkcxywny")
-                .withPrivateIpAllocationMethod("rsyn")
-                .withSubnet(new SubnetReference().withSourceArmResourceId("dbabp").withName("dybyxczfclhaa"))
+                .withName("svlxotogtwrup")
+                .withPrivateIpAddress("xvnmicykvceov")
+                .withPrivateIpAllocationMethod("lo")
+                .withSubnet(
+                    new SubnetReference().withSourceArmResourceId("tkphywpnvjtoqn").withName("tyfjfcnjbkcnxdhb"))
                 .withPrimary(true)
                 .withLoadBalancerBackendAddressPools(
                     Arrays
                         .asList(
                             new LoadBalancerBackendAddressPoolReference()
-                                .withSourceArmResourceId("hsucoc")
-                                .withName("fkts"),
+                                .withSourceArmResourceId("uscrpabgyepsb")
+                                .withName("plpho"),
                             new LoadBalancerBackendAddressPoolReference()
-                                .withSourceArmResourceId("wrqpue")
-                                .withName("yyazttbt"),
-                            new LoadBalancerBackendAddressPoolReference()
-                                .withSourceArmResourceId("fey")
-                                .withName("kzywbiex")))
+                                .withSourceArmResourceId("wfqkquj")
+                                .withName("azqugxywpmueefj")))
                 .withLoadBalancerNatRules(
                     Arrays
                         .asList(
-                            new LoadBalancerNatRuleReference().withSourceArmResourceId("jwbhqwalmuz").withName("ibx"),
-                            new LoadBalancerNatRuleReference().withSourceArmResourceId("d").withName("xaepdkzjancuxr")))
-                .withPublicIp(new PublicIpReference().withSourceArmResourceId("avxbniwdjswztsdb"));
+                            new LoadBalancerNatRuleReference().withSourceArmResourceId("ocqxtccmg").withName("yonobgl"),
+                            new LoadBalancerNatRuleReference()
+                                .withSourceArmResourceId("moyrxvwfudwpz")
+                                .withName("dxyt"),
+                            new LoadBalancerNatRuleReference()
+                                .withSourceArmResourceId("lhrxsbkyvpyc")
+                                .withName("xhdzhlrqjbhckf"),
+                            new LoadBalancerNatRuleReference().withSourceArmResourceId("b").withName("uzbpzkafku")))
+                .withPublicIp(new PublicIpReference().withSourceArmResourceId("nwbmeh"));
         model = BinaryData.fromObject(model).toObject(NicIpConfigurationResourceSettings.class);
-        Assertions.assertEquals("rbnlankxmyskp", model.name());
-        Assertions.assertEquals("enbtkcxywny", model.privateIpAddress());
-        Assertions.assertEquals("rsyn", model.privateIpAllocationMethod());
-        Assertions.assertEquals("dbabp", model.subnet().sourceArmResourceId());
-        Assertions.assertEquals("dybyxczfclhaa", model.subnet().name());
+        Assertions.assertEquals("svlxotogtwrup", model.name());
+        Assertions.assertEquals("xvnmicykvceov", model.privateIpAddress());
+        Assertions.assertEquals("lo", model.privateIpAllocationMethod());
+        Assertions.assertEquals("tkphywpnvjtoqn", model.subnet().sourceArmResourceId());
+        Assertions.assertEquals("tyfjfcnjbkcnxdhb", model.subnet().name());
         Assertions.assertEquals(true, model.primary());
-        Assertions.assertEquals("hsucoc", model.loadBalancerBackendAddressPools().get(0).sourceArmResourceId());
-        Assertions.assertEquals("fkts", model.loadBalancerBackendAddressPools().get(0).name());
-        Assertions.assertEquals("jwbhqwalmuz", model.loadBalancerNatRules().get(0).sourceArmResourceId());
-        Assertions.assertEquals("ibx", model.loadBalancerNatRules().get(0).name());
-        Assertions.assertEquals("avxbniwdjswztsdb", model.publicIp().sourceArmResourceId());
+        Assertions.assertEquals("uscrpabgyepsb", model.loadBalancerBackendAddressPools().get(0).sourceArmResourceId());
+        Assertions.assertEquals("plpho", model.loadBalancerBackendAddressPools().get(0).name());
+        Assertions.assertEquals("ocqxtccmg", model.loadBalancerNatRules().get(0).sourceArmResourceId());
+        Assertions.assertEquals("yonobgl", model.loadBalancerNatRules().get(0).name());
+        Assertions.assertEquals("nwbmeh", model.publicIp().sourceArmResourceId());
     }
 }

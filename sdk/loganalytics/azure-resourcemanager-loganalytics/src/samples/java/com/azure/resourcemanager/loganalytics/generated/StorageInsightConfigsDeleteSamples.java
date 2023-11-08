@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StorageInsightConfigs Delete. */
 public final class StorageInsightConfigsDeleteSamples {
     /*
@@ -19,6 +17,6 @@ public final class StorageInsightConfigsDeleteSamples {
     public static void storageInsightsDelete(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
         manager
             .storageInsightConfigs()
-            .deleteWithResponse("OIAutoRest5123", "aztest5048", "AzTestSI1110", Context.NONE);
+            .deleteWithResponse("OIAutoRest5123", "aztest5048", "AzTestSI1110", com.azure.core.util.Context.NONE);
     }
 }

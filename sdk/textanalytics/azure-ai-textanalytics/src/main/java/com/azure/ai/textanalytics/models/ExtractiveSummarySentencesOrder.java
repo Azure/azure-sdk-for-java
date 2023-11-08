@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** The sorting criteria to use for the results of Extractive Summarization. */
@@ -30,7 +29,6 @@ public final class ExtractiveSummarySentencesOrder extends ExpandableStringEnum<
      * @param name a name to look for.
      * @return the corresponding ExtractiveSummarySentencesOrder.
      */
-    @JsonCreator
     public static ExtractiveSummarySentencesOrder fromString(String name) {
         return fromString(name, ExtractiveSummarySentencesOrder.class);
     }
