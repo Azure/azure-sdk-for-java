@@ -91,6 +91,34 @@ public interface Catalogs {
     void delete(String resourceGroupName, String devCenterName, String catalogName, Context context);
 
     /**
+     * Gets catalog synchronization error details.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param devCenterName The name of the devcenter.
+     * @param catalogName The name of the Catalog.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return catalog synchronization error details along with {@link Response}.
+     */
+    Response<SyncErrorDetails> getSyncErrorDetailsWithResponse(
+        String resourceGroupName, String devCenterName, String catalogName, Context context);
+
+    /**
+     * Gets catalog synchronization error details.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param devCenterName The name of the devcenter.
+     * @param catalogName The name of the Catalog.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return catalog synchronization error details.
+     */
+    SyncErrorDetails getSyncErrorDetails(String resourceGroupName, String devCenterName, String catalogName);
+
+    /**
      * Syncs templates for a template source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -114,6 +142,31 @@ public interface Catalogs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void sync(String resourceGroupName, String devCenterName, String catalogName, Context context);
+
+    /**
+     * Connects a catalog to enable syncing.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param devCenterName The name of the devcenter.
+     * @param catalogName The name of the Catalog.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void connect(String resourceGroupName, String devCenterName, String catalogName);
+
+    /**
+     * Connects a catalog to enable syncing.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param devCenterName The name of the devcenter.
+     * @param catalogName The name of the Catalog.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void connect(String resourceGroupName, String devCenterName, String catalogName, Context context);
 
     /**
      * Gets a catalog.

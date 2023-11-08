@@ -16,24 +16,26 @@ public final class DatabaseListResultTests {
         DatabaseListResult model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"txnrjaw\",\"value\":[{\"kind\":\"Database\",\"location\":\"xhniskxfbkpycgk\",\"id\":\"wndnhj\",\"name\":\"auwhvylwzbtdhx\",\"type\":\"jznb\"},{\"kind\":\"Database\",\"location\":\"ow\",\"id\":\"wpr\",\"name\":\"qlveualupjmkh\",\"type\":\"xobbcswsrt\"}]}")
+                    "{\"nextLink\":\"ycduier\",\"value\":[{\"kind\":\"Database\",\"location\":\"y\",\"id\":\"vaolpsslqlf\",\"name\":\"mdnbbglzpswiy\",\"type\":\"mcwyhzdxssadb\"},{\"kind\":\"Database\",\"location\":\"nvdfznuda\",\"id\":\"dvxzbncblylpst\",\"name\":\"bhhxsrzdzuc\",\"type\":\"rsc\"},{\"kind\":\"Database\",\"location\":\"t\",\"id\":\"evfiwjmygt\",\"name\":\"sslswtmweriof\",\"type\":\"pyqs\"},{\"kind\":\"Database\",\"location\":\"wab\",\"id\":\"ets\",\"name\":\"hszhedplvwiwu\",\"type\":\"mwmbes\"}]}")
                 .toObject(DatabaseListResult.class);
-        Assertions.assertEquals("txnrjaw", model.nextLink());
-        Assertions.assertEquals("xhniskxfbkpycgk", model.value().get(0).location());
+        Assertions.assertEquals("ycduier", model.nextLink());
+        Assertions.assertEquals("y", model.value().get(0).location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DatabaseListResult model =
             new DatabaseListResult()
-                .withNextLink("txnrjaw")
+                .withNextLink("ycduier")
                 .withValue(
                     Arrays
                         .asList(
-                            new DatabaseInner().withLocation("xhniskxfbkpycgk"),
-                            new DatabaseInner().withLocation("ow")));
+                            new DatabaseInner().withLocation("y"),
+                            new DatabaseInner().withLocation("nvdfznuda"),
+                            new DatabaseInner().withLocation("t"),
+                            new DatabaseInner().withLocation("wab")));
         model = BinaryData.fromObject(model).toObject(DatabaseListResult.class);
-        Assertions.assertEquals("txnrjaw", model.nextLink());
-        Assertions.assertEquals("xhniskxfbkpycgk", model.value().get(0).location());
+        Assertions.assertEquals("ycduier", model.nextLink());
+        Assertions.assertEquals("y", model.value().get(0).location());
     }
 }

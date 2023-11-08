@@ -16,6 +16,10 @@ public final class UefiSettings {
     @JsonProperty(value = "secureBootEnabled")
     private Boolean secureBootEnabled;
 
+    /** Creates an instance of UefiSettings class. */
+    public UefiSettings() {
+    }
+
     /**
      * Get the secureBootEnabled property: Specifies whether secure boot should be enabled on the virtual machine.
      *

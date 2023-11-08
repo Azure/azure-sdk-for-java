@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.DevBoxDefinitionInner;
+import com.azure.resourcemanager.devcenter.models.CatalogResourceValidationStatus;
 import com.azure.resourcemanager.devcenter.models.DevBoxDefinition;
 import com.azure.resourcemanager.devcenter.models.DevBoxDefinitionUpdate;
 import com.azure.resourcemanager.devcenter.models.HibernateSupport;
@@ -64,6 +65,10 @@ public final class DevBoxDefinitionImpl
 
     public ImageValidationErrorDetails imageValidationErrorDetails() {
         return this.innerModel().imageValidationErrorDetails();
+    }
+
+    public CatalogResourceValidationStatus validationStatus() {
+        return this.innerModel().validationStatus();
     }
 
     public ImageReference activeImageReference() {

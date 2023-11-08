@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LiveToken Get. */
 public final class LiveTokenGetSamples {
     /*
@@ -22,6 +20,6 @@ public final class LiveTokenGetSamples {
             .liveTokens()
             .getWithResponse(
                 "subscriptions/df602c9c-7aa0-407d-a6fb-eb20c8bd1192/resourceGroups/FabrikamFiberApp/providers/microsoft.insights/components/CustomAvailabilityTest/providers/microsoft.insights/generatelivetoken",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

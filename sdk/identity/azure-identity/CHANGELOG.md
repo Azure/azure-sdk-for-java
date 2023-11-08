@@ -1,14 +1,46 @@
 # Release History
 
-## 1.11.0-beta.2 (unreleased)
+## 1.11.0 (2023-11-07)
 
-### Features Added
+### Features added
+- GA release of Web Account Manager (WAM) support for Azure Identity.
 
-### Breaking Changes
-
-### Bugs Fixed
+### Bugs fixed
+- Cache streams used for client certificates [#37502](https://github.com/Azure/azure-sdk-for-java/pull/37502)
+- Fix incorrect use of organizations tenant for sync calls on `AzureCliCredential` and `AzureDeveloperCliCredential` [#37457](https://github.com/Azure/azure-sdk-for-java/pull/37457)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
+- Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`
+
+## 1.11.0-beta.2 (2023-10-27)
+
+### Features Added
+- Initial release of Web Account Manager (WAM) support for Azure Identity. This is a Windows-only auithentication broker.
+
+### Other Changes
+- Upgraded 'msal4j' from '1.13.9' to version '1.14.0'.
+
+## 1.10.4 (2023-10-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.0` to version `1.44.1`.
+- Upgraded `azure-core-http-netty` from `1.13.8` to version `1.13.9`.
+
+## 1.10.3 (2023-10-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.0`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.8`.
 
 ## 1.10.2 (2023-10-10)
 

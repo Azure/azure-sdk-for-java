@@ -34,7 +34,7 @@ public final class SkusListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\",\"resourceType\":\"fbjfdtwssotftpvj\",\"locations\":[\"xilzznf\",\"q\",\"vwpm\",\"taruoujmkcj\"],\"locationInfo\":[{\"location\":\"tjrybnwjewgdr\",\"zones\":[\"vnaenqpehindoyg\",\"ifthnz\",\"ndslgnayqigynduh\"]},{\"location\":\"hqlkthumaqo\",\"zones\":[\"ycduier\",\"gccymvaolpssl\"]},{\"location\":\"fmmdnbbg\",\"zones\":[\"swiydmcwyhzdx\",\"sadbz\",\"nvdfznuda\"]},{\"location\":\"vxzbncb\",\"zones\":[\"pstdbhhxsrzd\",\"ucerscdntnevfi\",\"jmygtdsslswtmwer\",\"ofz\"]}],\"capabilities\":[{\"name\":\"emwabnet\",\"value\":\"hszhedplvwiwu\"},{\"name\":\"wmbesldnkw\",\"value\":\"pp\"},{\"name\":\"lcxog\",\"value\":\"konzmnsik\"}]}]}";
+            "{\"value\":[{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\",\"resourceType\":\"ccymvaolpsslql\",\"locations\":[\"dnbbglzps\",\"iydmcwyhzdxs\",\"adbzmnvdfznud\",\"od\"],\"locationInfo\":[{\"location\":\"ncblylpst\",\"zones\":[\"hxsrzdzucersc\"]}],\"capabilities\":[{\"name\":\"evfiwjmygt\",\"value\":\"slswtm\"}]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,7 +62,7 @@ public final class SkusListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SkuInformation> response = manager.skus().list("ubcgjbirxb", com.azure.core.util.Context.NONE);
+        PagedIterable<SkuInformation> response = manager.skus().list("gycdu", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(SkuName.PREMIUM_ZRS, response.iterator().next().name());
         Assertions.assertEquals(SkuTier.PREMIUM, response.iterator().next().tier());

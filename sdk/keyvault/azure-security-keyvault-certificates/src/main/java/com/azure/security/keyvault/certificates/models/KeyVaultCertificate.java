@@ -3,51 +3,47 @@
 
 package com.azure.security.keyvault.certificates.models;
 
-import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.security.keyvault.certificates.implementation.models.CertificateAttributes;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 
 /**
  * Represents a certificate with all of its properties.
  */
-public class KeyVaultCertificate {
-
+public class KeyVaultCertificate implements JsonSerializable<KeyVaultCertificate> {
     /**
      * CER contents of x509 certificate.
      */
-    @JsonProperty(value = "cer")
-    byte[] cer;
+    private final byte[] cer;
 
     /**
      * The key id.
      */
-    @JsonProperty(value = "kid", access = JsonProperty.Access.WRITE_ONLY)
-    String keyId;
+    private final String keyId;
 
     /**
      * The secret id.
      */
-    @JsonProperty(value = "sid", access = JsonProperty.Access.WRITE_ONLY)
-    String secretId;
+    private final String secretId;
 
-    /**
-     * The certificate properties
-     */
-    CertificateProperties properties;
-
-    /**
-     * Create the certificate
-     * @param name the name of the certificate.
-     */
-    KeyVaultCertificate(String name) {
-        properties = new CertificateProperties(name);
-    }
+    private CertificateProperties properties;
 
     KeyVaultCertificate() {
-        properties = new CertificateProperties();
+        this(null, null, null, new CertificateProperties());
+    }
+
+    KeyVaultCertificate(byte[] cer, String keyId, String secretId, CertificateProperties properties) {
+        this.cer = CoreUtils.clone(cer);
+        this.keyId = keyId;
+        this.secretId = secretId;
+        this.properties = properties;
     }
 
     /**
@@ -66,7 +62,7 @@ public class KeyVaultCertificate {
      */
     public KeyVaultCertificate setProperties(CertificateProperties properties) {
         Objects.requireNonNull(properties, "The certificate properties cannot be null");
-        properties.name = this.properties.name;
+        properties.setName(this.properties.getName());
         this.properties = properties;
         return this;
     }
@@ -97,7 +93,7 @@ public class KeyVaultCertificate {
 
     /**
      * Get the secret id of the certificate
-     * @return the key Id.
+     * @return the secret Id.
      */
     public String getSecretId() {
         return this.secretId;
@@ -111,24 +107,55 @@ public class KeyVaultCertificate {
         return CoreUtils.clone(cer);
     }
 
-    @JsonProperty("attributes")
-    @SuppressWarnings("unchecked")
-    void unpackBaseAttributes(Map<String, Object> attributes) {
-        properties.unpackBaseAttributes(attributes);
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeBinaryField("cer", cer)
+            .writeEndObject();
     }
 
-    @JsonProperty(value = "id")
-    void unpackId(String id) {
-        properties.unpackId(id);
-    }
+    /**
+     * Reads a JSON stream into a {@link KeyVaultCertificate}.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @return The {@link KeyVaultCertificate} that the JSON stream represented, may return null.
+     * @throws IOException If a {@link KeyVaultCertificate} fails to be read from the {@code jsonReader}.
+     */
+    public static KeyVaultCertificate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            CertificateAttributes attributes = null;
+            Map<String, String> tags = null;
+            byte[] wireThumbprint = null;
+            byte[] cer = null;
+            String keyId = null;
+            String secretId = null;
 
-    @JsonProperty(value = "tags")
-    void unpackTags(Map<String, String> tags) {
-        properties.tags = tags;
-    }
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-    @JsonProperty(value = "x5t")
-    void unpackX5t(Base64Url base64Url) {
-        properties.x509Thumbprint = base64Url;
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("attributes".equals(fieldName)) {
+                    attributes = CertificateAttributes.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    tags = reader.readMap(JsonReader::getString);
+                } else if ("x5t".equals(fieldName)) {
+                    wireThumbprint = reader.getBinary();
+                } else if ("cer".equals(fieldName)) {
+                    cer = reader.getBinary();
+                } else if ("kid".equals(fieldName)) {
+                    keyId = reader.getString();
+                } else if ("sid".equals(fieldName)) {
+                    secretId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return new KeyVaultCertificate(cer, keyId, secretId,
+                new CertificateProperties(id, attributes, tags, wireThumbprint, null));
+        });
     }
 }

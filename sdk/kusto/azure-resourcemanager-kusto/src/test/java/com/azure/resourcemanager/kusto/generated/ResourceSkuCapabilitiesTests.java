@@ -11,7 +11,7 @@ public final class ResourceSkuCapabilitiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceSkuCapabilities model =
-            BinaryData.fromString("{\"name\":\"r\",\"value\":\"xpvgo\"}").toObject(ResourceSkuCapabilities.class);
+            BinaryData.fromString("{\"name\":\"bsrfbj\",\"value\":\"twss\"}").toObject(ResourceSkuCapabilities.class);
     }
 
     @org.junit.jupiter.api.Test

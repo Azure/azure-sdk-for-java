@@ -6,17 +6,26 @@ package com.azure.resourcemanager.webpubsub.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.fluent.models.ReplicaProperties;
+import org.junit.jupiter.api.Assertions;
 
 public final class ReplicaPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicaProperties model =
-            BinaryData.fromString("{\"provisioningState\":\"Deleting\"}").toObject(ReplicaProperties.class);
+            BinaryData
+                .fromString(
+                    "{\"provisioningState\":\"Updating\",\"regionEndpointEnabled\":\"hrnxrxc\",\"resourceStopped\":\"uisavokq\"}")
+                .toObject(ReplicaProperties.class);
+        Assertions.assertEquals("hrnxrxc", model.regionEndpointEnabled());
+        Assertions.assertEquals("uisavokq", model.resourceStopped());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplicaProperties model = new ReplicaProperties();
+        ReplicaProperties model =
+            new ReplicaProperties().withRegionEndpointEnabled("hrnxrxc").withResourceStopped("uisavokq");
         model = BinaryData.fromObject(model).toObject(ReplicaProperties.class);
+        Assertions.assertEquals("hrnxrxc", model.regionEndpointEnabled());
+        Assertions.assertEquals("uisavokq", model.resourceStopped());
     }
 }

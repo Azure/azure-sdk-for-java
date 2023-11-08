@@ -40,6 +40,10 @@ public final class NetworkInterfaceUpdate {
     @JsonProperty(value = "deviceKey")
     private Integer deviceKey;
 
+    /** Creates an instance of NetworkInterfaceUpdate class. */
+    public NetworkInterfaceUpdate() {
+    }
+
     /**
      * Get the name property: Gets or sets the name of the network interface.
      *
