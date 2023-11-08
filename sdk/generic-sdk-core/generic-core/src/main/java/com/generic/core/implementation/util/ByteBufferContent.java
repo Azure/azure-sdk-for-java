@@ -24,7 +24,7 @@ public final class ByteBufferContent extends BinaryDataContent {
         = AtomicReferenceFieldUpdater.newUpdater(ByteBufferContent.class, byte[].class, "bytes");
 
     /**
-     * Creates a new instance of {@link com.azure.core.implementation.util.BinaryDataContent}.
+     * Creates a new instance of {@link BinaryDataContent}.
      *
      * @param content The {@link ByteBuffer} content.
      *

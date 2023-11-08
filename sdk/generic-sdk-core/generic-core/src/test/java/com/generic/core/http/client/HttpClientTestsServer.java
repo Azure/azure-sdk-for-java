@@ -5,6 +5,10 @@ package com.generic.core.http.client;
 
 import com.generic.core.http.client.httpurlconnection.LocalTestServer;
 import com.generic.core.implementation.http.ContentType;
+import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
+import com.generic.core.implementation.util.DateTimeRfc1123;
+import com.generic.core.models.HttpBinJSON;
+import com.generic.core.util.serializer.ObjectSerializer;
 import org.eclipse.jetty.server.Response;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -14,8 +18,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Base64;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -23,6 +34,7 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 @Execution(ExecutionMode.SAME_THREAD)
 public class HttpClientTestsServer {
+    private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
     private static final String PLAIN_RESPONSE = "/plainBytesNoHeader";
     private static final String HEADER_RESPONSE = "/plainBytesWithHeader";
     private static final String INVALID_HEADER_RESPONSE = "/plainBytesInvalidHeader";
@@ -138,35 +150,35 @@ public class HttpClientTestsServer {
         byte[] body = new byte[bodySize];
         ThreadLocalRandom.current().nextBytes(body);
 
-//        resp.addHeader("ETag", MessageDigestUtils.md5(body));
+        resp.addHeader("ETag", md5(body));
 
         resp.getOutputStream().write(body);
         resp.flushBuffer();
     }
 
     private static void sendSimpleHttpBinResponse(HttpServletRequest req, HttpServletResponse resp,
-        String requestString) throws IOException {
-        // TODO: update after Serialization is implemented
-//        HttpBinJSON responseBody = new HttpBinJSON();
-//        responseBody.url(cleanseUrl(req));
-//
-//        responseBody.data(requestString);
-//
-//        if (req.getHeaderNames().hasMoreElements()) {
-//            Map<String, List<String>> headers = new HashMap<>();
-//
-//            List<String> headerNames = Collections.list(req.getHeaderNames());
-//            headerNames.forEach(headerName -> {
-//                List<String> headerValues = Collections.list(req.getHeaders(headerName));
-//                headers.put(headerName, headerValues);
-//                headerValues.forEach(headerValue -> resp.addHeader(headerName, headerValue));
-//            });
-//
-//            setBaseHttpHeaders(resp);
-//            responseBody.headers(headers);
-//        }
-//
-//        handleRequest(resp, "application/json", null);
+                                                  String requestString) throws IOException {
+        HttpBinJSON responseBody = new HttpBinJSON();
+
+        responseBody.url(cleanseUrl(req));
+        responseBody.data(requestString);
+
+        if (req.getHeaderNames().hasMoreElements()) {
+            Map<String, List<String>> headers = new HashMap<>();
+            List<String> headerNames = Collections.list(req.getHeaderNames());
+
+            headerNames.forEach(headerName -> {
+                List<String> headerValues = Collections.list(req.getHeaders(headerName));
+
+                headers.put(headerName, headerValues);
+                headerValues.forEach(headerValue -> resp.addHeader(headerName, headerValue));
+            });
+
+            setBaseHttpHeaders(resp);
+            responseBody.headers(headers);
+        }
+
+        handleRequest(resp, "application/json", SERIALIZER.serializeToBytes(responseBody));
     }
 
 
@@ -185,10 +197,29 @@ public class HttpClientTestsServer {
     }
 
     private static void setBaseHttpHeaders(HttpServletResponse resp) {
-        resp.addHeader("Date", String.valueOf(OffsetDateTime.now(ZoneOffset.UTC)));
+        resp.addHeader("Date", new DateTimeRfc1123(OffsetDateTime.now(ZoneOffset.UTC)).toString());
         resp.addHeader("Connection", "keep-alive");
         resp.addHeader("X-Processed-Time", String.valueOf(Math.random() * 10));
         resp.addHeader("Access-Control-Allow-Credentials", "true");
         resp.addHeader("Content-Type", "application/json");
+    }
+
+    /**
+     * Returns base64 encoded MD5 of bytes.
+     *
+     * @param bytes Bytes.
+     *
+     * @return base64 Encoded MD5 of bytes.
+     *
+     * @throws RuntimeException If md5 is not found.
+     */
+    private static String md5(byte[] bytes) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            digest.update(bytes);
+            return Base64.getEncoder().encodeToString(digest.digest());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

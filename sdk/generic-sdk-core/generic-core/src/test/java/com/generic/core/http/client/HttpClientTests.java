@@ -144,7 +144,8 @@ public abstract class HttpClientTests {
     public void plainResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
 
-        String actual = sendRequest(PLAIN_RESPONSE);
+        String actual = new String(sendRequest(PLAIN_RESPONSE).toBytes(), StandardCharsets.UTF_8);
+
         assertEquals(expected, actual);
     }
 
@@ -155,7 +156,7 @@ public abstract class HttpClientTests {
     public void headerResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16BE);
 
-        String actual = sendRequest(HEADER_RESPONSE);
+        String actual = new String(sendRequest(HEADER_RESPONSE).toBytes(), StandardCharsets.UTF_16BE);
 
         assertEquals(expected, actual);
     }
@@ -167,7 +168,7 @@ public abstract class HttpClientTests {
     public void invalidHeaderResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
 
-        String actual = sendRequest(INVALID_HEADER_RESPONSE);
+        String actual = new String(sendRequest(INVALID_HEADER_RESPONSE).toBytes(), StandardCharsets.UTF_8);
 
         assertEquals(expected, actual);
     }
@@ -179,7 +180,8 @@ public abstract class HttpClientTests {
     public void utf8BomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
 
-        String actual = sendRequest(UTF_8_BOM_RESPONSE);
+        String actual = new String(sendRequest(UTF_8_BOM_RESPONSE).toBytes(), StandardCharsets.UTF_8);
+
         assertEquals(expected, actual);
     }
 
@@ -190,7 +192,8 @@ public abstract class HttpClientTests {
     public void utf16BeBomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16BE);
 
-        String actual = sendRequest(UTF_16BE_BOM_RESPONSE);
+        String actual = new String(sendRequest(UTF_16BE_BOM_RESPONSE).toBytes(), StandardCharsets.UTF_16BE);
+
         assertEquals(expected, actual);
     }
 
@@ -201,7 +204,8 @@ public abstract class HttpClientTests {
     public void utf16LeBomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16LE);
 
-        String actual = sendRequest(UTF_16LE_BOM_RESPONSE);
+        String actual = new String(sendRequest(UTF_16LE_BOM_RESPONSE).toBytes(), StandardCharsets.UTF_16LE);
+
         assertEquals(expected, actual);
     }
 
@@ -212,7 +216,7 @@ public abstract class HttpClientTests {
     public void utf32BeBomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, Charset.forName("UTF-32BE"));
 
-        String actual = sendRequest(UTF_32BE_BOM_RESPONSE);
+        String actual = new String(sendRequest(UTF_32BE_BOM_RESPONSE).toBytes(), Charset.forName("UTF-32BE"));
 
         assertEquals(expected, actual);
     }
@@ -224,7 +228,7 @@ public abstract class HttpClientTests {
     public void utf32LeBomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, Charset.forName("UTF-32LE"));
 
-        String actual = sendRequest(UTF_32LE_BOM_RESPONSE);
+        String actual = new String(sendRequest(UTF_32LE_BOM_RESPONSE).toBytes(), Charset.forName("UTF-32LE"));
 
         assertEquals(expected, actual);
     }
@@ -236,7 +240,7 @@ public abstract class HttpClientTests {
     public void bomWithSameHeader() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
 
-        String actual = sendRequest(BOM_WITH_SAME_HEADER);
+        String actual = new String(sendRequest(BOM_WITH_SAME_HEADER).toBytes(), StandardCharsets.UTF_8);
 
         assertEquals(expected, actual);
     }
@@ -248,7 +252,7 @@ public abstract class HttpClientTests {
     public void bomWithDifferentHeader() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
 
-        String actual = sendRequest(BOM_WITH_DIFFERENT_HEADER);
+        String actual = new String(sendRequest(BOM_WITH_DIFFERENT_HEADER).toBytes(), StandardCharsets.UTF_8);
 
         assertEquals(expected, actual);
     }
@@ -434,12 +438,11 @@ public abstract class HttpClientTests {
             });
     }
 
-    private String sendRequest(String requestPath) {
+    private BinaryData sendRequest(String requestPath) {
         HttpResponse httpResponse = createHttpClient()
             .send(new HttpRequest(HttpMethod.GET, getRequestUrl(requestPath)), Context.NONE);
-        return httpResponse
-            .getBody()
-            .toString();
+
+        return httpResponse.getBody();
     }
 
     /**
