@@ -66,6 +66,7 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -508,6 +509,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body,
         byte[] contentMd5, PageBlobRequestConditions pageBlobRequestConditions) {
+        if (body == null) {
+            return Mono.error(new NullPointerException("'body' cannot be null."));
+        }
         try {
             return withContext(context -> uploadPagesWithResponse(pageRange, body, contentMd5,
                 pageBlobRequestConditions, context));
