@@ -114,7 +114,7 @@ public final class RouterValue {
      * Returns boolValue.
      * @return boolValue.
      */
-    public Boolean getBoolValue() {
+    public Boolean getBooleanValue() {
         return boolValue;
     }
 }
