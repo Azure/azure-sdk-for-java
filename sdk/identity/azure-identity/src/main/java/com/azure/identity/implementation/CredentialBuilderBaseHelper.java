@@ -3,12 +3,14 @@
 
 package com.azure.identity.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.CredentialBuilderBase;
 
 /**
  * Helper type for accessing private fields of {@link CredentialBuilderBase}.
  */
 public final class CredentialBuilderBaseHelper {
+    private static final ClientLogger LOGGER = new ClientLogger(CredentialBuilderBaseHelper.class);
     private static CredentialBuilderBaseAccessor accessor;
 
     private CredentialBuilderBaseHelper() { }
@@ -19,14 +21,14 @@ public final class CredentialBuilderBaseHelper {
 
     public static void setAccessor(final CredentialBuilderBaseAccessor newAccessor) {
         if (accessor != null) {
-            throw new IllegalStateException("CredentialBuilderBaseHelper already initialized");
+            throw LOGGER.logExceptionAsError(new NullPointerException("Accessor must be non-null"));
         }
         accessor = newAccessor;
     }
 
     public static CredentialBuilderBaseAccessor getAccessor() {
         if (accessor == null) {
-            throw new IllegalStateException("CredentialBuilderBaseHelper must be initialized");
+            throw LOGGER.logExceptionAsError(new IllegalStateException("CredentialBuilderBaseHelper must be initialized"));
         }
         return accessor;
     }

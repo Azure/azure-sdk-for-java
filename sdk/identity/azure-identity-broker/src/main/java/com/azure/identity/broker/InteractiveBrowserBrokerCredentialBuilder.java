@@ -40,8 +40,6 @@ import java.util.function.Function;
  * <!-- end com.azure.identity.broker.interactivebrowserbrokercredentialbuilder.construct -->
  */
 public class InteractiveBrowserBrokerCredentialBuilder extends InteractiveBrowserCredentialBuilder {
-    private static final ClientLogger LOGGER = new ClientLogger(InteractiveBrowserBrokerCredentialBuilder.class);
-
     /**
      * Sets the parent window handle used by the broker. For use on Windows only.
      *
