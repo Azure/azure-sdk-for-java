@@ -13,7 +13,6 @@ import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AuthenticationRecord;
 import com.azure.identity.BrowserCustomizationOptions;
 import com.azure.identity.InteractiveBrowserCredential;
