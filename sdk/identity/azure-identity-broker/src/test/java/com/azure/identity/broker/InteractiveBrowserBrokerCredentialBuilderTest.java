@@ -13,7 +13,6 @@ import org.junit.jupiter.api.condition.OS;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 
-@EnabledOnOs(OS.WINDOWS)
 class InteractiveBrowserBrokerCredentialBuilderTest {
 
     @Test
