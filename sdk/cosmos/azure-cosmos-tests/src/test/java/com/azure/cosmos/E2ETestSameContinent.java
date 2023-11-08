@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosDaemonThreadFactory;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.NotFoundException;
@@ -113,6 +114,28 @@ public class E2ETestSameContinent {
                 .build(),
             15,
             10);
+
+        System.setProperty(Configs.IS_SESSION_CONSISTENCY_FOR_WRITE_ENABLED, "false");
+
+        testConfigProvider.addConfig(
+            new SessionRetryOptionsBuilder()
+                .regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED)
+                .maxRetriesPerRegion(2)
+                .minTimeoutPerRegion(Duration.ofSeconds(10))
+                .build(),
+            15,
+        10,
+        "scwd");
+
+        testConfigProvider.addConfig(
+            new SessionRetryOptionsBuilder()
+                .regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED)
+                .maxRetriesPerRegion(2)
+                .minTimeoutPerRegion(Duration.ofSeconds(10))
+                .build(),
+            15,
+            10,
+            "scwd-pkscoped-st");
 
         for (TestConfig testConfig : testConfigProvider.getTestConfigs()) {
 
@@ -270,7 +293,7 @@ public class E2ETestSameContinent {
 
         writeLoop(
             clientForWritesToSecondaryRegion.getDatabase(dbName).getContainer(containerName),
-            Arrays.asList("West US", "South Central US"),
+            Arrays.asList("East US", "South Central US"),
             source,
             null);
     }
@@ -286,7 +309,7 @@ public class E2ETestSameContinent {
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
             .consistencyLevel(ConsistencyLevel.SESSION)
-            .preferredRegions(Arrays.asList("East US", "South Central US", "West US"))
+            .preferredRegions(Arrays.asList("West US", "South Central US", "East US"))
             .directMode()
             .sessionRetryOptions(testConfig.sessionRetryOptions);
 
@@ -335,6 +358,7 @@ public class E2ETestSameContinent {
                 + "-lc-"
                 + testConfig.loops
                 + "-"
+                + ((testConfig.clientCorrelationIdSubstring.isEmpty()) ? "" : ("sub-" + testConfig.clientCorrelationIdSubstring + "-"))
                 + clientId;
 
             CosmosDiagnosticsThresholds thresholds = new CosmosDiagnosticsThresholds()
@@ -379,7 +403,7 @@ public class E2ETestSameContinent {
             // Initially
             writeLoop(
                 clientForWritesToPrimaryRegion.getDatabase(dbName).getContainer(containerName),
-                Arrays.asList("West US"),
+                Arrays.asList("South Central US"),
                 source,
                 1000);
 
@@ -446,12 +470,20 @@ public class E2ETestSameContinent {
             SessionRetryOptions sessionRetryOptions,
             int secondaryRegionWriterClientCount,
             int loops) {
+            this.addConfig(sessionRetryOptions, secondaryRegionWriterClientCount, loops, "");
+        }
 
+        public void addConfig(
+            SessionRetryOptions sessionRetryOptions,
+            int secondaryRegionWriterClientCount,
+            int loops,
+            String clientCorrelationIdSubstring) {
             TestConfig testConfig = new TestConfig();
 
             testConfig.sessionRetryOptions = sessionRetryOptions;
             testConfig.secondaryRegionWriterClientCount = secondaryRegionWriterClientCount;
             testConfig.loops = loops;
+            testConfig.clientCorrelationIdSubstring = clientCorrelationIdSubstring;
 
             testConfigs.add(testConfig);
         }
@@ -465,6 +497,9 @@ public class E2ETestSameContinent {
         private SessionRetryOptions sessionRetryOptions;
         private int secondaryRegionWriterClientCount;
         private int loops;
+        private String clientCorrelationIdSubstring;
+        private boolean partitionKeyScopedSessionTokenCapturingEnabled;
+        private boolean sessionConsistencyDisabledForWrites;
 
         @Override
         public String toString() {

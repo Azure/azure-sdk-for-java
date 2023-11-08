@@ -227,6 +227,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private final String clientCorrelationId;
     private final SessionRetryOptions sessionRetryOptions;
+    private final SessionConsistencyOptions sessionConsistencyOptions;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -256,6 +257,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 credential,
                 null,
                 sessionCapturingOverride,
+                false,
+                false,
                 connectionSharingAcrossClientsEnabled,
                 contentResponseOnWriteEnabled,
                 metadataCachesSnapshot,
@@ -278,6 +281,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 AzureKeyCredential credential,
                                 TokenCredential tokenCredential,
                                 boolean sessionCapturingOverride,
+                                boolean partitionKeyScopedSessionCapturingEnabled,
+                                boolean sessionConsistencyDisabledForWrites,
                                 boolean connectionSharingAcrossClientsEnabled,
                                 boolean contentResponseOnWriteEnabled,
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
@@ -297,6 +302,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 credential,
                 tokenCredential,
                 sessionCapturingOverride,
+                partitionKeyScopedSessionCapturingEnabled,
+                sessionConsistencyDisabledForWrites,
                 connectionSharingAcrossClientsEnabled,
                 contentResponseOnWriteEnabled,
                 metadataCachesSnapshot,
@@ -318,6 +325,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 AzureKeyCredential credential,
                                 TokenCredential tokenCredential,
                                 boolean sessionCapturingOverrideEnabled,
+                                boolean partitionKeyScopedSessionCapturingEnabled,
+                                boolean sessionConsistencyDisabledForWrites,
                                 boolean connectionSharingAcrossClientsEnabled,
                                 boolean contentResponseOnWriteEnabled,
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
@@ -336,6 +345,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 credential,
                 tokenCredential,
                 sessionCapturingOverrideEnabled,
+                partitionKeyScopedSessionCapturingEnabled,
+                sessionConsistencyDisabledForWrites,
                 connectionSharingAcrossClientsEnabled,
                 contentResponseOnWriteEnabled,
                 metadataCachesSnapshot,
@@ -396,6 +407,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          AzureKeyCredential credential,
                          TokenCredential tokenCredential,
                          boolean sessionCapturingOverrideEnabled,
+                         boolean partitionKeyScopedSessionCapturingEnabled,
+                         boolean sessionConsistencyDisabledForWrites,
                          boolean connectionSharingAcrossClientsEnabled,
                          boolean contentResponseOnWriteEnabled,
                          CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
@@ -428,6 +441,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.cosmosEndToEndOperationLatencyPolicyConfig = cosmosEndToEndOperationLatencyPolicyConfig;
         this.diagnosticsClientConfig.withEndToEndOperationLatencyPolicy(cosmosEndToEndOperationLatencyPolicyConfig);
         this.sessionRetryOptions = sessionRetryOptions;
+        this.sessionConsistencyOptions = new SessionConsistencyOptionsBuilder()
+            .sessionConsistencyDisabledForWrites(sessionConsistencyDisabledForWrites)
+            .partitionKeyScopedSessionCapturingEnabled(partitionKeyScopedSessionCapturingEnabled)
+            .build();
 
         logger.info(
             "Initializing DocumentClient [{}] with"
@@ -487,7 +504,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             boolean disableSessionCapturing = (ConsistencyLevel.SESSION != consistencyLevel && !sessionCapturingOverrideEnabled);
 
-            this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
+            this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing, this.sessionConsistencyOptions);
             this.consistencyLevel = consistencyLevel;
 
             this.userAgentContainer = new UserAgentContainer();
@@ -716,7 +733,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.gatewayConfigurationReader,
                 this,
                 this.useMultipleWriteLocations,
-                this.sessionRetryOptions);
+                this.sessionRetryOptions,
+                this.sessionConsistencyOptions);
 
         this.storeModel = new ServerStoreModel(storeClient);
     }

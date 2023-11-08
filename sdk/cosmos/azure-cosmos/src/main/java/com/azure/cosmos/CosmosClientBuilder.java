@@ -126,6 +126,8 @@ public class CosmosClientBuilder implements
     private CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     private AzureKeyCredential credential;
     private boolean sessionCapturingOverrideEnabled;
+    private boolean partitionKeyScopedSessionCapturingEnabled = false;
+    private boolean sessionConsistencyDisabledForWrites = false;
     private boolean connectionSharingAcrossClientsEnabled;
     private boolean contentResponseOnWriteEnabled;
     private String userAgentSuffix;
@@ -196,6 +198,16 @@ public class CosmosClientBuilder implements
         return this;
     }
 
+    public CosmosClientBuilder partitionKeyScopedSessionCapturingEnabled(boolean partitionKeyScopedSessionCapturingEnabled) {
+        this.partitionKeyScopedSessionCapturingEnabled = partitionKeyScopedSessionCapturingEnabled;
+        return this;
+    }
+
+    public CosmosClientBuilder sessionConsistencyDisabledForWrites(boolean sessionConsistencyDisabledForWrites) {
+        this.sessionConsistencyDisabledForWrites = sessionConsistencyDisabledForWrites;
+        return this;
+    }
+
     /**
      * Indicates if Session capturing is enabled for non Session modes.
      * The default is false.
@@ -204,6 +216,14 @@ public class CosmosClientBuilder implements
      */
     boolean isSessionCapturingOverrideEnabled() {
         return this.sessionCapturingOverrideEnabled;
+    }
+
+    boolean isPartitionKeyScopedSessionCapturingEnabled() {
+        return this.partitionKeyScopedSessionCapturingEnabled;
+    }
+
+    boolean isSessionConsistencyDisabledForWrites() {
+        return this.sessionConsistencyDisabledForWrites;
     }
 
     /**

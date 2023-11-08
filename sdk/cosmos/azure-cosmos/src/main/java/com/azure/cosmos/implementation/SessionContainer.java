@@ -41,14 +41,20 @@ public final class SessionContainer implements ISessionContainer {
     private final ConcurrentHashMap<Long, String> collectionResourceIdToCollectionName = new ConcurrentHashMap<>();
     private final String hostName;
     private final boolean disableSessionCapturing;
+    private final SessionConsistencyOptions sessionConsistencyOptions;
 
-    public SessionContainer(final String hostName, boolean disableSessionCapturing) {
+    public SessionContainer(final String hostName, boolean disableSessionCapturing, SessionConsistencyOptions sessionConsistencyOptions) {
         this.hostName = hostName;
         this.disableSessionCapturing = disableSessionCapturing;
+        this.sessionConsistencyOptions = sessionConsistencyOptions;
+    }
+
+    public SessionContainer(final String hostName, boolean disableSessionCapturing) {
+        this(hostName, disableSessionCapturing, SessionConsistencyOptions.DEFAULT_OPTIONS);
     }
 
     public SessionContainer(final String hostName) {
-        this(hostName, false);
+        this(hostName, false, SessionConsistencyOptions.DEFAULT_OPTIONS);
     }
 
     public String getHostName() {
@@ -145,7 +151,7 @@ public final class SessionContainer implements ISessionContainer {
 
         ISessionToken resolvedPartitionKeyScopedSessionToken = null;
 
-        boolean isPartitionKeyScopedSessionTokenCapturingEnabled = Configs.isPartitionKeyScopedSessionTokenCapturingEnabled();
+        boolean isPartitionKeyScopedSessionTokenCapturingEnabled = Configs.getIsPartitionKeyScopedSessionTokenCapturingEnabled();
 
         if (isPartitionKeyScopedSessionTokenCapturingEnabled) {
             String partitionKey = request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY);
@@ -178,7 +184,7 @@ public final class SessionContainer implements ISessionContainer {
                     this.collectionResourceIdToCollectionName.remove(rid);
                     this.collectionNameToCollectionResourceId.remove(collectionName);
 
-                    if (Configs.isPartitionKeyScopedSessionTokenCapturingEnabled()) {
+                    if (Configs.getIsPartitionKeyScopedSessionTokenCapturingEnabled()) {
                         this.collectionResourceIdToPartitionScopedSessionTokens.remove(rid);
                     }
                 }
@@ -202,7 +208,7 @@ public final class SessionContainer implements ISessionContainer {
                         this.collectionResourceIdToCollectionName.remove(rid);
                         this.collectionNameToCollectionResourceId.remove(collectionName);
 
-                        if (Configs.isPartitionKeyScopedSessionTokenCapturingEnabled()) {
+                        if (Configs.getIsPartitionKeyScopedSessionTokenCapturingEnabled()) {
                             this.collectionResourceIdToPartitionScopedSessionTokens.remove(rid);
                         }
                     }
@@ -327,7 +333,7 @@ public final class SessionContainer implements ISessionContainer {
 
             updateExistingPkRangeIdScopedTokensInternal(existingTokensIfAny, partitionKeyRangeId, parsedSessionToken);
 
-            if (Configs.isPartitionKeyScopedSessionTokenCapturingEnabled()) {
+            if (Configs.getIsPartitionKeyScopedSessionTokenCapturingEnabled()) {
                 updateExistingPartitionKeyScopedTokensInternal(existingTokensIfAny, partitionKey, parsedSessionToken);
             }
 
@@ -348,7 +354,7 @@ public final class SessionContainer implements ISessionContainer {
                 return existingTokens;
             });
 
-        if (Configs.isPartitionKeyScopedSessionTokenCapturingEnabled() && partitionKey != null) {
+        if (Configs.getIsPartitionKeyScopedSessionTokenCapturingEnabled() && partitionKey != null) {
             this.collectionResourceIdToPartitionScopedSessionTokens.compute(
                 resourceId.getUniqueDocumentCollectionId(), (k, existingTokens) -> {
                     if (existingTokens == null) {

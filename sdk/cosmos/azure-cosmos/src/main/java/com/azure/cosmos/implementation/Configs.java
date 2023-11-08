@@ -152,8 +152,11 @@ public class Configs {
 
     public static final int MIN_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = 1;
 
-    private static final String PARTITION_KEY_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED = "COSMOS.PARTITION_KEY_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED";
+    public static final String IS_PARTITION_KEY_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED = "COSMOS.PARTITION_KEY_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED";
     private static final boolean DEFAULT_PARTITION_KEY_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED = false;
+
+    public static final String IS_SESSION_CONSISTENCY_FOR_WRITE_ENABLED = "COSMOS.IS_SESSION_CONSISTENCY_FOR_WRITE_ENABLED";
+    private static final boolean DEFAULT_IS_SESSION_CONSISTENCY_FOR_WRITE_ENABLED = true;
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -423,7 +426,11 @@ public class Configs {
                 MIN_MIN_IN_REGION_RETRY_TIME_FOR_WRITES_MS));
     }
 
-    public static boolean isPartitionKeyScopedSessionTokenCapturingEnabled() {
-        return getBooleanValue(System.getProperty(PARTITION_KEY_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED), DEFAULT_PARTITION_KEY_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED);
+    public static boolean getIsPartitionKeyScopedSessionTokenCapturingEnabled() {
+        return getBooleanValue(System.getProperty(IS_PARTITION_KEY_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED), DEFAULT_PARTITION_KEY_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED);
+    }
+
+    public static boolean isSessionConsistencyForWriteEnabled() {
+        return getBooleanValue(System.getProperty(IS_SESSION_CONSISTENCY_FOR_WRITE_ENABLED), DEFAULT_IS_SESSION_CONSISTENCY_FOR_WRITE_ENABLED);
     }
 }

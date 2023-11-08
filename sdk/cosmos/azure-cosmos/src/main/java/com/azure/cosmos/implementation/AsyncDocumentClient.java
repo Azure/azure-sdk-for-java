@@ -95,6 +95,8 @@ public interface AsyncDocumentClient {
         AzureKeyCredential credential;
         TokenCredential tokenCredential;
         boolean sessionCapturingOverride;
+        boolean partitionKeyScopedSessionCapturingEnabled;
+        boolean sessionConsistencyDisabledForWrites;
         boolean transportClientSharing;
         boolean contentResponseOnWriteEnabled;
         private CosmosClientMetadataCachesSnapshot state;
@@ -180,6 +182,16 @@ public interface AsyncDocumentClient {
 
         public Builder withSessionCapturingOverride(boolean sessionCapturingOverride) {
             this.sessionCapturingOverride = sessionCapturingOverride;
+            return this;
+        }
+
+        public Builder withPartitionKeyScopedSessionCapturingEnabled(boolean partitionKeyScopedSessionCapturingEnabled) {
+            this.partitionKeyScopedSessionCapturingEnabled = partitionKeyScopedSessionCapturingEnabled;
+            return this;
+        }
+
+        public Builder withSessionConsistencyForWritesDisabled(boolean sessionConsistencyForWritesDisabled) {
+            this.sessionConsistencyDisabledForWrites = sessionConsistencyForWritesDisabled;
             return this;
         }
 
@@ -282,6 +294,8 @@ public interface AsyncDocumentClient {
                     credential,
                     tokenCredential,
                     sessionCapturingOverride,
+                    partitionKeyScopedSessionCapturingEnabled,
+                    sessionConsistencyDisabledForWrites,
                     transportClientSharing,
                     contentResponseOnWriteEnabled,
                     state,

@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.Quadruple;
 import com.azure.cosmos.implementation.ReplicatedResourceClientUtils;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.SessionConsistencyOptions;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
@@ -52,7 +53,8 @@ public class ReplicatedResourceClient {
             GatewayServiceConfigurationReader serviceConfigReader,
             IAuthorizationTokenProvider authorizationTokenProvider,
             boolean useMultipleWriteLocations,
-            SessionRetryOptions sessionRetryOptions) {
+            SessionRetryOptions sessionRetryOptions,
+            SessionConsistencyOptions sessionConsistencyOptions) {
         Protocol protocol = configs.getProtocol();
         this.addressSelector = addressSelector;
         if (protocol != Protocol.HTTPS && protocol != Protocol.TCP) {
@@ -77,7 +79,8 @@ public class ReplicatedResourceClient {
             authorizationTokenProvider,
             serviceConfigReader,
             useMultipleWriteLocations,
-            sessionRetryOptions);
+            sessionRetryOptions,
+            sessionConsistencyOptions);
     }
 
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {

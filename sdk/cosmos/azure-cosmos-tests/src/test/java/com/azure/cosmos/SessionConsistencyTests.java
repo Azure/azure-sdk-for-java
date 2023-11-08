@@ -97,6 +97,10 @@ public class SessionConsistencyTests extends TestSuiteBase {
         }
     }
 
+    public void writesWithoutSessionToken() {
+
+    }
+
     @AfterClass
     public void afterClass() {
         client.close();

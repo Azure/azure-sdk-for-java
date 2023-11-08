@@ -118,6 +118,8 @@ public final class CosmosAsyncClient implements Closeable {
         this.credential = builder.getCredential();
         TokenCredential tokenCredential = builder.getTokenCredential();
         boolean sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
+        boolean partitionKeyScopedSessionCapturingEnabled = builder.isPartitionKeyScopedSessionCapturingEnabled();
+        boolean sessionConsistencyDisabledForWrites = builder.isSessionConsistencyDisabledForWrites();
         boolean enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
         this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
         this.nonIdempotentWriteRetryPolicy = builder.getNonIdempotentWriteRetryPolicy();
@@ -153,6 +155,8 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withConnectionPolicy(this.connectionPolicy)
                                        .withConsistencyLevel(this.desiredConsistencyLevel)
                                        .withSessionCapturingOverride(sessionCapturingOverride)
+                                       .withPartitionKeyScopedSessionCapturingEnabled(partitionKeyScopedSessionCapturingEnabled)
+                                       .withSessionConsistencyForWritesDisabled(sessionConsistencyDisabledForWrites)
                                        .withConfigs(configs)
                                        .withTokenResolver(cosmosAuthorizationTokenResolver)
                                        .withCredential(this.credential)

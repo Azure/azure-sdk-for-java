@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
+import com.azure.cosmos.implementation.SessionConsistencyOptions;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
@@ -84,7 +85,8 @@ public class StoreClientFactory implements AutoCloseable {
         GatewayServiceConfigurationReader serviceConfigurationReader,
         IAuthorizationTokenProvider authorizationTokenProvider,
         boolean useMultipleWriteLocations,
-        SessionRetryOptions sessionRetryOptions) {
+        SessionRetryOptions sessionRetryOptions,
+        SessionConsistencyOptions sessionConsistencyOptions) {
         this.throwIfClosed();
 
         return new StoreClient(diagnosticsClientContext,
@@ -95,7 +97,8 @@ public class StoreClientFactory implements AutoCloseable {
             authorizationTokenProvider,
             this.transportClient,
             useMultipleWriteLocations,
-            sessionRetryOptions);
+            sessionRetryOptions,
+            sessionConsistencyOptions);
     }
 
     private void throwIfClosed() {
