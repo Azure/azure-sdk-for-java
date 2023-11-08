@@ -119,6 +119,8 @@ public class HttpBinHeaders implements JsonSerializable<HttpBinHeaders> {
                     via = reader.getString();
                 } else if ("Connection".equalsIgnoreCase(fieldName)) {
                     connection = reader.getString();
+                } else {
+                    reader.skipChildren();
                 }
             }
 

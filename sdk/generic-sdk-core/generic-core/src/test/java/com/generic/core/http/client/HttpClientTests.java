@@ -33,7 +33,6 @@ import com.generic.core.http.policy.logging.HttpLogOptions;
 import com.generic.core.implementation.http.ContentType;
 import com.generic.core.implementation.http.policy.logging.HttpLoggingPolicy;
 import com.generic.core.models.RequestOptions;
-import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.util.UrlBuilder;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
@@ -1586,7 +1585,7 @@ public abstract class HttpClientTests {
                 new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)))
             .build();
         //
-        Response<HttpBinJSON> response = RestProxy.create(BinaryDataUploadService.class, httpPipeline, new DefaultJsonSerializer())
+        Response<HttpBinJSON> response = RestProxy.create(BinaryDataUploadService.class, httpPipeline)
             .put(getServerUri(isSecure()), data, Files.size(filePath));
 
         assertEquals("The quick brown fox jumps over the lazy dog", response.getValue().data());
@@ -1834,7 +1833,7 @@ public abstract class HttpClientTests {
             .httpClient(httpClient)
             .build();
 
-        return RestProxy.create(serviceClass, httpPipeline, new DefaultJsonSerializer());
+        return RestProxy.create(serviceClass, httpPipeline);
     }
 
     private static void assertMatchWithHttpOrHttps(String url1, String url2) {

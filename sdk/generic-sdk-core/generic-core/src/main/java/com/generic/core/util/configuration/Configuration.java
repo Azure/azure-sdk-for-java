@@ -5,8 +5,8 @@ package com.generic.core.util.configuration;
 
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.client.HttpClientProvider;
-import com.generic.core.implementation.util.EnvironmentConfiguration;
 import com.generic.core.implementation.util.CoreUtils;
+import com.generic.core.implementation.util.EnvironmentConfiguration;
 import com.generic.core.util.logging.ClientLogger;
 
 import java.util.Collections;
@@ -168,9 +168,6 @@ public class Configuration implements Cloneable {
     }
 
     /**
-     * Gets the value of system property or environment variable converted to given primitive {@code T} using
-     * corresponding {@code parse} method on this type.
-     *
      * Use {@link Configuration#get(ConfigurationProperty)} overload to get explicit configuration or environment
      * configuration from specific source.
      *
@@ -197,7 +194,7 @@ public class Configuration implements Cloneable {
      * @return The converted configuration if found, otherwise the default value is returned.
      */
     public <T> T get(String name, T defaultValue) {
-        return convertToPrimitiveOrDefault(get(name), defaultValue);
+        return convertToPrimitiveOrDefault(environmentConfiguration.get(name), defaultValue);
     }
 
     /**
@@ -215,26 +212,8 @@ public class Configuration implements Cloneable {
      */
     public <T> T get(String name, Function<String, T> converter) {
         Objects.requireNonNull(converter, "'converter' can't be null");
-        return converter.apply(get(name));
+        return converter.apply(environmentConfiguration.get(name));
     }
-
-    /**
-     * Determines if the system property or environment variable is defined.
-     * <p>
-     * Use {@link Configuration#contains(ConfigurationProperty)} overload to get explicit configuration or environment
-     * configuration from specific source.
-     *
-     * <p>
-     * This only checks against values previously loaded into the Configuration object, this won't inspect the
-     * environment for containing the value.
-     *
-     * @param name Name of the configuration.
-     * @return True if the configuration exists, otherwise false.
-     */
-    public boolean contains(String name) {
-        return get(name) != null;
-    }
-
 
     /**
      * Checks if configuration contains the property. If property can be shared between clients, checks this

@@ -23,10 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class HttpClientProvidersTests {
     @Test
     public void testHttpUrlConnectionAsDefaultProvider() {
-        HttpClientOptions options = new HttpClientOptions();
-        options.setHttpClientProvider(HttpUrlConnectionClientProvider.class);
-        // sanity check
-        HttpClient httpClient = HttpClient.createDefault(options);
+        HttpClient httpClient = HttpClient.createDefault();
         assertInstanceOf(HttpUrlConnectionClient.class, httpClient);
     }
 

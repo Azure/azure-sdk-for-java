@@ -32,7 +32,7 @@ public class HttpUrlConnectionClientProvider implements HttpClientProvider {
     }
 
     /**
-     * For testing purpose only, assigning 'AZURE_ENABLE_HTTP_CLIENT_SHARING' to 'enableHttpClientSharing' for
+     * For testing purpose only, assigning 'ENABLE_HTTP_CLIENT_SHARING' to 'enableHttpClientSharing' for
      * 'final' modifier.
      */
     public HttpUrlConnectionClientProvider() {

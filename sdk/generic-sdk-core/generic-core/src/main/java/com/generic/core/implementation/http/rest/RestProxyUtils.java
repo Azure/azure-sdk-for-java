@@ -114,7 +114,7 @@ public final class RestProxyUtils {
      *
      * @return the default serializer
      */
-    public static ObjectSerializer createDefaultSerializer() {
+    public static ObjectSerializer createDefaultJsonSerializer() {
         return new DefaultJsonSerializer();
     }
 
